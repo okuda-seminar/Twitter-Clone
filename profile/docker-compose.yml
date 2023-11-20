@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  profile_postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres.Dockerfile
+    image: ${PG_IMAGE_NAME}
+    container_name: ${PG_CONTAINER_NAME}
+    ports:
+      - ${PGPORT}:${PGPORT}
+    env_file:
+      - .env
+    volumes:
+       - ./internal/postgres/db_data/:/var/lib/postgresql/data/
+
+  profile_app:
+    depends_on:
+      - profile_postgres
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+    image: ${APP_IMAGE_NAME}
+    container_name: ${APP_CONTAINER_NAME}
+    tty: true
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/app
