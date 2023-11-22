@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     volumes:
-       - ./internal/postgres/db_data/:/var/lib/postgresql/data/
+       - ./db/db_data/:/var/lib/postgresql/data/
 
   profile_app:
     depends_on:
