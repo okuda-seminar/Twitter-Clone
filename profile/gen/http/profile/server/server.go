@@ -20,6 +20,8 @@ import (
 type Server struct {
 	Mounts             []*MountPoint
 	FindByID           http.Handler
+	UpdateUsername     http.Handler
+	UpdateBio          http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -55,9 +57,13 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"FindByID", "GET", "/api/profile/{id}"},
+			{"UpdateUsername", "POST", "/api/profile/{id}/edit/username"},
+			{"UpdateBio", "POST", "/api/profile/edit/bio"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		FindByID:           NewFindByIDHandler(e.FindByID, mux, decoder, encoder, errhandler, formatter),
+		UpdateUsername:     NewUpdateUsernameHandler(e.UpdateUsername, mux, decoder, encoder, errhandler, formatter),
+		UpdateBio:          NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -68,6 +74,8 @@ func (s *Server) Service() string { return "profile" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.FindByID = m(s.FindByID)
+	s.UpdateUsername = m(s.UpdateUsername)
+	s.UpdateBio = m(s.UpdateBio)
 }
 
 // MethodNames returns the methods served.
@@ -76,6 +84,8 @@ func (s *Server) MethodNames() []string { return profile.MethodNames[:] }
 // Mount configures the mux to serve the profile endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountFindByIDHandler(mux, h.FindByID)
+	MountUpdateUsernameHandler(mux, h.UpdateUsername)
+	MountUpdateBioHandler(mux, h.UpdateBio)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -109,11 +119,113 @@ func NewFindByIDHandler(
 	var (
 		decodeRequest  = DecodeFindByIDRequest(mux, decoder)
 		encodeResponse = EncodeFindByIDResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeFindByIDError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "FindByID")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "profile")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountUpdateUsernameHandler configures the mux to serve the "profile" service
+// "UpdateUsername" endpoint.
+func MountUpdateUsernameHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/profile/{id}/edit/username", f)
+}
+
+// NewUpdateUsernameHandler creates a HTTP handler which loads the HTTP request
+// and calls the "profile" service "UpdateUsername" endpoint.
+func NewUpdateUsernameHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeUpdateUsernameRequest(mux, decoder)
+		encodeResponse = EncodeUpdateUsernameResponse(encoder)
+		encodeError    = EncodeUpdateUsernameError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "UpdateUsername")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "profile")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountUpdateBioHandler configures the mux to serve the "profile" service
+// "UpdateBio" endpoint.
+func MountUpdateBioHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/profile/edit/bio", f)
+}
+
+// NewUpdateBioHandler creates a HTTP handler which loads the HTTP request and
+// calls the "profile" service "UpdateBio" endpoint.
+func NewUpdateBioHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeUpdateBioRequest(mux, decoder)
+		encodeResponse = EncodeUpdateBioResponse(encoder)
+		encodeError    = EncodeUpdateBioError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "UpdateBio")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "profile")
 		payload, err := decodeRequest(r)
 		if err != nil {

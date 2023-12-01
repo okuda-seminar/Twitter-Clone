@@ -22,13 +22,13 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `profile find-by-id
+	return `profile (find-by-id|update-username|update-bio)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` profile find-by-id --id 1999381839668243054` + "\n" +
+	return os.Args[0] + ` profile find-by-id --id 8771753555738808965` + "\n" +
 		""
 }
 
@@ -46,9 +46,18 @@ func ParseEndpoint(
 
 		profileFindByIDFlags  = flag.NewFlagSet("find-by-id", flag.ExitOnError)
 		profileFindByIDIDFlag = profileFindByIDFlags.String("id", "REQUIRED", "")
+
+		profileUpdateUsernameFlags    = flag.NewFlagSet("update-username", flag.ExitOnError)
+		profileUpdateUsernameBodyFlag = profileUpdateUsernameFlags.String("body", "REQUIRED", "")
+		profileUpdateUsernameIDFlag   = profileUpdateUsernameFlags.String("id", "REQUIRED", "")
+
+		profileUpdateBioFlags    = flag.NewFlagSet("update-bio", flag.ExitOnError)
+		profileUpdateBioBodyFlag = profileUpdateBioFlags.String("body", "REQUIRED", "")
 	)
 	profileFlags.Usage = profileUsage
 	profileFindByIDFlags.Usage = profileFindByIDUsage
+	profileUpdateUsernameFlags.Usage = profileUpdateUsernameUsage
+	profileUpdateBioFlags.Usage = profileUpdateBioUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -87,6 +96,12 @@ func ParseEndpoint(
 			case "find-by-id":
 				epf = profileFindByIDFlags
 
+			case "update-username":
+				epf = profileUpdateUsernameFlags
+
+			case "update-bio":
+				epf = profileUpdateBioFlags
+
 			}
 
 		}
@@ -115,6 +130,12 @@ func ParseEndpoint(
 			case "find-by-id":
 				endpoint = c.FindByID()
 				data, err = profilec.BuildFindByIDPayload(*profileFindByIDIDFlag)
+			case "update-username":
+				endpoint = c.UpdateUsername()
+				data, err = profilec.BuildUpdateUsernamePayload(*profileUpdateUsernameBodyFlag, *profileUpdateUsernameIDFlag)
+			case "update-bio":
+				endpoint = c.UpdateBio()
+				data, err = profilec.BuildUpdateBioPayload(*profileUpdateBioBodyFlag)
 			}
 		}
 	}
@@ -133,6 +154,8 @@ Usage:
 
 COMMAND:
     find-by-id: FindByID implements FindByID.
+    update-username: UpdateUsername implements UpdateUsername.
+    update-bio: UpdateBio implements UpdateBio.
 
 Additional help:
     %[1]s profile COMMAND --help
@@ -145,6 +168,34 @@ FindByID implements FindByID.
     -id INT: 
 
 Example:
-    %[1]s profile find-by-id --id 1999381839668243054
+    %[1]s profile find-by-id --id 8771753555738808965
+`, os.Args[0])
+}
+
+func profileUpdateUsernameUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] profile update-username -body JSON -id INT
+
+UpdateUsername implements UpdateUsername.
+    -body JSON: 
+    -id INT: 
+
+Example:
+    %[1]s profile update-username --body '{
+      "username": "Impedit omnis alias quo numquam numquam."
+   }' --id 7452933893943473380
+`, os.Args[0])
+}
+
+func profileUpdateBioUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] profile update-bio -body JSON
+
+UpdateBio implements UpdateBio.
+    -body JSON: 
+
+Example:
+    %[1]s profile update-bio --body '{
+      "bio": "Quia qui et aspernatur ut officiis ad.",
+      "id": 8150416861168248119
+   }'
 `, os.Args[0])
 }
