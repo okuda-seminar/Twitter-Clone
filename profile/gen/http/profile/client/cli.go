@@ -8,6 +8,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	profile "profile/gen/profile"
 	"strconv"
@@ -28,6 +29,53 @@ func BuildFindByIDPayload(profileFindByIDID string) (*profile.FindByIDPayload, e
 	}
 	v := &profile.FindByIDPayload{}
 	v.ID = id
+
+	return v, nil
+}
+
+// BuildUpdateUsernamePayload builds the payload for the profile UpdateUsername
+// endpoint from CLI flags.
+func BuildUpdateUsernamePayload(profileUpdateUsernameBody string, profileUpdateUsernameID string) (*profile.UpdateUsernamePayload, error) {
+	var err error
+	var body UpdateUsernameRequestBody
+	{
+		err = json.Unmarshal([]byte(profileUpdateUsernameBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Impedit omnis alias quo numquam numquam.\"\n   }'")
+		}
+	}
+	var id int
+	{
+		var v int64
+		v, err = strconv.ParseInt(profileUpdateUsernameID, 10, strconv.IntSize)
+		id = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for id, must be INT")
+		}
+	}
+	v := &profile.UpdateUsernamePayload{
+		Username: body.Username,
+	}
+	v.ID = id
+
+	return v, nil
+}
+
+// BuildUpdateBioPayload builds the payload for the profile UpdateBio endpoint
+// from CLI flags.
+func BuildUpdateBioPayload(profileUpdateBioBody string) (*profile.UpdateBioPayload, error) {
+	var err error
+	var body UpdateBioRequestBody
+	{
+		err = json.Unmarshal([]byte(profileUpdateBioBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Quia qui et aspernatur ut officiis ad.\",\n      \"id\": 8150416861168248119\n   }'")
+		}
+	}
+	v := &profile.UpdateBioPayload{
+		ID:  body.ID,
+		Bio: body.Bio,
+	}
 
 	return v, nil
 }

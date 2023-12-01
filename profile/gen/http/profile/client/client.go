@@ -21,6 +21,14 @@ type Client struct {
 	// endpoint.
 	FindByIDDoer goahttp.Doer
 
+	// UpdateUsername Doer is the HTTP client used to make requests to the
+	// UpdateUsername endpoint.
+	UpdateUsernameDoer goahttp.Doer
+
+	// UpdateBio Doer is the HTTP client used to make requests to the UpdateBio
+	// endpoint.
+	UpdateBioDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -42,6 +50,8 @@ func NewClient(
 ) *Client {
 	return &Client{
 		FindByIDDoer:        doer,
+		UpdateUsernameDoer:  doer,
+		UpdateBioDoer:       doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -64,6 +74,54 @@ func (c *Client) FindByID() goa.Endpoint {
 		resp, err := c.FindByIDDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("profile", "FindByID", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// UpdateUsername returns an endpoint that makes HTTP requests to the profile
+// service UpdateUsername server.
+func (c *Client) UpdateUsername() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUpdateUsernameRequest(c.encoder)
+		decodeResponse = DecodeUpdateUsernameResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUpdateUsernameRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UpdateUsernameDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("profile", "UpdateUsername", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// UpdateBio returns an endpoint that makes HTTP requests to the profile
+// service UpdateBio server.
+func (c *Client) UpdateBio() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUpdateBioRequest(c.encoder)
+		decodeResponse = DecodeUpdateBioResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUpdateBioRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UpdateBioDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("profile", "UpdateBio", err)
 		}
 		return decodeResponse(resp)
 	}

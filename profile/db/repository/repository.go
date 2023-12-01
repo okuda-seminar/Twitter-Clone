@@ -8,6 +8,8 @@ import (
 
 type Repository interface {
 	FindByID(ctx context.Context, id int) (*User, error)
+	UpdateUsername(ctx context.Context, id int, username string) error
+	UpdateBio(ctx context.Context, id int, bio string) error
 }
 
 // repository holds a connection to DB.

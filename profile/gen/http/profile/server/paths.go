@@ -15,3 +15,13 @@ import (
 func FindByIDProfilePath(id int) string {
 	return fmt.Sprintf("/api/profile/%v", id)
 }
+
+// UpdateUsernameProfilePath returns the URL path to the profile service UpdateUsername HTTP endpoint.
+func UpdateUsernameProfilePath(id int) string {
+	return fmt.Sprintf("/api/profile/%v/edit/username", id)
+}
+
+// UpdateBioProfilePath returns the URL path to the profile service UpdateBio HTTP endpoint.
+func UpdateBioProfilePath() string {
+	return "/api/profile/edit/bio"
+}

@@ -15,19 +15,25 @@ import (
 
 // Endpoints wraps the "profile" service endpoints.
 type Endpoints struct {
-	FindByID goa.Endpoint
+	FindByID       goa.Endpoint
+	UpdateUsername goa.Endpoint
+	UpdateBio      goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "profile" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
-		FindByID: NewFindByIDEndpoint(s),
+		FindByID:       NewFindByIDEndpoint(s),
+		UpdateUsername: NewUpdateUsernameEndpoint(s),
+		UpdateBio:      NewUpdateBioEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "profile" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.FindByID = m(e.FindByID)
+	e.UpdateUsername = m(e.UpdateUsername)
+	e.UpdateBio = m(e.UpdateBio)
 }
 
 // NewFindByIDEndpoint returns an endpoint function that calls the method
@@ -36,5 +42,23 @@ func NewFindByIDEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
 		p := req.(*FindByIDPayload)
 		return s.FindByID(ctx, p)
+	}
+}
+
+// NewUpdateUsernameEndpoint returns an endpoint function that calls the method
+// "UpdateUsername" of service "profile".
+func NewUpdateUsernameEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*UpdateUsernamePayload)
+		return nil, s.UpdateUsername(ctx, p)
+	}
+}
+
+// NewUpdateBioEndpoint returns an endpoint function that calls the method
+// "UpdateBio" of service "profile".
+func NewUpdateBioEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*UpdateBioPayload)
+		return nil, s.UpdateBio(ctx, p)
 	}
 }
