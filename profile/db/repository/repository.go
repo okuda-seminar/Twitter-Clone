@@ -10,7 +10,7 @@ type Repository interface {
 	FindByID(ctx context.Context, id int) (*User, error)
 }
 
-// repository implements Repository.
+// repository holds a connection to DB.
 type repository struct {
 	db *sql.DB
 }

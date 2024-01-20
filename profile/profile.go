@@ -8,9 +8,8 @@ import (
 	profile "profile/gen/profile"
 )
 
-// profile service example implementation.
-// The example methods log the requests and return zero values.
-type profilesrvc struct {
+// profile service implementation.
+type profileSrvc struct {
 	repository repository.Repository
 	logger     *log.Logger
 }
@@ -18,11 +17,14 @@ type profilesrvc struct {
 // NewProfile returns the profile service implementation.
 func NewProfile(db *sql.DB, logger *log.Logger) profile.Service {
 	repository := repository.NewRepository(db)
-	return &profilesrvc{&repository, logger}
+	return &profileSrvc{&repository, logger}
 }
 
-// FindByID implements FindByID.
-func (s *profilesrvc) FindByID(ctx context.Context, p *profile.FindByIDPayload) (res *profile.User, err error) {
+// FindByID finds a user with the specified ID.
+func (s *profileSrvc) FindByID(
+	ctx context.Context,
+	p *profile.FindByIDPayload,
+) (res *profile.User, err error) {
 	user, err := s.repository.FindByID(ctx, p.ID)
 	if err != nil {
 		return nil, err
