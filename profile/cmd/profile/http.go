@@ -16,9 +16,22 @@ import (
 	"goa.design/goa/v3/middleware"
 )
 
+const (
+	readHeaderTimeout = time.Second * 60
+	shutdownTimeout   = time.Second * 30
+)
+
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
-func handleHTTPServer(ctx context.Context, u *url.URL, profileEndpoints *profile.Endpoints, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
+func handleHTTPServer(
+	ctx context.Context,
+	u *url.URL,
+	profileEndpoints *profile.Endpoints,
+	wg *sync.WaitGroup,
+	errc chan error,
+	logger *log.Logger,
+	debug bool,
+) {
 
 	// Setup goa log adapter.
 	var (
@@ -74,7 +87,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, profileEndpoints *profile
 
 	// Start HTTP server using default configuration, change the code to
 	// configure the server as required by your service.
-	srv := &http.Server{Addr: u.Host, Handler: handler, ReadHeaderTimeout: time.Second * 60}
+	srv := &http.Server{Addr: u.Host, Handler: handler, ReadHeaderTimeout: readHeaderTimeout}
 	for _, m := range profileServer.Mounts {
 		logger.Printf("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
 	}
@@ -93,7 +106,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, profileEndpoints *profile
 		logger.Printf("shutting down HTTP server at %q", u.Host)
 
 		// Shutdown gracefully with a 30s timeout.
-		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 		defer cancel()
 
 		err := srv.Shutdown(ctx)

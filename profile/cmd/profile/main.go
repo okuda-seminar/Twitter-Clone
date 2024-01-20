@@ -28,7 +28,7 @@ func main() {
 	)
 	flag.Parse()
 
-	// Setup logger. Replace logger with your own log package of choice.
+	// Setup logger.
 	var (
 		logger *log.Logger
 	)
@@ -43,7 +43,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// Initialize the services.
+	// Initialize the service.
 	var (
 		profileSvc profile.Service
 	)
