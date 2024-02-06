@@ -46,6 +46,9 @@ func (c *Client) BuildFindByIDRequest(ctx context.Context, v any) (*http.Request
 // DecodeFindByIDResponse returns a decoder for responses returned by the
 // profile FindByID endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeFindByIDResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeFindByIDResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
 	return func(resp *http.Response) (any, error) {
 		if restoreBody {
@@ -76,9 +79,213 @@ func DecodeFindByIDResponse(decoder func(*http.Response) goahttp.Decoder, restor
 			}
 			res := NewFindByIDUserOK(&body)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body FindByIDNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "FindByID", err)
+			}
+			err = ValidateFindByIDNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "FindByID", err)
+			}
+			return nil, NewFindByIDNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("profile", "FindByID", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildUpdateUsernameRequest instantiates a HTTP request object with method
+// and path set to call the "profile" service "UpdateUsername" endpoint
+func (c *Client) BuildUpdateUsernameRequest(ctx context.Context, v any) (*http.Request, error) {
+	var (
+		id int
+	)
+	{
+		p, ok := v.(*profile.UpdateUsernamePayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("profile", "UpdateUsername", "*profile.UpdateUsernamePayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateUsernameProfilePath(id)}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("profile", "UpdateUsername", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUpdateUsernameRequest returns an encoder for requests sent to the
+// profile UpdateUsername server.
+func EncodeUpdateUsernameRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*profile.UpdateUsernamePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("profile", "UpdateUsername", "*profile.UpdateUsernamePayload", v)
+		}
+		body := NewUpdateUsernameRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("profile", "UpdateUsername", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUpdateUsernameResponse returns a decoder for responses returned by the
+// profile UpdateUsername endpoint. restoreBody controls whether the response
+// body should be restored after having been read.
+// DecodeUpdateUsernameResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeUpdateUsernameResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body UpdateUsernameNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "UpdateUsername", err)
+			}
+			err = ValidateUpdateUsernameNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "UpdateUsername", err)
+			}
+			return nil, NewUpdateUsernameNotFound(&body)
+		case http.StatusBadRequest:
+			var (
+				body UpdateUsernameBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "UpdateUsername", err)
+			}
+			err = ValidateUpdateUsernameBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "UpdateUsername", err)
+			}
+			return nil, NewUpdateUsernameBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("profile", "UpdateUsername", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildUpdateBioRequest instantiates a HTTP request object with method and
+// path set to call the "profile" service "UpdateBio" endpoint
+func (c *Client) BuildUpdateBioRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateBioProfilePath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("profile", "UpdateBio", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUpdateBioRequest returns an encoder for requests sent to the profile
+// UpdateBio server.
+func EncodeUpdateBioRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*profile.UpdateBioPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("profile", "UpdateBio", "*profile.UpdateBioPayload", v)
+		}
+		body := NewUpdateBioRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("profile", "UpdateBio", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUpdateBioResponse returns a decoder for responses returned by the
+// profile UpdateBio endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeUpdateBioResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body UpdateBioNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "UpdateBio", err)
+			}
+			err = ValidateUpdateBioNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "UpdateBio", err)
+			}
+			return nil, NewUpdateBioNotFound(&body)
+		case http.StatusBadRequest:
+			var (
+				body UpdateBioBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "UpdateBio", err)
+			}
+			err = ValidateUpdateBioBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "UpdateBio", err)
+			}
+			return nil, NewUpdateBioBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("profile", "UpdateBio", resp.StatusCode, string(body))
 		}
 	}
 }

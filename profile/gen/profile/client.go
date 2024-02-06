@@ -15,17 +15,25 @@ import (
 
 // Client is the "profile" service client.
 type Client struct {
-	FindByIDEndpoint goa.Endpoint
+	FindByIDEndpoint       goa.Endpoint
+	UpdateUsernameEndpoint goa.Endpoint
+	UpdateBioEndpoint      goa.Endpoint
 }
 
 // NewClient initializes a "profile" service client given the endpoints.
-func NewClient(findByID goa.Endpoint) *Client {
+func NewClient(findByID, updateUsername, updateBio goa.Endpoint) *Client {
 	return &Client{
-		FindByIDEndpoint: findByID,
+		FindByIDEndpoint:       findByID,
+		UpdateUsernameEndpoint: updateUsername,
+		UpdateBioEndpoint:      updateBio,
 	}
 }
 
 // FindByID calls the "FindByID" endpoint of the "profile" service.
+// FindByID may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
 func (c *Client) FindByID(ctx context.Context, p *FindByIDPayload) (res *User, err error) {
 	var ires any
 	ires, err = c.FindByIDEndpoint(ctx, p)
@@ -33,4 +41,24 @@ func (c *Client) FindByID(ctx context.Context, p *FindByIDPayload) (res *User, e
 		return
 	}
 	return ires.(*User), nil
+}
+
+// UpdateUsername calls the "UpdateUsername" endpoint of the "profile" service.
+// UpdateUsername may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) UpdateUsername(ctx context.Context, p *UpdateUsernamePayload) (err error) {
+	_, err = c.UpdateUsernameEndpoint(ctx, p)
+	return
+}
+
+// UpdateBio calls the "UpdateBio" endpoint of the "profile" service.
+// UpdateBio may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (err error) {
+	_, err = c.UpdateBioEndpoint(ctx, p)
+	return
 }

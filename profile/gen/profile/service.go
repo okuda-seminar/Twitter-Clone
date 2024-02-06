@@ -9,12 +9,18 @@ package profile
 
 import (
 	"context"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // The profile service performs operations on users' profile.
 type Service interface {
 	// FindByID implements FindByID.
 	FindByID(context.Context, *FindByIDPayload) (res *User, err error)
+	// UpdateUsername implements UpdateUsername.
+	UpdateUsername(context.Context, *UpdateUsernamePayload) (err error)
+	// UpdateBio implements UpdateBio.
+	UpdateBio(context.Context, *UpdateBioPayload) (err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -25,15 +31,38 @@ const ServiceName = "profile"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"FindByID"}
+var MethodNames = [3]string{"FindByID", "UpdateUsername", "UpdateBio"}
 
 // FindByIDPayload is the payload type of the profile service FindByID method.
 type FindByIDPayload struct {
 	ID int
 }
 
+// UpdateBioPayload is the payload type of the profile service UpdateBio method.
+type UpdateBioPayload struct {
+	ID  int
+	Bio string
+}
+
+// UpdateUsernamePayload is the payload type of the profile service
+// UpdateUsername method.
+type UpdateUsernamePayload struct {
+	ID       int
+	Username string
+}
+
 // User is the result type of the profile service FindByID method.
 type User struct {
 	Username string
 	Bio      string
+}
+
+// MakeNotFound builds a goa.ServiceError from an error.
+func MakeNotFound(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "NotFound", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }

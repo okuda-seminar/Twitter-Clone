@@ -9,13 +9,118 @@ package server
 
 import (
 	profile "profile/gen/profile"
+
+	goa "goa.design/goa/v3/pkg"
 )
+
+// UpdateUsernameRequestBody is the type of the "profile" service
+// "UpdateUsername" endpoint HTTP request body.
+type UpdateUsernameRequestBody struct {
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+}
+
+// UpdateBioRequestBody is the type of the "profile" service "UpdateBio"
+// endpoint HTTP request body.
+type UpdateBioRequestBody struct {
+	ID  *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+}
 
 // FindByIDResponseBody is the type of the "profile" service "FindByID"
 // endpoint HTTP response body.
 type FindByIDResponseBody struct {
 	Username string `form:"username" json:"username" xml:"username"`
 	Bio      string `form:"bio" json:"bio" xml:"bio"`
+}
+
+// FindByIDNotFoundResponseBody is the type of the "profile" service "FindByID"
+// endpoint HTTP response body for the "NotFound" error.
+type FindByIDNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateUsernameNotFoundResponseBody is the type of the "profile" service
+// "UpdateUsername" endpoint HTTP response body for the "NotFound" error.
+type UpdateUsernameNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateUsernameBadRequestResponseBody is the type of the "profile" service
+// "UpdateUsername" endpoint HTTP response body for the "BadRequest" error.
+type UpdateUsernameBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateBioNotFoundResponseBody is the type of the "profile" service
+// "UpdateBio" endpoint HTTP response body for the "NotFound" error.
+type UpdateBioNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateBioBadRequestResponseBody is the type of the "profile" service
+// "UpdateBio" endpoint HTTP response body for the "BadRequest" error.
+type UpdateBioBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
 // NewFindByIDResponseBody builds the HTTP response body from the result of the
@@ -28,10 +133,122 @@ func NewFindByIDResponseBody(res *profile.User) *FindByIDResponseBody {
 	return body
 }
 
+// NewFindByIDNotFoundResponseBody builds the HTTP response body from the
+// result of the "FindByID" endpoint of the "profile" service.
+func NewFindByIDNotFoundResponseBody(res *goa.ServiceError) *FindByIDNotFoundResponseBody {
+	body := &FindByIDNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateUsernameNotFoundResponseBody builds the HTTP response body from the
+// result of the "UpdateUsername" endpoint of the "profile" service.
+func NewUpdateUsernameNotFoundResponseBody(res *goa.ServiceError) *UpdateUsernameNotFoundResponseBody {
+	body := &UpdateUsernameNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateUsernameBadRequestResponseBody builds the HTTP response body from
+// the result of the "UpdateUsername" endpoint of the "profile" service.
+func NewUpdateUsernameBadRequestResponseBody(res *goa.ServiceError) *UpdateUsernameBadRequestResponseBody {
+	body := &UpdateUsernameBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateBioNotFoundResponseBody builds the HTTP response body from the
+// result of the "UpdateBio" endpoint of the "profile" service.
+func NewUpdateBioNotFoundResponseBody(res *goa.ServiceError) *UpdateBioNotFoundResponseBody {
+	body := &UpdateBioNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateBioBadRequestResponseBody builds the HTTP response body from the
+// result of the "UpdateBio" endpoint of the "profile" service.
+func NewUpdateBioBadRequestResponseBody(res *goa.ServiceError) *UpdateBioBadRequestResponseBody {
+	body := &UpdateBioBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewFindByIDPayload builds a profile service FindByID endpoint payload.
 func NewFindByIDPayload(id int) *profile.FindByIDPayload {
 	v := &profile.FindByIDPayload{}
 	v.ID = id
 
 	return v
+}
+
+// NewUpdateUsernamePayload builds a profile service UpdateUsername endpoint
+// payload.
+func NewUpdateUsernamePayload(body *UpdateUsernameRequestBody, id int) *profile.UpdateUsernamePayload {
+	v := &profile.UpdateUsernamePayload{
+		Username: *body.Username,
+	}
+	v.ID = id
+
+	return v
+}
+
+// NewUpdateBioPayload builds a profile service UpdateBio endpoint payload.
+func NewUpdateBioPayload(body *UpdateBioRequestBody) *profile.UpdateBioPayload {
+	v := &profile.UpdateBioPayload{
+		ID:  *body.ID,
+		Bio: *body.Bio,
+	}
+
+	return v
+}
+
+// ValidateUpdateUsernameRequestBody runs the validations defined on
+// UpdateUsernameRequestBody
+func ValidateUpdateUsernameRequestBody(body *UpdateUsernameRequestBody) (err error) {
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	return
+}
+
+// ValidateUpdateBioRequestBody runs the validations defined on
+// UpdateBioRequestBody
+func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	return
 }
