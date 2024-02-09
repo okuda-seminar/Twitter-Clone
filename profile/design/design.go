@@ -19,6 +19,35 @@ var _ = Service("profile", func() {
 	Error("NotFound")
 	Error("BadRequest")
 
+	Method("CreateUser", func() {
+		Payload(func() {
+			Field(1, "username", String)
+			Required("username")
+		})
+		Result(User)
+
+		HTTP(func() {
+			POST("/api/profile/create")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("DeleteUser", func() {
+		Payload(func() {
+			Field(1, "id", Int)
+			Required("id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/profile/delete")
+			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Method("FindByID", func() {
 		Payload(func() {
 			Field(1, "id", Int)

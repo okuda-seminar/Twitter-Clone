@@ -22,13 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `profile (find-by-id|update-username|update-bio)
+	return `profile (create-user|delete-user|find-by-id|update-username|update-bio)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` profile find-by-id --id 8771753555738808965` + "\n" +
+	return os.Args[0] + ` profile create-user --body '{
+      "username": "Nobis cum ut."
+   }'` + "\n" +
 		""
 }
 
@@ -44,6 +46,12 @@ func ParseEndpoint(
 	var (
 		profileFlags = flag.NewFlagSet("profile", flag.ContinueOnError)
 
+		profileCreateUserFlags    = flag.NewFlagSet("create-user", flag.ExitOnError)
+		profileCreateUserBodyFlag = profileCreateUserFlags.String("body", "REQUIRED", "")
+
+		profileDeleteUserFlags    = flag.NewFlagSet("delete-user", flag.ExitOnError)
+		profileDeleteUserBodyFlag = profileDeleteUserFlags.String("body", "REQUIRED", "")
+
 		profileFindByIDFlags  = flag.NewFlagSet("find-by-id", flag.ExitOnError)
 		profileFindByIDIDFlag = profileFindByIDFlags.String("id", "REQUIRED", "")
 
@@ -55,6 +63,8 @@ func ParseEndpoint(
 		profileUpdateBioBodyFlag = profileUpdateBioFlags.String("body", "REQUIRED", "")
 	)
 	profileFlags.Usage = profileUsage
+	profileCreateUserFlags.Usage = profileCreateUserUsage
+	profileDeleteUserFlags.Usage = profileDeleteUserUsage
 	profileFindByIDFlags.Usage = profileFindByIDUsage
 	profileUpdateUsernameFlags.Usage = profileUpdateUsernameUsage
 	profileUpdateBioFlags.Usage = profileUpdateBioUsage
@@ -93,6 +103,12 @@ func ParseEndpoint(
 		switch svcn {
 		case "profile":
 			switch epn {
+			case "create-user":
+				epf = profileCreateUserFlags
+
+			case "delete-user":
+				epf = profileDeleteUserFlags
+
 			case "find-by-id":
 				epf = profileFindByIDFlags
 
@@ -127,6 +143,12 @@ func ParseEndpoint(
 		case "profile":
 			c := profilec.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
+			case "create-user":
+				endpoint = c.CreateUser()
+				data, err = profilec.BuildCreateUserPayload(*profileCreateUserBodyFlag)
+			case "delete-user":
+				endpoint = c.DeleteUser()
+				data, err = profilec.BuildDeleteUserPayload(*profileDeleteUserBodyFlag)
 			case "find-by-id":
 				endpoint = c.FindByID()
 				data, err = profilec.BuildFindByIDPayload(*profileFindByIDIDFlag)
@@ -153,6 +175,8 @@ Usage:
     %[1]s [globalflags] profile COMMAND [flags]
 
 COMMAND:
+    create-user: CreateUser implements CreateUser.
+    delete-user: DeleteUser implements DeleteUser.
     find-by-id: FindByID implements FindByID.
     update-username: UpdateUsername implements UpdateUsername.
     update-bio: UpdateBio implements UpdateBio.
@@ -161,6 +185,32 @@ Additional help:
     %[1]s profile COMMAND --help
 `, os.Args[0])
 }
+func profileCreateUserUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] profile create-user -body JSON
+
+CreateUser implements CreateUser.
+    -body JSON: 
+
+Example:
+    %[1]s profile create-user --body '{
+      "username": "Nobis cum ut."
+   }'
+`, os.Args[0])
+}
+
+func profileDeleteUserUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] profile delete-user -body JSON
+
+DeleteUser implements DeleteUser.
+    -body JSON: 
+
+Example:
+    %[1]s profile delete-user --body '{
+      "id": 7452933893943473380
+   }'
+`, os.Args[0])
+}
+
 func profileFindByIDUsage() {
 	fmt.Fprintf(os.Stderr, `%[1]s [flags] profile find-by-id -id INT
 
@@ -168,7 +218,7 @@ FindByID implements FindByID.
     -id INT: 
 
 Example:
-    %[1]s profile find-by-id --id 8771753555738808965
+    %[1]s profile find-by-id --id 7697630233497289829
 `, os.Args[0])
 }
 
@@ -181,8 +231,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s profile update-username --body '{
-      "username": "Impedit omnis alias quo numquam numquam."
-   }' --id 7452933893943473380
+      "username": "Accusamus ipsum aut magnam."
+   }' --id 5870459673975419539
 `, os.Args[0])
 }
 
@@ -194,8 +244,8 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s profile update-bio --body '{
-      "bio": "Quia qui et aspernatur ut officiis ad.",
-      "id": 8150416861168248119
+      "bio": "Accusamus incidunt.",
+      "id": 3611385067649777069
    }'
 `, os.Args[0])
 }

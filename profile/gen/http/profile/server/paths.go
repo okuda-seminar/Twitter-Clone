@@ -11,6 +11,16 @@ import (
 	"fmt"
 )
 
+// CreateUserProfilePath returns the URL path to the profile service CreateUser HTTP endpoint.
+func CreateUserProfilePath() string {
+	return "/api/profile/create"
+}
+
+// DeleteUserProfilePath returns the URL path to the profile service DeleteUser HTTP endpoint.
+func DeleteUserProfilePath() string {
+	return "/api/profile/delete"
+}
+
 // FindByIDProfilePath returns the URL path to the profile service FindByID HTTP endpoint.
 func FindByIDProfilePath(id int) string {
 	return fmt.Sprintf("/api/profile/%v", id)

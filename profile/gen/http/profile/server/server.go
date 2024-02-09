@@ -19,6 +19,8 @@ import (
 // Server lists the profile service endpoint HTTP handlers.
 type Server struct {
 	Mounts             []*MountPoint
+	CreateUser         http.Handler
+	DeleteUser         http.Handler
 	FindByID           http.Handler
 	UpdateUsername     http.Handler
 	UpdateBio          http.Handler
@@ -56,11 +58,15 @@ func New(
 	}
 	return &Server{
 		Mounts: []*MountPoint{
+			{"CreateUser", "POST", "/api/profile/create"},
+			{"DeleteUser", "POST", "/api/profile/delete"},
 			{"FindByID", "GET", "/api/profile/{id}"},
 			{"UpdateUsername", "POST", "/api/profile/{id}/edit/username"},
 			{"UpdateBio", "POST", "/api/profile/edit/bio"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
+		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
+		DeleteUser:         NewDeleteUserHandler(e.DeleteUser, mux, decoder, encoder, errhandler, formatter),
 		FindByID:           NewFindByIDHandler(e.FindByID, mux, decoder, encoder, errhandler, formatter),
 		UpdateUsername:     NewUpdateUsernameHandler(e.UpdateUsername, mux, decoder, encoder, errhandler, formatter),
 		UpdateBio:          NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
@@ -73,6 +79,8 @@ func (s *Server) Service() string { return "profile" }
 
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
+	s.CreateUser = m(s.CreateUser)
+	s.DeleteUser = m(s.DeleteUser)
 	s.FindByID = m(s.FindByID)
 	s.UpdateUsername = m(s.UpdateUsername)
 	s.UpdateBio = m(s.UpdateBio)
@@ -83,6 +91,8 @@ func (s *Server) MethodNames() []string { return profile.MethodNames[:] }
 
 // Mount configures the mux to serve the profile endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
+	MountCreateUserHandler(mux, h.CreateUser)
+	MountDeleteUserHandler(mux, h.DeleteUser)
 	MountFindByIDHandler(mux, h.FindByID)
 	MountUpdateUsernameHandler(mux, h.UpdateUsername)
 	MountUpdateBioHandler(mux, h.UpdateBio)
@@ -92,6 +102,108 @@ func Mount(mux goahttp.Muxer, h *Server) {
 // Mount configures the mux to serve the profile endpoints.
 func (s *Server) Mount(mux goahttp.Muxer) {
 	Mount(mux, s)
+}
+
+// MountCreateUserHandler configures the mux to serve the "profile" service
+// "CreateUser" endpoint.
+func MountCreateUserHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/profile/create", f)
+}
+
+// NewCreateUserHandler creates a HTTP handler which loads the HTTP request and
+// calls the "profile" service "CreateUser" endpoint.
+func NewCreateUserHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeCreateUserRequest(mux, decoder)
+		encodeResponse = EncodeCreateUserResponse(encoder)
+		encodeError    = EncodeCreateUserError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "CreateUser")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "profile")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountDeleteUserHandler configures the mux to serve the "profile" service
+// "DeleteUser" endpoint.
+func MountDeleteUserHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/profile/delete", f)
+}
+
+// NewDeleteUserHandler creates a HTTP handler which loads the HTTP request and
+// calls the "profile" service "DeleteUser" endpoint.
+func NewDeleteUserHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeDeleteUserRequest(mux, decoder)
+		encodeResponse = EncodeDeleteUserResponse(encoder)
+		encodeError    = EncodeDeleteUserError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "DeleteUser")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "profile")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
 }
 
 // MountFindByIDHandler configures the mux to serve the "profile" service

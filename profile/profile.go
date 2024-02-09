@@ -29,7 +29,38 @@ func NewProfile(db *sql.DB, logger *log.Logger) profile.Service {
 	return &profileSrvc{&repository, logger}
 }
 
-// FindByID finds a user with the specified ID.
+func (s *profileSrvc) CreateUser(
+	ctx context.Context,
+	p *profile.CreateUserPayload,
+) (res *profile.User, err error) {
+	user, err := s.repository.CreateUser(ctx, p.Username)
+	if err != nil {
+		return nil, profile.MakeBadRequest(err)
+	}
+	res = &profile.User{
+		Username: user.Username,
+		Bio:      user.Bio,
+	}
+	s.logger.Print("profile.CreateUser")
+	return
+}
+
+func (s *profileSrvc) DeleteUser(
+	ctx context.Context,
+	p *profile.DeleteUserPayload,
+) (err error) {
+	if _, err := s.repository.FindByID(ctx, p.ID); err != nil {
+		return profile.MakeNotFound(err)
+	}
+
+	err = s.repository.DeleteUser(ctx, p.ID)
+	if err != nil {
+		return profile.MakeBadRequest(err)
+	}
+	s.logger.Print("profile.DeleteUser")
+	return
+}
+
 func (s *profileSrvc) FindByID(
 	ctx context.Context,
 	p *profile.FindByIDPayload,

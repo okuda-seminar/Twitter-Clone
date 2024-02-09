@@ -14,57 +14,79 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewDBMock() (profile.Service, *sql.DB, sqlmock.Sqlmock, error) {
+type DBMock struct {
+	db   *sql.DB
+	mock sqlmock.Sqlmock
+}
+
+func (dbMock *DBMock) close() {
+	dbMock.db.Close()
+}
+
+func (dbMock *DBMock) insertUser(user *repository.User) {
+	rows := sqlmock.NewRows([]string{"id", "username", "bio"}).
+		AddRow(user.ID, user.Username, user.Bio)
+
+	query := "SELECT * FROM users WHERE id = $1"
+	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
+		WithArgs(user.ID).
+		WillReturnRows(rows)
+}
+
+func setup() (profile.Service, *DBMock, error) {
 	db, mock, err := sqlmock.New()
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
+	}
+	dbMock := &DBMock{
+		db:   db,
+		mock: mock,
 	}
 
-	// insert dummy data.
-	testUser := &repository.User{
+	logger := log.New(os.Stderr, "[profileapiTest] ", log.Ltime)
+	service := NewProfile(db, logger)
+
+	return service, dbMock, nil
+}
+
+func TestFindByID(t *testing.T) {
+	service, dbMock, err := setup()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer dbMock.close()
+
+	expected := &repository.User{
 		ID:       1,
 		Username: "test user",
 		Bio:      "some bio",
 	}
-
-	rows := sqlmock.NewRows([]string{"id", "username", "bio"}).
-		AddRow(testUser.ID, testUser.Username, testUser.Bio)
-
-	query := "SELECT * FROM users WHERE id = $1"
-	mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(testUser.ID).
-		WillReturnRows(rows)
-
-	// mock up service.
-	logger := log.New(os.Stderr, "[profileapi] ", log.Ltime)
-	service := NewProfile(db, logger)
-
-	return service, db, mock, nil
-}
-
-func TestFindByID(t *testing.T) {
-	service, db, _, err := NewDBMock()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer db.Close()
+	dbMock.insertUser(expected)
 
 	p := &profile.FindByIDPayload{ID: 1}
-	user, err := service.FindByID(context.Background(), p)
-	assert.NotNil(t, user)
+	actual, err := service.FindByID(context.Background(), p)
 	assert.NoError(t, err)
+	assert.Equal(t, actual.Username, expected.Username)
+	assert.Equal(t, actual.Bio, expected.Bio)
 }
 
 func TestUpdateUsername(t *testing.T) {
-	service, db, mock, err := NewDBMock()
+	service, dbMock, err := setup()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	defer db.Close()
+	defer dbMock.close()
+
+	expected := &repository.User{
+		ID:       1,
+		Username: "test user",
+		Bio:      "some bio",
+	}
+	dbMock.insertUser(expected)
 
 	query := "UPDATE users SET username = $1 where id = $2"
 	updatedUsername := "updated"
-	mock.ExpectExec(regexp.QuoteMeta(query)).
+	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
 		WithArgs(updatedUsername, 1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -74,15 +96,22 @@ func TestUpdateUsername(t *testing.T) {
 }
 
 func TestUpdateBio(t *testing.T) {
-	service, db, mock, err := NewDBMock()
+	service, dbMock, err := setup()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	defer db.Close()
+	defer dbMock.close()
+
+	expected := &repository.User{
+		ID:       1,
+		Username: "test user",
+		Bio:      "some bio",
+	}
+	dbMock.insertUser(expected)
 
 	query := "UPDATE users SET bio = $1 where id = $2"
 	updatedBio := "updated"
-	mock.ExpectExec(regexp.QuoteMeta(query)).
+	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
 		WithArgs(updatedBio, 1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
