@@ -18,6 +18,184 @@ import (
 	goahttp "goa.design/goa/v3/http"
 )
 
+// BuildCreateUserRequest instantiates a HTTP request object with method and
+// path set to call the "profile" service "CreateUser" endpoint
+func (c *Client) BuildCreateUserRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: CreateUserProfilePath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("profile", "CreateUser", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeCreateUserRequest returns an encoder for requests sent to the profile
+// CreateUser server.
+func EncodeCreateUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*profile.CreateUserPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("profile", "CreateUser", "*profile.CreateUserPayload", v)
+		}
+		body := NewCreateUserRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("profile", "CreateUser", err)
+		}
+		return nil
+	}
+}
+
+// DecodeCreateUserResponse returns a decoder for responses returned by the
+// profile CreateUser endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeCreateUserResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeCreateUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body CreateUserResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "CreateUser", err)
+			}
+			err = ValidateCreateUserResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "CreateUser", err)
+			}
+			res := NewCreateUserUserOK(&body)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body CreateUserBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "CreateUser", err)
+			}
+			err = ValidateCreateUserBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "CreateUser", err)
+			}
+			return nil, NewCreateUserBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("profile", "CreateUser", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildDeleteUserRequest instantiates a HTTP request object with method and
+// path set to call the "profile" service "DeleteUser" endpoint
+func (c *Client) BuildDeleteUserRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteUserProfilePath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("profile", "DeleteUser", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeDeleteUserRequest returns an encoder for requests sent to the profile
+// DeleteUser server.
+func EncodeDeleteUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*profile.DeleteUserPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("profile", "DeleteUser", "*profile.DeleteUserPayload", v)
+		}
+		body := NewDeleteUserRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("profile", "DeleteUser", err)
+		}
+		return nil
+	}
+}
+
+// DecodeDeleteUserResponse returns a decoder for responses returned by the
+// profile DeleteUser endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeDeleteUserResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeDeleteUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body DeleteUserNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "DeleteUser", err)
+			}
+			err = ValidateDeleteUserNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "DeleteUser", err)
+			}
+			return nil, NewDeleteUserNotFound(&body)
+		case http.StatusBadRequest:
+			var (
+				body DeleteUserBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("profile", "DeleteUser", err)
+			}
+			err = ValidateDeleteUserBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("profile", "DeleteUser", err)
+			}
+			return nil, NewDeleteUserBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("profile", "DeleteUser", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // BuildFindByIDRequest instantiates a HTTP request object with method and path
 // set to call the "profile" service "FindByID" endpoint
 func (c *Client) BuildFindByIDRequest(ctx context.Context, v any) (*http.Request, error) {

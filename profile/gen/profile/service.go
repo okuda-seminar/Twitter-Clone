@@ -15,6 +15,10 @@ import (
 
 // The profile service performs operations on users' profile.
 type Service interface {
+	// CreateUser implements CreateUser.
+	CreateUser(context.Context, *CreateUserPayload) (res *User, err error)
+	// DeleteUser implements DeleteUser.
+	DeleteUser(context.Context, *DeleteUserPayload) (err error)
 	// FindByID implements FindByID.
 	FindByID(context.Context, *FindByIDPayload) (res *User, err error)
 	// UpdateUsername implements UpdateUsername.
@@ -31,7 +35,19 @@ const ServiceName = "profile"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"FindByID", "UpdateUsername", "UpdateBio"}
+var MethodNames = [5]string{"CreateUser", "DeleteUser", "FindByID", "UpdateUsername", "UpdateBio"}
+
+// CreateUserPayload is the payload type of the profile service CreateUser
+// method.
+type CreateUserPayload struct {
+	Username string
+}
+
+// DeleteUserPayload is the payload type of the profile service DeleteUser
+// method.
+type DeleteUserPayload struct {
+	ID int
+}
 
 // FindByIDPayload is the payload type of the profile service FindByID method.
 type FindByIDPayload struct {
@@ -51,7 +67,7 @@ type UpdateUsernamePayload struct {
 	Username string
 }
 
-// User is the result type of the profile service FindByID method.
+// User is the result type of the profile service CreateUser method.
 type User struct {
 	Username string
 	Bio      string

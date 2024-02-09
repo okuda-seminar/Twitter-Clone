@@ -15,18 +15,46 @@ import (
 
 // Client is the "profile" service client.
 type Client struct {
+	CreateUserEndpoint     goa.Endpoint
+	DeleteUserEndpoint     goa.Endpoint
 	FindByIDEndpoint       goa.Endpoint
 	UpdateUsernameEndpoint goa.Endpoint
 	UpdateBioEndpoint      goa.Endpoint
 }
 
 // NewClient initializes a "profile" service client given the endpoints.
-func NewClient(findByID, updateUsername, updateBio goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findByID, updateUsername, updateBio goa.Endpoint) *Client {
 	return &Client{
+		CreateUserEndpoint:     createUser,
+		DeleteUserEndpoint:     deleteUser,
 		FindByIDEndpoint:       findByID,
 		UpdateUsernameEndpoint: updateUsername,
 		UpdateBioEndpoint:      updateBio,
 	}
+}
+
+// CreateUser calls the "CreateUser" endpoint of the "profile" service.
+// CreateUser may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) CreateUser(ctx context.Context, p *CreateUserPayload) (res *User, err error) {
+	var ires any
+	ires, err = c.CreateUserEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*User), nil
+}
+
+// DeleteUser calls the "DeleteUser" endpoint of the "profile" service.
+// DeleteUser may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) DeleteUser(ctx context.Context, p *DeleteUserPayload) (err error) {
+	_, err = c.DeleteUserEndpoint(ctx, p)
+	return
 }
 
 // FindByID calls the "FindByID" endpoint of the "profile" service.

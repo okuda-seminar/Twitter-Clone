@@ -18,9 +18,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 7834797936234707272
+                    example: 3498958080636167082
                     format: int64
-                  example: 2723389991992295086
+                  example: 8601479450983514046
             responses:
                 "200":
                     description: OK response.
@@ -29,8 +29,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Velit et fuga quod.
-                                username: Consequatur nobis cum ut.
+                                bio: Officiis ad quas nihil.
+                                username: Qui et aspernatur.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -49,17 +49,76 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 2138965295406319483
+                    example: 1534182453154351238
                     format: int64
-                  example: 8520618180369123643
+                  example: 2546008688972779305
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateUsernameRequestBody'
+                            $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            username: Impedit omnis alias quo numquam numquam.
+                            username: Accusamus ipsum aut magnam.
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/profile/create:
+        post:
+            tags:
+                - profile
+            summary: CreateUser profile
+            operationId: profile#CreateUser
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUserRequestBody'
+                        example:
+                            username: Nobis cum ut.
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                            example:
+                                bio: Quia repellendus et ullam blanditiis natus sunt.
+                                username: Velit et fuga quod.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/profile/delete:
+        post:
+            tags:
+                - profile
+            summary: DeleteUser profile
+            operationId: profile#DeleteUser
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DeleteUserRequestBody'
+                        example:
+                            id: 7452933893943473380
             responses:
                 "200":
                     description: OK response.
@@ -88,8 +147,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateBioRequestBody'
                         example:
-                            bio: Quia qui et aspernatur ut officiis ad.
-                            id: 8150416861168248119
+                            bio: Accusamus incidunt.
+                            id: 3611385067649777069
             responses:
                 "200":
                     description: OK response.
@@ -116,13 +175,34 @@ paths:
                     description: File downloaded
 components:
     schemas:
+        CreateUserRequestBody:
+            type: object
+            properties:
+                username:
+                    type: string
+                    example: Autem et nihil ad qui.
+            example:
+                username: Reprehenderit ullam eveniet iure et.
+            required:
+                - username
+        DeleteUserRequestBody:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    example: 8733903169790419330
+                    format: int64
+            example:
+                id: 4956415922780042872
+            required:
+                - id
         Error:
             type: object
             properties:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: false
+                    example: true
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -142,13 +222,13 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: true
+                    example: false
             example:
                 fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: true
             required:
                 - name
@@ -162,39 +242,29 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Perspiciatis ea eaque esse.
+                    example: Magnam qui et enim eos veniam vitae.
                 id:
                     type: integer
-                    example: 6959779142573036163
+                    example: 8745321474778632824
                     format: int64
             example:
-                bio: Nam quia et.
-                id: 7421058779066190086
+                bio: Alias atque reiciendis vitae ut libero quia.
+                id: 6808796409623313238
             required:
                 - id
                 - bio
-        UpdateUsernameRequestBody:
-            type: object
-            properties:
-                username:
-                    type: string
-                    example: Eveniet ea qui tempore quo velit.
-            example:
-                username: Non laudantium corrupti illum adipisci.
-            required:
-                - username
         User:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Repellendus iusto sapiente qui.
+                    example: Eius excepturi exercitationem in rerum itaque.
                 username:
                     type: string
-                    example: Qui ut eum cupiditate sint fuga dolor.
+                    example: Ipsa esse.
             example:
-                bio: Perferendis aperiam architecto nemo optio.
-                username: Et atque ut modi.
+                bio: Mollitia ea ex molestias.
+                username: Iusto eius.
             required:
                 - username
                 - bio
