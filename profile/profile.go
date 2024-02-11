@@ -35,12 +35,14 @@ func (s *profileSrvc) CreateUser(
 ) (res *profile.User, err error) {
 	user, err := s.repository.CreateUser(ctx, p.Username)
 	if err != nil {
+		s.logger.Printf("profile.CreateUser: failed (%s)", err)
 		return nil, profile.MakeBadRequest(err)
 	}
 	res = &profile.User{
 		Username: user.Username,
 		Bio:      user.Bio,
 	}
+
 	s.logger.Print("profile.CreateUser")
 	return
 }
@@ -49,14 +51,12 @@ func (s *profileSrvc) DeleteUser(
 	ctx context.Context,
 	p *profile.DeleteUserPayload,
 ) (err error) {
-	if _, err := s.repository.FindByID(ctx, p.ID); err != nil {
-		return profile.MakeNotFound(err)
-	}
-
 	err = s.repository.DeleteUser(ctx, p.ID)
 	if err != nil {
+		s.logger.Printf("profile.DeleteUser: failed (%s)", err)
 		return profile.MakeBadRequest(err)
 	}
+
 	s.logger.Print("profile.DeleteUser")
 	return
 }
@@ -67,12 +67,14 @@ func (s *profileSrvc) FindByID(
 ) (res *profile.User, err error) {
 	user, err := s.repository.FindByID(ctx, p.ID)
 	if err != nil {
+		s.logger.Printf("profile.FindByID: failed (%s)", err)
 		return nil, profile.MakeNotFound(err)
 	}
 	res = &profile.User{
 		Username: user.Username,
 		Bio:      user.Bio,
 	}
+
 	s.logger.Print("profile.FindByID")
 	return
 }
@@ -82,13 +84,16 @@ func (s *profileSrvc) UpdateUsername(
 	p *profile.UpdateUsernamePayload,
 ) (err error) {
 	if len(p.Username) < usernameLenMin || len(p.Username) > usernameLenMax {
+		s.logger.Printf("profile.UpdateUsername: failed (%s)", err)
 		return profile.MakeBadRequest(errors.New("username is invalid"))
-	}
-	if _, err := s.repository.FindByID(ctx, p.ID); err != nil {
-		return profile.MakeNotFound(err)
 	}
 
 	err = s.repository.UpdateUsername(ctx, p.ID, p.Username)
+	if err != nil {
+		s.logger.Printf("profile.UpdateUsername: failed (%s)", err)
+		return profile.MakeBadRequest(err)
+	}
+
 	s.logger.Print("profile.UpdateUsername")
 	return
 }
@@ -98,13 +103,16 @@ func (s *profileSrvc) UpdateBio(
 	p *profile.UpdateBioPayload,
 ) (err error) {
 	if len(p.Bio) < bioLenMin || len(p.Bio) > bioLenMax {
+		s.logger.Printf("profile.UpdateBio: failed (%s)", err)
 		return profile.MakeBadRequest(errors.New("bio is invalid"))
-	}
-	if _, err := s.repository.FindByID(ctx, p.ID); err != nil {
-		return profile.MakeNotFound(err)
 	}
 
 	err = s.repository.UpdateBio(ctx, p.ID, p.Bio)
+	if err != nil {
+		s.logger.Printf("profile.UpdateBio: failed (%s)", err)
+		return profile.MakeBadRequest(err)
+	}
+
 	s.logger.Print("profile.UpdateBio")
 	return
 }
