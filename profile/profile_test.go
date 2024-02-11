@@ -77,13 +77,6 @@ func TestUpdateUsername(t *testing.T) {
 	}
 	defer dbMock.close()
 
-	expected := &repository.User{
-		ID:       1,
-		Username: "test user",
-		Bio:      "some bio",
-	}
-	dbMock.insertUser(expected)
-
 	query := "UPDATE users SET username = $1 where id = $2"
 	updatedUsername := "updated"
 	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
@@ -101,13 +94,6 @@ func TestUpdateBio(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer dbMock.close()
-
-	expected := &repository.User{
-		ID:       1,
-		Username: "test user",
-		Bio:      "some bio",
-	}
-	dbMock.insertUser(expected)
 
 	query := "UPDATE users SET bio = $1 where id = $2"
 	updatedBio := "updated"

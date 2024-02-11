@@ -2,21 +2,22 @@ package repository
 
 import (
 	"context"
+	"errors"
 )
 
 // CreateUser creates a new user with the specified username.
 // The 'Bio' field is set to an empty string, not null.
 // If a user with the specified username already exists, the creation fails.
 func (r *repository) CreateUser(ctx context.Context, username string) (*User, error) {
-	query := "INSERT INTO users (username, bio) VALUES($1, $2)"
-	res, err := r.db.ExecContext(ctx, query, username, "")
+	query := "INSERT INTO users (username, bio) VALUES ($1, $2) RETURNING id"
+	var id int
+	err := r.db.QueryRowContext(ctx, query, username, "").Scan(&id)
 	if err != nil {
 		return nil, err
 	}
 
-	id, _ := res.LastInsertId()
 	user := User{
-		ID:       int(id),
+		ID:       id,
 		Username: username,
 		Bio:      "",
 	}
@@ -26,9 +27,16 @@ func (r *repository) CreateUser(ctx context.Context, username string) (*User, er
 // DeleteUser deletes a user with the specified ID.
 func (r *repository) DeleteUser(ctx context.Context, id int) error {
 	query := "DELETE FROM users WHERE id = $1"
-	_, err := r.db.ExecContext(ctx, query, id)
+	res, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count != 1 {
+		return errors.New("no row found to delete")
 	}
 
 	return nil
@@ -56,9 +64,16 @@ func (r *repository) FindByID(ctx context.Context, id int) (*User, error) {
 // If a user with the specified username already exists, the update fails.
 func (r *repository) UpdateUsername(ctx context.Context, id int, username string) error {
 	query := "UPDATE users SET username = $1 where id = $2"
-	_, err := r.db.ExecContext(ctx, query, username, id)
+	res, err := r.db.ExecContext(ctx, query, username, id)
 	if err != nil {
 		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count != 1 {
+		return errors.New("no row found to update")
 	}
 
 	return nil
@@ -67,9 +82,16 @@ func (r *repository) UpdateUsername(ctx context.Context, id int, username string
 // UpdateBio updates the bio of a user with the specified ID.
 func (r *repository) UpdateBio(ctx context.Context, id int, bio string) error {
 	query := "UPDATE users SET bio = $1 where id = $2"
-	_, err := r.db.ExecContext(ctx, query, bio, id)
+	res, err := r.db.ExecContext(ctx, query, bio, id)
 	if err != nil {
 		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count != 1 {
+		return errors.New("no row found to update")
 	}
 
 	return nil
