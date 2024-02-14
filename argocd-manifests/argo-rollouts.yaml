@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/argoproj/argo-helm.git
-    targetRevision: master
+    targetRevision: main
     path: charts/argo-rollouts
   destination:
     server: https://kubernetes.default.svc
