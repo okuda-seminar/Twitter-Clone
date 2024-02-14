@@ -1,0 +1,5 @@
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - patch-active.yaml
+  - patch-preview.yaml
