@@ -53,6 +53,8 @@ func (s *profileSrvc) DeleteUser(
 ) (err error) {
 	err = s.repository.DeleteUser(ctx, p.ID)
 	if err != nil {
+		// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/15
+		// - Discuss logging structure.
 		s.logger.Printf("profile.DeleteUser: failed (%s)", err)
 		return profile.MakeBadRequest(err)
 	}
