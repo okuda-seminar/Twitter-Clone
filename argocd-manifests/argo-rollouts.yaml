@@ -1,20 +1,43 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: Rollout
 metadata:
-  name: argo-rollouts
-  namespace: argocd
+  name: rollout-blue-green
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/argoproj/argo-helm.git
-    targetRevision: main
-    path: charts/argo-rollouts
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argo-rollouts
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollout-blue-green
+  template:
+    metadata:
+      labels:
+        app: rollout-blue-green
+    spec:
+      containers:
+        - name: rollout-blue-green-sample
+          image: rollout-blue-green-sample-image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+          env:
+            - name: TEST_ENV_01
+              value: "environment message01"
+          envFrom:
+            - configMapRef:
+                name: blue-green-sample-config
+  strategy:
+    blueGreen:
+      activeService: rollout-blue-green-svc-active
+      previewService: rollout-blue-green-svc-preview
+      autoPromotionEnabled: false
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rollout-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: rollout-blue-green
+  minReplicas: 1
+  maxReplicas: 5
