@@ -7,6 +7,8 @@ import (
 )
 
 type Repository interface {
+	CreateUser(ctx context.Context, username string) (*User, error)
+	DeleteUser(ctx context.Context, id int) error
 	FindByID(ctx context.Context, id int) (*User, error)
 	UpdateUsername(ctx context.Context, id int, username string) error
 	UpdateBio(ctx context.Context, id int, bio string) error

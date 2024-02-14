@@ -69,6 +69,61 @@ paths:
                         $ref: '#/definitions/ProfileUpdateUsernameNotFoundResponseBody'
             schemes:
                 - http
+    /api/profile/create:
+        post:
+            tags:
+                - profile
+            summary: CreateUser profile
+            operationId: profile#CreateUser
+            parameters:
+                - name: CreateUserRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/ProfileCreateUserRequestBody'
+                    required:
+                        - username
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        $ref: '#/definitions/ProfileCreateUserResponseBody'
+                        required:
+                            - username
+                            - bio
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/ProfileCreateUserBadRequestResponseBody'
+            schemes:
+                - http
+    /api/profile/delete:
+        post:
+            tags:
+                - profile
+            summary: DeleteUser profile
+            operationId: profile#DeleteUser
+            parameters:
+                - name: DeleteUserRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/ProfileDeleteUserRequestBody'
+                    required:
+                        - id
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/ProfileDeleteUserBadRequestResponseBody'
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/ProfileDeleteUserNotFoundResponseBody'
+            schemes:
+                - http
     /api/profile/edit/bio:
         post:
             tags:
@@ -111,7 +166,7 @@ paths:
             schemes:
                 - http
 definitions:
-    ProfileFindByIDNotFoundResponseBody:
+    ProfileCreateUserBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
@@ -138,10 +193,178 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
-        description: FindByID_NotFound_Response_Body result type (default view)
+                example: false
+        description: CreateUser_BadRequest_Response_Body result type (default view)
         example:
             fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    ProfileCreateUserRequestBody:
+        title: ProfileCreateUserRequestBody
+        type: object
+        properties:
+            username:
+                type: string
+                example: Voluptatem omnis in.
+        example:
+            username: Exercitationem ut molestiae laudantium velit incidunt nisi.
+        required:
+            - username
+    ProfileCreateUserResponseBody:
+        title: ProfileCreateUserResponseBody
+        type: object
+        properties:
+            bio:
+                type: string
+                example: Minima exercitationem asperiores officiis corrupti voluptatem qui.
+            username:
+                type: string
+                example: Ut esse dolor.
+        example:
+            bio: Occaecati nihil quae pariatur qui omnis possimus.
+            username: Perspiciatis velit.
+        required:
+            - username
+            - bio
+    ProfileDeleteUserBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: DeleteUser_BadRequest_Response_Body result type (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    ProfileDeleteUserNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: DeleteUser_NotFound_Response_Body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    ProfileDeleteUserRequestBody:
+        title: ProfileDeleteUserRequestBody
+        type: object
+        properties:
+            id:
+                type: integer
+                example: 3398060815818463807
+                format: int64
+        example:
+            id: 2709295796060797314
+        required:
+            - id
+    ProfileFindByIDNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: FindByID_NotFound_Response_Body result type (default view)
+        example:
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -160,13 +383,13 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Ad porro vitae recusandae.
+                example: Modi alias perferendis aperiam architecto.
             username:
                 type: string
-                example: Accusamus ipsum aut magnam.
+                example: Sapiente qui distinctio et atque.
         example:
-            bio: Accusamus incidunt.
-            username: Non molestiae.
+            bio: Provident sed iure vel eveniet ea qui.
+            username: Optio sit rerum.
         required:
             - username
             - bio
@@ -200,12 +423,12 @@ definitions:
                 example: false
         description: UpdateBio_BadRequest_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: false
+            temporary: false
+            timeout: true
         required:
             - name
             - id
@@ -236,19 +459,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: false
         description: UpdateBio_NotFound_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id
@@ -262,14 +485,14 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Laudantium velit incidunt nisi.
+                example: Accusamus ut ut est voluptatem commodi.
             id:
                 type: integer
-                example: 7171760185372270588
+                example: 5199263535650841009
                 format: int64
         example:
-            bio: Et itaque.
-            id: 2078907991565262692
+            bio: Qui accusantium voluptas non qui consequatur fuga.
+            id: 2161839234274357760
         required:
             - id
             - bio
@@ -280,7 +503,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -303,7 +526,7 @@ definitions:
                 example: true
         description: UpdateUsername_BadRequest_Response_Body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -323,7 +546,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -339,14 +562,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: UpdateUsername_NotFound_Response_Body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -365,8 +588,8 @@ definitions:
         properties:
             username:
                 type: string
-                example: Perspiciatis velit.
+                example: Et ullam.
         example:
-            username: Occaecati nihil quae pariatur qui omnis possimus.
+            username: Recusandae ipsam eaque veniam est provident.
         required:
             - username

@@ -13,6 +13,18 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
+// CreateUserRequestBody is the type of the "profile" service "CreateUser"
+// endpoint HTTP request body.
+type CreateUserRequestBody struct {
+	Username string `form:"username" json:"username" xml:"username"`
+}
+
+// DeleteUserRequestBody is the type of the "profile" service "DeleteUser"
+// endpoint HTTP request body.
+type DeleteUserRequestBody struct {
+	ID int `form:"id" json:"id" xml:"id"`
+}
+
 // UpdateUsernameRequestBody is the type of the "profile" service
 // "UpdateUsername" endpoint HTTP request body.
 type UpdateUsernameRequestBody struct {
@@ -26,11 +38,72 @@ type UpdateBioRequestBody struct {
 	Bio string `form:"bio" json:"bio" xml:"bio"`
 }
 
+// CreateUserResponseBody is the type of the "profile" service "CreateUser"
+// endpoint HTTP response body.
+type CreateUserResponseBody struct {
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Bio      *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+}
+
 // FindByIDResponseBody is the type of the "profile" service "FindByID"
 // endpoint HTTP response body.
 type FindByIDResponseBody struct {
 	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	Bio      *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+}
+
+// CreateUserBadRequestResponseBody is the type of the "profile" service
+// "CreateUser" endpoint HTTP response body for the "BadRequest" error.
+type CreateUserBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// DeleteUserNotFoundResponseBody is the type of the "profile" service
+// "DeleteUser" endpoint HTTP response body for the "NotFound" error.
+type DeleteUserNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// DeleteUserBadRequestResponseBody is the type of the "profile" service
+// "DeleteUser" endpoint HTTP response body for the "BadRequest" error.
+type DeleteUserBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
 // FindByIDNotFoundResponseBody is the type of the "profile" service "FindByID"
@@ -123,6 +196,24 @@ type UpdateBioBadRequestResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// NewCreateUserRequestBody builds the HTTP request body from the payload of
+// the "CreateUser" endpoint of the "profile" service.
+func NewCreateUserRequestBody(p *profile.CreateUserPayload) *CreateUserRequestBody {
+	body := &CreateUserRequestBody{
+		Username: p.Username,
+	}
+	return body
+}
+
+// NewDeleteUserRequestBody builds the HTTP request body from the payload of
+// the "DeleteUser" endpoint of the "profile" service.
+func NewDeleteUserRequestBody(p *profile.DeleteUserPayload) *DeleteUserRequestBody {
+	body := &DeleteUserRequestBody{
+		ID: p.ID,
+	}
+	return body
+}
+
 // NewUpdateUsernameRequestBody builds the HTTP request body from the payload
 // of the "UpdateUsername" endpoint of the "profile" service.
 func NewUpdateUsernameRequestBody(p *profile.UpdateUsernamePayload) *UpdateUsernameRequestBody {
@@ -140,6 +231,62 @@ func NewUpdateBioRequestBody(p *profile.UpdateBioPayload) *UpdateBioRequestBody 
 		Bio: p.Bio,
 	}
 	return body
+}
+
+// NewCreateUserUserOK builds a "profile" service "CreateUser" endpoint result
+// from a HTTP "OK" response.
+func NewCreateUserUserOK(body *CreateUserResponseBody) *profile.User {
+	v := &profile.User{
+		Username: *body.Username,
+		Bio:      *body.Bio,
+	}
+
+	return v
+}
+
+// NewCreateUserBadRequest builds a profile service CreateUser endpoint
+// BadRequest error.
+func NewCreateUserBadRequest(body *CreateUserBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewDeleteUserNotFound builds a profile service DeleteUser endpoint NotFound
+// error.
+func NewDeleteUserNotFound(body *DeleteUserNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewDeleteUserBadRequest builds a profile service DeleteUser endpoint
+// BadRequest error.
+func NewDeleteUserBadRequest(body *DeleteUserBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
 }
 
 // NewFindByIDUserOK builds a "profile" service "FindByID" endpoint result from
@@ -228,6 +375,18 @@ func NewUpdateBioBadRequest(body *UpdateBioBadRequestResponseBody) *goa.ServiceE
 	return v
 }
 
+// ValidateCreateUserResponseBody runs the validations defined on
+// CreateUserResponseBody
+func ValidateCreateUserResponseBody(body *CreateUserResponseBody) (err error) {
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	return
+}
+
 // ValidateFindByIDResponseBody runs the validations defined on
 // FindByIDResponseBody
 func ValidateFindByIDResponseBody(body *FindByIDResponseBody) (err error) {
@@ -236,6 +395,78 @@ func ValidateFindByIDResponseBody(body *FindByIDResponseBody) (err error) {
 	}
 	if body.Bio == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	return
+}
+
+// ValidateCreateUserBadRequestResponseBody runs the validations defined on
+// CreateUser_BadRequest_Response_Body
+func ValidateCreateUserBadRequestResponseBody(body *CreateUserBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateDeleteUserNotFoundResponseBody runs the validations defined on
+// DeleteUser_NotFound_Response_Body
+func ValidateDeleteUserNotFoundResponseBody(body *DeleteUserNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateDeleteUserBadRequestResponseBody runs the validations defined on
+// DeleteUser_BadRequest_Response_Body
+func ValidateDeleteUserBadRequestResponseBody(body *DeleteUserBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
 	}
 	return
 }

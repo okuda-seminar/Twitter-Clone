@@ -14,6 +14,42 @@ import (
 	"strconv"
 )
 
+// BuildCreateUserPayload builds the payload for the profile CreateUser
+// endpoint from CLI flags.
+func BuildCreateUserPayload(profileCreateUserBody string) (*profile.CreateUserPayload, error) {
+	var err error
+	var body CreateUserRequestBody
+	{
+		err = json.Unmarshal([]byte(profileCreateUserBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Nobis cum ut.\"\n   }'")
+		}
+	}
+	v := &profile.CreateUserPayload{
+		Username: body.Username,
+	}
+
+	return v, nil
+}
+
+// BuildDeleteUserPayload builds the payload for the profile DeleteUser
+// endpoint from CLI flags.
+func BuildDeleteUserPayload(profileDeleteUserBody string) (*profile.DeleteUserPayload, error) {
+	var err error
+	var body DeleteUserRequestBody
+	{
+		err = json.Unmarshal([]byte(profileDeleteUserBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 7452933893943473380\n   }'")
+		}
+	}
+	v := &profile.DeleteUserPayload{
+		ID: body.ID,
+	}
+
+	return v, nil
+}
+
 // BuildFindByIDPayload builds the payload for the profile FindByID endpoint
 // from CLI flags.
 func BuildFindByIDPayload(profileFindByIDID string) (*profile.FindByIDPayload, error) {
@@ -41,7 +77,7 @@ func BuildUpdateUsernamePayload(profileUpdateUsernameBody string, profileUpdateU
 	{
 		err = json.Unmarshal([]byte(profileUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Impedit omnis alias quo numquam numquam.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Accusamus ipsum aut magnam.\"\n   }'")
 		}
 	}
 	var id int
@@ -69,7 +105,7 @@ func BuildUpdateBioPayload(profileUpdateBioBody string) (*profile.UpdateBioPaylo
 	{
 		err = json.Unmarshal([]byte(profileUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Quia qui et aspernatur ut officiis ad.\",\n      \"id\": 8150416861168248119\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Accusamus incidunt.\",\n      \"id\": 3611385067649777069\n   }'")
 		}
 	}
 	v := &profile.UpdateBioPayload{

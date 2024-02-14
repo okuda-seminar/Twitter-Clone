@@ -17,6 +17,14 @@ import (
 
 // Client lists the profile service endpoint HTTP clients.
 type Client struct {
+	// CreateUser Doer is the HTTP client used to make requests to the CreateUser
+	// endpoint.
+	CreateUserDoer goahttp.Doer
+
+	// DeleteUser Doer is the HTTP client used to make requests to the DeleteUser
+	// endpoint.
+	DeleteUserDoer goahttp.Doer
+
 	// FindByID Doer is the HTTP client used to make requests to the FindByID
 	// endpoint.
 	FindByIDDoer goahttp.Doer
@@ -49,6 +57,8 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
+		CreateUserDoer:      doer,
+		DeleteUserDoer:      doer,
 		FindByIDDoer:        doer,
 		UpdateUsernameDoer:  doer,
 		UpdateBioDoer:       doer,
@@ -57,6 +67,54 @@ func NewClient(
 		host:                host,
 		decoder:             dec,
 		encoder:             enc,
+	}
+}
+
+// CreateUser returns an endpoint that makes HTTP requests to the profile
+// service CreateUser server.
+func (c *Client) CreateUser() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeCreateUserRequest(c.encoder)
+		decodeResponse = DecodeCreateUserResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildCreateUserRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.CreateUserDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("profile", "CreateUser", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// DeleteUser returns an endpoint that makes HTTP requests to the profile
+// service DeleteUser server.
+func (c *Client) DeleteUser() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeDeleteUserRequest(c.encoder)
+		decodeResponse = DecodeDeleteUserResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildDeleteUserRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.DeleteUserDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("profile", "DeleteUser", err)
+		}
+		return decodeResponse(resp)
 	}
 }
 
