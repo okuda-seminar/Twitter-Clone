@@ -2,14 +2,14 @@ package db
 
 import (
 	"database/sql"
+	"os"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func ConnectToDB() (*sql.DB, error) {
-	// Since the required configurations such as host, name, password, etc., have already been set
-	// as environment variables, there is no need to specify them here.
-	db, err := sql.Open("pgx", "postgres://")
+	pgURL := os.Getenv("PGURL")
+	db, err := sql.Open("pgx", pgURL)
 	if err != nil {
 		return nil, err
 	}
