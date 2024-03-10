@@ -9,36 +9,35 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+  @Environment(\.modelContext) private var modelContext
+  @Query private var items: [Item]
 
-    var body: some View {
-      TabView {
-        Text("X").tabItem { Image(systemName: "house") }
-        Text("Search").tabItem { Image(systemName: "magnifyingglass") }
-        Text("Communities").tabItem { Image(systemName: "person.2") }
-        Text("Notifications").tabItem { Image(systemName: "bell") }
-        Text("Messages").tabItem { Image(systemName: "envelope") }
+  var body: some View {
+    HomeFooterTabView()
+      .overlay(
+        NewActionButton()
+          .padding(EdgeInsets(top: 0, leading: 0, bottom: 60, trailing: 18))
+        , alignment: .bottomTrailing
+      )
+  }
+
+  private func addItem() {
+    withAnimation {
+      let newItem = Item(timestamp: Date())
+      modelContext.insert(newItem)
+    }
+  }
+
+  private func deleteItems(offsets: IndexSet) {
+    withAnimation {
+      for index in offsets {
+        modelContext.delete(items[index])
       }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
+  }
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+  ContentView()
+    .modelContainer(for: Item.self, inMemory: true)
 }
