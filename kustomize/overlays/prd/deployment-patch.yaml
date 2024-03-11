@@ -25,11 +25,3 @@ spec:
       activeService: rollout-blue-green-svc-active
       previewService: rollout-blue-green-svc-preview
       autoPromotionEnabled: false
-
-
-
-
-
-
-
-
