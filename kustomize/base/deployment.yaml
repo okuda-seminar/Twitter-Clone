@@ -3,8 +3,8 @@ kind: Rollout
 metadata:
   name: rollout-blue-green
 spec:
-  replicas: 2
-  revisionHistoryLimit: 2
+  replicas: 4
+  revisionHistoryLimit: 4
   selector:
     matchLabels:
       app: rollout-blue-green
@@ -15,11 +15,10 @@ spec:
     spec:
       containers:
         - name: app-container
-          image: golang:1.21
+          image: golang:latest
           command: ["tail", "-f", "/dev/null"]
-      containers:
         - name: postgres-container
-          image: postgres:9.6
+          image: postgres:latest
           command: ["tail", "-f", "/dev/null"]
   strategy:
     blueGreen:
