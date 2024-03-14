@@ -27,7 +27,7 @@ struct RoundedButtonStyle: ButtonStyle {
     configuration.label
       .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
       .foregroundColor(.white)
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/22 - Add Twitter branded blue color.
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/22 - Add Twitter branded blue color.
       .background(.blue)
       .clipShape(Circle())
   }
