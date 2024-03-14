@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ForYouTabView: View {
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
   private let fakeTweets: [Tweet] = {
     var tweets: [Tweet] = []
     for _ in 0..<30 {
@@ -25,6 +26,7 @@ struct ForYouTabView: View {
         }
       }
     }
+    .background(Color(UIColor.systemBackground))
   }
 }
 

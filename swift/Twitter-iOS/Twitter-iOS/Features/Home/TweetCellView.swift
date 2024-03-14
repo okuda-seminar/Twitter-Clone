@@ -20,7 +20,9 @@ struct TweetCellView: View {
       userIcon
       VStack(alignment: .leading) {
         Text(userName)
+          .font(.headline)
         Text(bodyText)
+          .font(.body)
       }
     }
   }
