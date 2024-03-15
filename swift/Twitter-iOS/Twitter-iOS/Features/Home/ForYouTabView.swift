@@ -12,7 +12,7 @@ struct ForYouTabView: View {
   private let fakeTweets: [Tweet] = {
     var tweets: [Tweet] = []
     for _ in 0..<30 {
-      tweets.append(fakeTweet)
+      tweets.append(createFakeTweet())
     }
     return tweets
   }()

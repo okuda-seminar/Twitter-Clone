@@ -7,7 +7,15 @@
 
 import SwiftUI
 
-let fakeTweet = Tweet(bodyText: "Use a binding to create a two-way connection between a property that stores data, and a view that displays and changes the data. ", userIcon: Image(systemName: "apple.logo"), userName: "Apple")
+func createFakeTweet() -> Tweet {
+  return Tweet(
+    id: UUID(),
+    bodyText: "Use a binding to create a two-way connection between a property that stores data, and a view that displays and changes the data. ",
+    userIcon: Image(systemName: "apple.logo"),
+    userName: "Apple")
+}
+
+private  let fakeTweet = createFakeTweet()
 
 struct TweetCellView: View {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/23 - Polish tweet cell view UI.
