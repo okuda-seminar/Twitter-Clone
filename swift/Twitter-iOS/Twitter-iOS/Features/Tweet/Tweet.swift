@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Tweet: Identifiable {
-  let id = UUID()
+  let id: UUID
   let bodyText: String
   let userIcon: Image
   let userName: String
