@@ -9,25 +9,46 @@ import SwiftUI
 
 struct HomeView: View {
   @Namespace var animation
-  @State var currentTab = "For you"
+  @State var selectedTabID: HomeTabViewID = .ForYou
+
+  enum HomeTabViewID {
+    case ForYou
+    case Following
+  }
+
+  private var screenWidth = UIScreen.main.bounds.width
 
   var body: some View {
     VStack {
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/27 - Enable header tab buttons in Home to switch corresponding views.
-      HStack {
-        HomeHeaderButton(currentTab: $currentTab, animation: animation, title: "For you")
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/28 - Implement Following tab view skelton.
+      ScrollViewReader { proxy in
+        HStack {
+          HomeHeaderButton(selectedTabID: $selectedTabID, animation: animation, title: "For you", tabID: .ForYou, proxy: proxy)
 
-        HomeHeaderButton(currentTab: $currentTab, animation: animation, title: "Following")
+          HomeHeaderButton(selectedTabID: $selectedTabID, animation: animation, title: "Following", tabID: .Following, proxy: proxy)
+        }
+
+        ScrollView(.horizontal) {
+          LazyHStack {
+            ForYouTabView()
+              .frame(width: screenWidth)
+              .id(HomeTabViewID.ForYou)
+            ForYouTabView()
+              .frame(width: screenWidth)
+              .id(HomeTabViewID.Following)
+          }
+        }
       }
-      ForYouTabView()
     }
   }
 }
 
 struct HomeHeaderButton: View {
-  @Binding var currentTab: String
+  @Binding var selectedTabID: HomeView.HomeTabViewID
   var animation: Namespace.ID
   var title: String
+  var tabID: HomeView.HomeTabViewID
+  var proxy: ScrollViewProxy
 
   private enum LayoutConstant {
     static let buttonWidth = 120.0
@@ -37,7 +58,8 @@ struct HomeHeaderButton: View {
   var body: some View {
     Button(action: {
       withAnimation {
-        currentTab = title
+        selectedTabID = tabID
+        proxy.scrollTo(tabID)
       }
     }, label: {
       VStack {
@@ -45,7 +67,7 @@ struct HomeHeaderButton: View {
           .font(.headline)
           .foregroundStyle(.primary)
 
-        if currentTab == title {
+        if selectedTabID == tabID {
           Capsule()
             .fill(Color.blue)
             .frame(height: LayoutConstant.underBarHeight)
