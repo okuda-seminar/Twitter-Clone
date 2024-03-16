@@ -30,10 +30,10 @@ struct HomeView: View {
 
         ScrollView(.horizontal) {
           LazyHStack {
-            ForYouTabView()
+            HomeTabView()
               .frame(width: screenWidth)
               .id(HomeTabViewID.ForYou)
-            ForYouTabView()
+            HomeTabView()
               .frame(width: screenWidth)
               .id(HomeTabViewID.Following)
           }
