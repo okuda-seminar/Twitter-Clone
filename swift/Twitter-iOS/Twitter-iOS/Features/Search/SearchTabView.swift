@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct SearchTabView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
+  private let fakeTopics: [Topic] = {
+    var topics: [Topic] = []
+    for _ in 0..<30 {
+      topics.append(createFakeTopic())
     }
+    return topics
+  }()
+
+  var body: some View {
+    ScrollView {
+      VStack {
+        ForEach(fakeTopics) { topic in
+          SearchTopicCellView(topic: topic)
+        }
+      }
+    }
+  }
 }
 
 #Preview {
-    SearchTabView()
+  SearchTabView()
 }

@@ -83,7 +83,7 @@ struct SearchView: View {
         ScrollView(.horizontal) {
           LazyHStack {
             ForEach(SearchTabViewID.allCases, id: \.self) { tabID in
-              Text(searchTabTitle(for:tabID))
+              SearchTabView()
                 .frame(width: screenWidth)
                 .id(tabID)
             }
