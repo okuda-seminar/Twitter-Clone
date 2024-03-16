@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ForYouTabView: View {
+struct HomeTabView: View {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
   private let fakeTweets: [Tweet] = {
     var tweets: [Tweet] = []
@@ -31,5 +31,5 @@ struct ForYouTabView: View {
 }
 
 #Preview {
-  ForYouTabView()
+  HomeTabView()
 }
