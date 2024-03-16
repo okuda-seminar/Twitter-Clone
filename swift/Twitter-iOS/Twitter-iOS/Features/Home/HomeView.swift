@@ -12,8 +12,20 @@ struct HomeView: View {
   @State var selectedTabID: HomeTabViewID = .ForYou
 
   enum HomeTabViewID {
+    static var allCases: [HomeTabViewID] {
+      return [.ForYou, .Following]
+    }
     case ForYou
     case Following
+  }
+
+  private func homeTabTitle(for tabID: HomeTabViewID) -> String {
+    switch tabID {
+    case .ForYou:
+      return "For you"
+    case .Following:
+      return "Following"
+    }
   }
 
   private var screenWidth = UIScreen.main.bounds.width
@@ -23,19 +35,23 @@ struct HomeView: View {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/28 - Implement Following tab view skelton.
       ScrollViewReader { proxy in
         HStack {
-          HomeHeaderButton(selectedTabID: $selectedTabID, animation: animation, title: "For you", tabID: .ForYou, proxy: proxy)
-
-          HomeHeaderButton(selectedTabID: $selectedTabID, animation: animation, title: "Following", tabID: .Following, proxy: proxy)
+          ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
+            HomeHeaderButton(
+              selectedTabID: $selectedTabID,
+              animation: animation,
+              title: homeTabTitle(for: tabID),
+              tabID: tabID,
+              proxy: proxy)
+          }
         }
 
         ScrollView(.horizontal) {
           LazyHStack {
-            HomeTabView()
-              .frame(width: screenWidth)
-              .id(HomeTabViewID.ForYou)
-            HomeTabView()
-              .frame(width: screenWidth)
-              .id(HomeTabViewID.Following)
+            ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
+              HomeTabView()
+                .frame(width: screenWidth)
+                .id(tabID)
+            }
           }
         }
       }
