@@ -34,8 +34,8 @@ struct CommunitiesHomeView: View {
       }
       Text("Show more")
     }
-    .padding(EdgeInsets(top: 0, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
-    Spacer()
+    .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
+    // If we place Spacer() here, then another is added to tab bar. Probably App;e's bug.
   }
 }
 
