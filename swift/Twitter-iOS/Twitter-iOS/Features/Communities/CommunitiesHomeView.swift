@@ -22,20 +22,24 @@ struct CommunitiesHomeView: View {
   }()
 
   var body: some View {
-    VStack(alignment: .leading) {
-      HStack {
-        Text("Discover new Communities")
-          .font(.headline)
-        Spacer()
-        Image(systemName: "ellipsis")
+    NavigationView {
+      VStack(alignment: .leading) {
+        HStack {
+          Text("Discover new Communities")
+            .font(.headline)
+          Spacer()
+          Image(systemName: "ellipsis")
+        }
+        ForEach(fakeCommunities) { community in
+          CommunityCellView(community: community)
+        }
+        NavigationLink(destination: CommunitiesSearchView()) {
+          Text("Show more")
+        }
       }
-      ForEach(fakeCommunities) { community in
-        CommunityCellView(community: community)
-      }
-      Text("Show more")
+      .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
+      // If we place Spacer() here, then another is added to tab bar. Probably App;e's bug.
     }
-    .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
-    // If we place Spacer() here, then another is added to tab bar. Probably App;e's bug.
   }
 }
 
