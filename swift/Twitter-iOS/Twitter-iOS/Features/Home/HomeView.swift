@@ -69,7 +69,7 @@ struct HomeHeaderButton: View {
   var proxy: ScrollViewProxy
 
   private enum LayoutConstant {
-    static let buttonWidth = 120.0
+    static let buttonWidth = 80.0
     static let underBarHeight = 3.0
   }
 
