@@ -22,7 +22,7 @@ struct CommunitiesHomeView: View {
   }()
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack(alignment: .leading) {
         HStack {
           Text("Discover new Communities")
@@ -36,6 +36,8 @@ struct CommunitiesHomeView: View {
         NavigationLink(destination: CommunitiesSearchView()) {
           Text("Show more")
         }
+        .navigationBarTitle("")
+        
       }
       .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
       // If we place Spacer() here, then another is added to tab bar. Probably App;e's bug.
