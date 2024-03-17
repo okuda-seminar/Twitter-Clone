@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-func createFakeTweet() -> Tweet {
-  return Tweet(
+func createFakeTweet() -> TweetModel {
+  return TweetModel(
     id: UUID(),
     bodyText: "Use a binding to create a two-way connection between a property that stores data, and a view that displays and changes the data. ",
     userIcon: Image(systemName: "apple.logo"),

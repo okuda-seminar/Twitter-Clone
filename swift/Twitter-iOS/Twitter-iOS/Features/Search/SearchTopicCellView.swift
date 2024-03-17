@@ -11,7 +11,7 @@ struct SearchTopicCellView: View {
     static let cellHorizontalPadding = 18.0
   }
 
-  var topic: Topic
+  var topic: TopicModel
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -33,5 +33,5 @@ struct SearchTopicCellView: View {
 }
 
 #Preview {
-  SearchTopicCellView(topic: createFakeTopic())
+  SearchTopicCellView(topic: createFakeTopicModel())
 }
