@@ -35,6 +35,7 @@
 		6540F80B2BA68AE40029BA46 /* CommunityCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F80A2BA68AE40029BA46 /* CommunityCellView.swift */; };
 		6540F80D2BA68B0B0029BA46 /* CommunityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F80C2BA68B0B0029BA46 /* CommunityModel.swift */; };
 		6540F80F2BA694E50029BA46 /* CommunitiesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F80E2BA694E50029BA46 /* CommunitiesSearchView.swift */; };
+		6540F8122BA717E60029BA46 /* UINavigationController+Swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8112BA717E60029BA46 /* UINavigationController+Swipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		6540F80A2BA68AE40029BA46 /* CommunityCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCellView.swift; sourceTree = "<group>"; };
 		6540F80C2BA68B0B0029BA46 /* CommunityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModel.swift; sourceTree = "<group>"; };
 		6540F80E2BA694E50029BA46 /* CommunitiesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesSearchView.swift; sourceTree = "<group>"; };
+		6540F8112BA717E60029BA46 /* UINavigationController+Swipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Swipe.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 		6540F7E62B9D3A5E0029BA46 /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				6540F8102BA717B80029BA46 /* Navigation */,
 				6540F7F12BA2FC2E0029BA46 /* UI */,
 			);
 			path = SDK;
@@ -260,6 +263,14 @@
 				6540F7DC2B9C4AF30029BA46 /* NewActionButton.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		6540F8102BA717B80029BA46 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				6540F8112BA717E60029BA46 /* UINavigationController+Swipe.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,6 +413,7 @@
 				6540F8092BA689BB0029BA46 /* CommunitiesHomeView.swift in Sources */,
 				6540F7DD2B9C4AF30029BA46 /* NewActionButton.swift in Sources */,
 				6540F7F32BA2FC580029BA46 /* HeaderTabButton.swift in Sources */,
+				6540F8122BA717E60029BA46 /* UINavigationController+Swipe.swift in Sources */,
 				6540F8052BA56C010029BA46 /* NotificationModel.swift in Sources */,
 				6540F8012BA56B5A0029BA46 /* NotificationsView.swift in Sources */,
 				6540F7FB2BA51DFC0029BA46 /* SearchTabView.swift in Sources */,

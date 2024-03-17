@@ -2,10 +2,10 @@
 //  CommunitiesSearchView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/17.
-//
 
 import SwiftUI
+
+
 
 struct CommunitiesSearchView: View {
   @Environment(\.presentationMode) var presentationMode
@@ -34,7 +34,10 @@ struct CommunitiesSearchView: View {
               .foregroundStyle(.foreground)
           }
           Spacer()
-          Text("Search for a Community")
+          HStack {
+            Image(systemName: "magnifyingglass")
+            Text("Search for a Community")
+          }
           Spacer()
         }
         Spacer()
@@ -51,8 +54,16 @@ struct CommunitiesSearchView: View {
         }
       }
       .padding(EdgeInsets(top: 0, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
+      .navigationBarBackButtonHidden()
+      //      .gesture(
+      //        DragGesture()
+      //          .onChanged { gesture in
+      //            if gesture.translation.width > 0 {
+      //
+      //            }
+      //          }
+      //      )
     }
-    .navigationBarBackButtonHidden()
   }
 }
 
