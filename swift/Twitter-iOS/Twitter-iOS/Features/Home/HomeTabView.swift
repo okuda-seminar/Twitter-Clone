@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HomeTabView: View {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
-  private let fakeTweets: [Tweet] = {
-    var tweets: [Tweet] = []
+  private let fakeTweets: [TweetModel] = {
+    var tweets: [TweetModel] = []
     for _ in 0..<30 {
       tweets.append(createFakeTweet())
     }

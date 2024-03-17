@@ -13,7 +13,7 @@ struct HomeFooterTabView: View {
       HomeView().tabItem { Image(systemName: "house") }
       SearchView().tabItem { Image(systemName: "magnifyingglass") }
       Text("Communities").tabItem { Image(systemName: "person.2") }
-      Text("Notifications").tabItem { Image(systemName: "bell") }
+      NotificationsView().tabItem { Image(systemName: "bell") }
       Text("Messages").tabItem { Image(systemName: "envelope") }
     }
   }

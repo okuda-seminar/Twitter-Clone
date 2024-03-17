@@ -35,6 +35,7 @@ struct HomeView: View {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/28 - Implement Following tab view skelton.
       ScrollViewReader { proxy in
         HStack {
+          Spacer()
           ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
             HomeHeaderButton(
               selectedTabID: $selectedTabID,
@@ -42,6 +43,7 @@ struct HomeView: View {
               title: homeTabTitle(for: tabID),
               tabID: tabID,
               proxy: proxy)
+            Spacer()
           }
         }
 

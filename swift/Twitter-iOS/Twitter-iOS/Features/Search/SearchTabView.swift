@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct SearchTabView: View {
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
-  private let fakeTopics: [Topic] = {
-    var topics: [Topic] = []
+  private let fakeTopics: [TopicModel] = {
+    var topics: [TopicModel] = []
     for _ in 0..<30 {
-      topics.append(createFakeTopic())
+      topics.append(createFakeTopicModel())
     }
     return topics
   }()

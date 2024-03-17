@@ -7,11 +7,11 @@
 
 import Foundation
 
-func createFakeTopic() -> Topic {
-  return Topic(id: UUID(), category: "Technology", name: "iMac", numOfPosts: 1413)
+func createFakeTopicModel() -> TopicModel {
+  return TopicModel(id: UUID(), category: "Technology", name: "iMac", numOfPosts: 1413)
 }
 
-struct Topic: Identifiable {
+struct TopicModel: Identifiable {
   let id: UUID
   let category: String
   let name: String
