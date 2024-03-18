@@ -58,6 +58,11 @@ struct HomeView: View {
         }
       }
     }
+    .overlay(
+      NewTweetEntrypointButton()
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 18))
+      , alignment: .bottomTrailing
+    )
   }
 }
 
