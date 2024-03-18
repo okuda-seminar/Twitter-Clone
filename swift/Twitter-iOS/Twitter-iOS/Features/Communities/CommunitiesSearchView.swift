@@ -5,8 +5,6 @@
 
 import SwiftUI
 
-
-
 struct CommunitiesSearchView: View {
   @Environment(\.presentationMode) var presentationMode
 
