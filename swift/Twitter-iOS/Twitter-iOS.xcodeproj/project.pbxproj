@@ -189,7 +189,6 @@
 				6540F8192BA856810029BA46 /* NewTweetButton.swift */,
 				6540F8132BA854520029BA46 /* NewTweetEntrypointButton.swift */,
 				6540F7EA2B9D3BAF0029BA46 /* TweetCellView.swift */,
-				6540F8152BA854B50029BA46 /* NewTweetEditView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -260,6 +259,7 @@
 		6540F7EC2B9D3FC70029BA46 /* Tweet */ = {
 			isa = PBXGroup;
 			children = (
+				6540F8152BA854B50029BA46 /* NewTweetEditView.swift */,
 				6540F7ED2B9D40100029BA46 /* TweetModel.swift */,
 			);
 			path = Tweet;
