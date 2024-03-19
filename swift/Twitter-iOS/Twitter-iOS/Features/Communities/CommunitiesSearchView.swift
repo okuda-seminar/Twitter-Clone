@@ -53,14 +53,6 @@ struct CommunitiesSearchView: View {
       }
       .padding(EdgeInsets(top: 0, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
       .navigationBarBackButtonHidden()
-      //      .gesture(
-      //        DragGesture()
-      //          .onChanged { gesture in
-      //            if gesture.translation.width > 0 {
-      //
-      //            }
-      //          }
-      //      )
     }
   }
 }

@@ -2,8 +2,6 @@
 //  NewTweetButton.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/18.
-//
 
 import SwiftUI
 
@@ -12,16 +10,19 @@ struct NewTweetButton: View {
 
   private enum LayoutConstant {
     static let buttonWidth = 84.0
+    static let buttonHeight = 44.0
   }
 
   var body: some View {
     Button(action: {
       showSheet.toggle()
     }, label: {
-      Text("Post")
+      Text(String(localized: "Post"))
         .underline()
+        .frame(width: LayoutConstant.buttonWidth, height: LayoutConstant.buttonHeight)
     })
-    .buttonStyle(RoundedButtonStyle(buttonShape: .capsule, buttonWidth: LayoutConstant.buttonWidth))
+    .clipShape(Capsule())
+    .buttonStyle(RoundedButtonStyle())
   }
 }
 
