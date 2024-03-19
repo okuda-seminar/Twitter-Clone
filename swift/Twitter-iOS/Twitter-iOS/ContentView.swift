@@ -10,7 +10,13 @@ import SwiftData
 
 struct ContentView: View {
   var body: some View {
-    HomeFooterTabView()
+    TabView {
+      HomeView().tabItem { Image(systemName: "house") }
+      SearchView().tabItem { Image(systemName: "magnifyingglass") }
+      CommunitiesHomeView().tabItem { Image(systemName: "person.2") }
+      NotificationsView().tabItem { Image(systemName: "bell") }
+      MessagesView().tabItem { Image(systemName: "envelope") }
+    }
   }
 }
 

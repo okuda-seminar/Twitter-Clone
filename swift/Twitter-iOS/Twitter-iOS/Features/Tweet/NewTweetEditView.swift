@@ -17,7 +17,7 @@ struct NewTweetEditView: View {
         Button(action: {
           dismiss()
         }, label: {
-          Text("Cancel")
+          Text(String(localized: "Cancel"))
             .underline()
             .foregroundStyle(Color.primary)
         })
@@ -32,7 +32,7 @@ struct NewTweetEditView: View {
             isFocused = true
           }
         if tweetText.isEmpty {
-          Text("What's happening?")
+          Text(String(localized: "What's happening?"))
             .foregroundStyle(Color(UIColor.placeholderText))
         }
       }

@@ -9,7 +9,7 @@ struct NewTweetEntrypointButton: View {
   @State var showSheet: Bool = false
 
   private enum LayoutConstant {
-    static let buttonWidth = 44.0
+    static let buttonSize = 44.0
   }
 
   var body: some View {
@@ -17,8 +17,10 @@ struct NewTweetEntrypointButton: View {
       showSheet.toggle()
     }, label: {
       Image(systemName: "plus")
+        .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
     })
-    .buttonStyle(RoundedButtonStyle(buttonShape: .circle, buttonWidth: LayoutConstant.buttonWidth))
+    .clipShape(Circle())
+    .buttonStyle(RoundedButtonStyle())
     .fullScreenCover(isPresented: $showSheet) {
       NewTweetEditView()
     }

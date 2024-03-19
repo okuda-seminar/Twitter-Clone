@@ -26,15 +26,15 @@ struct SearchView: View {
   private func searchTabTitle(for tabID: SearchTabViewID) -> String {
     switch tabID {
     case .ForYou:
-      return "For you"
+      return String(localized: "For you")
     case .Trending:
-      return "Trending"
+      return String(localized: "Trending")
     case .News:
-      return "News"
+      return String(localized: "News")
     case .Sports:
-      return "Sports"
+      return String(localized: "Sports")
     case .Entertainment:
-      return "Entertainment"
+      return String(localized: "Entertainment")
     }
   }
 

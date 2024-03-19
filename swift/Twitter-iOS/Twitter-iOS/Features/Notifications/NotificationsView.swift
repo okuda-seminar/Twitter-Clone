@@ -24,11 +24,11 @@ struct NotificationsView: View {
   private func NotificationsTabTitle(for tabID: NotificationsTabViewID) -> String {
     switch tabID {
     case .All:
-      return "All"
+      return String(localized: "All")
     case .Verified:
-      return "Verified"
+      return String(localized: "Verified")
     case .Mentions:
-      return "Mentions"
+      return String(localized: "Mentions")
     }
   }
 
