@@ -2,8 +2,6 @@
 //  MessagesView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/19.
-//
 
 import SwiftUI
 
@@ -18,9 +16,14 @@ struct MessagesView: View {
         .fontWeight(.light)
         .foregroundStyle(Color.gray)
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 0))
-      NewMessageEntrypointButton()
+      CapsuleNewMessageEntrypointButton()
       Spacer()
+      HStack {
+        Spacer()
+        CircleNewMessageEntrypointButton()
+      }
     }
+    .padding()
   }
 }
 
