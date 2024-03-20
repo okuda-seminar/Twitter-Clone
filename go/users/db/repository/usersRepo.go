@@ -2,11 +2,10 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 	"time"
 )
 
-type Repository interface {
+type UsersRepo interface {
 	CreateUser(ctx context.Context, username string) (*User, error)
 	DeleteUser(ctx context.Context, id int) error
 	FindUserByID(ctx context.Context, id int) (*User, error)
@@ -14,15 +13,7 @@ type Repository interface {
 	UpdateBio(ctx context.Context, id int, bio string) error
 }
 
-// repository holds a connection to DB.
-type repository struct {
-	db *sql.DB
-}
-
-func NewRepository(db *sql.DB) repository {
-	return repository{db}
-}
-
+// User represents an entry of `users` table.
 type User struct {
 	ID        int
 	Username  string

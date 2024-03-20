@@ -11,9 +11,9 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
-	usersapi "users"
 	"users/db"
 	users "users/gen/users"
+	"users/service"
 )
 
 func main() {
@@ -48,7 +48,7 @@ func main() {
 		usersSvc users.Service
 	)
 	{
-		usersSvc = usersapi.NewUsersSvc(db, logger)
+		usersSvc = service.NewUsersSvc(db, logger)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
