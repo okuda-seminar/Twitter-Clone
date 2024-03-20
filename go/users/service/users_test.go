@@ -1,4 +1,4 @@
-package usersapi
+package service
 
 import (
 	"context"

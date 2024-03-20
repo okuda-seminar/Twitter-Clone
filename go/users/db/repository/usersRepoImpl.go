@@ -2,13 +2,24 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 )
+
+// usersRepoImpl implements users/db/repository/usersRepo.
+type usersRepoImpl struct {
+	db *sql.DB
+}
+
+// NewUsersRepoImpl returns the users repository implementation.
+func NewUsersRepoImpl(db *sql.DB) UsersRepo {
+	return &usersRepoImpl{db}
+}
 
 // CreateUser creates a new user with the specified username.
 // The 'Bio' field is set to an empty string, not null.
 // If a user with the specified username already exists, the creation fails.
-func (r *repository) CreateUser(ctx context.Context, username string) (*User, error) {
+func (r *usersRepoImpl) CreateUser(ctx context.Context, username string) (*User, error) {
 	query := "INSERT INTO users (username, bio) VALUES ($1, $2) RETURNING id"
 	var id int
 	err := r.db.QueryRowContext(ctx, query, username, "").Scan(&id)
@@ -25,7 +36,7 @@ func (r *repository) CreateUser(ctx context.Context, username string) (*User, er
 }
 
 // DeleteUser deletes a user with the specified ID.
-func (r *repository) DeleteUser(ctx context.Context, id int) error {
+func (r *usersRepoImpl) DeleteUser(ctx context.Context, id int) error {
 	query := "DELETE FROM users WHERE id = $1"
 	res, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
@@ -43,7 +54,7 @@ func (r *repository) DeleteUser(ctx context.Context, id int) error {
 }
 
 // FindUserByID retrieves a user by ID from the database.
-func (r *repository) FindUserByID(ctx context.Context, id int) (*User, error) {
+func (r *usersRepoImpl) FindUserByID(ctx context.Context, id int) (*User, error) {
 	query := "SELECT * FROM users WHERE id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
 
@@ -62,7 +73,7 @@ func (r *repository) FindUserByID(ctx context.Context, id int) (*User, error) {
 
 // UpdateUsername updates the username of a user with the specified ID.
 // If a user with the specified username already exists, the update fails.
-func (r *repository) UpdateUsername(ctx context.Context, id int, username string) error {
+func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id int, username string) error {
 	query := "UPDATE users SET username = $1 where id = $2"
 	res, err := r.db.ExecContext(ctx, query, username, id)
 	if err != nil {
@@ -80,7 +91,7 @@ func (r *repository) UpdateUsername(ctx context.Context, id int, username string
 }
 
 // UpdateBio updates the bio of a user with the specified ID.
-func (r *repository) UpdateBio(ctx context.Context, id int, bio string) error {
+func (r *usersRepoImpl) UpdateBio(ctx context.Context, id int, bio string) error {
 	query := "UPDATE users SET bio = $1 where id = $2"
 	res, err := r.db.ExecContext(ctx, query, bio, id)
 	if err != nil {
@@ -98,7 +109,7 @@ func (r *repository) UpdateBio(ctx context.Context, id int, bio string) error {
 }
 
 // GetFollowers retrieves all the followers of a user with the specified ID.
-func (r *repository) GetFollowers(ctx context.Context, id int) ([]*User, error) {
+func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, error) {
 	query := `
 		SELECT *
 		FROM users
@@ -128,7 +139,7 @@ func (r *repository) GetFollowers(ctx context.Context, id int) ([]*User, error) 
 }
 
 // GetFollowees retrieves all the followees of a user with the specified ID.
-func (r *repository) GetFollowees(ctx context.Context, id int) ([]*User, error) {
+func (r *usersRepoImpl) GetFollowees(ctx context.Context, id int) ([]*User, error) {
 	query := `
 		SELECT *
 		FROM users

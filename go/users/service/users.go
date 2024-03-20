@@ -1,4 +1,4 @@
-package usersapi
+package service
 
 import (
 	"context"
@@ -17,16 +17,16 @@ const (
 	bioLenMax = 160
 )
 
-// users service implementation.
+// usersSvc implements users/gen/users.Service.
 type usersSvc struct {
-	repository repository.Repository
+	repository repository.UsersRepo
 	logger     *log.Logger
 }
 
-// NewUsers returns the users service implementation.
+// NewUsersSvc returns the users service implementation.
 func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
-	repository := repository.NewRepository(db)
-	return &usersSvc{&repository, logger}
+	repository := repository.NewUsersRepoImpl(db)
+	return &usersSvc{repository, logger}
 }
 
 func (s *usersSvc) CreateUser(
