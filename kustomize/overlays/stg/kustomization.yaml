@@ -6,3 +6,7 @@ bases:
   - ../../base
 patchesStrategicMerge:
   - deployment-patch.yaml
+configMapGenerator:
+  - name: blue-green-sample-config
+    envs:
+      - files/config.env
