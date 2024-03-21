@@ -35,7 +35,7 @@ spec:
   source:
     repoURL: https://github.com/okuda-seminar/Twitter-Clone.git
     targetRevision: main
-    path: kustomize/overlays/base
+    path: kustomize/base
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
