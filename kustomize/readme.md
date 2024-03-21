@@ -1,6 +1,6 @@
 # Using Kustomize for Environment Switching in Blue-Green Rollouts
 
-This repository demonstrates how to use Kustomize to switch between Blue-Green rollouts in pre and stg environments.
+This repository demonstrates how to use Kustomize to switch between Blue-Green rollouts in prd and stg environments.
 This allows you to switch between Blue-Green rollouts in the `prd` and `stg` environments.
 
 ## Configuration
