@@ -34,7 +34,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/okuda-seminar/Twitter-Clone.git
-    targetRevision: main
+    targetRevision: feature/#7_implement_argorollouts
     path: kustomize/base
   destination:
     server: https://kubernetes.default.svc
@@ -43,3 +43,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+

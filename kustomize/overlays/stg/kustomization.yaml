@@ -1,12 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-metadata:
-  namespace: default
+namespace: default
 bases:
   - ../../base
 patchesStrategicMerge:
   - deployment-patch.yaml
 configMapGenerator:
-  - name: blue-green-sample-config
+  - name: blue-greeen-sample-config
     envs:
       - files/config.env
