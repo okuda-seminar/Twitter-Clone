@@ -6,6 +6,8 @@
 import SwiftUI
 
 struct MessagesView: View {
+  @Binding var enableSideMenu: Bool
+
   var body: some View {
     VStack(alignment: .leading) {
       Text(String(localized: "Welcome to your inbox!"))
@@ -24,9 +26,12 @@ struct MessagesView: View {
       }
     }
     .padding()
+    .onAppear {
+      enableSideMenu = true
+    }
   }
 }
 
 #Preview {
-  MessagesView()
+  MessagesView(enableSideMenu: .constant(true))
 }

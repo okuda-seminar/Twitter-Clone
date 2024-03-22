@@ -2,12 +2,12 @@
 //  CommunitiesHomeView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/17.
-//
 
 import SwiftUI
 
 struct CommunitiesHomeView: View {
+  @Binding var enableSideMenu: Bool
+
   private enum LayoutConstant {
     static let horizontalPadding = 18.0
     static let maxNumOfCommunitiesToShow = 3
@@ -33,18 +33,29 @@ struct CommunitiesHomeView: View {
         ForEach(fakeCommunities) { community in
           CommunityCellView(community: community)
         }
-        NavigationLink(destination: CommunitiesSearchView()) {
+        NavigationLink(destination: 
+          CommunitiesSearchView()
+            .onAppear {
+              enableSideMenu = false
+            }
+          .onDisappear {
+            enableSideMenu = true
+          }
+        ) {
           Text("Show more")
         }
         .navigationBarTitle("")
         
       }
       .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
+      .onAppear {
+        enableSideMenu = true
+      }
       // If we place Spacer() here, then another is added to tab bar. Probably App;e's bug.
     }
   }
 }
 
 #Preview {
-  CommunitiesHomeView()
+  CommunitiesHomeView(enableSideMenu: .constant(true))
 }
