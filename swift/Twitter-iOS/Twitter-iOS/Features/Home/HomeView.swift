@@ -2,12 +2,11 @@
 //  HomeView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/14.
-//
 
 import SwiftUI
 
 struct HomeView: View {
+  @Binding var enableSideMenu: Bool
   @Namespace var animation
   @State var selectedTabID: HomeTabViewID = .ForYou
 
@@ -30,6 +29,10 @@ struct HomeView: View {
 
   private var screenWidth = UIScreen.main.bounds.width
 
+  init(enableSideMenu: Binding<Bool>) {
+    self._enableSideMenu = enableSideMenu
+  }
+
   var body: some View {
     VStack {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/28 - Implement Following tab view skelton.
@@ -38,6 +41,7 @@ struct HomeView: View {
           Spacer()
           ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
             HomeHeaderButton(
+              enableSideMenu: $enableSideMenu,
               selectedTabID: $selectedTabID,
               animation: animation,
               title: homeTabTitle(for: tabID),
@@ -67,6 +71,7 @@ struct HomeView: View {
 }
 
 struct HomeHeaderButton: View {
+  @Binding var enableSideMenu: Bool
   @Binding var selectedTabID: HomeView.HomeTabViewID
   var animation: Namespace.ID
   var title: String
@@ -84,6 +89,7 @@ struct HomeHeaderButton: View {
         selectedTabID = tabID
         proxy.scrollTo(tabID)
       }
+      enableSideMenu = tabID == HomeView.HomeTabViewID.ForYou
     }, label: {
       VStack {
         Text(title)
@@ -107,5 +113,5 @@ struct HomeHeaderButton: View {
 }
 
 #Preview {
-  HomeView()
+  HomeView(enableSideMenu: .constant(true))
 }

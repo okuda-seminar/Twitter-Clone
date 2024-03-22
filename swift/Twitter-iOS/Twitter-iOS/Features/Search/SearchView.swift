@@ -2,12 +2,11 @@
 //  SearchView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/14.
-//
 
 import SwiftUI
 
 struct SearchView: View {
+  @Binding var enableSideMenu: Bool
   @Namespace var animation
   @State var selectedTabID: SearchTabViewID = .ForYou
 
@@ -39,6 +38,10 @@ struct SearchView: View {
   }
 
   private var screenWidth = UIScreen.main.bounds.width
+
+  init(enableSideMenu: Binding<Bool>) {
+    self._enableSideMenu = enableSideMenu
+  }
 
   var body: some View {
     VStack {
@@ -86,6 +89,9 @@ struct SearchView: View {
               SearchTabView()
                 .frame(width: screenWidth)
                 .id(tabID)
+                .onAppear {
+                  enableSideMenu = tabID == SearchTabViewID.ForYou
+                }
             }
           }
         }
@@ -140,5 +146,5 @@ struct SearchHeaderButton: View {
 }
 
 #Preview {
-  SearchView()
+  SearchView(enableSideMenu: .constant(true))
 }

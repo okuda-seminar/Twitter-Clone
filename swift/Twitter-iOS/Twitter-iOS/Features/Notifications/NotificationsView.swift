@@ -2,13 +2,12 @@
 //  NotificationsView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/16.
-//
 
 import SwiftUI
 
 struct NotificationsView: View {
   @Namespace var animation
+  @Binding var enableSideMenu: Bool
   @State var selectedTabID: NotificationsTabViewID = .All
   private var screenWidth = UIScreen.main.bounds.width
 
@@ -32,7 +31,9 @@ struct NotificationsView: View {
     }
   }
 
-
+  init(enableSideMenu: Binding<Bool>) {
+    self._enableSideMenu = enableSideMenu
+  }
 
   var body: some View {
     VStack {
@@ -56,6 +57,9 @@ struct NotificationsView: View {
               NotificationsTabView()
                 .frame(width: screenWidth)
                 .id(tabID)
+                .onAppear {
+                  enableSideMenu = tabID == NotificationsTabViewID.All
+                }
             }
           }
         }
@@ -110,5 +114,5 @@ struct NotificationsHeaderButton: View {
 }
 
 #Preview {
-  NotificationsView()
+  NotificationsView(enableSideMenu: .constant(true))
 }
