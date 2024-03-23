@@ -2,17 +2,39 @@
 //  SearchHeaderView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/16.
-//
 
 import SwiftUI
 
 struct SearchHeaderView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  private enum LayoutConstant {
+    static let gearImageSize = 28.0
+  }
+  var body: some View {
+    HStack {
+      Button(action: {
+
+      }, label: {
+        HStack {
+          Spacer()
+          Image(systemName: "magnifyingglass")
+          Text(String(localized: "Search"))
+          Spacer()
+        }
+      })
+      .padding()
+      .foregroundStyle(Color.gray)
+      .background(Color(UIColor.secondarySystemBackground))
+      .clipShape(Capsule())
+
+      Image(systemName: "gear")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.gearImageSize, height: LayoutConstant.gearImageSize)
     }
+    .padding()
+  }
 }
 
 #Preview {
-    SearchHeaderView()
+  SearchHeaderView()
 }

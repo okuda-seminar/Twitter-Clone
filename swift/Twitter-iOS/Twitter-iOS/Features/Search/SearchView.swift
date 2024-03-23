@@ -45,6 +45,7 @@ struct SearchView: View {
 
   var body: some View {
     VStack {
+      SearchHeaderView()
       ScrollViewReader { proxy in
         ScrollView(.horizontal, showsIndicators: false) {
           HStack {
