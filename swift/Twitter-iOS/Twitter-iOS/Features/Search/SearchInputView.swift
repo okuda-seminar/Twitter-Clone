@@ -6,10 +6,12 @@
 import SwiftUI
 
 struct SearchInputView: View {
+  @Binding var showSearchHome: Bool
   @State var searchQuery: String = ""
+
   var body: some View {
     VStack {
-      SearchInputHeaderView(searchQuery: $searchQuery)
+      SearchInputHeaderView(searchQuery: $searchQuery, showSearchHome: $showSearchHome)
       HStack {
         Text(String(localized: "Recent searches"))
           .font(.headline)
@@ -23,10 +25,13 @@ struct SearchInputView: View {
         })
       }
       .padding()
+
+      Spacer()
     }
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/61 - Dismiss keyboard when swipe up / down gesture happens in SearchInputView.
   }
 }
 
 #Preview {
-  SearchInputView()
+  SearchInputView(showSearchHome: .constant(false))
 }
