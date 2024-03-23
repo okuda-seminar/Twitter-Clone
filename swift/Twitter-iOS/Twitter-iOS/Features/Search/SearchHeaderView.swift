@@ -6,28 +6,28 @@
 import SwiftUI
 
 struct SearchHeaderView: View {
+  @Binding var showSearchHome: Bool
   @State var showSheet: Bool = false
 
   private enum LayoutConstant {
     static let gearImageSize = 28.0
   }
-  
+
   var body: some View {
     HStack {
-      Button(action: {
-
-      }, label: {
-        HStack {
-          Spacer()
-          Image(systemName: "magnifyingglass")
-          Text(String(localized: "Search"))
-          Spacer()
-        }
-      })
+      HStack {
+        Spacer()
+        Image(systemName: "magnifyingglass")
+        Text(String(localized: "Search"))
+        Spacer()
+      }
       .padding()
       .foregroundStyle(Color.gray)
       .background(Color(UIColor.secondarySystemBackground))
       .clipShape(Capsule())
+      .onTapGesture {
+        showSearchHome = false
+      }
 
       Button(action: {
         showSheet.toggle()
@@ -47,5 +47,5 @@ struct SearchHeaderView: View {
 }
 
 #Preview {
-  SearchHeaderView()
+  SearchHeaderView(showSearchHome: .constant(false))
 }
