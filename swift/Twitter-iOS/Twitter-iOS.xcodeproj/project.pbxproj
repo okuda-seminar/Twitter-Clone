@@ -43,6 +43,7 @@
 		6540F8232BA9B6540029BA46 /* NewMessageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8222BA9B6540029BA46 /* NewMessageEditView.swift */; };
 		6540F8252BAE9FC60029BA46 /* SearchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8242BAE9FC60029BA46 /* SearchInputView.swift */; };
 		6540F8272BAEABF50029BA46 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8262BAEABF50029BA46 /* SearchHeaderView.swift */; };
+		6540F8292BAEBAE70029BA46 /* SearchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8282BAEBAE70029BA46 /* SearchSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		6540F8222BA9B6540029BA46 /* NewMessageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEditView.swift; sourceTree = "<group>"; };
 		6540F8242BAE9FC60029BA46 /* SearchInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputView.swift; sourceTree = "<group>"; };
 		6540F8262BAEABF50029BA46 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		6540F8282BAEBAE70029BA46 /* SearchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 				6540F8262BAEABF50029BA46 /* SearchHeaderView.swift */,
 				6540F7F82BA51DF10029BA46 /* SearchInputHeaderView.swift */,
 				6540F8242BAE9FC60029BA46 /* SearchInputView.swift */,
+				6540F8282BAEBAE70029BA46 /* SearchSettingsView.swift */,
 				6540F7FA2BA51DFC0029BA46 /* SearchTabView.swift */,
 				6540F7FC2BA562520029BA46 /* SearchTopicCellView.swift */,
 				6540F7F62BA51D920029BA46 /* SearchView.swift */,
@@ -453,6 +456,7 @@
 				6540F80D2BA68B0B0029BA46 /* CommunityModel.swift in Sources */,
 				6540F7EB2B9D3BAF0029BA46 /* TweetCellView.swift in Sources */,
 				6540F8032BA56B6C0029BA46 /* NotificationCellView.swift in Sources */,
+				6540F8292BAEBAE70029BA46 /* SearchSettingsView.swift in Sources */,
 				6540F7E82B9D3B700029BA46 /* HomeTabView.swift in Sources */,
 				6540F81A2BA856810029BA46 /* NewTweetButton.swift in Sources */,
 				6540F8212BA9B2030029BA46 /* NewMessageEntrypointButton.swift in Sources */,
