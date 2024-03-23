@@ -1,0 +1,28 @@
+swagger: "2.0"
+info:
+    title: Tweets Service
+    description: Service for managing tweets
+    version: 0.0.1
+host: 0.0.0.0:80
+consumes:
+    - application/json
+    - application/xml
+    - application/gob
+produces:
+    - application/json
+    - application/xml
+    - application/gob
+paths:
+    /swagger.json:
+        get:
+            tags:
+                - tweets
+            summary: Download ./gen/http/openapi.json
+            operationId: tweets#/swagger.json
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+            schemes:
+                - http
