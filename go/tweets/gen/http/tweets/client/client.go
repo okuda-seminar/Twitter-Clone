@@ -8,13 +8,19 @@
 package client
 
 import (
+	"context"
 	"net/http"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // Client lists the tweets service endpoint HTTP clients.
 type Client struct {
+	// CreateTweet Doer is the HTTP client used to make requests to the CreateTweet
+	// endpoint.
+	CreateTweetDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -35,10 +41,35 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
+		CreateTweetDoer:     doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
 		decoder:             dec,
 		encoder:             enc,
+	}
+}
+
+// CreateTweet returns an endpoint that makes HTTP requests to the tweets
+// service CreateTweet server.
+func (c *Client) CreateTweet() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeCreateTweetRequest(c.encoder)
+		decodeResponse = DecodeCreateTweetResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildCreateTweetRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.CreateTweetDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("tweets", "CreateTweet", err)
+		}
+		return decodeResponse(resp)
 	}
 }

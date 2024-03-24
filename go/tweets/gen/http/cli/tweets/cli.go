@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	tweetsc "tweets/gen/http/tweets/client"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
@@ -21,12 +22,17 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return ``
+	return `tweets create-tweet
+`
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return ""
+	return os.Args[0] + ` tweets create-tweet --body '{
+      "text": "Incidunt non vel non.",
+      "user_id": 1887709519386705448
+   }'` + "\n" +
+		""
 }
 
 // ParseEndpoint returns the endpoint and payload as specified on the command
@@ -38,7 +44,14 @@ func ParseEndpoint(
 	dec func(*http.Response) goahttp.Decoder,
 	restore bool,
 ) (goa.Endpoint, any, error) {
-	var ()
+	var (
+		tweetsFlags = flag.NewFlagSet("tweets", flag.ContinueOnError)
+
+		tweetsCreateTweetFlags    = flag.NewFlagSet("create-tweet", flag.ExitOnError)
+		tweetsCreateTweetBodyFlag = tweetsCreateTweetFlags.String("body", "REQUIRED", "")
+	)
+	tweetsFlags.Usage = tweetsUsage
+	tweetsCreateTweetFlags.Usage = tweetsCreateTweetUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -55,6 +68,8 @@ func ParseEndpoint(
 	{
 		svcn = flag.Arg(0)
 		switch svcn {
+		case "tweets":
+			svcf = tweetsFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -70,6 +85,13 @@ func ParseEndpoint(
 	{
 		epn = svcf.Arg(0)
 		switch svcn {
+		case "tweets":
+			switch epn {
+			case "create-tweet":
+				epf = tweetsCreateTweetFlags
+
+			}
+
 		}
 	}
 	if epf == nil {
@@ -90,6 +112,13 @@ func ParseEndpoint(
 	)
 	{
 		switch svcn {
+		case "tweets":
+			c := tweetsc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "create-tweet":
+				endpoint = c.CreateTweet()
+				data, err = tweetsc.BuildCreateTweetPayload(*tweetsCreateTweetBodyFlag)
+			}
 		}
 	}
 	if err != nil {
@@ -97,4 +126,31 @@ func ParseEndpoint(
 	}
 
 	return endpoint, data, nil
+}
+
+// tweetsUsage displays the usage of the tweets command and its subcommands.
+func tweetsUsage() {
+	fmt.Fprintf(os.Stderr, `The tweets service performs operations on tweets information.
+Usage:
+    %[1]s [globalflags] tweets COMMAND [flags]
+
+COMMAND:
+    create-tweet: CreateTweet implements CreateTweet.
+
+Additional help:
+    %[1]s tweets COMMAND --help
+`, os.Args[0])
+}
+func tweetsCreateTweetUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets create-tweet -body JSON
+
+CreateTweet implements CreateTweet.
+    -body JSON: 
+
+Example:
+    %[1]s tweets create-tweet --body '{
+      "text": "Incidunt non vel non.",
+      "user_id": 1887709519386705448
+   }'
+`, os.Args[0])
 }

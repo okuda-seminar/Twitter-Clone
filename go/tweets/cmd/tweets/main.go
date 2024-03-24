@@ -11,6 +11,9 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
+	"tweets/db"
+	tweets "tweets/gen/tweets"
+	"tweets/service"
 )
 
 func main() {
@@ -25,12 +28,36 @@ func main() {
 	)
 	flag.Parse()
 
-	// Setup logger. Replace logger with your own log package of choice.
+	// Setup logger.
 	var (
 		logger *log.Logger
 	)
 	{
 		logger = log.New(os.Stderr, "[tweetsapi] ", log.Ltime)
+	}
+
+	// Connect to database.
+	db, err := db.ConnectToDB()
+	if err != nil {
+		logger.Fatalf("cannot connect to database: %s\n", err)
+	}
+	defer db.Close()
+
+	// Initialize the services.
+	var (
+		tweetsSvc tweets.Service
+	)
+	{
+		tweetsSvc = service.NewTweetsSvc(db, logger)
+	}
+
+	// Wrap the services in endpoints that can be invoked from other services
+	// potentially running in different processes.
+	var (
+		tweetsEndpoints *tweets.Endpoints
+	)
+	{
+		tweetsEndpoints = tweets.NewEndpoints(tweetsSvc)
 	}
 
 	// Create channel used by both the signal handler and server goroutines
@@ -72,7 +99,7 @@ func main() {
 			} else if u.Port() == "" {
 				u.Host = net.JoinHostPort(u.Host, "80")
 			}
-			handleHTTPServer(ctx, u, &wg, errc, logger, *dbgF)
+			handleHTTPServer(ctx, u, tweetsEndpoints, &wg, errc, logger, *dbgF)
 		}
 
 	default:

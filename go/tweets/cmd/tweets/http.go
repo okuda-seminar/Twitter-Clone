@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 	tweetssvr "tweets/gen/http/tweets/server"
+	tweets "tweets/gen/tweets"
 
 	goahttp "goa.design/goa/v3/http"
 	httpmdlwr "goa.design/goa/v3/http/middleware"
@@ -17,7 +18,7 @@ import (
 
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
-func handleHTTPServer(ctx context.Context, u *url.URL, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
+func handleHTTPServer(ctx context.Context, u *url.URL, tweetsEndpoints *tweets.Endpoints, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
 
 	// Setup goa log adapter.
 	var (
@@ -52,7 +53,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, wg *sync.WaitGroup, errc 
 	)
 	{
 		eh := errorHandler(logger)
-		tweetsServer = tweetssvr.New(nil, mux, dec, enc, eh, nil, nil)
+		tweetsServer = tweetssvr.New(tweetsEndpoints, mux, dec, enc, eh, nil, nil)
 		if debug {
 			servers := goahttp.Servers{
 				tweetsServer,
