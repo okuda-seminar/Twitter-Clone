@@ -7,8 +7,16 @@
 
 package tweets
 
+import (
+	"context"
+
+	goa "goa.design/goa/v3/pkg"
+)
+
 // The tweets service performs operations on tweets information.
 type Service interface {
+	// CreateTweet implements CreateTweet.
+	CreateTweet(context.Context, *CreateTweetPayload) (res *Tweet, err error)
 }
 
 // APIName is the name of the API as defined in the design.
@@ -25,4 +33,29 @@ const ServiceName = "tweets"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [0]string{}
+var MethodNames = [1]string{"CreateTweet"}
+
+// CreateTweetPayload is the payload type of the tweets service CreateTweet
+// method.
+type CreateTweetPayload struct {
+	UserID int
+	Text   string
+}
+
+// Tweet is the result type of the tweets service CreateTweet method.
+type Tweet struct {
+	ID        int
+	UserID    int
+	Text      string
+	CreatedAt string
+}
+
+// MakeNotFound builds a goa.ServiceError from an error.
+func MakeNotFound(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "NotFound", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
+}

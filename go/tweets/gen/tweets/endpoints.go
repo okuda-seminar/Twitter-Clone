@@ -8,18 +8,33 @@
 package tweets
 
 import (
+	"context"
+
 	goa "goa.design/goa/v3/pkg"
 )
 
 // Endpoints wraps the "tweets" service endpoints.
 type Endpoints struct {
+	CreateTweet goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "tweets" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
-	return &Endpoints{}
+	return &Endpoints{
+		CreateTweet: NewCreateTweetEndpoint(s),
+	}
 }
 
 // Use applies the given middleware to all the "tweets" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
+	e.CreateTweet = m(e.CreateTweet)
+}
+
+// NewCreateTweetEndpoint returns an endpoint function that calls the method
+// "CreateTweet" of service "tweets".
+func NewCreateTweetEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*CreateTweetPayload)
+		return s.CreateTweet(ctx, p)
+	}
 }

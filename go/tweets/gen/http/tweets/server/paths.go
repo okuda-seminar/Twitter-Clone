@@ -6,3 +6,8 @@
 // $ goa gen tweets/design
 
 package server
+
+// CreateTweetTweetsPath returns the URL path to the tweets service CreateTweet HTTP endpoint.
+func CreateTweetTweetsPath() string {
+	return "/api/tweets"
+}
