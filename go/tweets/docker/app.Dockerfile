@@ -7,3 +7,6 @@ RUN apt-get update -qq && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /go/src/app
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+RUN go install -tags postgres github.com/golang-migrate/migrate/v4/cmd/migrate@latest

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS tweets (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INT,
+    "text" VARCHAR(140) NOT NULL,
+    "created_at" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
