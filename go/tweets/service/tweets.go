@@ -26,6 +26,7 @@ func (s *tweetsSvc) CreateTweet(
 	ctx context.Context,
 	payload *tweets.CreateTweetPayload,
 ) (*tweets.Tweet, error) {
-	// TODO
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/69
+	// [go/tweets] Implement CreateTweet API logic
 	return nil, nil
 }
