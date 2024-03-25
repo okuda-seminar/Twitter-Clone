@@ -24,12 +24,63 @@ struct ContentView: View {
         .frame(width: LayoutConstant.screenWidth)
 
       TabView {
-        // TODO: 
-        HomeView(enableSideMenu: $enableSideMenu).tabItem { Image(systemName: "house") }
-        SearchView(enableSideMenu: $enableSideMenu).tabItem { Image(systemName: "magnifyingglass") }
-        CommunitiesHomeView(enableSideMenu: $enableSideMenu).tabItem { Image(systemName: "person.2") }
-        NotificationsView(enableSideMenu: $enableSideMenu).tabItem { Image(systemName: "bell") }
-        MessagesView(enableSideMenu: $enableSideMenu).tabItem { Image(systemName: "envelope") }
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/67 - Disable swipe gesture of tab views when side menu is showing up.
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/68 - Refactor how to initialize TabView.
+        HomeView(enableSideMenu: $enableSideMenu)
+          .tabItem { Image(systemName: "house") }
+          .gesture(TapGesture()
+            .onEnded {
+              withAnimation {
+                if horizontalOffset == LayoutConstant.sideBarOffset {
+                  horizontalOffset = LayoutConstant.mainOffset
+                }
+              }
+            }
+          )
+        SearchView(enableSideMenu: $enableSideMenu)
+          .tabItem { Image(systemName: "magnifyingglass") }
+          .gesture(TapGesture()
+            .onEnded {
+              withAnimation {
+                if horizontalOffset == LayoutConstant.sideBarOffset {
+                  horizontalOffset = LayoutConstant.mainOffset
+                }
+              }
+            }
+          )
+        CommunitiesHomeView(enableSideMenu: $enableSideMenu)
+          .tabItem { Image(systemName: "person.2") }
+          .gesture(TapGesture()
+            .onEnded {
+              withAnimation {
+                if horizontalOffset == LayoutConstant.sideBarOffset {
+                  horizontalOffset = LayoutConstant.mainOffset
+                }
+              }
+            }
+          )
+        NotificationsView(enableSideMenu: $enableSideMenu)
+          .tabItem { Image(systemName: "bell") }
+          .gesture(TapGesture()
+            .onEnded {
+              withAnimation {
+                if horizontalOffset == LayoutConstant.sideBarOffset {
+                  horizontalOffset = LayoutConstant.mainOffset
+                }
+              }
+            }
+          )
+        MessagesView(enableSideMenu: $enableSideMenu)
+          .tabItem { Image(systemName: "envelope") }
+          .gesture(TapGesture()
+            .onEnded {
+              withAnimation {
+                if horizontalOffset == LayoutConstant.sideBarOffset {
+                  horizontalOffset = LayoutConstant.mainOffset
+                }
+              }
+            }
+          )
       }
       .frame(width: LayoutConstant.screenWidth)
     }
@@ -62,9 +113,6 @@ struct ContentView: View {
   }
 }
 
-
-
 #Preview {
   ContentView()
-    .modelContainer(for: Item.self, inMemory: true)
 }

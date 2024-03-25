@@ -8,6 +8,7 @@ import SwiftUI
 struct HomeView: View {
   @Binding var enableSideMenu: Bool
   @Namespace var animation
+  @State var horizontalOffset = LayoutConstant.forYouOffset
   @State var selectedTabID: HomeTabViewID = .ForYou
 
   enum HomeTabViewID {
@@ -27,7 +28,12 @@ struct HomeView: View {
     }
   }
 
-  private var screenWidth = UIScreen.main.bounds.width
+  private enum LayoutConstant {
+    static let screenWidth = UIScreen.main.bounds.width
+    static let forYouOffset = screenWidth / 2
+    static let followingOffset = -screenWidth / 2
+    static let halfOffset = (forYouOffset+followingOffset) / 2
+  }
 
   init(enableSideMenu: Binding<Bool>) {
     self._enableSideMenu = enableSideMenu
@@ -36,31 +42,55 @@ struct HomeView: View {
   var body: some View {
     VStack {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/28 - Implement Following tab view skelton.
-      ScrollViewReader { proxy in
-        HStack {
-          Spacer()
-          ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
-            HomeHeaderButton(
-              enableSideMenu: $enableSideMenu,
-              selectedTabID: $selectedTabID,
-              animation: animation,
-              title: homeTabTitle(for: tabID),
-              tabID: tabID,
-              proxy: proxy)
-            Spacer()
-          }
-        }
 
-        ScrollView(.horizontal) {
-          LazyHStack {
-            ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
-              HomeTabView()
-                .frame(width: screenWidth)
-                .id(tabID)
+      HStack {
+        Spacer()
+        ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
+          HomeHeaderButton(
+            enableSideMenu: $enableSideMenu,
+            selectedTabID: $selectedTabID,
+            animation: animation,
+            title: homeTabTitle(for: tabID),
+            tabID: tabID)
+          Spacer()
+        }
+      }
+
+      HStack {
+        ForEach(HomeTabViewID.allCases, id: \.self) { tabID in
+          HomeTabView()
+            .padding()
+            .frame(width: LayoutConstant.screenWidth)
+            .id(tabID)
+        }
+      }
+      .offset(x: horizontalOffset)
+      .gesture(DragGesture()
+        .onChanged { value in
+          withAnimation {
+            guard LayoutConstant.followingOffset <= horizontalOffset && horizontalOffset <= LayoutConstant.forYouOffset else { return }
+            let deltaX = value.translation.width / 5
+            if deltaX <= 0 {
+              horizontalOffset = max(LayoutConstant.followingOffset, horizontalOffset+deltaX)
+            } else {
+              horizontalOffset = min(LayoutConstant.forYouOffset, horizontalOffset+deltaX)
             }
           }
         }
-      }
+        .onEnded { value in
+          withAnimation {
+            if horizontalOffset <= LayoutConstant.halfOffset {
+              horizontalOffset = LayoutConstant.followingOffset
+              selectedTabID = .Following
+              enableSideMenu = false
+            } else {
+              horizontalOffset = LayoutConstant.forYouOffset
+              selectedTabID = .ForYou
+              enableSideMenu = true
+            }
+          }
+        }
+      )
     }
     .overlay(
       NewTweetEntrypointButton()
@@ -76,7 +106,6 @@ struct HomeHeaderButton: View {
   var animation: Namespace.ID
   var title: String
   var tabID: HomeView.HomeTabViewID
-  var proxy: ScrollViewProxy
 
   private enum LayoutConstant {
     static let buttonWidth = 80.0
@@ -87,7 +116,6 @@ struct HomeHeaderButton: View {
     Button(action: {
       withAnimation {
         selectedTabID = tabID
-        proxy.scrollTo(tabID)
       }
       enableSideMenu = tabID == HomeView.HomeTabViewID.ForYou
     }, label: {
