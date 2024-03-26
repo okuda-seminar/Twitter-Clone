@@ -2,8 +2,6 @@
 //  TweetCellView.swift
 //  Twitter-iOS
 //
-//  Created by 奥田遼 on 2024/03/10.
-//
 
 import SwiftUI
 
