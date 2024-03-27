@@ -4,44 +4,7 @@
 //
 
 import SwiftUI
-import SwiftData
 
-import Combine
-
-//struct ContentView: View {
-//  let detector: CurrentValueSubject<CGFloat, Never>
-//  let publisher: AnyPublisher<CGFloat, Never>
-//
-//  init() {
-//    let detector = CurrentValueSubject<CGFloat, Never>(0)
-//    self.publisher = detector
-//      .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
-//      .dropFirst()
-//      .eraseToAnyPublisher()
-//    self.detector = detector
-//  }
-//
-//  var body: some View {
-//    ScrollView(.horizontal) {
-//      HStack(spacing: 20) {
-//        ForEach(0...100, id: \.self) { i in
-//          Rectangle()
-//            .frame(width: 200, height: 100)
-//            .foregroundColor(.green)
-//        }
-//      }
-//      .background(GeometryReader {
-//        Color.clear.preference(key: ViewOffsetKey.self,
-//                               value: -$0.frame(in: .named("scroll")).origin.x)
-//      })
-//      .onPreferenceChange(ViewOffsetKey.self) { detector.send($0) }
-//    }
-//      .coordinateSpace(name: "scroll")
-//      .onReceive(publisher) {
-//        print("Stopped on: \($0)")
-//      }
-//  }
-//}
 struct ContentView: View {
   @State var horizontalOffset = LayoutConstant.mainOffset
   @State var enableSideMenu = true
@@ -124,26 +87,10 @@ struct ContentView: View {
     .offset(x: horizontalOffset)
     .gesture(DragGesture()
       .onChanged { value in
-        // temporarily disable for simplicity.
         return
-        //        withAnimation {
-        //          if value.translation.width > 0 && LayoutConstant.mainOffset <= horizontalOffset {
-        //            horizontalOffset = LayoutConstant.mainOffset + value.translation.width
-        //          } else if value.translation.width < 0 &&  horizontalOffset > LayoutConstant.mainOffset {
-        //            horizontalOffset = LayoutConstant.sideBarOffset + value.translation.width
-        //          }
-        //        }
       }
       .onEnded { value in
         return
-
-        //        withAnimation {
-        //          if horizontalOffset >= LayoutConstant.halfOffset {
-        //            horizontalOffset = LayoutConstant.sideBarOffset
-        //          } else {
-        //            horizontalOffset = LayoutConstant.mainOffset
-        //          }
-        //        }
       }
     )
   }

@@ -109,8 +109,6 @@ struct HomeView: View {
   }
 }
 
-
-
 struct HomeHeaderButton: View {
   @Binding var enableSideMenu: Bool
   @Binding var selectedTabID: HomeView.HomeTabViewID
