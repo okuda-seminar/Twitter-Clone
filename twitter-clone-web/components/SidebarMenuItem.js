@@ -1,23 +1,20 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Text, Box } from "@chakra-ui/react";
 
 export default function SidebarMenuItem({ text, Icon, active }) {
   return (
     <Flex
-      className="hoverEffect"
-      alignItems="center"
-      color="gray.700"
-      justifyContent="center"
+      color="gray.900"
       borderRadius="full"
-      width="52px"
-      height="52px"
+      alignItems="center"
+
       padding="3"
       _hover={{ bg: "gray.200" }}
-      xl={{ justifyContent: "flex-start" }}
+
       fontSize="lg"
-      spaceX="3"
+      direction={{ base: "column", lg: "row" }}
     >
-      <Icon as={Icon} boxSize={7} />
-      <Text fontWeight={active ? "bold" : "normal"} display={{ base: "none", xl: "inline" }}>
+      <Icon as={Icon} height="28px" />
+      <Text fontWeight={active ? "bold" : "normal"} display={{ base: "none", lg:"inline",xl: "inline" }}>
         {text}
       </Text>
     </Flex>

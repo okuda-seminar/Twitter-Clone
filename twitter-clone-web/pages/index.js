@@ -11,17 +11,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box p={4}>
+      <Box min-h-screen max-w-7xl mx-auto>
         <Heading as="h1" size="xl">
           Welcome to My Next.js App with Chakra UI!
         </Heading>
-          {/* Sidebar */}
-          <Sidebar />
-          {/* Feed */}
+        {/* Sidebar */}
+        <Sidebar />
+        {/* Feed */}
 
-          {/* Widgets */}
+        {/* Widgets */}
 
-          {/* Modal */}
+        {/* Modal */}
       </Box>
     </div>
   );
