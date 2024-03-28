@@ -1,7 +1,6 @@
 import UIKit
 
-class RootViewController: UIViewController {
-
+class HomeViewController: UIViewController {
   private let helloLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,4 +24,3 @@ class RootViewController: UIViewController {
     ])
   }
 }
-
