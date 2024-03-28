@@ -1,8 +1,3 @@
-//
-//  ContentView.swift
-//  Twitter-iOS
-//
-
 import SwiftUI
 
 struct ContentView: View {

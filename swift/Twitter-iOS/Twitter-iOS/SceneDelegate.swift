@@ -1,10 +1,4 @@
-//
-//  SceneDelegate.swift
-//  Twitter-iOS
-//
-
 import UIKit
-import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
