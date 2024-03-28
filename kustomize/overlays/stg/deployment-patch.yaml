@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: argocd-config
 spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
   project: default
   source:
     repoURL: https://github.com/okuda-seminar/Twitter-Clone.git
