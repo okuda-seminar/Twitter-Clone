@@ -11,7 +11,7 @@ struct HomeTabView: View {
   }()
 
   var body: some View {
-    ScrollView {
+    ScrollView(showsIndicators: false) {
       VStack {
         ForEach(fakeTweets) { fakeTweet in
           Divider()
