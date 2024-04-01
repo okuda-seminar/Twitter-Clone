@@ -2,12 +2,10 @@ import SwiftUI
 import UIKit
 
 class HomeViewController: UIViewController {
-  private let helloLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Hello"
-    return label
-  }()
+
+  private enum LayoutConstant {
+    static let homeHeaderHeight = 44.0
+  }
 
   private let homeTabScrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -24,6 +22,12 @@ class HomeViewController: UIViewController {
     return stackView
   }()
 
+  private let homeHeaderView: UIView = {
+    let view = HomeHeaderView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -32,6 +36,8 @@ class HomeViewController: UIViewController {
 
   private func setUpSubviews() {
     view.backgroundColor = .white
+
+    view.addSubview(homeHeaderView)
 
     let forYouTabViewController = UIHostingController(rootView: HomeTabView())
     let followingTabViewController = UIHostingController(rootView: HomeTabView())
@@ -45,8 +51,15 @@ class HomeViewController: UIViewController {
     homeTabScrollView.addSubview(homeTabStackView)
     view.addSubview(homeTabScrollView)
 
+    let layoutGuide = view.safeAreaLayoutGuide
+
     NSLayoutConstraint.activate([
-      homeTabScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+      homeHeaderView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      homeHeaderView.heightAnchor.constraint(equalToConstant: LayoutConstant.homeHeaderHeight),
+      homeHeaderView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      homeHeaderView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+
+      homeTabScrollView.topAnchor.constraint(equalTo: homeHeaderView.bottomAnchor),
       homeTabScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       homeTabScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       homeTabScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
