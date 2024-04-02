@@ -7,6 +7,13 @@ class HomeViewController: UIViewController {
     static let homeHeaderHeight = 44.0
   }
 
+  private enum homeTabId: String {
+    case forYou
+    case following
+  }
+
+  private var selectedTabId: homeTabId = .forYou
+
   private let homeTabScrollView: UIScrollView = {
     let scrollView = UIScrollView()
     scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +29,7 @@ class HomeViewController: UIViewController {
     return stackView
   }()
 
-  private let homeHeaderView: UIView = {
+  private let homeHeaderView: HomeHeaderView = {
     let view = HomeHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
@@ -37,6 +44,10 @@ class HomeViewController: UIViewController {
   private func setUpSubviews() {
     view.backgroundColor = .white
 
+    homeHeaderView.forYouButton.tabID = homeTabId.forYou.rawValue
+    homeHeaderView.forYouButton.delegate = self
+    homeHeaderView.followingButton.tabID = homeTabId.following.rawValue
+    homeHeaderView.followingButton.delegate = self
     view.addSubview(homeHeaderView)
 
     let forYouTabViewController = UIHostingController(rootView: HomeTabView())
@@ -79,5 +90,25 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UIScrollViewDelegate {
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
     print("Finish")
+  }
+}
+
+extension HomeViewController: HomeHeaderButtonDelegate {
+  func didTapHomeHeaderButton(selectedButton: HomeHeaderButton) {
+    for button in homeHeaderView.allButtons() {
+      if button.tabID == selectedButton.tabID {
+        updateSelectedButtonUI(button)
+      } else {
+        updateUnselectedButtonUI(button)
+      }
+    }
+  }
+
+  private func updateSelectedButtonUI(_ button: HomeHeaderButton) {
+    button.isSelected = true
+  }
+
+  private func updateUnselectedButtonUI(_ button: HomeHeaderButton) {
+    button.isSelected = false
   }
 }

@@ -13,15 +13,23 @@ class HomeHeaderView: UIView {
     setUpSubviews()
   }
 
+  public let forYouButton: HomeHeaderButton = {
+    let button = HomeHeaderButton()
+    button.setTitle(LocalizedString.forYouButtonTitle, for: .normal)
+    button.isSelected = true
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+
+  public let followingButton: HomeHeaderButton = {
+    let button = HomeHeaderButton()
+    button.setTitle(LocalizedString.followingButtonTitle, for: .normal)
+    button.isSelected = false
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+
   private func setUpSubviews() {
-    let forYouButton = HomeHeaderButton()
-    forYouButton.setTitle(LocalizedString.forYouButtonTitle, for: .normal)
-    forYouButton.translatesAutoresizingMaskIntoConstraints = false
-
-    let followingButton = HomeHeaderButton()
-    followingButton.setTitle(LocalizedString.followingButtonTitle, for: .normal)
-    followingButton.translatesAutoresizingMaskIntoConstraints = false
-
     let stackView = UIStackView(arrangedSubviews: [forYouButton, followingButton])
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
@@ -35,5 +43,9 @@ class HomeHeaderView: UIView {
       stackView.topAnchor.constraint(equalTo: topAnchor),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
+  }
+
+  public func allButtons() -> [HomeHeaderButton] {
+    return [forYouButton, followingButton]
   }
 }
