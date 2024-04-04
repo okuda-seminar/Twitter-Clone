@@ -12,8 +12,6 @@ class HomeViewController: UIViewController {
     case following
   }
 
-  private var selectedTabId: homeTabId = .forYou
-
   private let homeTabScrollView: UIScrollView = {
     let scrollView = UIScrollView()
     scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +87,31 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UIScrollViewDelegate {
   func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    print("Finish")
+    let curXOffset = scrollView.contentOffset.x
+    var selectedButtonIdx = 0
+
+    for left in 0...homeHeaderView.allButtons.count-1 {
+      let leftXOffset = homeTabStackView.arrangedSubviews[left].frame.origin.x
+      let rightXOffset = homeTabStackView.arrangedSubviews[left+1].frame.origin.x
+      guard leftXOffset <= curXOffset &&  curXOffset <= curXOffset else { continue }
+
+      if curXOffset <= (leftXOffset+rightXOffset) / 2 {
+        selectedButtonIdx = left
+        scrollView.setContentOffset(CGPoint(x: leftXOffset, y: 0), animated: true)
+      } else {
+        selectedButtonIdx = left+1
+        scrollView.setContentOffset(CGPoint(x: rightXOffset, y: 0), animated: true)
+      }
+      break
+    }
+
+    for (idx, button) in zip(homeHeaderView.allButtons.indices, homeHeaderView.allButtons) {
+      if idx == selectedButtonIdx {
+        updateSelectedButtonUI(button)
+      } else {
+        updateUnselectedButtonUI(button)
+      }
+    }
   }
 }
 
