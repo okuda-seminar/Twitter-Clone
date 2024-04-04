@@ -29,6 +29,10 @@ class HomeHeaderView: UIView {
     return button
   }()
 
+  public lazy var allButtons: [HomeHeaderButton]  = {
+    return [forYouButton, followingButton]
+  }()
+
   private func setUpSubviews() {
     let stackView = UIStackView(arrangedSubviews: [forYouButton, followingButton])
     stackView.axis = .horizontal
@@ -43,9 +47,5 @@ class HomeHeaderView: UIView {
       stackView.topAnchor.constraint(equalTo: topAnchor),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
-  }
-
-  public func allButtons() -> [HomeHeaderButton] {
-    return [forYouButton, followingButton]
   }
 }

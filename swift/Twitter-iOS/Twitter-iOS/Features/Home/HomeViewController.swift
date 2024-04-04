@@ -95,9 +95,12 @@ extension HomeViewController: UIScrollViewDelegate {
 
 extension HomeViewController: HomeHeaderButtonDelegate {
   func didTapHomeHeaderButton(selectedButton: HomeHeaderButton) {
-    for button in homeHeaderView.allButtons() {
+    for (idx, button) in zip(homeHeaderView.allButtons.indices, homeHeaderView.allButtons) {
       if button.tabID == selectedButton.tabID {
         updateSelectedButtonUI(button)
+
+        let xOffset = homeTabStackView.arrangedSubviews[idx].frame.origin.x
+        homeTabScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
       } else {
         updateUnselectedButtonUI(button)
       }
