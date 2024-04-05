@@ -27,6 +27,7 @@
 		6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */; };
 		6540F8D42BC018B30029BA46 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D32BC018B30029BA46 /* SearchViewController.swift */; };
 		6540F8D62BC0199F0029BA46 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D52BC0199F0029BA46 /* SearchHeaderView.swift */; };
+		6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderButton.swift; sourceTree = "<group>"; };
 		6540F8D32BC018B30029BA46 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6540F8D52BC0199F0029BA46 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategoryTabButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 			children = (
 				6540F8D52BC0199F0029BA46 /* SearchHeaderView.swift */,
 				6540F8D32BC018B30029BA46 /* SearchViewController.swift */,
+				6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */,
 				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
+				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewTweetEditView.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButton.swift in Sources */,
 				6540F8CF2BB7F7B10029BA46 /* HomeHeaderView.swift in Sources */,

@@ -2,7 +2,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
   private enum LayoutConstant {
-    static let headerHeight = 64.0
+    static let headerHeight = 44.0
   }
 
   private let headerView: SearchHeaderView = {
@@ -17,8 +17,9 @@ class SearchViewController: UIViewController {
   }
 
   private func setUpSubviews() {
+    view.backgroundColor = .systemBackground
     view.addSubview(headerView)
-    
+
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
