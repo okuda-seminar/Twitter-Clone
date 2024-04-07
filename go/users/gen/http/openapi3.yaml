@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteUserRequestBody'
                         example:
-                            id: 6737525150749713813
+                            id: 3003530445289903022
             responses:
                 "200":
                     description: OK response.
@@ -47,7 +47,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            username: Laudantium eum velit qui.
+                            username: Ipsam in eos et asperiores.
             responses:
                 "200":
                     description: OK response.
@@ -56,8 +56,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Expedita sunt quisquam adipisci blanditiis recusandae.
-                                username: Et nobis sunt qui consequatur.
+                                bio: Quidem quis at.
+                                created_at: "1986-09-09T16:37:23Z"
+                                updated_at: "1982-01-06T00:17:30Z"
+                                user_id: 3412352365744796005
+                                username: Alias sunt eos ut.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -76,9 +79,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 1719386828064031913
+                    example: 1405347787323667800
                     format: int64
-                  example: 1730839370041357179
+                  example: 8613931763159042623
             responses:
                 "200":
                     description: OK response.
@@ -87,8 +90,11 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Repellendus molestiae.
-                                username: Aliquam ea aliquid corporis dolorem.
+                                bio: Impedit qui voluptas.
+                                created_at: "1998-07-28T20:05:52Z"
+                                updated_at: "1996-07-02T15:47:27Z"
+                                user_id: 374265417653804085
+                                username: Iure sapiente ut doloremque nostrum culpa cupiditate.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -107,9 +113,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 8092750819571128419
+                    example: 4876378100867019758
                     format: int64
-                  example: 4589975402484629216
+                  example: 5011399336580591325
             requestBody:
                 required: true
                 content:
@@ -117,7 +123,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateBioRequestBody'
                         example:
-                            bio: Harum cum rerum est similique magni.
+                            bio: Accusantium aut autem molestias placeat.
             responses:
                 "200":
                     description: OK response.
@@ -145,9 +151,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 1878169813977906832
+                    example: 8431095605965339718
                     format: int64
-                  example: 8699031663705966246
+                  example: 4941914734583634128
             requestBody:
                 required: true
                 content:
@@ -155,7 +161,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            username: Exercitationem commodi nesciunt sed.
+                            username: Ipsum error nostrum.
             responses:
                 "200":
                     description: OK response.
@@ -187,9 +193,9 @@ components:
             properties:
                 username:
                     type: string
-                    example: Non et voluptatem autem totam praesentium soluta.
+                    example: Deleniti voluptatem autem cum sit.
             example:
-                username: Iure sapiente ut doloremque nostrum culpa cupiditate.
+                username: Consectetur doloribus repellendus maxime.
             required:
                 - username
         DeleteUserRequestBody:
@@ -197,10 +203,10 @@ components:
             properties:
                 id:
                     type: integer
-                    example: 5750432397204589644
+                    example: 3618294770990188696
                     format: int64
             example:
-                id: 4007392058619601988
+                id: 1601372322786189458
             required:
                 - id
         Error:
@@ -231,12 +237,12 @@ components:
                     description: Is the error a timeout?
                     example: true
             example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
-                timeout: true
+                temporary: false
+                timeout: false
             required:
                 - name
                 - id
@@ -249,9 +255,9 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Dolores minus eaque tempora in laborum.
+                    example: Corrupti pariatur asperiores consectetur.
             example:
-                bio: Officia expedita consequuntur.
+                bio: Est harum quaerat soluta aliquid.
             required:
                 - bio
         User:
@@ -259,16 +265,34 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Officia temporibus qui nisi ipsam.
+                    example: Blanditiis debitis.
+                created_at:
+                    type: string
+                    example: "1985-04-01T04:31:12Z"
+                    format: date-time
+                updated_at:
+                    type: string
+                    example: "1995-06-02T05:42:32Z"
+                    format: date-time
+                user_id:
+                    type: integer
+                    example: 6810089276095289162
+                    format: int64
                 username:
                     type: string
-                    example: Impedit qui voluptas.
+                    example: Sed quis.
             example:
-                bio: Ut possimus.
-                username: Sapiente consequuntur modi nisi.
+                bio: Dolorem dolorum facere omnis omnis.
+                created_at: "2006-10-03T22:06:57Z"
+                updated_at: "1977-01-22T08:25:26Z"
+                user_id: 8299613301853210813
+                username: Est ipsam placeat provident.
             required:
+                - user_id
                 - username
                 - bio
+                - created_at
+                - updated_at
 tags:
     - name: users
       description: The users service performs operations on users information.

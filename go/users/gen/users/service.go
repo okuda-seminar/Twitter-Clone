@@ -68,8 +68,11 @@ type UpdateUsernamePayload struct {
 
 // User is the result type of the users service CreateUser method.
 type User struct {
-	Username string
-	Bio      string
+	UserID    int
+	Username  string
+	Bio       string
+	CreatedAt string
+	UpdatedAt string
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.

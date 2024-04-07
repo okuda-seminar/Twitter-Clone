@@ -40,15 +40,21 @@ type UpdateBioRequestBody struct {
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
-	Bio      *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	UserID    *int    `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	Username  *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Bio       *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // FindUserByIDResponseBody is the type of the "users" service "FindUserByID"
 // endpoint HTTP response body.
 type FindUserByIDResponseBody struct {
-	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
-	Bio      *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	UserID    *int    `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	Username  *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Bio       *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // CreateUserBadRequestResponseBody is the type of the "users" service
@@ -235,8 +241,11 @@ func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
 // from a HTTP "OK" response.
 func NewCreateUserUserOK(body *CreateUserResponseBody) *users.User {
 	v := &users.User{
-		Username: *body.Username,
-		Bio:      *body.Bio,
+		UserID:    *body.UserID,
+		Username:  *body.Username,
+		Bio:       *body.Bio,
+		CreatedAt: *body.CreatedAt,
+		UpdatedAt: *body.UpdatedAt,
 	}
 
 	return v
@@ -291,8 +300,11 @@ func NewDeleteUserBadRequest(body *DeleteUserBadRequestResponseBody) *goa.Servic
 // result from a HTTP "OK" response.
 func NewFindUserByIDUserOK(body *FindUserByIDResponseBody) *users.User {
 	v := &users.User{
-		Username: *body.Username,
-		Bio:      *body.Bio,
+		UserID:    *body.UserID,
+		Username:  *body.Username,
+		Bio:       *body.Bio,
+		CreatedAt: *body.CreatedAt,
+		UpdatedAt: *body.UpdatedAt,
 	}
 
 	return v
@@ -376,11 +388,26 @@ func NewUpdateBioBadRequest(body *UpdateBioBadRequestResponseBody) *goa.ServiceE
 // ValidateCreateUserResponseBody runs the validations defined on
 // CreateUserResponseBody
 func ValidateCreateUserResponseBody(body *CreateUserResponseBody) (err error) {
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
 	if body.Username == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
 	}
 	if body.Bio == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.CreatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("created_at", "body"))
+	}
+	if body.UpdatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
+	}
+	if body.CreatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
+	}
+	if body.UpdatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.updated_at", *body.UpdatedAt, goa.FormatDateTime))
 	}
 	return
 }
@@ -388,11 +415,26 @@ func ValidateCreateUserResponseBody(body *CreateUserResponseBody) (err error) {
 // ValidateFindUserByIDResponseBody runs the validations defined on
 // FindUserByIDResponseBody
 func ValidateFindUserByIDResponseBody(body *FindUserByIDResponseBody) (err error) {
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
 	if body.Username == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
 	}
 	if body.Bio == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.CreatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("created_at", "body"))
+	}
+	if body.UpdatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
+	}
+	if body.CreatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
+	}
+	if body.UpdatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.updated_at", *body.UpdatedAt, goa.FormatDateTime))
 	}
 	return
 }

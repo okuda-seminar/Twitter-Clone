@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
 )
 
 // usersRepoImpl implements users/db/repository/usersRepo.
@@ -20,25 +21,34 @@ func NewUsersRepoImpl(db *sql.DB) UsersRepo {
 // The 'Bio' field is set to an empty string, not null.
 // If a user with the specified username already exists, the creation fails.
 func (r *usersRepoImpl) CreateUser(ctx context.Context, username string) (*User, error) {
-	query := "INSERT INTO users (username, bio) VALUES ($1, $2) RETURNING id"
-	var id int
-	err := r.db.QueryRowContext(ctx, query, username, "").Scan(&id)
+	query := `
+INSERT INTO users (username, bio) VALUES ($1, $2)
+RETURNING user_id, created_at, updated_at
+`
+	var (
+		userId               int
+		createdAt, updatedAt time.Time
+	)
+
+	err := r.db.QueryRowContext(ctx, query, username, "").Scan(&userId, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, err
 	}
 
 	user := User{
-		ID:       id,
-		Username: username,
-		Bio:      "",
+		UserID:    userId,
+		Username:  username,
+		Bio:       "",
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
 	}
 	return &user, nil
 }
 
-// DeleteUser deletes a user with the specified ID.
-func (r *usersRepoImpl) DeleteUser(ctx context.Context, id int) error {
-	query := "DELETE FROM users WHERE id = $1"
-	res, err := r.db.ExecContext(ctx, query, id)
+// DeleteUser deletes a user with the specified user ID.
+func (r *usersRepoImpl) DeleteUser(ctx context.Context, user_id int) error {
+	query := "DELETE FROM users WHERE user_id = $1"
+	res, err := r.db.ExecContext(ctx, query, user_id)
 	if err != nil {
 		return err
 	}
@@ -53,17 +63,19 @@ func (r *usersRepoImpl) DeleteUser(ctx context.Context, id int) error {
 	return nil
 }
 
-// FindUserByID retrieves a user by ID from the database.
-func (r *usersRepoImpl) FindUserByID(ctx context.Context, id int) (*User, error) {
-	query := "SELECT * FROM users WHERE id = $1"
-	row := r.db.QueryRowContext(ctx, query, id)
+// FindUserByID retrieves a user by user ID from the database.
+func (r *usersRepoImpl) FindUserByID(ctx context.Context, user_id int) (*User, error) {
+	query := "SELECT * FROM users WHERE user_id = $1"
+	row := r.db.QueryRowContext(ctx, query, user_id)
 
 	var user User
 
 	err := row.Scan(
-		&user.ID,
+		&user.UserID,
 		&user.Username,
 		&user.Bio,
+		&user.CreatedAt,
+		&user.UpdatedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -73,9 +85,9 @@ func (r *usersRepoImpl) FindUserByID(ctx context.Context, id int) (*User, error)
 
 // UpdateUsername updates the username of a user with the specified ID.
 // If a user with the specified username already exists, the update fails.
-func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id int, username string) error {
-	query := "UPDATE users SET username = $1 where id = $2"
-	res, err := r.db.ExecContext(ctx, query, username, id)
+func (r *usersRepoImpl) UpdateUsername(ctx context.Context, user_id int, username string) error {
+	query := "UPDATE users SET username = $1 where user_id = $2"
+	res, err := r.db.ExecContext(ctx, query, username, user_id)
 	if err != nil {
 		return err
 	}
@@ -91,9 +103,9 @@ func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id int, username str
 }
 
 // UpdateBio updates the bio of a user with the specified ID.
-func (r *usersRepoImpl) UpdateBio(ctx context.Context, id int, bio string) error {
-	query := "UPDATE users SET bio = $1 where id = $2"
-	res, err := r.db.ExecContext(ctx, query, bio, id)
+func (r *usersRepoImpl) UpdateBio(ctx context.Context, user_id int, bio string) error {
+	query := "UPDATE users SET bio = $1 where user_id = $2"
+	res, err := r.db.ExecContext(ctx, query, bio, user_id)
 	if err != nil {
 		return err
 	}
@@ -126,7 +138,7 @@ func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, erro
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
-			&user.ID,
+			&user.UserID,
 			&user.Username,
 		)
 		if err != nil {
@@ -156,7 +168,7 @@ func (r *usersRepoImpl) GetFollowees(ctx context.Context, id int) ([]*User, erro
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
-			&user.ID,
+			&user.UserID,
 			&user.Username,
 		)
 		if err != nil {

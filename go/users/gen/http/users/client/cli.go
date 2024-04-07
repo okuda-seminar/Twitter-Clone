@@ -22,7 +22,7 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Laudantium eum velit qui.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Ipsam in eos et asperiores.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
@@ -40,7 +40,7 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 6737525150749713813\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 3003530445289903022\n   }'")
 		}
 	}
 	v := &users.DeleteUserPayload{
@@ -77,7 +77,7 @@ func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsern
 	{
 		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Exercitationem commodi nesciunt sed.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Ipsum error nostrum.\"\n   }'")
 		}
 	}
 	var id int
@@ -105,7 +105,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Harum cum rerum est similique magni.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Accusantium aut autem molestias placeat.\"\n   }'")
 		}
 	}
 	var id int

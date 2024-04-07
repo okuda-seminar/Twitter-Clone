@@ -6,7 +6,9 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strings"
 	"testing"
+	"time"
 	"users/db/repository"
 	"users/gen/users"
 
@@ -24,12 +26,12 @@ func (dbMock *DBMock) close() {
 }
 
 func (dbMock *DBMock) insertUser(user *repository.User) {
-	rows := sqlmock.NewRows([]string{"id", "username", "bio"}).
-		AddRow(user.ID, user.Username, user.Bio)
+	rows := sqlmock.NewRows([]string{"user_id", "username", "bio", "created_at", "updated_at"}).
+		AddRow(user.UserID, user.Username, user.Bio, user.CreatedAt, user.UpdatedAt)
 
-	query := "SELECT * FROM users WHERE id = $1"
+	query := "SELECT * FROM users WHERE user_id = $1"
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(user.ID).
+		WithArgs(user.UserID).
 		WillReturnRows(rows)
 }
 
@@ -56,10 +58,13 @@ func TestFindUserByID(t *testing.T) {
 	}
 	defer dbMock.close()
 
+	now := time.Now()
 	expected := &repository.User{
-		ID:       1,
-		Username: "test user",
-		Bio:      "some bio",
+		UserID:    1,
+		Username:  "test user",
+		Bio:       "some bio",
+		CreatedAt: now,
+		UpdatedAt: now,
 	}
 	dbMock.insertUser(expected)
 
@@ -77,15 +82,44 @@ func TestUpdateUsername(t *testing.T) {
 	}
 	defer dbMock.close()
 
-	query := "UPDATE users SET username = $1 where id = $2"
-	updatedUsername := "updated"
+	query := "UPDATE users SET username = $1 where user_id = $2"
+
 	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
-		WithArgs(updatedUsername, 1).
+		WithArgs("updated", 1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	p := &users.UpdateUsernamePayload{ID: 1, Username: updatedUsername}
-	err = service.UpdateUsername(context.Background(), p)
-	assert.NoError(t, err)
+	tests := []struct {
+		payload   users.UpdateUsernamePayload
+		expectErr bool
+	}{
+		{
+			payload:   users.UpdateUsernamePayload{ID: 1, Username: "updated"},
+			expectErr: false,
+		},
+		// Too short username.
+		{
+			payload:   users.UpdateUsernamePayload{ID: 1, Username: ""},
+			expectErr: true,
+		},
+		// Too long username.
+		{
+			payload:   users.UpdateUsernamePayload{ID: 1, Username: strings.Repeat("a", 21)},
+			expectErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		err := service.UpdateUsername(context.Background(), &tt.payload)
+		if tt.expectErr {
+			if err == nil {
+				t.Errorf("expected err, but got nil")
+			}
+		} else {
+			if err != nil {
+				t.Errorf("expected nil, but got err: %v", err)
+			}
+		}
+	}
 }
 
 func TestUpdateBio(t *testing.T) {
@@ -95,13 +129,36 @@ func TestUpdateBio(t *testing.T) {
 	}
 	defer dbMock.close()
 
-	query := "UPDATE users SET bio = $1 where id = $2"
-	updatedBio := "updated"
+	query := "UPDATE users SET bio = $1 where user_id = $2"
 	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
-		WithArgs(updatedBio, 1).
+		WithArgs("updated", 1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	p := &users.UpdateBioPayload{ID: 1, Bio: updatedBio}
-	err = service.UpdateBio(context.Background(), p)
-	assert.NoError(t, err)
+	tests := []struct {
+		payload   users.UpdateBioPayload
+		expectErr bool
+	}{
+		{
+			payload:   users.UpdateBioPayload{ID: 1, Bio: "updated"},
+			expectErr: false,
+		},
+		// Too long bio.
+		{
+			payload:   users.UpdateBioPayload{ID: 1, Bio: strings.Repeat("a", 161)},
+			expectErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		err := service.UpdateBio(context.Background(), &tt.payload)
+		if tt.expectErr {
+			if err == nil {
+				t.Errorf("expected err, but got nil")
+			}
+		} else {
+			if err != nil {
+				t.Errorf("expected nil, but got err: %v", err)
+			}
+		}
+	}
 }

@@ -1,6 +1,10 @@
 package design
 
-import . "goa.design/goa/v3/dsl"
+import (
+	"users/design/types"
+
+	. "goa.design/goa/v3/dsl"
+)
 
 var _ = API("users", func() {
 	Title("Users Service")
@@ -23,7 +27,7 @@ var _ = Service("users", func() {
 			Field(1, "username", String)
 			Required("username")
 		})
-		Result(User)
+		Result(types.User)
 
 		HTTP(func() {
 			POST("/api/users")
@@ -52,7 +56,7 @@ var _ = Service("users", func() {
 			Field(1, "id", Int)
 			Required("id")
 		})
-		Result(User)
+		Result(types.User)
 
 		HTTP(func() {
 			GET("/api/users/{id}")
@@ -94,12 +98,4 @@ var _ = Service("users", func() {
 	})
 
 	Files("/swagger.json", "./gen/http/openapi.json")
-})
-
-var User = Type("User", func() {
-	Attribute("username", String)
-	Attribute("bio", String)
-
-	Required("username")
-	Required("bio")
 })
