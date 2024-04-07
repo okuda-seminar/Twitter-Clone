@@ -5,16 +5,9 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"time"
 	"users/db/repository"
 	users "users/gen/users"
-)
-
-const (
-	usernameLenMin = 1
-	usernameLenMax = 20
-
-	bioLenMin = 0
-	bioLenMax = 160
 )
 
 // usersSvc implements users/gen/users.Service.
@@ -33,14 +26,23 @@ func (s *usersSvc) CreateUser(
 	ctx context.Context,
 	p *users.CreateUserPayload,
 ) (res *users.User, err error) {
+	if !validateUsername(p.Username) {
+		s.logger.Printf("users.CreateUser: failed (%s)", err)
+		return nil, users.MakeBadRequest(errors.New("username is invalid"))
+	}
+
 	user, err := s.repository.CreateUser(ctx, p.Username)
 	if err != nil {
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
 		return nil, users.MakeBadRequest(err)
 	}
+
 	res = &users.User{
-		Username: user.Username,
-		Bio:      user.Bio,
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Bio:       user.Bio,
+		CreatedAt: user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt: user.UpdatedAt.Format(time.RFC3339),
 	}
 
 	s.logger.Print("users.CreateUser")
@@ -73,8 +75,11 @@ func (s *usersSvc) FindUserByID(
 		return nil, users.MakeNotFound(err)
 	}
 	res = &users.User{
-		Username: user.Username,
-		Bio:      user.Bio,
+		UserID:    user.UserID,
+		Username:  user.Username,
+		Bio:       user.Bio,
+		CreatedAt: user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt: user.UpdatedAt.Format(time.RFC3339),
 	}
 
 	s.logger.Print("users.FindByID")
@@ -85,7 +90,7 @@ func (s *usersSvc) UpdateUsername(
 	ctx context.Context,
 	p *users.UpdateUsernamePayload,
 ) (err error) {
-	if len(p.Username) < usernameLenMin || len(p.Username) > usernameLenMax {
+	if !validateUsername(p.Username) {
 		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
 		return users.MakeBadRequest(errors.New("username is invalid"))
 	}
@@ -104,7 +109,7 @@ func (s *usersSvc) UpdateBio(
 	ctx context.Context,
 	p *users.UpdateBioPayload,
 ) (err error) {
-	if len(p.Bio) < bioLenMin || len(p.Bio) > bioLenMax {
+	if !validateBio(p.Bio) {
 		s.logger.Printf("users.UpdateBio: failed (%s)", err)
 		return users.MakeBadRequest(errors.New("bio is invalid"))
 	}
@@ -117,4 +122,28 @@ func (s *usersSvc) UpdateBio(
 
 	s.logger.Print("users.UpdateBio")
 	return
+}
+
+const (
+	usernameLenMin = 1
+	usernameLenMax = 20
+)
+
+func validateUsername(username string) bool {
+	if len(username) < usernameLenMin || usernameLenMax < len(username) {
+		return false
+	}
+	return true
+}
+
+const (
+	bioLenMin = 0
+	bioLenMax = 160
+)
+
+func validateBio(bio string) bool {
+	if len(bio) < bioLenMin || bioLenMax < len(bio) {
+		return false
+	}
+	return true
 }
