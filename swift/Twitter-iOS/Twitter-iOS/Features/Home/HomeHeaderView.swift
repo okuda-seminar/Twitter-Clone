@@ -8,9 +8,13 @@ class HomeHeaderView: UIView {
     static let followingButtonTitle = String(localized: "Following")
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     setUpSubviews()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   public let forYouButton: HomeHeaderButton = {

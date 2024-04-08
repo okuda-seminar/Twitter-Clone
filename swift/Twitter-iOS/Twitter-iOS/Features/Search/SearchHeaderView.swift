@@ -21,12 +21,14 @@ class SearchHeaderView: UIView {
     return stackView
   }()
 
-  private let categoryTabButtons: [SearchCategoryTabButton] = {
+  public let categoryTabButtons: [SearchCategoryTabButton] = {
     var buttons: [SearchCategoryTabButton] = []
-    for category in searchCategories {
+    for category in searchCategoryModels {
       let button = SearchCategoryTabButton(frame: .zero)
       button.translatesAutoresizingMaskIntoConstraints = false
-      button.setTitle(category, for: .normal)
+      button.setTitle(category.title, for: .normal)
+      button.tabID = category.tabId
+      button.isSelected = category.tabId == .forYou
       buttons.append(button)
     }
     return buttons

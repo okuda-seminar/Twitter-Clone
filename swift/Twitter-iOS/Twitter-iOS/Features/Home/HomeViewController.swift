@@ -28,7 +28,7 @@ class HomeViewController: UIViewController {
   }()
 
   private let homeHeaderView: HomeHeaderView = {
-    let view = HomeHeaderView()
+    let view = HomeHeaderView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
