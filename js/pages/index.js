@@ -12,9 +12,7 @@ export default function Home() {
       </Head>
 
       <Box min-h-screen max-w-7xl mx-auto>
-        <Heading as="h1" size="xl">
-          Welcome to My Next.js App with Chakra UI!
-        </Heading>
+
         {/* Sidebar */}
         <Sidebar />
         {/* Feed */}

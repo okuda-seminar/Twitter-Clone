@@ -13,7 +13,8 @@ import {
 import SidebarMenuItem from "./SidebarMenuItem";
 
 export default function Sidebar() {
-  const isHovered = false; // ホバーの状態をここで設定
+  const isHovered = false; // const isHovered = false; // Set the hover state here
+
 
   return (
     <Flex
