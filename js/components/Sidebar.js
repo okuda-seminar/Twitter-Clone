@@ -26,6 +26,7 @@ export default function Sidebar() {
       position="fixed"
       left={0}
       backgroundColor={"gray.100"}
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
     >
       <Box
         mt={4}
@@ -35,7 +36,9 @@ export default function Sidebar() {
       >
         <Box
           className={`hoverEffect ${isHovered ? "bg-blue-100" : ""}`}
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           _hover={{ bg: "gray.200" }}
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           borderRadius="full"
         >
           <Image
@@ -57,6 +60,7 @@ export default function Sidebar() {
       {/* profile */}
       <Button
         bg="blue.400"
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         color="white"
         rounded="full"
         w="56"
@@ -76,6 +80,7 @@ export default function Sidebar() {
         mt={{ base: 0, xl: 2 }}
         borderRadius="full"
         _hover={{ bg: "gray.200" }}
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         p = {{ base: 0, xl: 3 }}
       >
         <Avatar
@@ -91,6 +96,7 @@ export default function Sidebar() {
         >
           <Text fontWeight="bold">sugiki8</Text>
           <Text color="gray.500">@8Infu</Text>
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         </Flex>
         <Flex direction="row" display={{ base: "none", xl: "inline" }} mr={2}>
           <DotsHorizontalIcon height="28px" />
