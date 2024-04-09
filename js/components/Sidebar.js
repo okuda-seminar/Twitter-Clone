@@ -83,11 +83,6 @@ export default function Sidebar() {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         p = {{ base: 0, xl: 3 }}
       >
-        <Avatar
-          src="https://eightsuzuki.github.io/images/profile.png"
-          alt="user-img"
-          size={{ base: "sm", xl: "md" }}
-        />
         <Flex
           direction="row"
           display={{ base: "none", xl: "inline" }}
