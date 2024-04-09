@@ -14,6 +14,12 @@ class SearchViewController: UIViewController {
     return view
   }()
 
+  private let tabView: SearchTabView = {
+    let view = SearchTabView(frame: .zero)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -22,6 +28,7 @@ class SearchViewController: UIViewController {
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(headerView)
+    view.addSubview(tabView)
 
     for button in headerView.categoryTabButtons {
       button.delegate = self
@@ -34,6 +41,11 @@ class SearchViewController: UIViewController {
       headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
+
+      tabView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      tabView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      tabView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+      tabView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
     ])
   }
 }
