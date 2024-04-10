@@ -38,15 +38,19 @@ export default function Sidebar() {
       >
         <Box
           className={`hoverEffect ${isHovered ? "bg-blue-100" : ""}`}
+          display="flex" 
+          justifyContent="center" 
+          alignItems="center" 
           // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           _hover={{ bg: "gray.200" }}
           // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           borderRadius="full"
+          mb="20px"
         >
           <Image
-            src="https://help.twitter.com/content/dam/help-twitter/brand/logo.png"
-            width="60px"
-            height="60px"
+            src="https://about.twitter.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png"
+            width="30px"
+            height="30px"
           />
         </Box>
         <SidebarMenuItem text="Home" Icon={HomeIcon} active />
