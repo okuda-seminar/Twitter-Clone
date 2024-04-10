@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Avatar, Icon, Text, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Image, Avatar, Icon } from "@chakra-ui/react";
 import {
   HomeIcon,
   BellIcon,
@@ -9,12 +9,13 @@ import {
   HashtagIcon,
   InboxIcon,
   UserIcon,
+  PencilIcon,
+  PlusIcon,
 } from "@heroicons/react/solid";
 import SidebarMenuItem from "./SidebarMenuItem";
 
 export default function Sidebar() {
   const isHovered = false; // const isHovered = false; // Set the hover state here
-
 
   return (
     <Flex
@@ -26,8 +27,9 @@ export default function Sidebar() {
       position="fixed"
       left={0}
       backgroundColor={"gray.100"}
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
     >
+      {/* Menu Button */}
       <Box
         mt={4}
         mb={2.5}
@@ -36,9 +38,9 @@ export default function Sidebar() {
       >
         <Box
           className={`hoverEffect ${isHovered ? "bg-blue-100" : ""}`}
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           _hover={{ bg: "gray.200" }}
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           borderRadius="full"
         >
           <Image
@@ -57,11 +59,12 @@ export default function Sidebar() {
         <SidebarMenuItem text="More" Icon={DotsCircleHorizontalIcon} />
       </Box>
 
-      {/* profile */}
+      {/* Tweet */}
       <Button
         bg="blue.400"
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         color="white"
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/90 - Support dark mode.
         rounded="full"
         w="56"
         h="12"
@@ -74,15 +77,31 @@ export default function Sidebar() {
         Tweet
       </Button>
 
+      <Button
+        bg="blue.400"
+        rounded="full"
+        borderRadius="full"
+        className="rounded-full bg-blue-200 p-2 hover:bg-blue-300 focus:outline-none"
+        display={{ xl: "none" }}
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+      >
+        <PencilIcon height="28px" color="white" />
+      </Button>
+
       <Flex
         display="flex"
         alignItems="center"
-        mt={{ base: 0, xl: 2 }}
+        mt={{base:10, xl:2}}
         borderRadius="full"
         _hover={{ bg: "gray.200" }}
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
-        p = {{ base: 0, xl: 3 }}
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+        p={{base:0, xl:3}}
       >
+        <Avatar
+          src="https://eightsuzuki.github.io/images/profile.png"
+          alt="user-img"
+          size={{ base: "sm", xl: "md" }}
+        />
         <Flex
           direction="row"
           display={{ base: "none", xl: "inline" }}
@@ -90,8 +109,12 @@ export default function Sidebar() {
           mr={2}
         >
           <Text fontWeight="bold">sugiki8</Text>
-          <Text color="gray.500">@8Infu</Text>
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+          <Text
+            color="gray.500"
+            // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
+          >
+            @8Infu
+          </Text>
         </Flex>
         <Flex direction="row" display={{ base: "none", xl: "inline" }} mr={2}>
           <DotsHorizontalIcon height="28px" />

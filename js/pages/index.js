@@ -1,3 +1,6 @@
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/89 - Introduce Linter / Formatter in GitHub Actions when creating / updating PR.
+
+
 import Head from "next/head";
 import { Heading, Box } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
