@@ -9,13 +9,20 @@ class SearchViewController: UIViewController {
   }
 
   private let headerView: SearchHeaderView = {
-    let view = SearchHeaderView(frame: .zero)
+    let view = SearchHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
+  private let tabsView: SearchTabsView = {
+    let view = SearchTabsView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+
   private let tabView: SearchTabView = {
-    let view = SearchTabView(frame: .zero)
+    let view = SearchTabView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -27,12 +34,15 @@ class SearchViewController: UIViewController {
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
-    view.addSubview(headerView)
-    view.addSubview(tabView)
 
+    view.addSubview(headerView)
+    view.addSubview(tabsView)
+
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94 - Fetch Search tab data from server.
     for button in headerView.categoryTabButtons {
       button.delegate = self
     }
+    tabsView.loadTabsData(headerView.categoryTabButtons.count)
 
     let layoutGuide = view.safeAreaLayoutGuide
 
@@ -42,19 +52,20 @@ class SearchViewController: UIViewController {
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
 
-      tabView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      tabView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      tabView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-      tabView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
+      tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      tabsView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+      tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
     ])
   }
 }
 
 extension SearchViewController: SearchCategoryTabButtonDelegate {
   func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton) {
-    for button in headerView.categoryTabButtons {
+    for (tabIdx, button) in zip(headerView.categoryTabButtons.indices, headerView.categoryTabButtons) {
       if button.tabID == selectedButton.tabID {
         button.isSelected = true
+        tabsView.scroll(to: tabIdx)
       } else {
         button.isSelected = false
       }

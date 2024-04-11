@@ -32,6 +32,7 @@
 		6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8DD2BC564A50029BA46 /* SearchTopicCellView.swift */; };
 		6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8DF2BC564CB0029BA46 /* TopicModel.swift */; };
 		6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E12BC565980029BA46 /* SearchTabView.swift */; };
+		6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E52BC817310029BA46 /* SearchTabsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		6540F8DD2BC564A50029BA46 /* SearchTopicCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTopicCellView.swift; sourceTree = "<group>"; };
 		6540F8DF2BC564CB0029BA46 /* TopicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicModel.swift; sourceTree = "<group>"; };
 		6540F8E12BC565980029BA46 /* SearchTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabView.swift; sourceTree = "<group>"; };
+		6540F8E52BC817310029BA46 /* SearchTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 				6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */,
 				6540F8DB2BC424180029BA46 /* SearchCategoryModel.swift */,
 				6540F8E12BC565980029BA46 /* SearchTabView.swift */,
+				6540F8E52BC817310029BA46 /* SearchTabsView.swift */,
 				6540F8DD2BC564A50029BA46 /* SearchTopicCellView.swift */,
 				6540F8D32BC018B30029BA46 /* SearchViewController.swift */,
 				6540F8DF2BC564CB0029BA46 /* TopicModel.swift */,
@@ -378,6 +381,7 @@
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
+				6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */,
 				6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
 				6540F8C22BB576AD0029BA46 /* NewTweetButton.swift in Sources */,
