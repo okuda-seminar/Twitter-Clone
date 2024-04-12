@@ -4,6 +4,7 @@ class RootViewController: UITabBarController {
   private enum TabBarItemTag: Int {
     case home
     case search
+    case notifications
   }
   
   override func viewDidLoad() {
@@ -24,6 +25,10 @@ class RootViewController: UITabBarController {
     let searchViewController = SearchViewController()
     searchViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
 
-    viewControllers = [homeViewController, searchViewController]
+    let notificationsViewController = NotificationsViewController()
+    notificationsViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
+
+
+    viewControllers = [homeViewController, searchViewController, notificationsViewController]
   }
 }

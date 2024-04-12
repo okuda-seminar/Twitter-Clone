@@ -33,6 +33,8 @@
 		6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8DF2BC564CB0029BA46 /* TopicModel.swift */; };
 		6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E12BC565980029BA46 /* SearchTabView.swift */; };
 		6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E52BC817310029BA46 /* SearchTabsView.swift */; };
+		6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E82BC972AB0029BA46 /* NotificationsViewController.swift */; };
+		6540F8EB2BC972E70029BA46 /* NotificationsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8EA2BC972E70029BA46 /* NotificationsHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		6540F8DF2BC564CB0029BA46 /* TopicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicModel.swift; sourceTree = "<group>"; };
 		6540F8E12BC565980029BA46 /* SearchTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabView.swift; sourceTree = "<group>"; };
 		6540F8E52BC817310029BA46 /* SearchTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabsView.swift; sourceTree = "<group>"; };
+		6540F8E82BC972AB0029BA46 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		6540F8EA2BC972E70029BA46 /* NotificationsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				6540F8B22BB5753B0029BA46 /* Home */,
+				6540F8E72BC9728E0029BA46 /* Notifications */,
 				6540F8D22BC018910029BA46 /* Search */,
 				6540F8B82BB575E80029BA46 /* Tweet */,
 			);
@@ -232,6 +237,15 @@
 				6540F8DF2BC564CB0029BA46 /* TopicModel.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		6540F8E72BC9728E0029BA46 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				6540F8EA2BC972E70029BA46 /* NotificationsHeaderView.swift */,
+				6540F8E82BC972AB0029BA46 /* NotificationsViewController.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,10 +394,12 @@
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */,
+				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */,
 				6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
+				6540F8EB2BC972E70029BA46 /* NotificationsHeaderView.swift in Sources */,
 				6540F8C22BB576AD0029BA46 /* NewTweetButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
