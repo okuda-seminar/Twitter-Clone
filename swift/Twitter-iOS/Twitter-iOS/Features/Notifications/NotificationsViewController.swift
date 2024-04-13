@@ -11,6 +11,14 @@ class NotificationsViewController: UIViewController {
     return view
   }()
 
+  private lazy var selectedButton: UIButton = headerView.tabButtons[0] {
+    didSet {
+      guard selectedButton != oldValue else { return }
+      oldValue.isSelected = false
+      selectedButton.isSelected = true
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -24,5 +32,13 @@ class NotificationsViewController: UIViewController {
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerViewHeight)
     ])
+
+    headerView.delegate = self
+  }
+}
+
+extension NotificationsViewController: NotificationsHeaderViewDelegate {
+  func didTapTabButton(_ button: UIButton) {
+    selectedButton = button
   }
 }

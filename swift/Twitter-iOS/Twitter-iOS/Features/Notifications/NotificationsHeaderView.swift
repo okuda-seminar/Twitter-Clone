@@ -1,16 +1,34 @@
 import UIKit
 
+
+protocol NotificationsHeaderViewDelegate {
+  func didTapTabButton(_ button: UIButton)
+}
+
 class NotificationsHeaderView: UIView {
   private enum LayoutConstant {
     static let tabButtonHeight = 44.0
   }
 
-  private let tabButtonTitle: [String] = {
-    return [
+  public let tabButtons: [UIButton] = {
+    let buttonTitles = [
       String(localized: "All"),
       String(localized: "Verified"),
       String(localized: "Mentions")
     ]
+    var buttons: [UIButton] = []
+    for title in buttonTitles {
+      let button = UIButton()
+      button.translatesAutoresizingMaskIntoConstraints = false
+      button.setTitleColor(.black, for: .selected)
+      button.setTitleColor(.placeholderText, for: .normal)
+      button.setTitleColor(.gray, for: .disabled)
+      button.setTitle(title, for: .normal)
+      button.backgroundColor = .clear
+      button.sizeToFit()
+      buttons.append(button)
+    }
+    return buttons
   }()
 
   private let stackView: UIStackView = {
@@ -20,6 +38,8 @@ class NotificationsHeaderView: UIView {
     stackView.distribution = .fillEqually
     return stackView
   }()
+
+  public var delegate: NotificationsHeaderViewDelegate?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -31,13 +51,9 @@ class NotificationsHeaderView: UIView {
   }
   
   private func setUpSubviews() {
-    for title in tabButtonTitle {
-      let button = UIButton()
-      button.setTitle(title, for: .normal)
-      button.translatesAutoresizingMaskIntoConstraints = false
-      button.backgroundColor = .clear
-      button.setTitleColor(.black, for: .normal)
-      button.sizeToFit()
+    for button in tabButtons {
+      button.isSelected = button == tabButtons[0]
+      button.addAction(.init { _ in self.delegate?.didTapTabButton(button) }, for: .touchUpInside)
 
       stackView.addArrangedSubview(button)
       NSLayoutConstraint.activate([
