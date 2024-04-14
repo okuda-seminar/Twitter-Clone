@@ -29,7 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "username": "Ipsam in eos et asperiores."
+      "display_name": "Facilis quidem quis at quod aspernatur quam.",
+      "username": "Sunt eos."
    }'` + "\n" +
 		""
 }
@@ -194,7 +195,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "username": "Ipsam in eos et asperiores."
+      "display_name": "Facilis quidem quis at quod aspernatur quam.",
+      "username": "Sunt eos."
    }'
 `, os.Args[0])
 }
@@ -207,7 +209,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": 3003530445289903022
+      "id": 9017040730249194932
    }'
 `, os.Args[0])
 }
@@ -219,7 +221,7 @@ FindUserByID implements FindUserByID.
     -id INT: 
 
 Example:
-    %[1]s users find-user-by-id --id 1803096445622849471
+    %[1]s users find-user-by-id --id 6539292391436511423
 `, os.Args[0])
 }
 
@@ -232,8 +234,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Ipsum error nostrum."
-   }' --id 4752046661242207497
+      "username": "Et error quo vero nesciunt quo voluptate."
+   }' --id 8179758510119975880
 `, os.Args[0])
 }
 
@@ -246,7 +248,7 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Accusantium aut autem molestias placeat."
-   }' --id 177113283171484642
+      "bio": "Laudantium corrupti beatae fuga corrupti."
+   }' --id 9162785213546963991
 `, os.Args[0])
 }

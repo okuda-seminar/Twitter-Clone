@@ -26,12 +26,12 @@ func (dbMock *DBMock) close() {
 }
 
 func (dbMock *DBMock) insertUser(user *repository.User) {
-	rows := sqlmock.NewRows([]string{"user_id", "username", "bio", "created_at", "updated_at"}).
-		AddRow(user.UserID, user.Username, user.Bio, user.CreatedAt, user.UpdatedAt)
+	rows := sqlmock.NewRows([]string{"id", "username", "account_name", "bio", "created_at", "updated_at"}).
+		AddRow(user.ID, user.Username, user.DisplayName, user.Bio, user.CreatedAt, user.UpdatedAt)
 
-	query := "SELECT * FROM users WHERE user_id = $1"
+	query := "SELECT * FROM users WHERE id = $1"
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(user.UserID).
+		WithArgs(user.ID).
 		WillReturnRows(rows)
 }
 
@@ -60,11 +60,12 @@ func TestFindUserByID(t *testing.T) {
 
 	now := time.Now()
 	expected := &repository.User{
-		UserID:    1,
-		Username:  "test user",
-		Bio:       "some bio",
-		CreatedAt: now,
-		UpdatedAt: now,
+		ID:          1,
+		Username:    "test user",
+		DisplayName: "test account",
+		Bio:         "some bio",
+		CreatedAt:   now,
+		UpdatedAt:   now,
 	}
 	dbMock.insertUser(expected)
 

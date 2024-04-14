@@ -39,7 +39,8 @@ var MethodNames = [5]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateU
 
 // CreateUserPayload is the payload type of the users service CreateUser method.
 type CreateUserPayload struct {
-	Username string
+	Username    string
+	DisplayName string
 }
 
 // DeleteUserPayload is the payload type of the users service DeleteUser method.
@@ -68,11 +69,12 @@ type UpdateUsernamePayload struct {
 
 // User is the result type of the users service CreateUser method.
 type User struct {
-	UserID    int
-	Username  string
-	Bio       string
-	CreatedAt string
-	UpdatedAt string
+	ID          int
+	Username    string
+	DisplayName string
+	Bio         string
+	CreatedAt   string
+	UpdatedAt   string
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.

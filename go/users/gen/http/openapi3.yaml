@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteUserRequestBody'
                         example:
-                            id: 3003530445289903022
+                            id: 9017040730249194932
             responses:
                 "200":
                     description: OK response.
@@ -47,7 +47,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            username: Ipsam in eos et asperiores.
+                            display_name: Facilis quidem quis at quod aspernatur quam.
+                            username: Sunt eos.
             responses:
                 "200":
                     description: OK response.
@@ -56,11 +57,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Quidem quis at.
-                                created_at: "1986-09-09T16:37:23Z"
-                                updated_at: "1982-01-06T00:17:30Z"
-                                user_id: 3412352365744796005
-                                username: Alias sunt eos ut.
+                                bio: Sed ad maiores aliquid.
+                                created_at: "1989-11-04T05:55:03Z"
+                                display_name: Inventore accusamus nesciunt eum blanditiis facere unde.
+                                id: 8190084971811879086
+                                updated_at: "2011-01-16T06:13:33Z"
+                                username: Laboriosam ut exercitationem qui.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -79,9 +81,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 1405347787323667800
+                    example: 853124055273952537
                     format: int64
-                  example: 8613931763159042623
+                  example: 8802437498500106118
             responses:
                 "200":
                     description: OK response.
@@ -90,11 +92,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Impedit qui voluptas.
-                                created_at: "1998-07-28T20:05:52Z"
-                                updated_at: "1996-07-02T15:47:27Z"
-                                user_id: 374265417653804085
-                                username: Iure sapiente ut doloremque nostrum culpa cupiditate.
+                                bio: Praesentium similique nisi sit.
+                                created_at: "2009-01-30T19:11:58Z"
+                                display_name: Iure id autem.
+                                id: 3629941483923070434
+                                updated_at: "1995-01-24T21:37:42Z"
+                                username: Ut possimus.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -113,9 +116,9 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 4876378100867019758
+                    example: 5171046760854731574
                     format: int64
-                  example: 5011399336580591325
+                  example: 378701858343614778
             requestBody:
                 required: true
                 content:
@@ -123,7 +126,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateBioRequestBody'
                         example:
-                            bio: Accusantium aut autem molestias placeat.
+                            bio: Laudantium corrupti beatae fuga corrupti.
             responses:
                 "200":
                     description: OK response.
@@ -151,17 +154,17 @@ paths:
                   required: true
                   schema:
                     type: integer
-                    example: 8431095605965339718
+                    example: 5622424820143763188
                     format: int64
-                  example: 4941914734583634128
+                  example: 7956233771881647359
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateUserRequestBody'
+                            $ref: '#/components/schemas/UpdateUsernameRequestBody'
                         example:
-                            username: Ipsum error nostrum.
+                            username: Et error quo vero nesciunt quo voluptate.
             responses:
                 "200":
                     description: OK response.
@@ -191,22 +194,27 @@ components:
         CreateUserRequestBody:
             type: object
             properties:
+                display_name:
+                    type: string
+                    example: Esse et nesciunt non dolor laboriosam.
                 username:
                     type: string
-                    example: Deleniti voluptatem autem cum sit.
+                    example: Qui sint sapiente corporis.
             example:
-                username: Consectetur doloribus repellendus maxime.
+                display_name: Quos voluptas qui aspernatur.
+                username: Itaque pariatur ipsam molestias ipsam aut.
             required:
                 - username
+                - display_name
         DeleteUserRequestBody:
             type: object
             properties:
                 id:
                     type: integer
-                    example: 3618294770990188696
+                    example: 1288073891153681460
                     format: int64
             example:
-                id: 1601372322786189458
+                id: 8448143939769264812
             required:
                 - id
         Error:
@@ -231,11 +239,11 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: false
+                    example: true
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: true
+                    example: false
             example:
                 fault: false
                 id: 123abc
@@ -255,41 +263,56 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Corrupti pariatur asperiores consectetur.
+                    example: Distinctio vel harum omnis necessitatibus temporibus.
             example:
-                bio: Est harum quaerat soluta aliquid.
+                bio: Vero ut at nostrum dolorem odit recusandae.
             required:
                 - bio
+        UpdateUsernameRequestBody:
+            type: object
+            properties:
+                username:
+                    type: string
+                    example: Recusandae qui commodi ipsa ducimus expedita.
+            example:
+                username: Quis in explicabo.
+            required:
+                - username
         User:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Blanditiis debitis.
+                    example: Accusamus eum est ipsam placeat.
                 created_at:
                     type: string
-                    example: "1985-04-01T04:31:12Z"
+                    example: "2011-02-16T01:02:10Z"
                     format: date-time
+                display_name:
+                    type: string
+                    example: Laudantium expedita hic quos.
+                id:
+                    type: integer
+                    example: 420120022597800938
+                    format: int64
                 updated_at:
                     type: string
-                    example: "1995-06-02T05:42:32Z"
+                    example: "2010-04-12T00:59:33Z"
                     format: date-time
-                user_id:
-                    type: integer
-                    example: 6810089276095289162
-                    format: int64
                 username:
                     type: string
-                    example: Sed quis.
+                    example: Dolores laborum architecto fugiat omnis iusto.
             example:
-                bio: Dolorem dolorum facere omnis omnis.
-                created_at: "2006-10-03T22:06:57Z"
-                updated_at: "1977-01-22T08:25:26Z"
-                user_id: 8299613301853210813
-                username: Est ipsam placeat provident.
+                bio: Fugit recusandae qui.
+                created_at: "1979-08-17T13:14:08Z"
+                display_name: Modi velit voluptatem.
+                id: 3923114272923499382
+                updated_at: "1994-05-19T02:44:38Z"
+                username: Qui nesciunt ullam ipsam officia.
             required:
-                - user_id
+                - id
                 - username
+                - display_name
                 - bio
                 - created_at
                 - updated_at

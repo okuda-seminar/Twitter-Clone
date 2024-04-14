@@ -31,18 +31,19 @@ func (s *usersSvc) CreateUser(
 		return nil, users.MakeBadRequest(errors.New("username is invalid"))
 	}
 
-	user, err := s.repository.CreateUser(ctx, p.Username)
+	user, err := s.repository.CreateUser(ctx, p.Username, p.DisplayName)
 	if err != nil {
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
 		return nil, users.MakeBadRequest(err)
 	}
 
 	res = &users.User{
-		UserID:    user.UserID,
-		Username:  user.Username,
-		Bio:       user.Bio,
-		CreatedAt: user.CreatedAt.Format(time.RFC3339),
-		UpdatedAt: user.UpdatedAt.Format(time.RFC3339),
+		ID:          user.ID,
+		Username:    user.Username,
+		DisplayName: user.DisplayName,
+		Bio:         user.Bio,
+		CreatedAt:   user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt:   user.UpdatedAt.Format(time.RFC3339),
 	}
 
 	s.logger.Print("users.CreateUser")
@@ -75,11 +76,12 @@ func (s *usersSvc) FindUserByID(
 		return nil, users.MakeNotFound(err)
 	}
 	res = &users.User{
-		UserID:    user.UserID,
-		Username:  user.Username,
-		Bio:       user.Bio,
-		CreatedAt: user.CreatedAt.Format(time.RFC3339),
-		UpdatedAt: user.UpdatedAt.Format(time.RFC3339),
+		ID:          user.ID,
+		Username:    user.Username,
+		DisplayName: user.DisplayName,
+		Bio:         user.Bio,
+		CreatedAt:   user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt:   user.UpdatedAt.Format(time.RFC3339),
 	}
 
 	s.logger.Print("users.FindByID")
@@ -125,8 +127,11 @@ func (s *usersSvc) UpdateBio(
 }
 
 const (
-	usernameLenMin = 1
-	usernameLenMax = 20
+	usernameLenMin = 4
+	usernameLenMax = 14
+
+	bioLenMin = 0
+	bioLenMax = 160
 )
 
 func validateUsername(username string) bool {
@@ -135,11 +140,6 @@ func validateUsername(username string) bool {
 	}
 	return true
 }
-
-const (
-	bioLenMin = 0
-	bioLenMax = 160
-)
 
 func validateBio(bio string) bool {
 	if len(bio) < bioLenMin || bioLenMax < len(bio) {

@@ -25,7 +25,8 @@ var _ = Service("users", func() {
 	Method("CreateUser", func() {
 		Payload(func() {
 			Field(1, "username", String)
-			Required("username")
+			Field(2, "display_name", String)
+			Required("username", "display_name")
 		})
 		Result(types.User)
 
