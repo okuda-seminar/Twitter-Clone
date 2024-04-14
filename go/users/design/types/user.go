@@ -3,8 +3,9 @@ package types
 import . "goa.design/goa/v3/dsl"
 
 var User = Type("User", func() {
-	Attribute("user_id", Int)
+	Attribute("id", Int)
 	Attribute("username", String)
+	Attribute("display_name", String)
 	Attribute("bio", String)
 	Attribute("created_at", String, func() {
 		Format(FormatDateTime)
@@ -13,5 +14,5 @@ var User = Type("User", func() {
 		Format(FormatDateTime)
 	})
 
-	Required("user_id", "username", "bio", "created_at", "updated_at")
+	Required("id", "username", "display_name", "bio", "created_at", "updated_at")
 })

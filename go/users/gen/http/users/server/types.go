@@ -16,7 +16,8 @@ import (
 // CreateUserRequestBody is the type of the "users" service "CreateUser"
 // endpoint HTTP request body.
 type CreateUserRequestBody struct {
-	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
 }
 
 // DeleteUserRequestBody is the type of the "users" service "DeleteUser"
@@ -40,21 +41,23 @@ type UpdateBioRequestBody struct {
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	UserID    int    `form:"user_id" json:"user_id" xml:"user_id"`
-	Username  string `form:"username" json:"username" xml:"username"`
-	Bio       string `form:"bio" json:"bio" xml:"bio"`
-	CreatedAt string `form:"created_at" json:"created_at" xml:"created_at"`
-	UpdatedAt string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+	ID          int    `form:"id" json:"id" xml:"id"`
+	Username    string `form:"username" json:"username" xml:"username"`
+	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
+	Bio         string `form:"bio" json:"bio" xml:"bio"`
+	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
+	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
 }
 
 // FindUserByIDResponseBody is the type of the "users" service "FindUserByID"
 // endpoint HTTP response body.
 type FindUserByIDResponseBody struct {
-	UserID    int    `form:"user_id" json:"user_id" xml:"user_id"`
-	Username  string `form:"username" json:"username" xml:"username"`
-	Bio       string `form:"bio" json:"bio" xml:"bio"`
-	CreatedAt string `form:"created_at" json:"created_at" xml:"created_at"`
-	UpdatedAt string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+	ID          int    `form:"id" json:"id" xml:"id"`
+	Username    string `form:"username" json:"username" xml:"username"`
+	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
+	Bio         string `form:"bio" json:"bio" xml:"bio"`
+	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
+	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
 }
 
 // CreateUserBadRequestResponseBody is the type of the "users" service
@@ -205,11 +208,12 @@ type UpdateBioBadRequestResponseBody struct {
 // the "CreateUser" endpoint of the "users" service.
 func NewCreateUserResponseBody(res *users.User) *CreateUserResponseBody {
 	body := &CreateUserResponseBody{
-		UserID:    res.UserID,
-		Username:  res.Username,
-		Bio:       res.Bio,
-		CreatedAt: res.CreatedAt,
-		UpdatedAt: res.UpdatedAt,
+		ID:          res.ID,
+		Username:    res.Username,
+		DisplayName: res.DisplayName,
+		Bio:         res.Bio,
+		CreatedAt:   res.CreatedAt,
+		UpdatedAt:   res.UpdatedAt,
 	}
 	return body
 }
@@ -218,11 +222,12 @@ func NewCreateUserResponseBody(res *users.User) *CreateUserResponseBody {
 // the "FindUserByID" endpoint of the "users" service.
 func NewFindUserByIDResponseBody(res *users.User) *FindUserByIDResponseBody {
 	body := &FindUserByIDResponseBody{
-		UserID:    res.UserID,
-		Username:  res.Username,
-		Bio:       res.Bio,
-		CreatedAt: res.CreatedAt,
-		UpdatedAt: res.UpdatedAt,
+		ID:          res.ID,
+		Username:    res.Username,
+		DisplayName: res.DisplayName,
+		Bio:         res.Bio,
+		CreatedAt:   res.CreatedAt,
+		UpdatedAt:   res.UpdatedAt,
 	}
 	return body
 }
@@ -342,7 +347,8 @@ func NewUpdateBioBadRequestResponseBody(res *goa.ServiceError) *UpdateBioBadRequ
 // NewCreateUserPayload builds a users service CreateUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload {
 	v := &users.CreateUserPayload{
-		Username: *body.Username,
+		Username:    *body.Username,
+		DisplayName: *body.DisplayName,
 	}
 
 	return v
@@ -391,6 +397,9 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, id int) *users.UpdateBioPay
 func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	if body.Username == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	if body.DisplayName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
 	}
 	return
 }

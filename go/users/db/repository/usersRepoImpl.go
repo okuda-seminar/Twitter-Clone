@@ -20,27 +20,30 @@ func NewUsersRepoImpl(db *sql.DB) UsersRepo {
 // CreateUser creates a new user with the specified username.
 // The 'Bio' field is set to an empty string, not null.
 // If a user with the specified username already exists, the creation fails.
-func (r *usersRepoImpl) CreateUser(ctx context.Context, username string) (*User, error) {
+func (r *usersRepoImpl) CreateUser(ctx context.Context, username string, display_name string,
+) (*User, error) {
 	query := `
-INSERT INTO users (username, bio) VALUES ($1, $2)
-RETURNING user_id, created_at, updated_at
+INSERT INTO users (username, display_name, bio) VALUES ($1, $2, $3)
+RETURNING id, created_at, updated_at
 `
 	var (
-		userId               int
+		id                   int
 		createdAt, updatedAt time.Time
 	)
 
-	err := r.db.QueryRowContext(ctx, query, username, "").Scan(&userId, &createdAt, &updatedAt)
+	err := r.db.QueryRowContext(ctx, query, username, display_name, "").
+		Scan(&id, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, err
 	}
 
 	user := User{
-		UserID:    userId,
-		Username:  username,
-		Bio:       "",
-		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
+		ID:          id,
+		Username:    username,
+		DisplayName: display_name,
+		Bio:         "",
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
 	}
 	return &user, nil
 }
@@ -65,14 +68,15 @@ func (r *usersRepoImpl) DeleteUser(ctx context.Context, user_id int) error {
 
 // FindUserByID retrieves a user by user ID from the database.
 func (r *usersRepoImpl) FindUserByID(ctx context.Context, user_id int) (*User, error) {
-	query := "SELECT * FROM users WHERE user_id = $1"
+	query := "SELECT * FROM users WHERE id = $1"
 	row := r.db.QueryRowContext(ctx, query, user_id)
 
 	var user User
 
 	err := row.Scan(
-		&user.UserID,
+		&user.ID,
 		&user.Username,
+		&user.DisplayName,
 		&user.Bio,
 		&user.CreatedAt,
 		&user.UpdatedAt,
@@ -85,9 +89,9 @@ func (r *usersRepoImpl) FindUserByID(ctx context.Context, user_id int) (*User, e
 
 // UpdateUsername updates the username of a user with the specified ID.
 // If a user with the specified username already exists, the update fails.
-func (r *usersRepoImpl) UpdateUsername(ctx context.Context, user_id int, username string) error {
-	query := "UPDATE users SET username = $1 where user_id = $2"
-	res, err := r.db.ExecContext(ctx, query, username, user_id)
+func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id int, username string) error {
+	query := "UPDATE users SET username = $1 where id = $2"
+	res, err := r.db.ExecContext(ctx, query, username, id)
 	if err != nil {
 		return err
 	}
@@ -103,9 +107,9 @@ func (r *usersRepoImpl) UpdateUsername(ctx context.Context, user_id int, usernam
 }
 
 // UpdateBio updates the bio of a user with the specified ID.
-func (r *usersRepoImpl) UpdateBio(ctx context.Context, user_id int, bio string) error {
-	query := "UPDATE users SET bio = $1 where user_id = $2"
-	res, err := r.db.ExecContext(ctx, query, bio, user_id)
+func (r *usersRepoImpl) UpdateBio(ctx context.Context, id int, bio string) error {
+	query := "UPDATE users SET bio = $1 where id = $2"
+	res, err := r.db.ExecContext(ctx, query, bio, id)
 	if err != nil {
 		return err
 	}
@@ -138,7 +142,7 @@ func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, erro
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
-			&user.UserID,
+			&user.ID,
 			&user.Username,
 		)
 		if err != nil {
@@ -168,7 +172,7 @@ func (r *usersRepoImpl) GetFollowees(ctx context.Context, id int) ([]*User, erro
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
-			&user.UserID,
+			&user.ID,
 			&user.Username,
 		)
 		if err != nil {

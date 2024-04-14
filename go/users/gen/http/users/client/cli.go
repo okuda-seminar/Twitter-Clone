@@ -22,11 +22,12 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Ipsam in eos et asperiores.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Facilis quidem quis at quod aspernatur quam.\",\n      \"username\": \"Sunt eos.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
-		Username: body.Username,
+		Username:    body.Username,
+		DisplayName: body.DisplayName,
 	}
 
 	return v, nil
@@ -40,7 +41,7 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 3003530445289903022\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 9017040730249194932\n   }'")
 		}
 	}
 	v := &users.DeleteUserPayload{
@@ -77,7 +78,7 @@ func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsern
 	{
 		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Ipsum error nostrum.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Et error quo vero nesciunt quo voluptate.\"\n   }'")
 		}
 	}
 	var id int
@@ -105,7 +106,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Accusantium aut autem molestias placeat.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Laudantium corrupti beatae fuga corrupti.\"\n   }'")
 		}
 	}
 	var id int
