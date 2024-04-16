@@ -38,9 +38,9 @@ export default function Sidebar() {
       >
         <Box
           className={`hoverEffect ${isHovered ? "bg-blue-100" : ""}`}
-          display="flex" 
-          justifyContent="center" 
-          alignItems="center" 
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
           // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
           _hover={{ bg: "gray.200" }}
           // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
@@ -95,11 +95,11 @@ export default function Sidebar() {
       <Flex
         display="flex"
         alignItems="center"
-        mt={{base:10, xl:2}}
-        borderRadius="full"
+        position="absolute"
+        bottom={2}
         _hover={{ bg: "gray.200" }}
         // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
-        p={{base:0, xl:3}}
+        p={{ base: 0, xl: 3 }}
       >
         <Avatar
           src="https://eightsuzuki.github.io/images/profile.png"
