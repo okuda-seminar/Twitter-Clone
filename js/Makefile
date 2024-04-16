@@ -5,7 +5,8 @@ build:
 	docker build -t $(IMAGE_NAME) .
 
 run:
-	docker run -p 3000:3000 --name $(CONTAINER_NAME) -d $(IMAGE_NAME)
+	docker run -d -p 3000:3000 --name $(CONTAINER_NAME) -d $(IMAGE_NAME)
+
 
 stop:
 	docker stop $(CONTAINER_NAME)
