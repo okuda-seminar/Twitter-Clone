@@ -4,6 +4,7 @@ class RootViewController: UITabBarController {
   private enum TabBarItemTag: Int {
     case home
     case search
+    case communities
     case notifications
   }
   
@@ -25,10 +26,14 @@ class RootViewController: UITabBarController {
     let searchViewController = SearchViewController()
     searchViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
 
+    let communitiesViewController = CommunitiesViewController()
+    communitiesViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), tag: TabBarItemTag.communities.rawValue)
+
     let notificationsViewController = NotificationsViewController()
     notificationsViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
 
 
-    viewControllers = [homeViewController, searchViewController, notificationsViewController]
+    viewControllers = [
+      homeViewController, searchViewController, communitiesViewController, notificationsViewController]
   }
 }
