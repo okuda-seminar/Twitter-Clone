@@ -6,6 +6,7 @@ class RootViewController: UITabBarController {
     case search
     case communities
     case notifications
+    case messages
   }
   
   override func viewDidLoad() {
@@ -32,8 +33,10 @@ class RootViewController: UITabBarController {
     let notificationsViewController = NotificationsViewController()
     notificationsViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
 
+    let messagesViewController = MessagesViewController()
+    messagesViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "envelope"), tag: TabBarItemTag.messages.rawValue)
 
     viewControllers = [
-      homeViewController, searchViewController, communitiesViewController, notificationsViewController]
+      homeViewController, searchViewController, communitiesViewController, notificationsViewController, messagesViewController]
   }
 }
