@@ -40,6 +40,9 @@
 		6540F8F22BCE94CE0029BA46 /* CommunitiesHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F12BCE94CE0029BA46 /* CommunitiesHomeView.swift */; };
 		6540F8F52BCFEAB20029BA46 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F42BCFEAB20029BA46 /* MessagesViewController.swift */; };
 		6540F8F72BCFEB070029BA46 /* MessagesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F62BCFEB070029BA46 /* MessagesHeaderView.swift */; };
+		6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */; };
+		6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */; };
+		6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +100,9 @@
 		6540F8F12BCE94CE0029BA46 /* CommunitiesHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeView.swift; sourceTree = "<group>"; };
 		6540F8F42BCFEAB20029BA46 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		6540F8F62BCFEB070029BA46 /* MessagesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesHeaderView.swift; sourceTree = "<group>"; };
+		6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsViewController.swift; sourceTree = "<group>"; };
+		6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsHeaderView.swift; sourceTree = "<group>"; };
+		6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsBodyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +201,7 @@
 				6540F8F32BCFEA940029BA46 /* Messages */,
 				6540F8E72BC9728E0029BA46 /* Notifications */,
 				6540F8D22BC018910029BA46 /* Search */,
+				6540F8F82BD294BF0029BA46 /* Settings */,
 				6540F8B82BB575E80029BA46 /* Tweet */,
 			);
 			path = Features;
@@ -277,6 +284,16 @@
 				6540F8F62BCFEB070029BA46 /* MessagesHeaderView.swift */,
 			);
 			name = Messages;
+			sourceTree = "<group>";
+		};
+		6540F8F82BD294BF0029BA46 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */,
+				6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */,
+				6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -418,6 +435,7 @@
 				6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */,
 				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
+				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewTweetEditView.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesViewController.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButton.swift in Sources */,
@@ -425,12 +443,14 @@
 				6540F8F52BCFEAB20029BA46 /* MessagesViewController.swift in Sources */,
 				6540F8D62BC0199F0029BA46 /* SearchHeaderView.swift in Sources */,
 				6540F8F22BCE94CE0029BA46 /* CommunitiesHomeView.swift in Sources */,
+				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */,
 				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */,
+				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,
 				6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
 				6540F8F02BCA28F80029BA46 /* CommunitiesHeaderView.swift in Sources */,

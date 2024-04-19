@@ -4,7 +4,7 @@ import UIKit
 class HomeViewController: UIViewController {
 
   private enum LayoutConstant {
-    static let homeHeaderHeight = 44.0
+    static let homeHeaderHeight = 72.0
   }
 
   private enum homeTabId: String {
@@ -82,6 +82,16 @@ class HomeViewController: UIViewController {
       forYouTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
       followingTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
     ])
+
+    homeHeaderView.settingsEntryPointButton.addAction(.init{ _ in
+      self.showTimelineSettings()
+    }, for: .touchUpInside)
+  }
+
+  private func showTimelineSettings() {
+    let timelineSettingsViewController = TimelineSettingsViewController()
+    timelineSettingsViewController.modalPresentationStyle = .fullScreen
+    present(timelineSettingsViewController, animated: true)
   }
 }
 
