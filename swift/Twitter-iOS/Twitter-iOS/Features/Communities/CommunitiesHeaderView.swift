@@ -6,15 +6,18 @@ class CommunitiesHeaderView: UIView {
   }
 
   private enum LayoutConstant {
-    static let profileIconButtonSize = 32.0
+    static let edgeTopPadding = 8.0
+    static let profileIconButtonSize = 28.0
+    static let titleLabelTopPadding = 8.0
     static let searchButtonSize = 28.0
     static let searchButtonTrailingPadding = 16.0
   }
 
-  private let profileIconButton: UIButton = {
+  public let profileIconButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "person.circle.fill"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.tintColor = .black
     button.imageView?.contentMode = .scaleAspectFit
     button.contentHorizontalAlignment = .fill
     button.contentVerticalAlignment = .fill
@@ -57,14 +60,15 @@ class CommunitiesHeaderView: UIView {
 
     NSLayoutConstraint.activate([
       profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-      profileIconButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
       profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
       profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
 
       titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-      titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+      titleLabel.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
+      titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.titleLabelTopPadding),
 
-      searchButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+      searchButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
       searchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
       searchButton.widthAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
       searchButton.heightAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),

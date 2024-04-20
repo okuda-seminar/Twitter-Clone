@@ -8,6 +8,7 @@ protocol NotificationsHeaderViewDelegate {
 class NotificationsHeaderView: UIView {
 
   private enum LayoutConstant {
+    static let edgeTopPadding = 8.0
     static let horizontalPadding = 16.0
     static let profileIconButtonSize = 28.0
     static let titleLabelVerticalPadding = 8.0
@@ -19,7 +20,7 @@ class NotificationsHeaderView: UIView {
     static let titleText = String(localized: "Notifications")
   }
 
-  private let profileIconButton: UIButton = {
+  public let profileIconButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "person.circle.fill"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -39,14 +40,14 @@ class NotificationsHeaderView: UIView {
     return label
   }()
 
-  private let settingsEntryPointButton: UIButton = {
+  public let settingsEntryPointButton: UIButton = {
     let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(systemName: "gear"), for: .normal)
-    button.tintColor = .black
-    button.imageView?.contentMode = .scaleAspectFit
+    button.contentMode = .scaleAspectFit
     button.contentHorizontalAlignment = .fill
     button.contentVerticalAlignment = .fill
+    button.tintColor = .black
+    button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
 
@@ -109,15 +110,16 @@ class NotificationsHeaderView: UIView {
 
     NSLayoutConstraint.activate([
       profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.horizontalPadding),
-      profileIconButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
       profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
       profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
  
       titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+      titleLabel.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
       titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
 
       settingsEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.horizontalPadding),
-      settingsEntryPointButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+      settingsEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
       settingsEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
       settingsEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
 
@@ -125,6 +127,8 @@ class NotificationsHeaderView: UIView {
       tabButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       tabButtonsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
       tabButtonsStackView.heightAnchor.constraint(equalToConstant: LayoutConstant.tabButtonHeight),
+
+      bottomAnchor.constraint(equalTo: tabButtonsStackView.bottomAnchor),
     ])
   }
 }
