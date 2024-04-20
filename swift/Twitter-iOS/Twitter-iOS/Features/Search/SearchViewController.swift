@@ -57,6 +57,16 @@ class SearchViewController: UIViewController {
       tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
       tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
     ])
+
+    headerView.settingsEntryPointButton.addAction( .init { _ in
+      self.showExploreSettings()
+    }, for: .touchUpInside)
+  }
+
+  private func showExploreSettings() {
+    let exploreSettingsViewController = ExploreSettingsViewController()
+    exploreSettingsViewController.modalPresentationStyle = .fullScreen
+    present(exploreSettingsViewController, animated: true)
   }
 }
 

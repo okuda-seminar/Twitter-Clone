@@ -43,6 +43,9 @@
 		6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */; };
 		6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */; };
 		6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */; };
+		6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */; };
+		6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */; };
+		6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +106,9 @@
 		6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsViewController.swift; sourceTree = "<group>"; };
 		6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsHeaderView.swift; sourceTree = "<group>"; };
 		6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsBodyView.swift; sourceTree = "<group>"; };
+		6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsViewController.swift; sourceTree = "<group>"; };
+		6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsHeaderView.swift; sourceTree = "<group>"; };
+		6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsBodyView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,11 +295,30 @@
 		6540F8F82BD294BF0029BA46 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				6540F9012BD3765C0029BA46 /* Explore */,
+				6540F9002BD3764B0029BA46 /* Timeline */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		6540F9002BD3764B0029BA46 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
 				6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */,
 				6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */,
 				6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */,
 			);
-			path = Settings;
+			path = Timeline;
+			sourceTree = "<group>";
+		};
+		6540F9012BD3765C0029BA46 /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */,
+				6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */,
+				6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */,
+			);
+			path = Explore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -427,6 +452,7 @@
 			files = (
 				6540F8D42BC018B30029BA46 /* SearchViewController.swift in Sources */,
 				6540F8852BB44D430029BA46 /* RootViewController.swift in Sources */,
+				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
 				6540F8DC2BC424190029BA46 /* SearchCategoryModel.swift in Sources */,
 				6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */,
@@ -435,6 +461,7 @@
 				6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */,
 				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
+				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewTweetEditView.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesViewController.swift in Sources */,
@@ -443,6 +470,7 @@
 				6540F8F52BCFEAB20029BA46 /* MessagesViewController.swift in Sources */,
 				6540F8D62BC0199F0029BA46 /* SearchHeaderView.swift in Sources */,
 				6540F8F22BCE94CE0029BA46 /* CommunitiesHomeView.swift in Sources */,
+				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
