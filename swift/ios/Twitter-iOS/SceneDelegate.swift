@@ -3,8 +3,8 @@
 //  Twitter-iOS
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?

@@ -48,7 +48,7 @@ class MessagesHeaderView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -60,18 +60,24 @@ class MessagesHeaderView: UIView {
 
     NSLayoutConstraint.activate([
       profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
-      profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
-      profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
+      profileIconButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
 
-      titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.titleLabelTopPadding),
+      titleLabel.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.titleLabelTopPadding),
       titleLabel.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
       titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
 
       settingsEntryButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
       settingsEntryButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-      settingsEntryButton.widthAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryButtonSize),
-      settingsEntryButton.heightAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryButtonSize),
+      settingsEntryButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryButtonSize),
+      settingsEntryButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryButtonSize),
     ])
   }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 class HomeHeaderView: UIView {
-  
+
   private enum LayoutConstant {
     static let edgeTopPadding = 8.0
     static let edgeHorizontalPadding = 16.0
@@ -53,7 +53,7 @@ class HomeHeaderView: UIView {
     return button
   }()
 
-  public lazy var allButtons: [HomeHeaderButton]  = {
+  public lazy var allButtons: [HomeHeaderButton] = {
     return [forYouButton, followingButton]
   }()
 
@@ -71,26 +71,33 @@ class HomeHeaderView: UIView {
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     addSubview(profileIconButton)
     addSubview(settingsEntryPointButton)
     addSubview(stackView)
 
     NSLayoutConstraint.activate([
-      profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
-      profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
-      profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      profileIconButton.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
+      profileIconButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
 
-      settingsEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      settingsEntryPointButton.trailingAnchor.constraint(
+        equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       settingsEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
-      settingsEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
-      settingsEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
 
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       stackView.topAnchor.constraint(equalTo: settingsEntryPointButton.bottomAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
   }
 }

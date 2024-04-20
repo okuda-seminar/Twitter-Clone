@@ -64,7 +64,7 @@ class SearchHeaderView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -77,22 +77,29 @@ class SearchHeaderView: UIView {
         button.heightAnchor.constraint(equalToConstant: LayoutConstant.categoryTabButtonHeight),
       ])
     }
-    
+
     addSubview(profileIconButton)
     addSubview(settingsEntryPointButton)
     categoryTabsScrollView.addSubview(categoryTabsStackView)
     addSubview(categoryTabsScrollView)
 
     NSLayoutConstraint.activate([
-      profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
-      profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
-      profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      profileIconButton.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
+      profileIconButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
 
-      settingsEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      settingsEntryPointButton.trailingAnchor.constraint(
+        equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       settingsEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
-      settingsEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
-      settingsEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
 
       categoryTabsScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
       categoryTabsScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -100,9 +107,10 @@ class SearchHeaderView: UIView {
       categoryTabsScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
       categoryTabsStackView.leadingAnchor.constraint(equalTo: categoryTabsScrollView.leadingAnchor),
-      categoryTabsStackView.trailingAnchor.constraint(equalTo: categoryTabsScrollView.trailingAnchor),
+      categoryTabsStackView.trailingAnchor.constraint(
+        equalTo: categoryTabsScrollView.trailingAnchor),
       categoryTabsStackView.topAnchor.constraint(equalTo: categoryTabsScrollView.topAnchor),
-      categoryTabsStackView.bottomAnchor.constraint(equalTo: categoryTabsScrollView.bottomAnchor)
+      categoryTabsStackView.bottomAnchor.constraint(equalTo: categoryTabsScrollView.bottomAnchor),
     ])
   }
 }

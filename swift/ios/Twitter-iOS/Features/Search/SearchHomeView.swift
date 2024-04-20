@@ -102,8 +102,8 @@ struct SearchHomeView: View {
     }
     .overlay(
       NewTweetEntrypointButton()
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 18))
-      , alignment: .bottomTrailing
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 18)),
+      alignment: .bottomTrailing
     )
   }
 }
@@ -121,33 +121,36 @@ struct SearchHeaderButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      withAnimation {
-        selectedTabID = tabID
-        proxy.scrollTo(tabID)
-      }
-    }, label: {
-      VStack {
-        Text(title)
-          .font(.headline)
-          .foregroundStyle(.primary)
+    Button(
+      action: {
+        withAnimation {
+          selectedTabID = tabID
+          proxy.scrollTo(tabID)
+        }
+      },
+      label: {
+        VStack {
+          Text(title)
+            .font(.headline)
+            .foregroundStyle(.primary)
 
-        if selectedTabID == tabID {
-          Capsule()
-            .fill(Color.blue)
-            .frame(height: LayoutConstant.underBarHeight)
-            .matchedGeometryEffect(id: "TAB", in: animation)
-        } else {
-          Capsule()
-            .fill(Color.clear)
-            .frame(height: LayoutConstant.underBarHeight)
+          if selectedTabID == tabID {
+            Capsule()
+              .fill(Color.blue)
+              .frame(height: LayoutConstant.underBarHeight)
+              .matchedGeometryEffect(id: "TAB", in: animation)
+          } else {
+            Capsule()
+              .fill(Color.clear)
+              .frame(height: LayoutConstant.underBarHeight)
+          }
         }
       }
-    })
+    )
     .buttonStyle(HeaderTabButtonStyle(buttonWidth: LayoutConstant.buttonWidth))
   }
 }
 
-#Preview {
+#Preview{
   SearchHomeView(enableSideMenu: .constant(true), showSearchHome: .constant(true))
 }

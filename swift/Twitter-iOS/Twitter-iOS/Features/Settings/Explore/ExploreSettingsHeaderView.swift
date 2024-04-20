@@ -19,7 +19,9 @@ class ExploreSettingsHeaderView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     let titleWithUnderLine = NSAttributedString(
       string: LocalizedString.dismissButtonText,
-      attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,.underlineColor: UIColor.black])
+      attributes: [
+        .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.black,
+      ])
     button.setAttributedTitle(titleWithUnderLine, for: .normal)
     button.sizeToFit()
     return button

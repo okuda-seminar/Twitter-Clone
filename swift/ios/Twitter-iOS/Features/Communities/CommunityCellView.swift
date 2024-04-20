@@ -26,7 +26,9 @@ struct CommunityCellView: View {
         Text("\(community.roughNumOfMembers) members")
         Text(community.topic)
         HStack {
-          ForEach(0..<min(LayoutConstant.maxNumOfTopIconsToShow, community.topIcons.count), id: \.self) { iconIndex in
+          ForEach(
+            0..<min(LayoutConstant.maxNumOfTopIconsToShow, community.topIcons.count), id: \.self
+          ) { iconIndex in
             community.topIcons[iconIndex]
           }
         }
@@ -35,6 +37,6 @@ struct CommunityCellView: View {
   }
 }
 
-#Preview {
+#Preview{
   CommunityCellView(community: createFakeCommunityModel())
 }

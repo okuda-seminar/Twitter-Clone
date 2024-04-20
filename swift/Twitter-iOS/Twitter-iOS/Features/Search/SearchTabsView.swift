@@ -21,7 +21,7 @@ class SearchTabsView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -39,7 +39,7 @@ class SearchTabsView: UIView {
       tabsStackView.leadingAnchor.constraint(equalTo: tabsScrollView.leadingAnchor),
       tabsStackView.trailingAnchor.constraint(equalTo: tabsScrollView.trailingAnchor),
       tabsStackView.topAnchor.constraint(equalTo: tabsScrollView.topAnchor),
-      tabsStackView.bottomAnchor.constraint(equalTo: tabsScrollView.bottomAnchor)
+      tabsStackView.bottomAnchor.constraint(equalTo: tabsScrollView.bottomAnchor),
     ])
   }
 
@@ -60,7 +60,7 @@ class SearchTabsView: UIView {
         tabView.topAnchor.constraint(equalTo: tabsStackView.topAnchor),
         tabView.bottomAnchor.constraint(equalTo: tabsStackView.bottomAnchor),
         tabView.widthAnchor.constraint(equalTo: widthAnchor),
-        tabView.heightAnchor.constraint(equalTo: heightAnchor)
+        tabView.heightAnchor.constraint(equalTo: heightAnchor),
       ])
     }
   }

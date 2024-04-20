@@ -1,7 +1,5 @@
 import UIKit
 
-
-
 class SearchViewController: UIViewController {
 
   private enum LayoutConstant {
@@ -19,7 +17,6 @@ class SearchViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
-
 
   private let tabView: SearchTabView = {
     let view = SearchTabView()
@@ -55,12 +52,13 @@ class SearchViewController: UIViewController {
       tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
       tabsView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-      tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
+      tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
     ])
 
-    headerView.settingsEntryPointButton.addAction( .init { _ in
-      self.showExploreSettings()
-    }, for: .touchUpInside)
+    headerView.settingsEntryPointButton.addAction(
+      .init { _ in
+        self.showExploreSettings()
+      }, for: .touchUpInside)
   }
 
   private func showExploreSettings() {
@@ -72,7 +70,9 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: SearchCategoryTabButtonDelegate {
   func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton) {
-    for (tabIdx, button) in zip(headerView.categoryTabButtons.indices, headerView.categoryTabButtons) {
+    for (tabIdx, button) in zip(
+      headerView.categoryTabButtons.indices, headerView.categoryTabButtons)
+    {
       if button.tabID == selectedButton.tabID {
         button.isSelected = true
         tabsView.scroll(to: tabIdx)

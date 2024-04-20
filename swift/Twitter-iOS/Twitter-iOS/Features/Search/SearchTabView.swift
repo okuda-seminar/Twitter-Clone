@@ -26,7 +26,7 @@ class SearchTabView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -53,13 +53,17 @@ class SearchTabView: UIView {
   private func loadSearchTopicModels() {
     for _ in 0..<30 {
       let topicModel = createFakeTopicModel()
-      let searchTopicCellViewController = UIHostingController(rootView: SearchTopicCellView(topic: topicModel))
+      let searchTopicCellViewController = UIHostingController(
+        rootView: SearchTopicCellView(topic: topicModel))
       topicCellStackView.addArrangedSubview(searchTopicCellViewController.view)
 
       NSLayoutConstraint.activate([
-        searchTopicCellViewController.view.heightAnchor.constraint(equalToConstant: LayoutConstant.topicCellHeight),
-        searchTopicCellViewController.view.leadingAnchor.constraint(equalTo: topicCellStackView.leadingAnchor),
-        searchTopicCellViewController.view.trailingAnchor.constraint(equalTo: topicCellStackView.trailingAnchor),
+        searchTopicCellViewController.view.heightAnchor.constraint(
+          equalToConstant: LayoutConstant.topicCellHeight),
+        searchTopicCellViewController.view.leadingAnchor.constraint(
+          equalTo: topicCellStackView.leadingAnchor),
+        searchTopicCellViewController.view.trailingAnchor.constraint(
+          equalTo: topicCellStackView.trailingAnchor),
       ])
     }
   }

@@ -27,75 +27,81 @@ struct ContentView: View {
         // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/68 - Refactor how to initialize TabView.
         HomeView(enableSideMenu: $enableSideMenu)
           .tabItem { Image(systemName: "house") }
-          .gesture(TapGesture()
-            .onEnded {
-              withAnimation {
-                if horizontalOffset == LayoutConstant.sideBarOffset {
-                  horizontalOffset = LayoutConstant.mainOffset
+          .gesture(
+            TapGesture()
+              .onEnded {
+                withAnimation {
+                  if horizontalOffset == LayoutConstant.sideBarOffset {
+                    horizontalOffset = LayoutConstant.mainOffset
+                  }
                 }
               }
-            }
           )
         SearchView(enableSideMenu: $enableSideMenu)
           .tabItem { Image(systemName: "magnifyingglass") }
-          .gesture(TapGesture()
-            .onEnded {
-              withAnimation {
-                if horizontalOffset == LayoutConstant.sideBarOffset {
-                  horizontalOffset = LayoutConstant.mainOffset
+          .gesture(
+            TapGesture()
+              .onEnded {
+                withAnimation {
+                  if horizontalOffset == LayoutConstant.sideBarOffset {
+                    horizontalOffset = LayoutConstant.mainOffset
+                  }
                 }
               }
-            }
           )
         CommunitiesHomeView(enableSideMenu: $enableSideMenu)
           .tabItem { Image(systemName: "person.2") }
-          .gesture(TapGesture()
-            .onEnded {
-              withAnimation {
-                if horizontalOffset == LayoutConstant.sideBarOffset {
-                  horizontalOffset = LayoutConstant.mainOffset
+          .gesture(
+            TapGesture()
+              .onEnded {
+                withAnimation {
+                  if horizontalOffset == LayoutConstant.sideBarOffset {
+                    horizontalOffset = LayoutConstant.mainOffset
+                  }
                 }
               }
-            }
           )
         NotificationsView(enableSideMenu: $enableSideMenu)
           .tabItem { Image(systemName: "bell") }
-          .gesture(TapGesture()
-            .onEnded {
-              withAnimation {
-                if horizontalOffset == LayoutConstant.sideBarOffset {
-                  horizontalOffset = LayoutConstant.mainOffset
+          .gesture(
+            TapGesture()
+              .onEnded {
+                withAnimation {
+                  if horizontalOffset == LayoutConstant.sideBarOffset {
+                    horizontalOffset = LayoutConstant.mainOffset
+                  }
                 }
               }
-            }
           )
         MessagesView(enableSideMenu: $enableSideMenu)
           .tabItem { Image(systemName: "envelope") }
-          .gesture(TapGesture()
-            .onEnded {
-              withAnimation {
-                if horizontalOffset == LayoutConstant.sideBarOffset {
-                  horizontalOffset = LayoutConstant.mainOffset
+          .gesture(
+            TapGesture()
+              .onEnded {
+                withAnimation {
+                  if horizontalOffset == LayoutConstant.sideBarOffset {
+                    horizontalOffset = LayoutConstant.mainOffset
+                  }
                 }
               }
-            }
           )
       }
       .frame(width: LayoutConstant.screenWidth)
     }
-    .frame(width: 2*LayoutConstant.screenWidth)
+    .frame(width: 2 * LayoutConstant.screenWidth)
     .offset(x: horizontalOffset)
-    .gesture(DragGesture()
-      .onChanged { value in
-        return
-      }
-      .onEnded { value in
-        return
-      }
+    .gesture(
+      DragGesture()
+        .onChanged { value in
+          return
+        }
+        .onEnded { value in
+          return
+        }
     )
   }
 }
 
-#Preview {
+#Preview{
   ContentView()
 }

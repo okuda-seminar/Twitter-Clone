@@ -1,6 +1,5 @@
 import UIKit
 
-
 protocol NotificationsHeaderViewDelegate {
   func didTapTabButton(_ button: UIButton)
 }
@@ -55,7 +54,7 @@ class NotificationsHeaderView: UIView {
     let buttonTitles = [
       String(localized: "All"),
       String(localized: "Verified"),
-      String(localized: "Mentions")
+      String(localized: "Mentions"),
     ]
     var buttons: [UIButton] = []
     for title in buttonTitles {
@@ -86,11 +85,11 @@ class NotificationsHeaderView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   private func setUpSubviews() {
     for button in tabButtons {
       button.isSelected = button == tabButtons[0]
@@ -102,30 +101,39 @@ class NotificationsHeaderView: UIView {
         button.heightAnchor.constraint(equalToConstant: LayoutConstant.tabButtonHeight),
       ])
     }
-    
+
     addSubview(profileIconButton)
     addSubview(titleLabel)
     addSubview(settingsEntryPointButton)
     addSubview(tabButtonsStackView)
 
     NSLayoutConstraint.activate([
-      profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.horizontalPadding),
-      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
-      profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
-      profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
- 
+      profileIconButton.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.horizontalPadding),
+      profileIconButton.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
+      profileIconButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+
       titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
       titleLabel.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
-      titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
+      titleLabel.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
 
-      settingsEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.horizontalPadding),
+      settingsEntryPointButton.trailingAnchor.constraint(
+        equalTo: trailingAnchor, constant: -LayoutConstant.horizontalPadding),
       settingsEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
-      settingsEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
-      settingsEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
+      settingsEntryPointButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.settingsEntryPointButtonSize),
 
       tabButtonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       tabButtonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      tabButtonsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
+      tabButtonsStackView.topAnchor.constraint(
+        equalTo: titleLabel.bottomAnchor, constant: LayoutConstant.titleLabelVerticalPadding),
       tabButtonsStackView.heightAnchor.constraint(equalToConstant: LayoutConstant.tabButtonHeight),
 
       bottomAnchor.constraint(equalTo: tabButtonsStackView.bottomAnchor),

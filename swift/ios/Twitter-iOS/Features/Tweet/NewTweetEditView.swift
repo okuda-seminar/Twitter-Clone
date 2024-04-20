@@ -14,13 +14,15 @@ struct NewTweetEditView: View {
   var body: some View {
     VStack {
       HStack {
-        Button(action: {
-          dismiss()
-        }, label: {
-          Text(String(localized: "Cancel"))
-            .underline()
-            .foregroundStyle(Color.primary)
-        })
+        Button(
+          action: {
+            dismiss()
+          },
+          label: {
+            Text(String(localized: "Cancel"))
+              .underline()
+              .foregroundStyle(Color.primary)
+          })
         Spacer()
         NewTweetButton()
       }
@@ -42,6 +44,6 @@ struct NewTweetEditView: View {
   }
 }
 
-#Preview {
+#Preview{
   NewTweetEditView()
 }

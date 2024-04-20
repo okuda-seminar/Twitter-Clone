@@ -7,7 +7,7 @@ import SwiftUI
 
 struct NotificationCellView: View {
   var notification: NotificationModel
-  
+
   var body: some View {
     VStack(alignment: .leading) {
       HStack(alignment: .top) {
@@ -19,6 +19,6 @@ struct NotificationCellView: View {
   }
 }
 
-#Preview {
+#Preview{
   NotificationCellView(notification: createFakeNotification())
 }

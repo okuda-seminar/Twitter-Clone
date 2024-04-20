@@ -1,7 +1,7 @@
 import UIKit
 
 class CommunitiesHomeView: UIView {
-  
+
   private enum LocalizedString {
     static let headlineLabelText = String(localized: "Discover new Communities")
   }
@@ -10,7 +10,7 @@ class CommunitiesHomeView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -26,7 +26,7 @@ class CommunitiesHomeView: UIView {
 
     NSLayoutConstraint.activate([
       headlineLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-      headlineLabel.topAnchor.constraint(equalTo: topAnchor)
+      headlineLabel.topAnchor.constraint(equalTo: topAnchor),
     ])
   }
 }

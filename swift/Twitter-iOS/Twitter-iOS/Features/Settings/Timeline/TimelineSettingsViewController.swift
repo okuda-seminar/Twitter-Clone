@@ -32,19 +32,24 @@ class TimelineSettingsViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headerView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      headerView.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      headerView.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerViewHeight),
 
-      bodyView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      bodyView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      bodyView.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      bodyView.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       bodyView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-      bodyView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
+      bodyView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
     ])
 
-    headerView.dismissButton.addAction(.init { _ in
-      self.dismiss(animated: true)
-    }, for: .touchUpInside)
+    headerView.dismissButton.addAction(
+      .init { _ in
+        self.dismiss(animated: true)
+      }, for: .touchUpInside)
   }
 }

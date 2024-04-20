@@ -29,15 +29,17 @@ struct SearchHeaderView: View {
         showSearchHome = false
       }
 
-      Button(action: {
-        showSheet.toggle()
-      }, label: {
-        Image(systemName: "gear")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.gearImageSize, height: LayoutConstant.gearImageSize)
-          .foregroundStyle(Color.primary)
-      })
+      Button(
+        action: {
+          showSheet.toggle()
+        },
+        label: {
+          Image(systemName: "gear")
+            .resizable()
+            .scaledToFit()
+            .frame(width: LayoutConstant.gearImageSize, height: LayoutConstant.gearImageSize)
+            .foregroundStyle(Color.primary)
+        })
     }
     .padding()
     .fullScreenCover(isPresented: $showSheet) {
@@ -46,6 +48,6 @@ struct SearchHeaderView: View {
   }
 }
 
-#Preview {
+#Preview{
   SearchHeaderView(showSearchHome: .constant(false))
 }

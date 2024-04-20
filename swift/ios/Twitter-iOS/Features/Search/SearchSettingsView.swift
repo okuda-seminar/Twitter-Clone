@@ -22,13 +22,15 @@ struct SearchSettingsView: View {
 
         Spacer()
 
-        Button(action: {
-          dismiss()
-        }, label: {
-          Text(String(localized: "Done"))
-            .foregroundStyle(Color.primary)
-            .underline()
-        })
+        Button(
+          action: {
+            dismiss()
+          },
+          label: {
+            Text(String(localized: "Done"))
+              .foregroundStyle(Color.primary)
+              .underline()
+          })
       }
 
       HStack {
@@ -44,8 +46,10 @@ struct SearchSettingsView: View {
         Toggle(isOn: $showNearContents, label: {})
       }
       HStack {
-        Text(String(localized: "When this is open, you'll see what's happenning around you right-now."))
-          .font(.caption)
+        Text(
+          String(localized: "When this is open, you'll see what's happenning around you right-now.")
+        )
+        .font(.caption)
         Spacer()
       }
 
@@ -55,6 +59,6 @@ struct SearchSettingsView: View {
   }
 }
 
-#Preview {
+#Preview{
   SearchSettingsView()
 }

@@ -27,6 +27,6 @@ struct NotificationsTabView: View {
   }
 }
 
-#Preview {
+#Preview{
   NotificationsTabView()
 }

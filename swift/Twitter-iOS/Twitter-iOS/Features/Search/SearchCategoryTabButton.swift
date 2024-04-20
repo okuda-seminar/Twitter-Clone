@@ -9,7 +9,6 @@ let searchCategoryModels: [SearchCategoryModel] = [
   SearchCategoryModel(title: String(localized: "Entertainment"), tabId: .entertainment),
 ]
 
-
 protocol SearchCategoryTabButtonDelegate {
   func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton)
 }
@@ -24,7 +23,7 @@ class SearchCategoryTabButton: UIButton {
     super.init(frame: frame)
     setUpLayout()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -37,7 +36,7 @@ class SearchCategoryTabButton: UIButton {
 
     self.addTarget(self, action: #selector(didTap), for: .touchUpInside)
   }
-  
+
   @objc
   private func didTap() {
     self.delegate?.didTapSearchCategoryButton(selectedButton: self)

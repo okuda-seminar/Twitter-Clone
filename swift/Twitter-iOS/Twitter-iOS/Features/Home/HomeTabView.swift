@@ -15,7 +15,9 @@ struct HomeTabView: View {
       VStack {
         ForEach(fakeTweets) { fakeTweet in
           Divider()
-          HomeTweetCellView(userIcon: fakeTweet.userIcon, userName: fakeTweet.userName, bodyText: fakeTweet.bodyText)
+          HomeTweetCellView(
+            userIcon: fakeTweet.userIcon, userName: fakeTweet.userName, bodyText: fakeTweet.bodyText
+          )
         }
       }
     }
@@ -23,6 +25,6 @@ struct HomeTabView: View {
   }
 }
 
-#Preview {
+#Preview{
   HomeTabView()
 }

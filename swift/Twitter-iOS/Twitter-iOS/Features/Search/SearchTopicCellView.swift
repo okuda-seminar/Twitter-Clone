@@ -22,11 +22,14 @@ struct SearchTopicCellView: View {
       Text("\(topic.numOfPosts) posts")
         .foregroundStyle(.secondary)
     }
-    .padding(EdgeInsets(top: 0, leading: LayoutConstant.cellHorizontalPadding, bottom: 0, trailing: LayoutConstant.cellHorizontalPadding))
+    .padding(
+      EdgeInsets(
+        top: 0, leading: LayoutConstant.cellHorizontalPadding, bottom: 0,
+        trailing: LayoutConstant.cellHorizontalPadding))
     Divider()
   }
 }
 
-#Preview {
+#Preview{
   SearchTopicCellView(topic: createFakeTopicModel())
 }

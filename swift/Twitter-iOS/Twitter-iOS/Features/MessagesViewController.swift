@@ -25,8 +25,10 @@ class MessagesViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headerView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.horizontalPadding),
-      headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.horizontalPadding),
+      headerView.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.horizontalPadding),
+      headerView.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.horizontalPadding),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
     ])

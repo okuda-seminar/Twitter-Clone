@@ -17,12 +17,14 @@ struct SearchInputView: View {
           .font(.headline)
 
         Spacer()
-        
-        Button(action: {
-        }, label: {
-          Image(systemName: "multiply")
-            .foregroundStyle(Color.primary)
-        })
+
+        Button(
+          action: {
+          },
+          label: {
+            Image(systemName: "multiply")
+              .foregroundStyle(Color.primary)
+          })
       }
       .padding()
 
@@ -32,6 +34,6 @@ struct SearchInputView: View {
   }
 }
 
-#Preview {
+#Preview{
   SearchInputView(showSearchHome: .constant(false))
 }

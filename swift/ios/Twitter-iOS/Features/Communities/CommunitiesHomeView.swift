@@ -33,21 +33,26 @@ struct CommunitiesHomeView: View {
         ForEach(fakeCommunities) { community in
           CommunityCellView(community: community)
         }
-        NavigationLink(destination: 
-          CommunitiesSearchView()
+        NavigationLink(
+          destination:
+            CommunitiesSearchView()
             .onAppear {
               enableSideMenu = false
             }
-          .onDisappear {
-            enableSideMenu = true
-          }
+            .onDisappear {
+              enableSideMenu = true
+            }
         ) {
           Text("Show more")
         }
         .navigationBarTitle("")
-        
+
       }
-      .padding(EdgeInsets(top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0, trailing: LayoutConstant.horizontalPadding))
+      .padding(
+        EdgeInsets(
+          top: -350, leading: LayoutConstant.horizontalPadding, bottom: 0,
+          trailing: LayoutConstant.horizontalPadding)
+      )
       .onAppear {
         enableSideMenu = true
       }
@@ -56,6 +61,6 @@ struct CommunitiesHomeView: View {
   }
 }
 
-#Preview {
+#Preview{
   CommunitiesHomeView(enableSideMenu: .constant(true))
 }

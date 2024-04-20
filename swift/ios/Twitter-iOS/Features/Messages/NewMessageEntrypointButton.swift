@@ -14,13 +14,16 @@ struct CapsuleNewMessageEntrypointButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      showSheet.toggle()
-    }, label: {
-      Text(String(localized: "Write a message"))
-        .underline()
-        .frame(width: LayoutConstant.buttonWidth, height: LayoutConstant.buttonHeight)
-    })
+    Button(
+      action: {
+        showSheet.toggle()
+      },
+      label: {
+        Text(String(localized: "Write a message"))
+          .underline()
+          .frame(width: LayoutConstant.buttonWidth, height: LayoutConstant.buttonHeight)
+      }
+    )
     .clipShape(Capsule())
     .buttonStyle(RoundedButtonStyle())
     .sheet(isPresented: $showSheet) {
@@ -37,12 +40,15 @@ struct CircleNewMessageEntrypointButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      showSheet.toggle()
-    }, label: {
-      Image(systemName: "plus")
-        .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
-    })
+    Button(
+      action: {
+        showSheet.toggle()
+      },
+      label: {
+        Image(systemName: "plus")
+          .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
+      }
+    )
     .clipShape(Circle())
     .buttonStyle(RoundedButtonStyle())
     .sheet(isPresented: $showSheet) {
@@ -51,7 +57,7 @@ struct CircleNewMessageEntrypointButton: View {
   }
 }
 
-#Preview {
+#Preview{
   VStack {
     CapsuleNewMessageEntrypointButton()
     CircleNewMessageEntrypointButton()

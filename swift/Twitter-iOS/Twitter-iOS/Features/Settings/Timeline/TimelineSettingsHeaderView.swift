@@ -19,7 +19,9 @@ class TimelineSettingsHeaderView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     let titleWithUnderLine = NSAttributedString(
       string: LocalizedString.dismissButtonText,
-      attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,.underlineColor: UIColor.black])
+      attributes: [
+        .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.black,
+      ])
     button.setAttributedTitle(titleWithUnderLine, for: .normal)
     button.sizeToFit()
     return button
@@ -29,11 +31,11 @@ class TimelineSettingsHeaderView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   private func setUpSubviews() {
     addSubview(titleLabel)
     addSubview(dismissButton)

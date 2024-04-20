@@ -32,8 +32,10 @@ class ExploreSettingsBodyView: UIView {
     addSubview(headlineLabel)
 
     NSLayoutConstraint.activate([
-      headlineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.edgeLeadingPadding),
-      headlineLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
+      headlineLabel.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.edgeLeadingPadding),
+      headlineLabel.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
     ])
   }
 }

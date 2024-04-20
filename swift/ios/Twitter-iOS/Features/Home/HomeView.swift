@@ -36,7 +36,7 @@ struct HomeView: View {
     static let screenWidth = UIScreen.main.bounds.width
     static let forYouOffset = 0.0
     static let followingOffset = screenWidth
-    static let halfOffset = (forYouOffset+followingOffset) / 2
+    static let halfOffset = (forYouOffset + followingOffset) / 2
   }
 
   init(enableSideMenu: Binding<Bool>) {
@@ -76,11 +76,13 @@ struct HomeView: View {
               .id(tabID)
           }
         }
-        .background(GeometryReader {
-          Color.clear.preference(
+        .background(
+          GeometryReader {
+            Color.clear.preference(
               key: ViewOffsetKey.self,
-            value: -$0.frame(in: .named("scroll")).origin.x)
-        })
+              value: -$0.frame(in: .named("scroll")).origin.x)
+          }
+        )
         .onPreferenceChange(ViewOffsetKey.self) {
           detector.send($0)
         }
@@ -101,8 +103,8 @@ struct HomeView: View {
       }
       .overlay(
         NewTweetEntrypointButton()
-          .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 18))
-        , alignment: .bottomTrailing
+          .padding(EdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 18)),
+        alignment: .bottomTrailing
       )
     }
 
@@ -122,33 +124,36 @@ struct HomeHeaderButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      withAnimation {
-        selectedTabID = tabID
-      }
-      enableSideMenu = tabID == HomeView.HomeTabViewID.ForYou
-    }, label: {
-      VStack {
-        Text(title)
-          .font(.headline)
-          .foregroundStyle(.primary)
+    Button(
+      action: {
+        withAnimation {
+          selectedTabID = tabID
+        }
+        enableSideMenu = tabID == HomeView.HomeTabViewID.ForYou
+      },
+      label: {
+        VStack {
+          Text(title)
+            .font(.headline)
+            .foregroundStyle(.primary)
 
-        if selectedTabID == tabID {
-          Capsule()
-            .fill(Color.blue)
-            .frame(height: LayoutConstant.underBarHeight)
-            .matchedGeometryEffect(id: "TAB", in: animation)
-        } else {
-          Capsule()
-            .fill(Color.clear)
-            .frame(height: LayoutConstant.underBarHeight)
+          if selectedTabID == tabID {
+            Capsule()
+              .fill(Color.blue)
+              .frame(height: LayoutConstant.underBarHeight)
+              .matchedGeometryEffect(id: "TAB", in: animation)
+          } else {
+            Capsule()
+              .fill(Color.clear)
+              .frame(height: LayoutConstant.underBarHeight)
+          }
         }
       }
-    })
+    )
     .buttonStyle(HeaderTabButtonStyle(buttonWidth: LayoutConstant.buttonWidth))
   }
 }
 
-#Preview {
+#Preview{
   HomeView(enableSideMenu: .constant(true))
 }

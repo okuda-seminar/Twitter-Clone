@@ -27,6 +27,6 @@ struct SearchTabView: View {
   }
 }
 
-#Preview {
+#Preview{
   SearchTabView()
 }

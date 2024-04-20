@@ -83,9 +83,10 @@ class HomeViewController: UIViewController {
       followingTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
     ])
 
-    homeHeaderView.settingsEntryPointButton.addAction(.init{ _ in
-      self.showTimelineSettings()
-    }, for: .touchUpInside)
+    homeHeaderView.settingsEntryPointButton.addAction(
+      .init { _ in
+        self.showTimelineSettings()
+      }, for: .touchUpInside)
   }
 
   private func showTimelineSettings() {
@@ -100,16 +101,16 @@ extension HomeViewController: UIScrollViewDelegate {
     let curXOffset = scrollView.contentOffset.x
     var selectedButtonIdx = 0
 
-    for left in 0...homeHeaderView.allButtons.count-1 {
+    for left in 0...homeHeaderView.allButtons.count - 1 {
       let leftXOffset = homeTabStackView.arrangedSubviews[left].frame.origin.x
-      let rightXOffset = homeTabStackView.arrangedSubviews[left+1].frame.origin.x
-      guard leftXOffset <= curXOffset &&  curXOffset <= curXOffset else { continue }
+      let rightXOffset = homeTabStackView.arrangedSubviews[left + 1].frame.origin.x
+      guard leftXOffset <= curXOffset && curXOffset <= curXOffset else { continue }
 
-      if curXOffset <= (leftXOffset+rightXOffset) / 2 {
+      if curXOffset <= (leftXOffset + rightXOffset) / 2 {
         selectedButtonIdx = left
         scrollView.setContentOffset(CGPoint(x: leftXOffset, y: 0), animated: true)
       } else {
-        selectedButtonIdx = left+1
+        selectedButtonIdx = left + 1
         scrollView.setContentOffset(CGPoint(x: rightXOffset, y: 0), animated: true)
       }
       break

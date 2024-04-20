@@ -9,18 +9,21 @@ struct NewTweetButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      showSheet.toggle()
-    }, label: {
-      Text(String(localized: "Post"))
-        .underline()
-        .frame(width: LayoutConstant.buttonWidth, height: LayoutConstant.buttonHeight)
-    })
+    Button(
+      action: {
+        showSheet.toggle()
+      },
+      label: {
+        Text(String(localized: "Post"))
+          .underline()
+          .frame(width: LayoutConstant.buttonWidth, height: LayoutConstant.buttonHeight)
+      }
+    )
     .clipShape(Capsule())
     .buttonStyle(RoundedButtonStyle())
   }
 }
 
-#Preview {
-    NewTweetButton()
+#Preview{
+  NewTweetButton()
 }

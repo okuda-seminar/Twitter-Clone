@@ -13,13 +13,15 @@ struct NewMessageEditView: View {
   var body: some View {
     VStack {
       HStack {
-        Button(action: {
-          dismiss()
-        }, label: {
-          Text(String(localized: "Cancel"))
-            .underline()
-            .foregroundStyle(Color.primary)
-        })
+        Button(
+          action: {
+            dismiss()
+          },
+          label: {
+            Text(String(localized: "Cancel"))
+              .underline()
+              .foregroundStyle(Color.primary)
+          })
         Spacer()
         Text(String(localized: "New message"))
           .font(.headline)
@@ -33,23 +35,27 @@ struct NewMessageEditView: View {
       }
       Divider()
       HStack {
-        Button(action: {
+        Button(
+          action: {
 
-        }, label: {
-          Image(systemName: "person.3")
-            .frame(width: 44, height: 44)
-            .clipShape(Circle())
-            .overlay(
-              Circle()
-                .stroke(Color.blue)
-            )
-        })
+          },
+          label: {
+            Image(systemName: "person.3")
+              .frame(width: 44, height: 44)
+              .clipShape(Circle())
+              .overlay(
+                Circle()
+                  .stroke(Color.blue)
+              )
+          })
 
-        Button(action: {
+        Button(
+          action: {
 
-        }, label: {
-          Text(String(localized: "Create a group"))
-        })
+          },
+          label: {
+            Text(String(localized: "Create a group"))
+          })
 
         Spacer()
       }
@@ -60,6 +66,6 @@ struct NewMessageEditView: View {
   }
 }
 
-#Preview {
+#Preview{
   NewMessageEditView()
 }

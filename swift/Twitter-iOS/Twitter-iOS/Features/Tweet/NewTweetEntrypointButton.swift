@@ -8,12 +8,15 @@ struct NewTweetEntrypointButton: View {
   }
 
   var body: some View {
-    Button(action: {
-      showSheet.toggle()
-    }, label: {
-      Image(systemName: "plus")
-        .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
-    })
+    Button(
+      action: {
+        showSheet.toggle()
+      },
+      label: {
+        Image(systemName: "plus")
+          .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
+      }
+    )
     .clipShape(Circle())
     .buttonStyle(RoundedButtonStyle())
     .fullScreenCover(isPresented: $showSheet) {
@@ -22,6 +25,6 @@ struct NewTweetEntrypointButton: View {
   }
 }
 
-#Preview {
-    NewTweetEntrypointButton()
+#Preview{
+  NewTweetEntrypointButton()
 }

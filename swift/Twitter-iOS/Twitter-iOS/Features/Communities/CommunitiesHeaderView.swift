@@ -46,7 +46,7 @@ class CommunitiesHeaderView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -60,16 +60,21 @@ class CommunitiesHeaderView: UIView {
 
     NSLayoutConstraint.activate([
       profileIconButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-      profileIconButton.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
-      profileIconButton.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
-      profileIconButton.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeTopPadding),
+      profileIconButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
+      profileIconButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.profileIconButtonSize),
 
       titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
       titleLabel.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
-      titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.titleLabelTopPadding),
+      titleLabel.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.titleLabelTopPadding),
 
       searchButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
-      searchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
+      searchButton.trailingAnchor.constraint(
+        equalTo: trailingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
       searchButton.widthAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
       searchButton.heightAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
     ])

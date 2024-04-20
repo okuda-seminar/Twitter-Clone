@@ -27,12 +27,14 @@ class CommunitiesViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headerView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
+      headerView.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
       headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerViewHeight),
 
-      homeView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
+      homeView.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
       homeView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       homeView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
       homeView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),

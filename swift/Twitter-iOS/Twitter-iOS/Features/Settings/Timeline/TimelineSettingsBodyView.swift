@@ -23,7 +23,7 @@ class TimelineSettingsBodyView: UIView {
     super.init(frame: frame)
     setUpSubviews()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -32,8 +32,10 @@ class TimelineSettingsBodyView: UIView {
     addSubview(headlineLabel)
 
     NSLayoutConstraint.activate([
-      headlineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.edgeLeadingPadding),
-      headlineLabel.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
+      headlineLabel.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.edgeLeadingPadding),
+      headlineLabel.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
     ])
   }
 }

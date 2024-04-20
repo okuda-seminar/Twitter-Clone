@@ -21,7 +21,7 @@ class NotificationsViewController: UIViewController {
 
     view.backgroundColor = .systemBackground
     view.addSubview(headerView)
-    
+
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
       headerView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
