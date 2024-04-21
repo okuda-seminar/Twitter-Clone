@@ -12,14 +12,16 @@ import (
 
 // usersSvc implements users/gen/users.Service.
 type usersSvc struct {
-	repository repository.UsersRepo
-	logger     *log.Logger
+	usersRepo       repository.UsersRepo
+	followshipsRepo repository.FollowshipsRepo
+	logger          *log.Logger
 }
 
 // NewUsersSvc returns the users service implementation.
 func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
-	repository := repository.NewUsersRepoImpl(db)
-	return &usersSvc{repository, logger}
+	usersRepo := repository.NewUsersRepoImpl(db)
+	followshipsRepo := repository.NewFollowshipsRepoImpl(db)
+	return &usersSvc{usersRepo, followshipsRepo, logger}
 }
 
 func (s *usersSvc) CreateUser(
@@ -31,7 +33,7 @@ func (s *usersSvc) CreateUser(
 		return nil, users.MakeBadRequest(errors.New("username is invalid"))
 	}
 
-	user, err := s.repository.CreateUser(ctx, p.Username, p.DisplayName)
+	user, err := s.usersRepo.CreateUser(ctx, p.Username, p.DisplayName)
 	if err != nil {
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
 		return nil, users.MakeBadRequest(err)
@@ -54,7 +56,7 @@ func (s *usersSvc) DeleteUser(
 	ctx context.Context,
 	p *users.DeleteUserPayload,
 ) (err error) {
-	err = s.repository.DeleteUser(ctx, p.ID)
+	err = s.usersRepo.DeleteUser(ctx, p.ID)
 	if err != nil {
 		// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/15
 		// - Discuss logging structure.
@@ -70,7 +72,7 @@ func (s *usersSvc) FindUserByID(
 	ctx context.Context,
 	p *users.FindUserByIDPayload,
 ) (res *users.User, err error) {
-	user, err := s.repository.FindUserByID(ctx, p.ID)
+	user, err := s.usersRepo.FindUserByID(ctx, p.ID)
 	if err != nil {
 		s.logger.Printf("users.FindByID: failed (%s)", err)
 		return nil, users.MakeNotFound(err)
@@ -97,7 +99,7 @@ func (s *usersSvc) UpdateUsername(
 		return users.MakeBadRequest(errors.New("username is invalid"))
 	}
 
-	err = s.repository.UpdateUsername(ctx, p.ID, p.Username)
+	err = s.usersRepo.UpdateUsername(ctx, p.ID, p.Username)
 	if err != nil {
 		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -116,7 +118,7 @@ func (s *usersSvc) UpdateBio(
 		return users.MakeBadRequest(errors.New("bio is invalid"))
 	}
 
-	err = s.repository.UpdateBio(ctx, p.ID, p.Bio)
+	err = s.usersRepo.UpdateBio(ctx, p.ID, p.Bio)
 	if err != nil {
 		s.logger.Printf("users.UpdateBio: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -124,6 +126,34 @@ func (s *usersSvc) UpdateBio(
 
 	s.logger.Print("users.UpdateBio")
 	return
+}
+
+func (s *usersSvc) Follow(
+	ctx context.Context,
+	p *users.FollowPayload,
+) error {
+	err := s.followshipsRepo.CreateFollowship(ctx, p.FollowerID, p.FolloweeID)
+	if err != nil {
+		s.logger.Printf("users.Follow: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Follow")
+	return nil
+}
+
+func (s *usersSvc) Unfollow(
+	ctx context.Context,
+	p *users.UnfollowPayload,
+) error {
+	err := s.followshipsRepo.DeleteFollowship(ctx, p.FollowerID, p.FolloweeID)
+	if err != nil {
+		s.logger.Printf("users.Unfollow: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Unfollow")
+	return nil
 }
 
 const (

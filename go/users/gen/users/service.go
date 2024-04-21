@@ -25,6 +25,10 @@ type Service interface {
 	UpdateUsername(context.Context, *UpdateUsernamePayload) (err error)
 	// UpdateBio implements UpdateBio.
 	UpdateBio(context.Context, *UpdateBioPayload) (err error)
+	// Follow implements Follow.
+	Follow(context.Context, *FollowPayload) (err error)
+	// Unfollow implements Unfollow.
+	Unfollow(context.Context, *UnfollowPayload) (err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -35,7 +39,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [5]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio"}
+var MethodNames = [7]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow"}
 
 // CreateUserPayload is the payload type of the users service CreateUser method.
 type CreateUserPayload struct {
@@ -52,6 +56,18 @@ type DeleteUserPayload struct {
 // method.
 type FindUserByIDPayload struct {
 	ID int
+}
+
+// FollowPayload is the payload type of the users service Follow method.
+type FollowPayload struct {
+	FollowerID int
+	FolloweeID int
+}
+
+// UnfollowPayload is the payload type of the users service Unfollow method.
+type UnfollowPayload struct {
+	FollowerID int
+	FolloweeID int
 }
 
 // UpdateBioPayload is the payload type of the users service UpdateBio method.

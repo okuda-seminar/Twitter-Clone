@@ -98,5 +98,35 @@ var _ = Service("users", func() {
 		})
 	})
 
+	Method("Follow", func() {
+		Payload(func() {
+			Field(1, "follower_id", Int)
+			Field(2, "followee_id", Int)
+			Required("follower_id", "followee_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/users/follow")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("Unfollow", func() {
+		Payload(func() {
+			Field(1, "follower_id", Int)
+			Field(2, "followee_id", Int)
+			Required("follower_id", "followee_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			DELETE("/api/users/follow")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })

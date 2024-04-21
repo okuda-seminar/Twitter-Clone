@@ -38,6 +38,20 @@ type UpdateBioRequestBody struct {
 	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
 }
 
+// FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
+// request body.
+type FollowRequestBody struct {
+	FollowerID *int `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
+	FolloweeID *int `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
+}
+
+// UnfollowRequestBody is the type of the "users" service "Unfollow" endpoint
+// HTTP request body.
+type UnfollowRequestBody struct {
+	FollowerID *int `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
+	FolloweeID *int `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
+}
+
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
@@ -204,6 +218,42 @@ type UpdateBioBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// FollowBadRequestResponseBody is the type of the "users" service "Follow"
+// endpoint HTTP response body for the "BadRequest" error.
+type FollowBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UnfollowBadRequestResponseBody is the type of the "users" service "Unfollow"
+// endpoint HTTP response body for the "BadRequest" error.
+type UnfollowBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // NewCreateUserResponseBody builds the HTTP response body from the result of
 // the "CreateUser" endpoint of the "users" service.
 func NewCreateUserResponseBody(res *users.User) *CreateUserResponseBody {
@@ -344,6 +394,34 @@ func NewUpdateBioBadRequestResponseBody(res *goa.ServiceError) *UpdateBioBadRequ
 	return body
 }
 
+// NewFollowBadRequestResponseBody builds the HTTP response body from the
+// result of the "Follow" endpoint of the "users" service.
+func NewFollowBadRequestResponseBody(res *goa.ServiceError) *FollowBadRequestResponseBody {
+	body := &FollowBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUnfollowBadRequestResponseBody builds the HTTP response body from the
+// result of the "Unfollow" endpoint of the "users" service.
+func NewUnfollowBadRequestResponseBody(res *goa.ServiceError) *UnfollowBadRequestResponseBody {
+	body := &UnfollowBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateUserPayload builds a users service CreateUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload {
 	v := &users.CreateUserPayload{
@@ -392,6 +470,26 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, id int) *users.UpdateBioPay
 	return v
 }
 
+// NewFollowPayload builds a users service Follow endpoint payload.
+func NewFollowPayload(body *FollowRequestBody) *users.FollowPayload {
+	v := &users.FollowPayload{
+		FollowerID: *body.FollowerID,
+		FolloweeID: *body.FolloweeID,
+	}
+
+	return v
+}
+
+// NewUnfollowPayload builds a users service Unfollow endpoint payload.
+func NewUnfollowPayload(body *UnfollowRequestBody) *users.UnfollowPayload {
+	v := &users.UnfollowPayload{
+		FollowerID: *body.FollowerID,
+		FolloweeID: *body.FolloweeID,
+	}
+
+	return v
+}
+
 // ValidateCreateUserRequestBody runs the validations defined on
 // CreateUserRequestBody
 func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
@@ -427,6 +525,29 @@ func ValidateUpdateUsernameRequestBody(body *UpdateUsernameRequestBody) (err err
 func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
 	if body.Bio == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	return
+}
+
+// ValidateFollowRequestBody runs the validations defined on FollowRequestBody
+func ValidateFollowRequestBody(body *FollowRequestBody) (err error) {
+	if body.FollowerID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("follower_id", "body"))
+	}
+	if body.FolloweeID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
+	}
+	return
+}
+
+// ValidateUnfollowRequestBody runs the validations defined on
+// UnfollowRequestBody
+func ValidateUnfollowRequestBody(body *UnfollowRequestBody) (err error) {
+	if body.FollowerID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("follower_id", "body"))
+	}
+	if body.FolloweeID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
 	}
 	return
 }
