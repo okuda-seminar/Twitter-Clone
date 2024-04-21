@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio)
+	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Facilis quidem quis at quod aspernatur quam.",
-      "username": "Sunt eos."
+      "display_name": "Aspernatur quam repellat dolor laboriosam ut.",
+      "username": "Quidem quis at."
    }'` + "\n" +
 		""
 }
@@ -63,6 +63,12 @@ func ParseEndpoint(
 		usersUpdateBioFlags    = flag.NewFlagSet("update-bio", flag.ExitOnError)
 		usersUpdateBioBodyFlag = usersUpdateBioFlags.String("body", "REQUIRED", "")
 		usersUpdateBioIDFlag   = usersUpdateBioFlags.String("id", "REQUIRED", "")
+
+		usersFollowFlags    = flag.NewFlagSet("follow", flag.ExitOnError)
+		usersFollowBodyFlag = usersFollowFlags.String("body", "REQUIRED", "")
+
+		usersUnfollowFlags    = flag.NewFlagSet("unfollow", flag.ExitOnError)
+		usersUnfollowBodyFlag = usersUnfollowFlags.String("body", "REQUIRED", "")
 	)
 	usersFlags.Usage = usersUsage
 	usersCreateUserFlags.Usage = usersCreateUserUsage
@@ -70,6 +76,8 @@ func ParseEndpoint(
 	usersFindUserByIDFlags.Usage = usersFindUserByIDUsage
 	usersUpdateUsernameFlags.Usage = usersUpdateUsernameUsage
 	usersUpdateBioFlags.Usage = usersUpdateBioUsage
+	usersFollowFlags.Usage = usersFollowUsage
+	usersUnfollowFlags.Usage = usersUnfollowUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -120,6 +128,12 @@ func ParseEndpoint(
 			case "update-bio":
 				epf = usersUpdateBioFlags
 
+			case "follow":
+				epf = usersFollowFlags
+
+			case "unfollow":
+				epf = usersUnfollowFlags
+
 			}
 
 		}
@@ -160,6 +174,12 @@ func ParseEndpoint(
 			case "update-bio":
 				endpoint = c.UpdateBio()
 				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioIDFlag)
+			case "follow":
+				endpoint = c.Follow()
+				data, err = usersc.BuildFollowPayload(*usersFollowBodyFlag)
+			case "unfollow":
+				endpoint = c.Unfollow()
+				data, err = usersc.BuildUnfollowPayload(*usersUnfollowBodyFlag)
 			}
 		}
 	}
@@ -182,6 +202,8 @@ COMMAND:
     find-user-by-id: FindUserByID implements FindUserByID.
     update-username: UpdateUsername implements UpdateUsername.
     update-bio: UpdateBio implements UpdateBio.
+    follow: Follow implements Follow.
+    unfollow: Unfollow implements Unfollow.
 
 Additional help:
     %[1]s users COMMAND --help
@@ -195,8 +217,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Facilis quidem quis at quod aspernatur quam.",
-      "username": "Sunt eos."
+      "display_name": "Aspernatur quam repellat dolor laboriosam ut.",
+      "username": "Quidem quis at."
    }'
 `, os.Args[0])
 }
@@ -209,7 +231,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": 9017040730249194932
+      "id": 2810239129742510560
    }'
 `, os.Args[0])
 }
@@ -221,7 +243,7 @@ FindUserByID implements FindUserByID.
     -id INT: 
 
 Example:
-    %[1]s users find-user-by-id --id 6539292391436511423
+    %[1]s users find-user-by-id --id 6631083770725994490
 `, os.Args[0])
 }
 
@@ -234,8 +256,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Et error quo vero nesciunt quo voluptate."
-   }' --id 8179758510119975880
+      "username": "Odit et omnis placeat similique voluptatem id."
+   }' --id 3960660096043873810
 `, os.Args[0])
 }
 
@@ -248,7 +270,35 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Laudantium corrupti beatae fuga corrupti."
-   }' --id 9162785213546963991
+      "bio": "Voluptas nobis omnis."
+   }' --id 4947093462436013363
+`, os.Args[0])
+}
+
+func usersFollowUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users follow -body JSON
+
+Follow implements Follow.
+    -body JSON: 
+
+Example:
+    %[1]s users follow --body '{
+      "followee_id": 8492160358191620196,
+      "follower_id": 6881001417419968319
+   }'
+`, os.Args[0])
+}
+
+func usersUnfollowUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unfollow -body JSON
+
+Unfollow implements Unfollow.
+    -body JSON: 
+
+Example:
+    %[1]s users unfollow --body '{
+      "followee_id": 6202834779766302284,
+      "follower_id": 4698722160625222812
+   }'
 `, os.Args[0])
 }

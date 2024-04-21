@@ -477,3 +477,153 @@ func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, resto
 		}
 	}
 }
+
+// BuildFollowRequest instantiates a HTTP request object with method and path
+// set to call the "users" service "Follow" endpoint
+func (c *Client) BuildFollowRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: FollowUsersPath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "Follow", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeFollowRequest returns an encoder for requests sent to the users Follow
+// server.
+func EncodeFollowRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.FollowPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "Follow", "*users.FollowPayload", v)
+		}
+		body := NewFollowRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("users", "Follow", err)
+		}
+		return nil
+	}
+}
+
+// DecodeFollowResponse returns a decoder for responses returned by the users
+// Follow endpoint. restoreBody controls whether the response body should be
+// restored after having been read.
+// DecodeFollowResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeFollowResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body FollowBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "Follow", err)
+			}
+			err = ValidateFollowBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "Follow", err)
+			}
+			return nil, NewFollowBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "Follow", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildUnfollowRequest instantiates a HTTP request object with method and path
+// set to call the "users" service "Unfollow" endpoint
+func (c *Client) BuildUnfollowRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnfollowUsersPath()}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "Unfollow", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUnfollowRequest returns an encoder for requests sent to the users
+// Unfollow server.
+func EncodeUnfollowRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.UnfollowPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "Unfollow", "*users.UnfollowPayload", v)
+		}
+		body := NewUnfollowRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("users", "Unfollow", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUnfollowResponse returns a decoder for responses returned by the users
+// Unfollow endpoint. restoreBody controls whether the response body should be
+// restored after having been read.
+// DecodeUnfollowResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeUnfollowResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body UnfollowBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "Unfollow", err)
+			}
+			err = ValidateUnfollowBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "Unfollow", err)
+			}
+			return nil, NewUnfollowBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "Unfollow", resp.StatusCode, string(body))
+		}
+	}
+}

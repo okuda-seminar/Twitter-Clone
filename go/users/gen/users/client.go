@@ -20,16 +20,20 @@ type Client struct {
 	FindUserByIDEndpoint   goa.Endpoint
 	UpdateUsernameEndpoint goa.Endpoint
 	UpdateBioEndpoint      goa.Endpoint
+	FollowEndpoint         goa.Endpoint
+	UnfollowEndpoint       goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow goa.Endpoint) *Client {
 	return &Client{
 		CreateUserEndpoint:     createUser,
 		DeleteUserEndpoint:     deleteUser,
 		FindUserByIDEndpoint:   findUserByID,
 		UpdateUsernameEndpoint: updateUsername,
 		UpdateBioEndpoint:      updateBio,
+		FollowEndpoint:         follow,
+		UnfollowEndpoint:       unfollow,
 	}
 }
 
@@ -88,5 +92,25 @@ func (c *Client) UpdateUsername(ctx context.Context, p *UpdateUsernamePayload) (
 //   - error: internal error
 func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (err error) {
 	_, err = c.UpdateBioEndpoint(ctx, p)
+	return
+}
+
+// Follow calls the "Follow" endpoint of the "users" service.
+// Follow may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Follow(ctx context.Context, p *FollowPayload) (err error) {
+	_, err = c.FollowEndpoint(ctx, p)
+	return
+}
+
+// Unfollow calls the "Unfollow" endpoint of the "users" service.
+// Unfollow may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Unfollow(ctx context.Context, p *UnfollowPayload) (err error) {
+	_, err = c.UnfollowEndpoint(ctx, p)
 	return
 }

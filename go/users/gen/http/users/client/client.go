@@ -37,6 +37,13 @@ type Client struct {
 	// endpoint.
 	UpdateBioDoer goahttp.Doer
 
+	// Follow Doer is the HTTP client used to make requests to the Follow endpoint.
+	FollowDoer goahttp.Doer
+
+	// Unfollow Doer is the HTTP client used to make requests to the Unfollow
+	// endpoint.
+	UnfollowDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -62,6 +69,8 @@ func NewClient(
 		FindUserByIDDoer:    doer,
 		UpdateUsernameDoer:  doer,
 		UpdateBioDoer:       doer,
+		FollowDoer:          doer,
+		UnfollowDoer:        doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -180,6 +189,54 @@ func (c *Client) UpdateBio() goa.Endpoint {
 		resp, err := c.UpdateBioDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("users", "UpdateBio", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Follow returns an endpoint that makes HTTP requests to the users service
+// Follow server.
+func (c *Client) Follow() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeFollowRequest(c.encoder)
+		decodeResponse = DecodeFollowResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildFollowRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.FollowDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Follow", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Unfollow returns an endpoint that makes HTTP requests to the users service
+// Unfollow server.
+func (c *Client) Unfollow() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUnfollowRequest(c.encoder)
+		decodeResponse = DecodeUnfollowResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUnfollowRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UnfollowDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Unfollow", err)
 		}
 		return decodeResponse(resp)
 	}

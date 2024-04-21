@@ -22,7 +22,7 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Facilis quidem quis at quod aspernatur quam.\",\n      \"username\": \"Sunt eos.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Aspernatur quam repellat dolor laboriosam ut.\",\n      \"username\": \"Quidem quis at.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
@@ -41,7 +41,7 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 9017040730249194932\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 2810239129742510560\n   }'")
 		}
 	}
 	v := &users.DeleteUserPayload{
@@ -78,7 +78,7 @@ func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsern
 	{
 		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Et error quo vero nesciunt quo voluptate.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Odit et omnis placeat similique voluptatem id.\"\n   }'")
 		}
 	}
 	var id int
@@ -106,7 +106,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Laudantium corrupti beatae fuga corrupti.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Voluptas nobis omnis.\"\n   }'")
 		}
 	}
 	var id int
@@ -122,6 +122,44 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 		Bio: body.Bio,
 	}
 	v.ID = id
+
+	return v, nil
+}
+
+// BuildFollowPayload builds the payload for the users Follow endpoint from CLI
+// flags.
+func BuildFollowPayload(usersFollowBody string) (*users.FollowPayload, error) {
+	var err error
+	var body FollowRequestBody
+	{
+		err = json.Unmarshal([]byte(usersFollowBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": 8492160358191620196,\n      \"follower_id\": 6881001417419968319\n   }'")
+		}
+	}
+	v := &users.FollowPayload{
+		FollowerID: body.FollowerID,
+		FolloweeID: body.FolloweeID,
+	}
+
+	return v, nil
+}
+
+// BuildUnfollowPayload builds the payload for the users Unfollow endpoint from
+// CLI flags.
+func BuildUnfollowPayload(usersUnfollowBody string) (*users.UnfollowPayload, error) {
+	var err error
+	var body UnfollowRequestBody
+	{
+		err = json.Unmarshal([]byte(usersUnfollowBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": 6202834779766302284,\n      \"follower_id\": 4698722160625222812\n   }'")
+		}
+	}
+	v := &users.UnfollowPayload{
+		FollowerID: body.FollowerID,
+		FolloweeID: body.FolloweeID,
+	}
 
 	return v, nil
 }

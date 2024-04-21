@@ -35,3 +35,13 @@ func UpdateUsernameUsersPath(id int) string {
 func UpdateBioUsersPath(id int) string {
 	return fmt.Sprintf("/api/users/%v/bio", id)
 }
+
+// FollowUsersPath returns the URL path to the users service Follow HTTP endpoint.
+func FollowUsersPath() string {
+	return "/api/users/follow"
+}
+
+// UnfollowUsersPath returns the URL path to the users service Unfollow HTTP endpoint.
+func UnfollowUsersPath() string {
+	return "/api/users/follow"
+}

@@ -20,6 +20,8 @@ type Endpoints struct {
 	FindUserByID   goa.Endpoint
 	UpdateUsername goa.Endpoint
 	UpdateBio      goa.Endpoint
+	Follow         goa.Endpoint
+	Unfollow       goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "users" service with endpoints.
@@ -30,6 +32,8 @@ func NewEndpoints(s Service) *Endpoints {
 		FindUserByID:   NewFindUserByIDEndpoint(s),
 		UpdateUsername: NewUpdateUsernameEndpoint(s),
 		UpdateBio:      NewUpdateBioEndpoint(s),
+		Follow:         NewFollowEndpoint(s),
+		Unfollow:       NewUnfollowEndpoint(s),
 	}
 }
 
@@ -40,6 +44,8 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.FindUserByID = m(e.FindUserByID)
 	e.UpdateUsername = m(e.UpdateUsername)
 	e.UpdateBio = m(e.UpdateBio)
+	e.Follow = m(e.Follow)
+	e.Unfollow = m(e.Unfollow)
 }
 
 // NewCreateUserEndpoint returns an endpoint function that calls the method
@@ -84,5 +90,23 @@ func NewUpdateBioEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
 		p := req.(*UpdateBioPayload)
 		return nil, s.UpdateBio(ctx, p)
+	}
+}
+
+// NewFollowEndpoint returns an endpoint function that calls the method
+// "Follow" of service "users".
+func NewFollowEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*FollowPayload)
+		return nil, s.Follow(ctx, p)
+	}
+}
+
+// NewUnfollowEndpoint returns an endpoint function that calls the method
+// "Unfollow" of service "users".
+func NewUnfollowEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*UnfollowPayload)
+		return nil, s.Unfollow(ctx, p)
 	}
 }
