@@ -10,7 +10,9 @@ class CommunitiesHeaderView: UIView {
     static let profileIconButtonSize = 28.0
     static let titleLabelTopPadding = 8.0
     static let searchButtonSize = 28.0
-    static let searchButtonTrailingPadding = 16.0
+    static let searchButtonTrailingPadding = 4.0
+    static let newCommunityCreationEntryPointButtonSize = 28.0
+    static let newCommunityCreationEntryPointButtonTrailingPadding = 16.0
   }
 
   public let profileIconButton: UIButton = {
@@ -42,6 +44,16 @@ class CommunitiesHeaderView: UIView {
     return button
   }()
 
+  public let newCommunityCreationEntryPointButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "person.2"), for: .normal)
+    button.imageView?.contentMode = .scaleAspectFit
+    button.contentHorizontalAlignment = .fill
+    button.contentVerticalAlignment = .fill
+    return button
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUpSubviews()
@@ -55,6 +67,7 @@ class CommunitiesHeaderView: UIView {
     addSubview(profileIconButton)
     addSubview(titleLabel)
     addSubview(searchButton)
+    addSubview(newCommunityCreationEntryPointButton)
 
     titleLabel.sizeToFit()
 
@@ -74,9 +87,14 @@ class CommunitiesHeaderView: UIView {
 
       searchButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
       searchButton.trailingAnchor.constraint(
-        equalTo: trailingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
+        equalTo: newCommunityCreationEntryPointButton.leadingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
       searchButton.widthAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
       searchButton.heightAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
+
+      newCommunityCreationEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
+      newCommunityCreationEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.newCommunityCreationEntryPointButtonTrailingPadding),
+      newCommunityCreationEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
+      newCommunityCreationEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
     ])
   }
 }

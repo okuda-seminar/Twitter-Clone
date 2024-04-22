@@ -46,6 +46,7 @@
 		6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */; };
 		6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */; };
 		6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */; };
+		6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsViewController.swift; sourceTree = "<group>"; };
 		6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsHeaderView.swift; sourceTree = "<group>"; };
 		6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsBodyView.swift; sourceTree = "<group>"; };
+		6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedNewCommunityCreationBottomSheetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 				6540F8EF2BCA28F80029BA46 /* CommunitiesHeaderView.swift */,
 				6540F8F12BCE94CE0029BA46 /* CommunitiesHomeView.swift */,
 				6540F8ED2BCA28070029BA46 /* CommunitiesViewController.swift */,
+				6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */,
 			);
 			path = Communities;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButton.swift in Sources */,
 				6540F8CF2BB7F7B10029BA46 /* HomeHeaderView.swift in Sources */,
 				6540F8F52BCFEAB20029BA46 /* MessagesViewController.swift in Sources */,
+				6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */,
 				6540F8D62BC0199F0029BA46 /* SearchHeaderView.swift in Sources */,
 				6540F8F22BCE94CE0029BA46 /* CommunitiesHomeView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,

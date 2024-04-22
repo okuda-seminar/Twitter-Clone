@@ -1,30 +1,67 @@
 import SwiftUI
+import UIKit
 
-struct HomeTabView: View {
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/26 - Fetch tweet data from backend.
-  private let fakeTweets: [TweetModel] = {
-    var tweets: [TweetModel] = []
-    for _ in 0..<30 {
-      tweets.append(createFakeTweet())
-    }
-    return tweets
-  }()
+final class HomeTabView: UIView {
 
-  var body: some View {
-    ScrollView(showsIndicators: false) {
-      VStack {
-        ForEach(fakeTweets) { fakeTweet in
-          Divider()
-          HomeTweetCellView(
-            userIcon: fakeTweet.userIcon, userName: fakeTweet.userName, bodyText: fakeTweet.bodyText
-          )
-        }
-      }
+  public var tweets: [TweetModel]? {
+    didSet {
+      setUpSubviews()
     }
-    .background(Color(UIColor.systemBackground))
   }
-}
 
-#Preview{
-  HomeTabView()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  private func setUpSubviews() {
+    guard let tweets else { return }
+
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.showsHorizontalScrollIndicator = false
+    scrollView.showsVerticalScrollIndicator = false
+
+    let contentStackView = UIStackView()
+    contentStackView.translatesAutoresizingMaskIntoConstraints = false
+    contentStackView.axis = .vertical
+    contentStackView.spacing = 5
+
+    scrollView.addSubview(contentStackView)
+    addSubview(scrollView)
+
+    for tweet in tweets {
+      let dividerView = UIView()
+      dividerView.translatesAutoresizingMaskIntoConstraints = false
+      dividerView.backgroundColor = UIColor.lightGray
+
+      let tweetCellView = HomeTweetCellView()
+      tweetCellView.translatesAutoresizingMaskIntoConstraints = false
+      tweetCellView.tweet = tweet
+
+      contentStackView.addArrangedSubview(dividerView)
+      contentStackView.addArrangedSubview(tweetCellView)
+
+      NSLayoutConstraint.activate([
+        tweetCellView.widthAnchor.constraint(equalTo: widthAnchor),
+      ])
+    }
+
+    NSLayoutConstraint.activate([
+      scrollView.topAnchor.constraint(equalTo: topAnchor),
+      scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+      contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+      contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+      contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+    ])
+
+    backgroundColor = UIColor.systemBackground
+  }
 }

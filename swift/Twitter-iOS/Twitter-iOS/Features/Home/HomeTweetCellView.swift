@@ -1,36 +1,80 @@
-import SwiftUI
+import UIKit
 
-func createFakeTweet() -> TweetModel {
-  return TweetModel(
-    id: UUID(),
-    bodyText:
-      "Use a binding to create a two-way connection between a property that stores data, and a view that displays and changes the data. ",
-    userIcon: Image(systemName: "apple.logo"),
-    userName: "Apple")
-}
+class HomeTweetCellView: UIView {
 
-private let fakeTweet = createFakeTweet()
-
-struct HomeTweetCellView: View {
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/23 - Polish tweet cell view UI.
-  var userIcon: Image
-  var userName: String
-  var bodyText: String
-
-  var body: some View {
-    HStack(alignment: .top) {
-      userIcon
-      VStack(alignment: .leading) {
-        Text(userName)
-          .font(.headline)
-        Text(bodyText)
-          .font(.body)
-      }
+  public var tweet: TweetModel? {
+    didSet {
+      setUpSubviews()
     }
   }
-}
 
-#Preview{
-  HomeTweetCellView(
-    userIcon: fakeTweet.userIcon, userName: fakeTweet.userName, bodyText: fakeTweet.bodyText)
+  public let userIconButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.contentMode = .scaleAspectFit
+    button.contentHorizontalAlignment = .fill
+    button.tintColor = .black
+    return button
+  }()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  private func setUpSubviews() {
+    guard let tweet else { return }
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .horizontal
+    stackView.alignment = .fill
+
+    userIconButton.setImage(tweet.userIcon, for: .normal)
+
+    let infoStackView = UIStackView()
+    infoStackView.translatesAutoresizingMaskIntoConstraints = false
+    infoStackView.axis = .vertical
+    infoStackView.alignment = .leading
+
+    let userNameLabel = UILabel()
+    userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+    userNameLabel.text = tweet.userName
+    userNameLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+
+    let bodyTextLabel = UILabel()
+    bodyTextLabel.translatesAutoresizingMaskIntoConstraints = false
+    bodyTextLabel.text = tweet.bodyText
+    bodyTextLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+    bodyTextLabel.numberOfLines = 0
+    bodyTextLabel.lineBreakMode = .byWordWrapping
+
+    stackView.addArrangedSubview(userIconButton)
+    stackView.addArrangedSubview(infoStackView)
+
+    infoStackView.addArrangedSubview(userNameLabel)
+    infoStackView.addArrangedSubview(bodyTextLabel)
+
+    stackView.spacing = 10
+    infoStackView.spacing = 5
+
+    addSubview(stackView)
+
+    NSLayoutConstraint.activate([
+      stackView.topAnchor.constraint(equalTo: topAnchor),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+      bodyTextLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+
+      bottomAnchor.constraint(equalTo: bodyTextLabel.bottomAnchor),
+    ])
+
+    userIconButton.addAction(.init { _ in
+      print("Clicked")
+    }, for: .touchUpInside)
+  }
 }

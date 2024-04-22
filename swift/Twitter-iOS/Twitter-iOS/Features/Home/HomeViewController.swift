@@ -48,12 +48,15 @@ class HomeViewController: UIViewController {
     homeHeaderView.followingButton.delegate = self
     view.addSubview(homeHeaderView)
 
-    let forYouTabViewController = UIHostingController(rootView: HomeTabView())
-    let followingTabViewController = UIHostingController(rootView: HomeTabView())
-    forYouTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    followingTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    homeTabStackView.addArrangedSubview(forYouTabViewController.view)
-    homeTabStackView.addArrangedSubview(followingTabViewController.view)
+    let forYouTabView = HomeTabView()
+    forYouTabView.translatesAutoresizingMaskIntoConstraints = false
+    loadTweetData(view: forYouTabView)
+    homeTabStackView.addArrangedSubview(forYouTabView)
+
+    let followingTabView = HomeTabView()
+    followingTabView.translatesAutoresizingMaskIntoConstraints = false
+    loadTweetData(view: followingTabView)
+    homeTabStackView.addArrangedSubview(followingTabView)
 
     homeTabScrollView.delegate = self
 
@@ -79,14 +82,22 @@ class HomeViewController: UIViewController {
       homeTabStackView.bottomAnchor.constraint(equalTo: homeTabScrollView.bottomAnchor),
       homeTabStackView.heightAnchor.constraint(equalTo: homeTabScrollView.heightAnchor),
 
-      forYouTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
-      followingTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+      forYouTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
+      followingTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
     ])
 
     homeHeaderView.settingsEntryPointButton.addAction(
       .init { _ in
         self.showTimelineSettings()
       }, for: .touchUpInside)
+  }
+
+  private func loadTweetData(view: HomeTabView) {
+    var tweets: [TweetModel] = []
+    for _ in 0..<30 {
+      tweets.append(createFakeTweet())
+    }
+    view.tweets = tweets
   }
 
   private func showTimelineSettings() {
