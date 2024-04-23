@@ -9,6 +9,8 @@ final class HomeTabView: UIView {
     }
   }
 
+  public var tweetCellViews: [HomeTweetCellView] = []
+
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -44,6 +46,7 @@ final class HomeTabView: UIView {
 
       contentStackView.addArrangedSubview(dividerView)
       contentStackView.addArrangedSubview(tweetCellView)
+      tweetCellViews.append(tweetCellView)
 
       NSLayoutConstraint.activate([
         tweetCellView.widthAnchor.constraint(equalTo: widthAnchor),

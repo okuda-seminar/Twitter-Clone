@@ -28,7 +28,7 @@ class MessagesHeaderView: UIView {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = LocalizedString.title
-    label.textColor = .black
+    label.tintColor = .black
     label.sizeToFit()
     return label
   }()

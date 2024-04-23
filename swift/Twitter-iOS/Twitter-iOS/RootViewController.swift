@@ -21,8 +21,9 @@ class RootViewController: UITabBarController {
   }
 
   private func setUpSubviews() {
-    let homeViewController = HomeViewController()
-    homeViewController.tabBarItem = UITabBarItem(
+    let homeNavigationController = UINavigationController(rootViewController: HomeViewController())
+    homeNavigationController.setNavigationBarHidden(true, animated: false)
+    homeNavigationController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
 
     let searchViewController = SearchViewController()
@@ -42,7 +43,7 @@ class RootViewController: UITabBarController {
       title: "", image: UIImage(systemName: "envelope"), tag: TabBarItemTag.messages.rawValue)
 
     viewControllers = [
-      homeViewController, searchViewController, communitiesViewController,
+      homeNavigationController, searchViewController, communitiesViewController,
       notificationsViewController, messagesViewController,
     ]
   }

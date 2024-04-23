@@ -1,5 +1,9 @@
 import UIKit
 
+protocol HomeTweetCellViewDelegate {
+  func didTapUserIconButton(userName: String)
+}
+
 class HomeTweetCellView: UIView {
 
   public var tweet: TweetModel? {
@@ -7,6 +11,8 @@ class HomeTweetCellView: UIView {
       setUpSubviews()
     }
   }
+
+  public var delegate: HomeTweetCellViewDelegate?
 
   public let userIconButton: UIButton = {
     let button = UIButton()
@@ -74,7 +80,7 @@ class HomeTweetCellView: UIView {
     ])
 
     userIconButton.addAction(.init { _ in
-      print("Clicked")
+      self.delegate?.didTapUserIconButton(userName: tweet.userName)
     }, for: .touchUpInside)
   }
 }

@@ -98,6 +98,10 @@ class HomeViewController: UIViewController {
       tweets.append(createFakeTweet())
     }
     view.tweets = tweets
+
+    for tweetCellView in view.tweetCellViews {
+      tweetCellView.delegate = self
+    }
   }
 
   private func showTimelineSettings() {
@@ -157,5 +161,13 @@ extension HomeViewController: HomeHeaderButtonDelegate {
 
   private func updateUnselectedButtonUI(_ button: HomeHeaderButton) {
     button.isSelected = false
+  }
+}
+
+extension HomeViewController: HomeTweetCellViewDelegate {
+  func didTapUserIconButton(userName: String) {
+    let userProfileViewController = UserProfileViewController()
+    userProfileViewController.userName = userName
+    navigationController?.pushViewController(userProfileViewController, animated: true)
   }
 }
