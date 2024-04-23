@@ -45,18 +45,26 @@ final class BlockedNewCommunityCreationBottomSheetViewController: UIViewControll
     view.backgroundColor = .systemBackground
 
     NSLayoutConstraint.activate([
-      headlineLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      headlineLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
-      headlineLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
+      headlineLabel.leadingAnchor.constraint(
+        equalTo: view.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      headlineLabel.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      headlineLabel.topAnchor.constraint(
+        equalTo: view.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
 
-      dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
-      dismissButton.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: LayoutConstant.dismissButtonTopPadding),
-      dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -LayoutConstant.dismissButtonBottomPadding),
+      dismissButton.leadingAnchor.constraint(
+        equalTo: view.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      dismissButton.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
+      dismissButton.topAnchor.constraint(
+        equalTo: headlineLabel.bottomAnchor, constant: LayoutConstant.dismissButtonTopPadding),
+      dismissButton.bottomAnchor.constraint(
+        equalTo: view.bottomAnchor, constant: -LayoutConstant.dismissButtonBottomPadding),
     ])
 
-    dismissButton.addAction(.init { _ in
-      self.dismiss(animated: true)
-    }, for: .touchUpInside)
+    dismissButton.addAction(
+      .init { _ in
+        self.dismiss(animated: true)
+      }, for: .touchUpInside)
   }
 }

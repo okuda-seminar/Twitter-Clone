@@ -87,14 +87,20 @@ class CommunitiesHeaderView: UIView {
 
       searchButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
       searchButton.trailingAnchor.constraint(
-        equalTo: newCommunityCreationEntryPointButton.leadingAnchor, constant: -LayoutConstant.searchButtonTrailingPadding),
+        equalTo: newCommunityCreationEntryPointButton.leadingAnchor,
+        constant: -LayoutConstant.searchButtonTrailingPadding),
       searchButton.widthAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
       searchButton.heightAnchor.constraint(equalToConstant: LayoutConstant.searchButtonSize),
 
-      newCommunityCreationEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
-      newCommunityCreationEntryPointButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.newCommunityCreationEntryPointButtonTrailingPadding),
-      newCommunityCreationEntryPointButton.widthAnchor.constraint(equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
-      newCommunityCreationEntryPointButton.heightAnchor.constraint(equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
+      newCommunityCreationEntryPointButton.topAnchor.constraint(
+        equalTo: profileIconButton.topAnchor),
+      newCommunityCreationEntryPointButton.trailingAnchor.constraint(
+        equalTo: trailingAnchor,
+        constant: -LayoutConstant.newCommunityCreationEntryPointButtonTrailingPadding),
+      newCommunityCreationEntryPointButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
+      newCommunityCreationEntryPointButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.newCommunityCreationEntryPointButtonSize),
     ])
   }
 }

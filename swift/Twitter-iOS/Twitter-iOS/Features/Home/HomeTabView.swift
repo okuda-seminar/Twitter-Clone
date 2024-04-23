@@ -49,7 +49,7 @@ final class HomeTabView: UIView {
       tweetCellViews.append(tweetCellView)
 
       NSLayoutConstraint.activate([
-        tweetCellView.widthAnchor.constraint(equalTo: widthAnchor),
+        tweetCellView.widthAnchor.constraint(equalTo: widthAnchor)
       ])
     }
 
@@ -62,7 +62,7 @@ final class HomeTabView: UIView {
       contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
       contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-      contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+      contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
     ])
 
     backgroundColor = UIColor.systemBackground

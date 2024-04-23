@@ -39,17 +39,20 @@ class UserProfileViewController: UIViewController {
     view.addSubview(backButton)
     view.addSubview(userNameLabel)
 
-    backButton.addAction(.init { _ in
-      self.navigationController?.popViewController(animated: true)
-    }, for: .touchUpInside)
+    backButton.addAction(
+      .init { _ in
+        self.navigationController?.popViewController(animated: true)
+      }, for: .touchUpInside)
 
     userNameLabel.text = userName
     userNameLabel.sizeToFit()
-    
+
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      backButton.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: LayoutConstant.backButtonTopPadding),
-      backButton.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      backButton.topAnchor.constraint(
+        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.backButtonTopPadding),
+      backButton.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
       backButton.widthAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
       backButton.heightAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
 

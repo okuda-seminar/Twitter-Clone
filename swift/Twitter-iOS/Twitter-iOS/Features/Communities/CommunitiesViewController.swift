@@ -40,17 +40,20 @@ class CommunitiesViewController: UIViewController {
       homeView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
     ])
 
-    headerView.newCommunityCreationEntryPointButton.addAction( .init { _ in
-      self.showNewCommunityCreationSheet()
-    }, for: .touchUpInside)
+    headerView.newCommunityCreationEntryPointButton.addAction(
+      .init { _ in
+        self.showNewCommunityCreationSheet()
+      }, for: .touchUpInside)
   }
 
   private func showNewCommunityCreationSheet() {
     // We only show the sheet for non premium users.
-    let blockedNewCommunityCreationBottomSheetViewController = BlockedNewCommunityCreationBottomSheetViewController()
+    let blockedNewCommunityCreationBottomSheetViewController =
+      BlockedNewCommunityCreationBottomSheetViewController()
 
-    if let sheet = blockedNewCommunityCreationBottomSheetViewController.sheetPresentationController {
-        sheet.detents = [.medium()]
+    if let sheet = blockedNewCommunityCreationBottomSheetViewController.sheetPresentationController
+    {
+      sheet.detents = [.medium()]
     }
     present(blockedNewCommunityCreationBottomSheetViewController, animated: true, completion: nil)
   }

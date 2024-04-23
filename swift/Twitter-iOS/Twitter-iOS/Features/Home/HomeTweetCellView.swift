@@ -26,7 +26,7 @@ class HomeTweetCellView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -79,8 +79,9 @@ class HomeTweetCellView: UIView {
       bottomAnchor.constraint(equalTo: bodyTextLabel.bottomAnchor),
     ])
 
-    userIconButton.addAction(.init { _ in
-      self.delegate?.didTapUserIconButton(userName: tweet.userName)
-    }, for: .touchUpInside)
+    userIconButton.addAction(
+      .init { _ in
+        self.delegate?.didTapUserIconButton(userName: tweet.userName)
+      }, for: .touchUpInside)
   }
 }
