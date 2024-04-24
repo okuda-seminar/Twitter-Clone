@@ -1,0 +1,12 @@
+version: "3"
+services:
+ app:
+   build:
+     context: ./
+     dockerfile: ./docker/js.dockerfile
+   container_name: twitter-clone-web
+   ports:
+     - "3000:3000"
+   command: "npm run dev"
+   volumes:
+     - .:/app
