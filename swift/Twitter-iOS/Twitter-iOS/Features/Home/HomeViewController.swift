@@ -5,6 +5,7 @@ class HomeViewController: UIViewController {
 
   private enum LayoutConstant {
     static let homeHeaderHeight = 72.0
+    static let edgePadding = 16.0
   }
 
   private enum homeTabId: String {
@@ -31,6 +32,11 @@ class HomeViewController: UIViewController {
     let view = HomeHeaderView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
+  }()
+
+  private let newTweetEntryPointButton: NewTweetEntrypointButton = {
+    let button = NewTweetEntrypointButton()
+    return button
   }()
 
   override func viewDidLoad() {
@@ -63,6 +69,8 @@ class HomeViewController: UIViewController {
     homeTabScrollView.addSubview(homeTabStackView)
     view.addSubview(homeTabScrollView)
 
+    view.addSubview(newTweetEntryPointButton)
+
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
@@ -84,6 +92,9 @@ class HomeViewController: UIViewController {
 
       forYouTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
       followingTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
+
+      newTweetEntryPointButton.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
+      newTweetEntryPointButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding)
     ])
 
     homeHeaderView.settingsEntryPointButton.addAction(

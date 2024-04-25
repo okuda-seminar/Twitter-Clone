@@ -23,6 +23,10 @@ class HomeTweetCellView: UIView {
     return button
   }()
 
+  private enum LayoutConstant {
+    static let horizontalEdgePadding = 16.0
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -70,11 +74,11 @@ class HomeTweetCellView: UIView {
 
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.horizontalEdgePadding),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.horizontalEdgePadding),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-      bodyTextLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+      bodyTextLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor),
 
       bottomAnchor.constraint(equalTo: bodyTextLabel.bottomAnchor),
     ])

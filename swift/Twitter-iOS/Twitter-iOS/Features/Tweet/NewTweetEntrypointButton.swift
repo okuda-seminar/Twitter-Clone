@@ -1,30 +1,32 @@
-import SwiftUI
+import UIKit
 
-struct NewTweetEntrypointButton: View {
-  @State var showSheet: Bool = false
-
+class NewTweetEntrypointButton: UIButton {
   private enum LayoutConstant {
-    static let buttonSize = 44.0
+   static let buttonSize: CGFloat = 44.0
   }
 
-  var body: some View {
-    Button(
-      action: {
-        showSheet.toggle()
-      },
-      label: {
-        Image(systemName: "plus")
-          .frame(width: LayoutConstant.buttonSize, height: LayoutConstant.buttonSize)
-      }
-    )
-    .clipShape(Circle())
-    .buttonStyle(RoundedButtonStyle())
-    .fullScreenCover(isPresented: $showSheet) {
-      NewTweetEditView()
-    }
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupButton()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  private func setupButton() {
+    setImage(UIImage(systemName: "plus"), for: .normal)
+    imageView?.contentMode = .scaleAspectFit
+    layer.cornerRadius = LayoutConstant.buttonSize / 2
+    translatesAutoresizingMaskIntoConstraints = false
+    tintColor = .white
+    backgroundColor = .systemBlue
+
+    NSLayoutConstraint.activate([
+      widthAnchor.constraint(equalToConstant: LayoutConstant.buttonSize),
+      heightAnchor.constraint(equalToConstant: LayoutConstant.buttonSize),
+    ])
   }
 }
 
-#Preview{
-  NewTweetEntrypointButton()
-}
+
