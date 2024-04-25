@@ -1,4 +1,7 @@
 # users service
+## Database ER diagram
+![Database ER diagram](images/er_diagram.png)
+
 ## Build and run Docker containers
 ```
 cp .env.sample .env
