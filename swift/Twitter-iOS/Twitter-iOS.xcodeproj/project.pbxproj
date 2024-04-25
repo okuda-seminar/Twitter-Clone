@@ -48,6 +48,8 @@
 		6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */; };
 		6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */; };
 		6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */; };
+		6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */; };
+		6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +115,8 @@
 		6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsBodyView.swift; sourceTree = "<group>"; };
 		6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedNewCommunityCreationBottomSheetViewController.swift; sourceTree = "<group>"; };
 		6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileIconDetailViewController.swift; sourceTree = "<group>"; };
+		6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileIconTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,7 +334,9 @@
 		6567CBCF2BD7DD8E00242716 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
+				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -475,6 +481,7 @@
 				6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */,
 				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
+				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
@@ -492,6 +499,7 @@
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */,
 				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
+				6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */,
 				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,

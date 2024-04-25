@@ -3,11 +3,28 @@ import UIKit
 class UserProfileViewController: UIViewController {
 
   public var userName: String = ""
+  public var profileIcon: UIImage? {
+    didSet {
+      profileIconView.image = profileIcon
+    }
+  }
+
+  public let profileIconView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.contentMode = .scaleAspectFit
+    imageView.isUserInteractionEnabled = true
+    return imageView
+  }()
 
   private enum LayoutConstant {
+    static let edgeHorizontalPadding = 16.0
+
     static let backButtonTopPadding = 24.0
     static let backButtonSize = 28.0
-    static let edgeHorizontalPadding = 16.0
+
+    static let profileIconViewTopPadding = 8.0
+    static let profileIconViewSize = 48.0
   }
 
   private let userNameLabel: UILabel = {
@@ -38,14 +55,20 @@ class UserProfileViewController: UIViewController {
     view.backgroundColor = .systemBackground
     view.addSubview(backButton)
     view.addSubview(userNameLabel)
+    view.addSubview(profileIconView)
 
     backButton.addAction(
       .init { _ in
+        self.navigationController?.delegate = nil
         self.navigationController?.popViewController(animated: true)
       }, for: .touchUpInside)
 
     userNameLabel.text = userName
     userNameLabel.sizeToFit()
+
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(presentUserProfileIconDetailViewController))
+    profileIconView.addGestureRecognizer(tapGestureRecognizer)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
@@ -56,8 +79,43 @@ class UserProfileViewController: UIViewController {
       backButton.widthAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
       backButton.heightAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
 
+      profileIconView.leadingAnchor.constraint(equalTo: backButton.leadingAnchor),
+      profileIconView.topAnchor.constraint(
+        equalTo: backButton.bottomAnchor, constant: LayoutConstant.profileIconViewTopPadding),
+      profileIconView.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
+      profileIconView.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
+
       userNameLabel.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
       userNameLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor),
     ])
+  }
+
+  @objc
+  private func presentUserProfileIconDetailViewController() {
+    let userProfileIconDetailViewController = UserProfileIconDetailViewController()
+    userProfileIconDetailViewController.modalPresentationStyle = .fullScreen
+    userProfileIconDetailViewController.profileIcon = profileIcon
+    self.navigationController?.delegate = self
+    self.navigationController?.pushViewController(
+      userProfileIconDetailViewController, animated: true)
+  }
+}
+
+extension UserProfileViewController: UINavigationControllerDelegate {
+  func navigationController(
+    _ navigationController: UINavigationController,
+    animationControllerFor operation: UINavigationController.Operation,
+    from fromVC: UIViewController, to toVC: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
+    switch operation {
+    case .push:
+      let animator = UserProfileIconTransition()
+      animator.presenting = true
+      return animator
+    case .pop:
+      return nil
+    default:
+      return nil
+    }
   }
 }

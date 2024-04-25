@@ -38,8 +38,10 @@ class NotificationsViewController: UIViewController {
       headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding)
+      newTweetEntryPointButton.bottomAnchor.constraint(
+        equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
+      newTweetEntryPointButton.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 
     headerView.delegate = self

@@ -61,8 +61,10 @@ class SearchViewController: UIViewController {
       tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
       tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding)
+      newTweetEntryPointButton.bottomAnchor.constraint(
+        equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
+      newTweetEntryPointButton.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 
     headerView.settingsEntryPointButton.addAction(

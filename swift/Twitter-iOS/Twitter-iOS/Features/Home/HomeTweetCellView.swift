@@ -1,7 +1,7 @@
 import UIKit
 
 protocol HomeTweetCellViewDelegate {
-  func didTapUserIconButton(userName: String)
+  func didTapUserIconButton(userName: String, profileIcon: UIImage?)
 }
 
 class HomeTweetCellView: UIView {
@@ -74,8 +74,10 @@ class HomeTweetCellView: UIView {
 
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstant.horizontalEdgePadding),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstant.horizontalEdgePadding),
+      stackView.leadingAnchor.constraint(
+        equalTo: leadingAnchor, constant: LayoutConstant.horizontalEdgePadding),
+      stackView.trailingAnchor.constraint(
+        equalTo: trailingAnchor, constant: -LayoutConstant.horizontalEdgePadding),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
       bodyTextLabel.trailingAnchor.constraint(lessThanOrEqualTo: stackView.trailingAnchor),
@@ -85,7 +87,7 @@ class HomeTweetCellView: UIView {
 
     userIconButton.addAction(
       .init { _ in
-        self.delegate?.didTapUserIconButton(userName: tweet.userName)
+        self.delegate?.didTapUserIconButton(userName: tweet.userName, profileIcon: tweet.userIcon)
       }, for: .touchUpInside)
   }
 }

@@ -93,8 +93,10 @@ class HomeViewController: UIViewController {
       forYouTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
       followingTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding)
+      newTweetEntryPointButton.bottomAnchor.constraint(
+        equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
+      newTweetEntryPointButton.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 
     homeHeaderView.settingsEntryPointButton.addAction(
@@ -176,9 +178,10 @@ extension HomeViewController: HomeHeaderButtonDelegate {
 }
 
 extension HomeViewController: HomeTweetCellViewDelegate {
-  func didTapUserIconButton(userName: String) {
+  func didTapUserIconButton(userName: String, profileIcon: UIImage?) {
     let userProfileViewController = UserProfileViewController()
     userProfileViewController.userName = userName
+    userProfileViewController.profileIcon = profileIcon
     navigationController?.pushViewController(userProfileViewController, animated: true)
   }
 }

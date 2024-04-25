@@ -2,14 +2,14 @@ import UIKit
 
 class NewTweetEntrypointButton: UIButton {
   private enum LayoutConstant {
-   static let buttonSize: CGFloat = 44.0
+    static let buttonSize: CGFloat = 44.0
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupButton()
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -28,5 +28,3 @@ class NewTweetEntrypointButton: UIButton {
     ])
   }
 }
-
-
