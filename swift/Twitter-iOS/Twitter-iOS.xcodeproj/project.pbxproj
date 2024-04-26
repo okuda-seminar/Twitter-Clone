@@ -17,8 +17,8 @@
 		6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8B62BB575D30029BA46 /* HomeTabView.swift */; };
 		6540F8BA2BB575FF0029BA46 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8B92BB575FF0029BA46 /* TweetModel.swift */; };
 		6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */; };
-		6540F8BE2BB576740029BA46 /* NewTweetEntrypointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BD2BB576740029BA46 /* NewTweetEntrypointButton.swift */; };
-		6540F8C02BB5768F0029BA46 /* NewTweetEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BF2BB5768F0029BA46 /* NewTweetEditView.swift */; };
+		6540F8BE2BB576740029BA46 /* NewTweetEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */; };
+		6540F8C02BB5768F0029BA46 /* NewTweetEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */; };
 		6540F8C22BB576AD0029BA46 /* NewTweetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */; };
 		6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C62BB577140029BA46 /* RoundedButtonStyle.swift */; };
 		6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */; };
@@ -84,8 +84,8 @@
 		6540F8B62BB575D30029BA46 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
 		6540F8B92BB575FF0029BA46 /* TweetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetModel.swift; sourceTree = "<group>"; };
 		6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTweetCellView.swift; sourceTree = "<group>"; };
-		6540F8BD2BB576740029BA46 /* NewTweetEntrypointButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEntrypointButton.swift; sourceTree = "<group>"; };
-		6540F8BF2BB5768F0029BA46 /* NewTweetEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEditView.swift; sourceTree = "<group>"; };
+		6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEntrypointButtonController.swift; sourceTree = "<group>"; };
+		6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEditViewController.swift; sourceTree = "<group>"; };
 		6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetButton.swift; sourceTree = "<group>"; };
 		6540F8C62BB577140029BA46 /* RoundedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButtonStyle.swift; sourceTree = "<group>"; };
 		6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTabButtonStyle.swift; sourceTree = "<group>"; };
@@ -226,8 +226,8 @@
 			isa = PBXGroup;
 			children = (
 				6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */,
-				6540F8BF2BB5768F0029BA46 /* NewTweetEditView.swift */,
-				6540F8BD2BB576740029BA46 /* NewTweetEntrypointButton.swift */,
+				6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */,
+				6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */,
 				6540F8B92BB575FF0029BA46 /* TweetModel.swift */,
 			);
 			path = Tweet;
@@ -485,9 +485,9 @@
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
-				6540F8C02BB5768F0029BA46 /* NewTweetEditView.swift in Sources */,
+				6540F8C02BB5768F0029BA46 /* NewTweetEditViewController.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesViewController.swift in Sources */,
-				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButton.swift in Sources */,
+				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButtonController.swift in Sources */,
 				6540F8CF2BB7F7B10029BA46 /* HomeHeaderView.swift in Sources */,
 				6540F8F52BCFEAB20029BA46 /* MessagesViewController.swift in Sources */,
 				6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */,

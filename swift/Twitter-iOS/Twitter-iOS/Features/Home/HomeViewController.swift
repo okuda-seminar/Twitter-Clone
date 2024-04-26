@@ -34,10 +34,7 @@ class HomeViewController: UIViewController {
     return view
   }()
 
-  private let newTweetEntryPointButton: NewTweetEntrypointButton = {
-    let button = NewTweetEntrypointButton()
-    return button
-  }()
+  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -47,12 +44,15 @@ class HomeViewController: UIViewController {
 
   private func setUpSubviews() {
     view.backgroundColor = .white
+    view.addSubview(homeHeaderView)
+    view.addSubview(homeTabScrollView)
+    view.addSubview(newTweetEntryPointButtonController.view)
+    homeTabScrollView.addSubview(homeTabStackView)
 
     homeHeaderView.forYouButton.tabID = homeTabId.forYou.rawValue
     homeHeaderView.forYouButton.delegate = self
     homeHeaderView.followingButton.tabID = homeTabId.following.rawValue
     homeHeaderView.followingButton.delegate = self
-    view.addSubview(homeHeaderView)
 
     let forYouTabView = HomeTabView()
     forYouTabView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,10 +66,8 @@ class HomeViewController: UIViewController {
 
     homeTabScrollView.delegate = self
 
-    homeTabScrollView.addSubview(homeTabStackView)
-    view.addSubview(homeTabScrollView)
-
-    view.addSubview(newTweetEntryPointButton)
+    addChild(newTweetEntryPointButtonController)
+    newTweetEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
 
@@ -93,9 +91,9 @@ class HomeViewController: UIViewController {
       forYouTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
       followingTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(
+      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(
+      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 

@@ -20,17 +20,17 @@ class NotificationsViewController: UIViewController {
     }
   }
 
-  private let newTweetEntryPointButton: NewTweetEntrypointButton = {
-    let button = NewTweetEntrypointButton()
-    return button
-  }()
+  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = .systemBackground
     view.addSubview(headerView)
-    view.addSubview(newTweetEntryPointButton)
+    view.addSubview(newTweetEntryPointButtonController.view)
+
+    addChild(newTweetEntryPointButtonController)
+    newTweetEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
@@ -38,9 +38,9 @@ class NotificationsViewController: UIViewController {
       headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(
+      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(
+      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 

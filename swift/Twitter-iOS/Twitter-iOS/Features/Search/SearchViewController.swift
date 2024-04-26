@@ -25,10 +25,7 @@ class SearchViewController: UIViewController {
     return view
   }()
 
-  private let newTweetEntryPointButton: NewTweetEntrypointButton = {
-    let button = NewTweetEntrypointButton()
-    return button
-  }()
+  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -40,13 +37,16 @@ class SearchViewController: UIViewController {
 
     view.addSubview(headerView)
     view.addSubview(tabsView)
-    view.addSubview(newTweetEntryPointButton)
+    view.addSubview(newTweetEntryPointButtonController.view)
 
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94 - Fetch Search tab data from server.
     for button in headerView.categoryTabButtons {
       button.delegate = self
     }
     tabsView.loadTabsData(headerView.categoryTabButtons.count)
+
+    addChild(newTweetEntryPointButtonController)
+    newTweetEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
 
@@ -61,9 +61,9 @@ class SearchViewController: UIViewController {
       tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
       tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
-      newTweetEntryPointButton.bottomAnchor.constraint(
+      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButton.trailingAnchor.constraint(
+      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 
