@@ -29,8 +29,9 @@ func (s *usersSvc) CreateUser(
 	p *users.CreateUserPayload,
 ) (res *users.User, err error) {
 	if !validateUsername(p.Username) {
+		err = users.MakeBadRequest(errors.New("username is invalid"))
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
-		return nil, users.MakeBadRequest(errors.New("username is invalid"))
+		return nil, err
 	}
 
 	user, err := s.usersRepo.CreateUser(ctx, p.Username, p.DisplayName)
@@ -95,8 +96,9 @@ func (s *usersSvc) UpdateUsername(
 	p *users.UpdateUsernamePayload,
 ) (err error) {
 	if !validateUsername(p.Username) {
+		err = users.MakeBadRequest(errors.New("username is invalid"))
 		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
-		return users.MakeBadRequest(errors.New("username is invalid"))
+		return err
 	}
 
 	err = s.usersRepo.UpdateUsername(ctx, p.ID, p.Username)
@@ -114,8 +116,9 @@ func (s *usersSvc) UpdateBio(
 	p *users.UpdateBioPayload,
 ) (err error) {
 	if !validateBio(p.Bio) {
+		err = users.MakeBadRequest(errors.New("bio is invalid"))
 		s.logger.Printf("users.UpdateBio: failed (%s)", err)
-		return users.MakeBadRequest(errors.New("bio is invalid"))
+		return err
 	}
 
 	err = s.usersRepo.UpdateBio(ctx, p.ID, p.Bio)
