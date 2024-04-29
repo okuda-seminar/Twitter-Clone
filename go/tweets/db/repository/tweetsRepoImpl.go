@@ -17,11 +17,16 @@ func NewTweetsRepoImpl(db *sql.DB) TweetsRepo {
 }
 
 // CreateTweet creates a new tweet entry and inserts it into 'tweets' table.
-func (r *tweetsRepoImpl) CreateTweet(ctx context.Context, user_id int, text string) (*Tweet, error) {
+func (r *tweetsRepoImpl) CreateTweet(
+	ctx context.Context, 
+	user_id int, 
+	text string,
+) (*Tweet, error) {
 	query := "INSERT INTO tweets (user_id, text) VALUES ($1, $2) RETURNING id, created_at"
 	var (
 		id int
-		created_at time.Time)
+		created_at time.Time
+	)
 
 	err := r.db.QueryRowContext(ctx, query, user_id, text).Scan(&id, &created_at)
 	if err != nil {
@@ -34,7 +39,6 @@ func (r *tweetsRepoImpl) CreateTweet(ctx context.Context, user_id int, text stri
 		Text: 		text,
 		CreatedAt: 	created_at,
 	}
-
 
 	return &tweet, nil
 }

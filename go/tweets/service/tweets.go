@@ -34,9 +34,9 @@ func (s *tweetsSvc) CreateTweet(
 	p *tweets.CreateTweetPayload,
 ) (res *tweets.Tweet, err error) {
 	if !validateTweet(p.Text) {
-			err = tweets.MakeBadRequest(errors.New("tweet is invalid"))
-			s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
-			return nil, err
+		err = tweets.MakeBadRequest(errors.New("tweet is invalid"))
+		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
+		return nil, err
 	}
 
 	tweet, err := s.repository.CreateTweet(ctx,p.UserID, p.Text)
