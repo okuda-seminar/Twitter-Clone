@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 // tweetsRepoImpl implements tweets/repository/tweetsRepo.
@@ -17,6 +18,23 @@ func NewTweetsRepoImpl(db *sql.DB) TweetsRepo {
 
 // CreateTweet creates a new tweet entry and inserts it into 'tweets' table.
 func (r *tweetsRepoImpl) CreateTweet(ctx context.Context, user_id int, text string) (*Tweet, error) {
-	// TODO: #69 - [go/tweets] Implement CreateTweet API logic.
-	return nil, nil
+	query := "INSERT INTO tweets (user_id, text) VALUES ($1, $2) RETURNING id, created_at"
+	var (
+		id int
+		created_at time.Time)
+
+	err := r.db.QueryRowContext(ctx, query, user_id, text).Scan(&id, &created_at)
+	if err != nil {
+		return nil, err
+	}
+
+	tweet := Tweet{
+		Id: 		id,
+		UserId: 	user_id,
+		Text: 		text,
+		CreatedAt: 	created_at,
+	}
+
+
+	return &tweet, nil
 }
