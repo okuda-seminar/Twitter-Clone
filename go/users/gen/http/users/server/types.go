@@ -74,6 +74,14 @@ type FindUserByIDResponseBody struct {
 	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
 }
 
+// GetFollowersResponseBody is the type of the "users" service "GetFollowers"
+// endpoint HTTP response body.
+type GetFollowersResponseBody []*UserResponse
+
+// GetFollowingsResponseBody is the type of the "users" service "GetFollowings"
+// endpoint HTTP response body.
+type GetFollowingsResponseBody []*UserResponse
+
 // CreateUserBadRequestResponseBody is the type of the "users" service
 // "CreateUser" endpoint HTTP response body for the "BadRequest" error.
 type CreateUserBadRequestResponseBody struct {
@@ -254,6 +262,52 @@ type UnfollowBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetFollowersBadRequestResponseBody is the type of the "users" service
+// "GetFollowers" endpoint HTTP response body for the "BadRequest" error.
+type GetFollowersBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetFollowingsBadRequestResponseBody is the type of the "users" service
+// "GetFollowings" endpoint HTTP response body for the "BadRequest" error.
+type GetFollowingsBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UserResponse is used to define fields on response body types.
+type UserResponse struct {
+	ID          int    `form:"id" json:"id" xml:"id"`
+	Username    string `form:"username" json:"username" xml:"username"`
+	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
+	Bio         string `form:"bio" json:"bio" xml:"bio"`
+	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
+	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+}
+
 // NewCreateUserResponseBody builds the HTTP response body from the result of
 // the "CreateUser" endpoint of the "users" service.
 func NewCreateUserResponseBody(res *users.User) *CreateUserResponseBody {
@@ -278,6 +332,26 @@ func NewFindUserByIDResponseBody(res *users.User) *FindUserByIDResponseBody {
 		Bio:         res.Bio,
 		CreatedAt:   res.CreatedAt,
 		UpdatedAt:   res.UpdatedAt,
+	}
+	return body
+}
+
+// NewGetFollowersResponseBody builds the HTTP response body from the result of
+// the "GetFollowers" endpoint of the "users" service.
+func NewGetFollowersResponseBody(res []*users.User) GetFollowersResponseBody {
+	body := make([]*UserResponse, len(res))
+	for i, val := range res {
+		body[i] = marshalUsersUserToUserResponse(val)
+	}
+	return body
+}
+
+// NewGetFollowingsResponseBody builds the HTTP response body from the result
+// of the "GetFollowings" endpoint of the "users" service.
+func NewGetFollowingsResponseBody(res []*users.User) GetFollowingsResponseBody {
+	body := make([]*UserResponse, len(res))
+	for i, val := range res {
+		body[i] = marshalUsersUserToUserResponse(val)
 	}
 	return body
 }
@@ -422,6 +496,34 @@ func NewUnfollowBadRequestResponseBody(res *goa.ServiceError) *UnfollowBadReques
 	return body
 }
 
+// NewGetFollowersBadRequestResponseBody builds the HTTP response body from the
+// result of the "GetFollowers" endpoint of the "users" service.
+func NewGetFollowersBadRequestResponseBody(res *goa.ServiceError) *GetFollowersBadRequestResponseBody {
+	body := &GetFollowersBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetFollowingsBadRequestResponseBody builds the HTTP response body from
+// the result of the "GetFollowings" endpoint of the "users" service.
+func NewGetFollowingsBadRequestResponseBody(res *goa.ServiceError) *GetFollowingsBadRequestResponseBody {
+	body := &GetFollowingsBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateUserPayload builds a users service CreateUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload {
 	v := &users.CreateUserPayload{
@@ -486,6 +588,23 @@ func NewUnfollowPayload(body *UnfollowRequestBody) *users.UnfollowPayload {
 		FollowerID: *body.FollowerID,
 		FolloweeID: *body.FolloweeID,
 	}
+
+	return v
+}
+
+// NewGetFollowersPayload builds a users service GetFollowers endpoint payload.
+func NewGetFollowersPayload(id int) *users.GetFollowersPayload {
+	v := &users.GetFollowersPayload{}
+	v.ID = id
+
+	return v
+}
+
+// NewGetFollowingsPayload builds a users service GetFollowings endpoint
+// payload.
+func NewGetFollowingsPayload(id int) *users.GetFollowingsPayload {
+	v := &users.GetFollowingsPayload{}
+	v.ID = id
 
 	return v
 }

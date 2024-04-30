@@ -540,3 +540,156 @@ func EncodeUnfollowError(encoder func(context.Context, http.ResponseWriter) goah
 		}
 	}
 }
+
+// EncodeGetFollowersResponse returns an encoder for responses returned by the
+// users GetFollowers endpoint.
+func EncodeGetFollowersResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+	return func(ctx context.Context, w http.ResponseWriter, v any) error {
+		res, _ := v.([]*users.User)
+		enc := encoder(ctx, w)
+		body := NewGetFollowersResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetFollowersRequest returns a decoder for requests sent to the users
+// GetFollowers endpoint.
+func DecodeGetFollowersRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+	return func(r *http.Request) (any, error) {
+		var (
+			id  int
+			err error
+		)
+		{
+			idRaw := r.URL.Query().Get("id")
+			if idRaw == "" {
+				err = goa.MergeErrors(err, goa.MissingFieldError("id", "query string"))
+			}
+			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
+			}
+			id = int(v)
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewGetFollowersPayload(id)
+
+		return payload, nil
+	}
+}
+
+// EncodeGetFollowersError returns an encoder for errors returned by the
+// GetFollowers users endpoint.
+func EncodeGetFollowersError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "BadRequest":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body any
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetFollowersBadRequestResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusBadRequest)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
+// EncodeGetFollowingsResponse returns an encoder for responses returned by the
+// users GetFollowings endpoint.
+func EncodeGetFollowingsResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+	return func(ctx context.Context, w http.ResponseWriter, v any) error {
+		res, _ := v.([]*users.User)
+		enc := encoder(ctx, w)
+		body := NewGetFollowingsResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetFollowingsRequest returns a decoder for requests sent to the users
+// GetFollowings endpoint.
+func DecodeGetFollowingsRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+	return func(r *http.Request) (any, error) {
+		var (
+			id  int
+			err error
+		)
+		{
+			idRaw := r.URL.Query().Get("id")
+			if idRaw == "" {
+				err = goa.MergeErrors(err, goa.MissingFieldError("id", "query string"))
+			}
+			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
+			if err2 != nil {
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
+			}
+			id = int(v)
+		}
+		if err != nil {
+			return nil, err
+		}
+		payload := NewGetFollowingsPayload(id)
+
+		return payload, nil
+	}
+}
+
+// EncodeGetFollowingsError returns an encoder for errors returned by the
+// GetFollowings users endpoint.
+func EncodeGetFollowingsError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "BadRequest":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body any
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetFollowingsBadRequestResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusBadRequest)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
+// marshalUsersUserToUserResponse builds a value of type *UserResponse from a
+// value of type *users.User.
+func marshalUsersUserToUserResponse(v *users.User) *UserResponse {
+	res := &UserResponse{
+		ID:          v.ID,
+		Username:    v.Username,
+		DisplayName: v.DisplayName,
+		Bio:         v.Bio,
+		CreatedAt:   v.CreatedAt,
+		UpdatedAt:   v.UpdatedAt,
+	}
+
+	return res
+}

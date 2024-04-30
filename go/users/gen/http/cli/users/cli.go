@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow)
+	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Aspernatur quam repellat dolor laboriosam ut.",
-      "username": "Quidem quis at."
+      "display_name": "Qui error inventore.",
+      "username": "Aspernatur quam repellat dolor laboriosam ut."
    }'` + "\n" +
 		""
 }
@@ -69,6 +69,12 @@ func ParseEndpoint(
 
 		usersUnfollowFlags    = flag.NewFlagSet("unfollow", flag.ExitOnError)
 		usersUnfollowBodyFlag = usersUnfollowFlags.String("body", "REQUIRED", "")
+
+		usersGetFollowersFlags  = flag.NewFlagSet("get-followers", flag.ExitOnError)
+		usersGetFollowersIDFlag = usersGetFollowersFlags.String("id", "REQUIRED", "")
+
+		usersGetFollowingsFlags  = flag.NewFlagSet("get-followings", flag.ExitOnError)
+		usersGetFollowingsIDFlag = usersGetFollowingsFlags.String("id", "REQUIRED", "")
 	)
 	usersFlags.Usage = usersUsage
 	usersCreateUserFlags.Usage = usersCreateUserUsage
@@ -78,6 +84,8 @@ func ParseEndpoint(
 	usersUpdateBioFlags.Usage = usersUpdateBioUsage
 	usersFollowFlags.Usage = usersFollowUsage
 	usersUnfollowFlags.Usage = usersUnfollowUsage
+	usersGetFollowersFlags.Usage = usersGetFollowersUsage
+	usersGetFollowingsFlags.Usage = usersGetFollowingsUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -134,6 +142,12 @@ func ParseEndpoint(
 			case "unfollow":
 				epf = usersUnfollowFlags
 
+			case "get-followers":
+				epf = usersGetFollowersFlags
+
+			case "get-followings":
+				epf = usersGetFollowingsFlags
+
 			}
 
 		}
@@ -180,6 +194,12 @@ func ParseEndpoint(
 			case "unfollow":
 				endpoint = c.Unfollow()
 				data, err = usersc.BuildUnfollowPayload(*usersUnfollowBodyFlag)
+			case "get-followers":
+				endpoint = c.GetFollowers()
+				data, err = usersc.BuildGetFollowersPayload(*usersGetFollowersIDFlag)
+			case "get-followings":
+				endpoint = c.GetFollowings()
+				data, err = usersc.BuildGetFollowingsPayload(*usersGetFollowingsIDFlag)
 			}
 		}
 	}
@@ -204,6 +224,8 @@ COMMAND:
     update-bio: UpdateBio implements UpdateBio.
     follow: Follow implements Follow.
     unfollow: Unfollow implements Unfollow.
+    get-followers: GetFollowers implements GetFollowers.
+    get-followings: GetFollowings implements GetFollowings.
 
 Additional help:
     %[1]s users COMMAND --help
@@ -217,8 +239,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Aspernatur quam repellat dolor laboriosam ut.",
-      "username": "Quidem quis at."
+      "display_name": "Qui error inventore.",
+      "username": "Aspernatur quam repellat dolor laboriosam ut."
    }'
 `, os.Args[0])
 }
@@ -231,7 +253,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": 2810239129742510560
+      "id": 4605757074257909868
    }'
 `, os.Args[0])
 }
@@ -243,7 +265,7 @@ FindUserByID implements FindUserByID.
     -id INT: 
 
 Example:
-    %[1]s users find-user-by-id --id 6631083770725994490
+    %[1]s users find-user-by-id --id 6412259281386706229
 `, os.Args[0])
 }
 
@@ -300,5 +322,27 @@ Example:
       "followee_id": 6202834779766302284,
       "follower_id": 4698722160625222812
    }'
+`, os.Args[0])
+}
+
+func usersGetFollowersUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followers -id INT
+
+GetFollowers implements GetFollowers.
+    -id INT: 
+
+Example:
+    %[1]s users get-followers --id 8647041411894579986
+`, os.Args[0])
+}
+
+func usersGetFollowingsUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followings -id INT
+
+GetFollowings implements GetFollowings.
+    -id INT: 
+
+Example:
+    %[1]s users get-followings --id 5272198401566204443
 `, os.Args[0])
 }

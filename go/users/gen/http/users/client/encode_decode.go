@@ -10,12 +10,14 @@ package client
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	users "users/gen/users"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildCreateUserRequest instantiates a HTTP request object with method and
@@ -626,4 +628,205 @@ func DecodeUnfollowResponse(decoder func(*http.Response) goahttp.Decoder, restor
 			return nil, goahttp.ErrInvalidResponse("users", "Unfollow", resp.StatusCode, string(body))
 		}
 	}
+}
+
+// BuildGetFollowersRequest instantiates a HTTP request object with method and
+// path set to call the "users" service "GetFollowers" endpoint
+func (c *Client) BuildGetFollowersRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowersUsersPath()}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "GetFollowers", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeGetFollowersRequest returns an encoder for requests sent to the users
+// GetFollowers server.
+func EncodeGetFollowersRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.GetFollowersPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "GetFollowers", "*users.GetFollowersPayload", v)
+		}
+		values := req.URL.Query()
+		values.Add("id", fmt.Sprintf("%v", p.ID))
+		req.URL.RawQuery = values.Encode()
+		return nil
+	}
+}
+
+// DecodeGetFollowersResponse returns a decoder for responses returned by the
+// users GetFollowers endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeGetFollowersResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeGetFollowersResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetFollowersResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "GetFollowers", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidateUserResponse(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "GetFollowers", err)
+			}
+			res := NewGetFollowersUserOK(body)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body GetFollowersBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "GetFollowers", err)
+			}
+			err = ValidateGetFollowersBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "GetFollowers", err)
+			}
+			return nil, NewGetFollowersBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "GetFollowers", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildGetFollowingsRequest instantiates a HTTP request object with method and
+// path set to call the "users" service "GetFollowings" endpoint
+func (c *Client) BuildGetFollowingsRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowingsUsersPath()}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "GetFollowings", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeGetFollowingsRequest returns an encoder for requests sent to the users
+// GetFollowings server.
+func EncodeGetFollowingsRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.GetFollowingsPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "GetFollowings", "*users.GetFollowingsPayload", v)
+		}
+		values := req.URL.Query()
+		values.Add("id", fmt.Sprintf("%v", p.ID))
+		req.URL.RawQuery = values.Encode()
+		return nil
+	}
+}
+
+// DecodeGetFollowingsResponse returns a decoder for responses returned by the
+// users GetFollowings endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeGetFollowingsResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeGetFollowingsResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetFollowingsResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "GetFollowings", err)
+			}
+			for _, e := range body {
+				if e != nil {
+					if err2 := ValidateUserResponse(e); err2 != nil {
+						err = goa.MergeErrors(err, err2)
+					}
+				}
+			}
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "GetFollowings", err)
+			}
+			res := NewGetFollowingsUserOK(body)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body GetFollowingsBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "GetFollowings", err)
+			}
+			err = ValidateGetFollowingsBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "GetFollowings", err)
+			}
+			return nil, NewGetFollowingsBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "GetFollowings", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// unmarshalUserResponseToUsersUser builds a value of type *users.User from a
+// value of type *UserResponse.
+func unmarshalUserResponseToUsersUser(v *UserResponse) *users.User {
+	res := &users.User{
+		ID:          *v.ID,
+		Username:    *v.Username,
+		DisplayName: *v.DisplayName,
+		Bio:         *v.Bio,
+		CreatedAt:   *v.CreatedAt,
+		UpdatedAt:   *v.UpdatedAt,
+	}
+
+	return res
 }

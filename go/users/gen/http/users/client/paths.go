@@ -45,3 +45,13 @@ func FollowUsersPath() string {
 func UnfollowUsersPath() string {
 	return "/api/users/follow"
 }
+
+// GetFollowersUsersPath returns the URL path to the users service GetFollowers HTTP endpoint.
+func GetFollowersUsersPath() string {
+	return "/api/users/followers"
+}
+
+// GetFollowingsUsersPath returns the URL path to the users service GetFollowings HTTP endpoint.
+func GetFollowingsUsersPath() string {
+	return "/api/users/followings"
+}

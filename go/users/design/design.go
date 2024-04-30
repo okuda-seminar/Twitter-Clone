@@ -128,5 +128,35 @@ var _ = Service("users", func() {
 		})
 	})
 
+	Method("GetFollowers", func() {
+		Payload(func() {
+			Field(1, "id", Int)
+			Required("id")
+		})
+		Result(ArrayOf(types.User))
+
+		HTTP(func() {
+			GET("/api/users/followers")
+			Param("id")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("GetFollowings", func() {
+		Payload(func() {
+			Field(1, "id", Int)
+			Required("id")
+		})
+		Result(ArrayOf(types.User))
+
+		HTTP(func() {
+			GET("/api/users/followings")
+			Param("id")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })
