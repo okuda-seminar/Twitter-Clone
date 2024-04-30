@@ -5,11 +5,12 @@ final class NewTweetEntrypointButtonController: UIViewController {
     super.viewDidLoad()
 
     let button = NewTweetEntrypointButton()
-    button.addAction(.init { _ in
-      let newTweetEditViewController = NewTweetEditViewController()
-      newTweetEditViewController.modalPresentationStyle = .fullScreen
-      self.present(newTweetEditViewController, animated: true)
-    }, for: .touchUpInside)
+    button.addAction(
+      .init { _ in
+        let newTweetEditViewController = NewTweetEditViewController()
+        newTweetEditViewController.modalPresentationStyle = .fullScreen
+        self.present(newTweetEditViewController, animated: true)
+      }, for: .touchUpInside)
     view = button
   }
 }

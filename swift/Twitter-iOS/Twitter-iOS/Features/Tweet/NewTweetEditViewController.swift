@@ -74,48 +74,59 @@ final class NewTweetEditViewController: UIViewController {
     view.addSubview(tweetTextView)
     view.addSubview(photoLibraryPermissionRequestButton)
 
-    cancelButton.addAction(.init { _ in
-      self.dismiss(animated: true)
-    }, for: .touchUpInside)
+    cancelButton.addAction(
+      .init { _ in
+        self.dismiss(animated: true)
+      }, for: .touchUpInside)
 
     tweetTextView.becomeFirstResponder()
     tweetTextView.delegate = self
 
-    photoLibraryPermissionRequestButton.addAction(.init { _ in
-      self.requestPhotoLibraryPermission()
-    }, for: .touchUpInside)
+    photoLibraryPermissionRequestButton.addAction(
+      .init { _ in
+        self.requestPhotoLibraryPermission()
+      }, for: .touchUpInside)
 
     let layoutGuide = view.safeAreaLayoutGuide
     let keyboardLayoutGuide = view.keyboardLayoutGuide
     let tweetTextViewPlaceHolderHeight = tweetTextViewPlaceHolder.frame.height
-    tweetTextViewHightConstraint = tweetTextView.heightAnchor.constraint(equalToConstant: tweetTextViewPlaceHolderHeight)
+    tweetTextViewHightConstraint = tweetTextView.heightAnchor.constraint(
+      equalToConstant: tweetTextViewPlaceHolderHeight)
     guard let tweetTextViewHightConstraint else { return }
     NSLayoutConstraint.activate([
-      cancelButton.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
-      cancelButton.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
+      cancelButton.topAnchor.constraint(
+        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
+      cancelButton.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
 
       tweetTextView.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
-      tweetTextView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
-      tweetTextView.topAnchor.constraint(equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.tweetTextViewTopPadding),
+      tweetTextView.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
+      tweetTextView.topAnchor.constraint(
+        equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.tweetTextViewTopPadding),
       tweetTextViewHightConstraint,
 
       tweetTextViewPlaceHolder.topAnchor.constraint(equalTo: tweetTextView.topAnchor),
       tweetTextViewPlaceHolder.leadingAnchor.constraint(equalTo: tweetTextView.leadingAnchor),
       tweetTextViewPlaceHolder.trailingAnchor.constraint(equalTo: tweetTextView.trailingAnchor),
-      tweetTextViewPlaceHolder.heightAnchor.constraint(equalToConstant: tweetTextViewPlaceHolderHeight),
+      tweetTextViewPlaceHolder.heightAnchor.constraint(
+        equalToConstant: tweetTextViewPlaceHolderHeight),
 
-      photoLibraryPermissionRequestButton.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor),
-      photoLibraryPermissionRequestButton.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      photoLibraryPermissionRequestButton.widthAnchor.constraint(equalToConstant: LayoutConstant.permissionRequestButtonSize),
-      photoLibraryPermissionRequestButton.heightAnchor.constraint(equalToConstant: LayoutConstant.permissionRequestButtonSize),
+      photoLibraryPermissionRequestButton.bottomAnchor.constraint(
+        equalTo: keyboardLayoutGuide.topAnchor),
+      photoLibraryPermissionRequestButton.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor),
+      photoLibraryPermissionRequestButton.widthAnchor.constraint(
+        equalToConstant: LayoutConstant.permissionRequestButtonSize),
+      photoLibraryPermissionRequestButton.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.permissionRequestButtonSize),
     ])
   }
-
 
   // MARK: - Permission Request
 
   private func requestPhotoLibraryPermission() {
-    photoLibraryPermissionController.requestPermission() { status in
+    photoLibraryPermissionController.requestPermission { status in
       switch status {
       case .authorized:
         print("authorized")
@@ -137,7 +148,9 @@ final class NewTweetEditViewController: UIViewController {
 extension NewTweetEditViewController: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
     tweetTextViewPlaceHolder.isHidden = !textView.text.isEmpty
-    let height = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
+    let height = textView.sizeThatFits(
+      CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)
+    ).height
     tweetTextViewHightConstraint?.constant = height
   }
 }
