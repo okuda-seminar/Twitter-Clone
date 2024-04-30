@@ -54,6 +54,7 @@ class CommunitiesViewController: UIViewController {
     if let sheet = blockedNewCommunityCreationBottomSheetViewController.sheetPresentationController
     {
       sheet.detents = [.medium()]
+      sheet.prefersGrabberVisible = true
     }
     present(blockedNewCommunityCreationBottomSheetViewController, animated: true, completion: nil)
   }

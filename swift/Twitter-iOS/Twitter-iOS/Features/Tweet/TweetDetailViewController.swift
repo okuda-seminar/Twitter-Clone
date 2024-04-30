@@ -26,14 +26,17 @@ class TweetDetailViewController: UIViewController {
     view.backgroundColor = .systemBackground
     view.addSubview(backButton)
 
-    backButton.addAction(.init { _ in
-      self.navigationController?.popViewController(animated: true)
-    }, for: .touchUpInside)
-    
+    backButton.addAction(
+      .init { _ in
+        self.navigationController?.popViewController(animated: true)
+      }, for: .touchUpInside)
+
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      backButton.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
-      backButton.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
+      backButton.topAnchor.constraint(
+        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
+      backButton.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
       backButton.heightAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
       backButton.widthAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
     ])

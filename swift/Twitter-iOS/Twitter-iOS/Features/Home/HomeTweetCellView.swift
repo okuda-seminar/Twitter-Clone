@@ -96,7 +96,7 @@ class HomeTweetCellView: UIView {
       target: self, action: #selector(didTapTweet))
     infoStackView.addGestureRecognizer(tapGestureRecognizer)
   }
-  
+
   @objc
   private func didTapTweet() {
     self.delegate?.didTapTweet()
