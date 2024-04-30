@@ -1,4 +1,5 @@
 import Photos
+import SwiftUI
 import UIKit
 
 final class NewTweetEditViewController: UIViewController {
@@ -131,7 +132,10 @@ final class NewTweetEditViewController: UIViewController {
       case .authorized:
         print("authorized")
       case .denied:
-        print("denied")
+        Task { @MainActor in
+          let permissionGuideViewController = PermissionGuideViewController()
+          permissionGuideViewController.popUp(in: self)
+        }
       case .limited:
         print("limited")
       case .notDetermined:
