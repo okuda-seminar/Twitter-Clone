@@ -182,4 +182,9 @@ extension HomeViewController: HomeTweetCellViewDelegate {
     userProfileViewController.profileIcon = profileIcon
     navigationController?.pushViewController(userProfileViewController, animated: true)
   }
+
+  func didTapTweet() {
+    let tweetDetailViewController = TweetDetailViewController()
+    navigationController?.pushViewController(tweetDetailViewController, animated: true)
+  }
 }

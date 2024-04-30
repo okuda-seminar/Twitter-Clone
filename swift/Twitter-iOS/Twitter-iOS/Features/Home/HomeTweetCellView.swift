@@ -2,6 +2,8 @@ import UIKit
 
 protocol HomeTweetCellViewDelegate {
   func didTapUserIconButton(userName: String, profileIcon: UIImage?)
+
+  func didTapTweet()
 }
 
 class HomeTweetCellView: UIView {
@@ -89,5 +91,14 @@ class HomeTweetCellView: UIView {
       .init { _ in
         self.delegate?.didTapUserIconButton(userName: tweet.userName, profileIcon: tweet.userIcon)
       }, for: .touchUpInside)
+
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(didTapTweet))
+    infoStackView.addGestureRecognizer(tapGestureRecognizer)
+  }
+  
+  @objc
+  private func didTapTweet() {
+    self.delegate?.didTapTweet()
   }
 }
