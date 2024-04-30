@@ -1,0 +1,14 @@
+---
+$patch: delete
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-canary
+
+
+---
+$patch: delete
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-canary

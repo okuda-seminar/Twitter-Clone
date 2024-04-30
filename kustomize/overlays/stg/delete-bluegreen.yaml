@@ -1,0 +1,24 @@
+$patch: delete
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-blue-green
+
+
+---
+
+$patch: delete
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-blue-green-svc-active
+
+
+---
+
+$patch: delete
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-blue-green-svc-preview
+

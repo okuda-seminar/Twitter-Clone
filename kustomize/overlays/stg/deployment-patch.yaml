@@ -11,3 +11,4 @@ spec:
     repoURL: https://github.com/okuda-seminar/Twitter-Clone.git
     targetRevision: main
     path: kustomize/overlays/stg
+

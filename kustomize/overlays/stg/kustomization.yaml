@@ -3,8 +3,11 @@ kind: Kustomization
 namespace: default
 bases:
   - ../../base
+resources:
+  - canary-patch.yaml
 patchesStrategicMerge:
   - deployment-patch.yaml
+  - delete-bluegreen.yaml
 configMapGenerator:
   - name: blue-greeen-sample-config
     envs:
