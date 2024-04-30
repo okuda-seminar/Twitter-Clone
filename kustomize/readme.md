@@ -11,6 +11,19 @@ This allows you to switch between Blue-Green rollouts in the `prd` and `stg` env
 
 ## Usage
 0. `kubectl config use-context <the name of cluster>`
+
+install crds 
+
+```
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
+```
+
+```
+kubectl apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/stable/manifests/install.yaml
+```
+
+
+
 1. allow argo-rollouts to access config map
 ```
 kubectl create rolebinding argo-rollouts-config-view --clusterrole=view --serviceaccount=default:argo-rollouts
