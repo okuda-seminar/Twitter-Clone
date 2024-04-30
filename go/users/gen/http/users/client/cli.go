@@ -22,7 +22,7 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Aspernatur quam repellat dolor laboriosam ut.\",\n      \"username\": \"Quidem quis at.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Qui error inventore.\",\n      \"username\": \"Aspernatur quam repellat dolor laboriosam ut.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
@@ -41,7 +41,7 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 2810239129742510560\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 4605757074257909868\n   }'")
 		}
 	}
 	v := &users.DeleteUserPayload{
@@ -160,6 +160,44 @@ func BuildUnfollowPayload(usersUnfollowBody string) (*users.UnfollowPayload, err
 		FollowerID: body.FollowerID,
 		FolloweeID: body.FolloweeID,
 	}
+
+	return v, nil
+}
+
+// BuildGetFollowersPayload builds the payload for the users GetFollowers
+// endpoint from CLI flags.
+func BuildGetFollowersPayload(usersGetFollowersID string) (*users.GetFollowersPayload, error) {
+	var err error
+	var id int
+	{
+		var v int64
+		v, err = strconv.ParseInt(usersGetFollowersID, 10, strconv.IntSize)
+		id = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for id, must be INT")
+		}
+	}
+	v := &users.GetFollowersPayload{}
+	v.ID = id
+
+	return v, nil
+}
+
+// BuildGetFollowingsPayload builds the payload for the users GetFollowings
+// endpoint from CLI flags.
+func BuildGetFollowingsPayload(usersGetFollowingsID string) (*users.GetFollowingsPayload, error) {
+	var err error
+	var id int
+	{
+		var v int64
+		v, err = strconv.ParseInt(usersGetFollowingsID, 10, strconv.IntSize)
+		id = int(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value for id, must be INT")
+		}
+	}
+	v := &users.GetFollowingsPayload{}
+	v.ID = id
 
 	return v, nil
 }

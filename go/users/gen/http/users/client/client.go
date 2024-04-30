@@ -44,6 +44,14 @@ type Client struct {
 	// endpoint.
 	UnfollowDoer goahttp.Doer
 
+	// GetFollowers Doer is the HTTP client used to make requests to the
+	// GetFollowers endpoint.
+	GetFollowersDoer goahttp.Doer
+
+	// GetFollowings Doer is the HTTP client used to make requests to the
+	// GetFollowings endpoint.
+	GetFollowingsDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -71,6 +79,8 @@ func NewClient(
 		UpdateBioDoer:       doer,
 		FollowDoer:          doer,
 		UnfollowDoer:        doer,
+		GetFollowersDoer:    doer,
+		GetFollowingsDoer:   doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -237,6 +247,54 @@ func (c *Client) Unfollow() goa.Endpoint {
 		resp, err := c.UnfollowDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("users", "Unfollow", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetFollowers returns an endpoint that makes HTTP requests to the users
+// service GetFollowers server.
+func (c *Client) GetFollowers() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeGetFollowersRequest(c.encoder)
+		decodeResponse = DecodeGetFollowersResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildGetFollowersRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetFollowersDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "GetFollowers", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetFollowings returns an endpoint that makes HTTP requests to the users
+// service GetFollowings server.
+func (c *Client) GetFollowings() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeGetFollowingsRequest(c.encoder)
+		decodeResponse = DecodeGetFollowingsResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildGetFollowingsRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetFollowingsDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "GetFollowings", err)
 		}
 		return decodeResponse(resp)
 	}

@@ -74,6 +74,14 @@ type FindUserByIDResponseBody struct {
 	UpdatedAt   *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
+// GetFollowersResponseBody is the type of the "users" service "GetFollowers"
+// endpoint HTTP response body.
+type GetFollowersResponseBody []*UserResponse
+
+// GetFollowingsResponseBody is the type of the "users" service "GetFollowings"
+// endpoint HTTP response body.
+type GetFollowingsResponseBody []*UserResponse
+
 // CreateUserBadRequestResponseBody is the type of the "users" service
 // "CreateUser" endpoint HTTP response body for the "BadRequest" error.
 type CreateUserBadRequestResponseBody struct {
@@ -252,6 +260,52 @@ type UnfollowBadRequestResponseBody struct {
 	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
 	// Is the error a server-side fault?
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// GetFollowersBadRequestResponseBody is the type of the "users" service
+// "GetFollowers" endpoint HTTP response body for the "BadRequest" error.
+type GetFollowersBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// GetFollowingsBadRequestResponseBody is the type of the "users" service
+// "GetFollowings" endpoint HTTP response body for the "BadRequest" error.
+type GetFollowingsBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UserResponse is used to define fields on response body types.
+type UserResponse struct {
+	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
+	Bio         *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	CreatedAt   *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	UpdatedAt   *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // NewCreateUserRequestBody builds the HTTP request body from the payload of
@@ -478,6 +532,58 @@ func NewFollowBadRequest(body *FollowBadRequestResponseBody) *goa.ServiceError {
 // NewUnfollowBadRequest builds a users service Unfollow endpoint BadRequest
 // error.
 func NewUnfollowBadRequest(body *UnfollowBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewGetFollowersUserOK builds a "users" service "GetFollowers" endpoint
+// result from a HTTP "OK" response.
+func NewGetFollowersUserOK(body []*UserResponse) []*users.User {
+	v := make([]*users.User, len(body))
+	for i, val := range body {
+		v[i] = unmarshalUserResponseToUsersUser(val)
+	}
+
+	return v
+}
+
+// NewGetFollowersBadRequest builds a users service GetFollowers endpoint
+// BadRequest error.
+func NewGetFollowersBadRequest(body *GetFollowersBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewGetFollowingsUserOK builds a "users" service "GetFollowings" endpoint
+// result from a HTTP "OK" response.
+func NewGetFollowingsUserOK(body []*UserResponse) []*users.User {
+	v := make([]*users.User, len(body))
+	for i, val := range body {
+		v[i] = unmarshalUserResponseToUsersUser(val)
+	}
+
+	return v
+}
+
+// NewGetFollowingsBadRequest builds a users service GetFollowings endpoint
+// BadRequest error.
+func NewGetFollowingsBadRequest(body *GetFollowingsBadRequestResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -786,6 +892,83 @@ func ValidateUnfollowBadRequestResponseBody(body *UnfollowBadRequestResponseBody
 	}
 	if body.Fault == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateGetFollowersBadRequestResponseBody runs the validations defined on
+// GetFollowers_BadRequest_Response_Body
+func ValidateGetFollowersBadRequestResponseBody(body *GetFollowersBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateGetFollowingsBadRequestResponseBody runs the validations defined on
+// GetFollowings_BadRequest_Response_Body
+func ValidateGetFollowingsBadRequestResponseBody(body *GetFollowingsBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUserResponse runs the validations defined on UserResponse
+func ValidateUserResponse(body *UserResponse) (err error) {
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
+	}
+	if body.DisplayName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
+	}
+	if body.Bio == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
+	}
+	if body.CreatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("created_at", "body"))
+	}
+	if body.UpdatedAt == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
+	}
+	if body.CreatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
+	}
+	if body.UpdatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.updated_at", *body.UpdatedAt, goa.FormatDateTime))
 	}
 	return
 }

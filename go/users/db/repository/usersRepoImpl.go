@@ -127,11 +127,10 @@ func (r *usersRepoImpl) UpdateBio(ctx context.Context, id int, bio string) error
 // GetFollowers retrieves all the followers of a user with the specified ID.
 func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, error) {
 	query := `
-		SELECT *
-		FROM users
-		JOIN follows ON users.id = follows.follower_id
-		WHERE follows.followee_id = $1
-	`
+SELECT * FROM users
+JOIN followships ON users.id = followships.follower_id
+WHERE followships.followee_id = $1
+`
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {
 		return nil, err
@@ -144,6 +143,13 @@ func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, erro
 		err := rows.Scan(
 			&user.ID,
 			&user.Username,
+			&user.DisplayName,
+			&user.Bio,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			// ignore follower_id and followee_id.
+			IgnoreColumn,
+			IgnoreColumn,
 		)
 		if err != nil {
 			return nil, err
@@ -155,31 +161,49 @@ func (r *usersRepoImpl) GetFollowers(ctx context.Context, id int) ([]*User, erro
 }
 
 // GetFollowees retrieves all the followees of a user with the specified ID.
-func (r *usersRepoImpl) GetFollowees(ctx context.Context, id int) ([]*User, error) {
+func (r *usersRepoImpl) GetFollowings(ctx context.Context, id int) ([]*User, error) {
 	query := `
-		SELECT *
-		FROM users
-		JOIN follows ON users.id = follows.followee_id
-		WHERE follows.follower_id = $1
-	`
+SELECT * FROM users
+JOIN followships ON users.id = followships.followee_id
+WHERE followships.follower_id = $1
+`
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var followees []*User
+	var followings []*User
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
 			&user.ID,
 			&user.Username,
+			&user.DisplayName,
+			&user.Bio,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+			// ignore follower_id and followee_id.
+			IgnoreColumn,
+			IgnoreColumn,
 		)
 		if err != nil {
 			return nil, err
 		}
-		followees = append(followees, &user)
+		followings = append(followings, &user)
 	}
 
-	return followees, nil
+	return followings, nil
+}
+
+var IgnoreColumn ignoreColumn
+
+// ignoreColumn provides a mechanism for ignoring unnecessary columns
+// when scanning rows from a database query result in Go.
+// The `Scan` method, invoked by `Rows.Scan`, performs no action and returns nil,
+// effectively ignoring the column value.
+type ignoreColumn struct{}
+
+func (ignoreColumn) Scan(value any) error {
+	return nil
 }

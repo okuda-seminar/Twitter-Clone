@@ -26,6 +26,8 @@ type Server struct {
 	UpdateBio          http.Handler
 	Follow             http.Handler
 	Unfollow           http.Handler
+	GetFollowers       http.Handler
+	GetFollowings      http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -67,6 +69,8 @@ func New(
 			{"UpdateBio", "POST", "/api/users/{id}/bio"},
 			{"Follow", "POST", "/api/users/follow"},
 			{"Unfollow", "DELETE", "/api/users/follow"},
+			{"GetFollowers", "GET", "/api/users/followers"},
+			{"GetFollowings", "GET", "/api/users/followings"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
@@ -76,6 +80,8 @@ func New(
 		UpdateBio:          NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
 		Follow:             NewFollowHandler(e.Follow, mux, decoder, encoder, errhandler, formatter),
 		Unfollow:           NewUnfollowHandler(e.Unfollow, mux, decoder, encoder, errhandler, formatter),
+		GetFollowers:       NewGetFollowersHandler(e.GetFollowers, mux, decoder, encoder, errhandler, formatter),
+		GetFollowings:      NewGetFollowingsHandler(e.GetFollowings, mux, decoder, encoder, errhandler, formatter),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -92,6 +98,8 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.UpdateBio = m(s.UpdateBio)
 	s.Follow = m(s.Follow)
 	s.Unfollow = m(s.Unfollow)
+	s.GetFollowers = m(s.GetFollowers)
+	s.GetFollowings = m(s.GetFollowings)
 }
 
 // MethodNames returns the methods served.
@@ -106,6 +114,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountUpdateBioHandler(mux, h.UpdateBio)
 	MountFollowHandler(mux, h.Follow)
 	MountUnfollowHandler(mux, h.Unfollow)
+	MountGetFollowersHandler(mux, h.GetFollowers)
+	MountGetFollowingsHandler(mux, h.GetFollowings)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -450,6 +460,108 @@ func NewUnfollowHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "Unfollow")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountGetFollowersHandler configures the mux to serve the "users" service
+// "GetFollowers" endpoint.
+func MountGetFollowersHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/api/users/followers", f)
+}
+
+// NewGetFollowersHandler creates a HTTP handler which loads the HTTP request
+// and calls the "users" service "GetFollowers" endpoint.
+func NewGetFollowersHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetFollowersRequest(mux, decoder)
+		encodeResponse = EncodeGetFollowersResponse(encoder)
+		encodeError    = EncodeGetFollowersError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "GetFollowers")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountGetFollowingsHandler configures the mux to serve the "users" service
+// "GetFollowings" endpoint.
+func MountGetFollowingsHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/api/users/followings", f)
+}
+
+// NewGetFollowingsHandler creates a HTTP handler which loads the HTTP request
+// and calls the "users" service "GetFollowings" endpoint.
+func NewGetFollowingsHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetFollowingsRequest(mux, decoder)
+		encodeResponse = EncodeGetFollowingsResponse(encoder)
+		encodeError    = EncodeGetFollowingsError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "GetFollowings")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {

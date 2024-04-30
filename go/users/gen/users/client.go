@@ -22,10 +22,12 @@ type Client struct {
 	UpdateBioEndpoint      goa.Endpoint
 	FollowEndpoint         goa.Endpoint
 	UnfollowEndpoint       goa.Endpoint
+	GetFollowersEndpoint   goa.Endpoint
+	GetFollowingsEndpoint  goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings goa.Endpoint) *Client {
 	return &Client{
 		CreateUserEndpoint:     createUser,
 		DeleteUserEndpoint:     deleteUser,
@@ -34,6 +36,8 @@ func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, 
 		UpdateBioEndpoint:      updateBio,
 		FollowEndpoint:         follow,
 		UnfollowEndpoint:       unfollow,
+		GetFollowersEndpoint:   getFollowers,
+		GetFollowingsEndpoint:  getFollowings,
 	}
 }
 
@@ -113,4 +117,32 @@ func (c *Client) Follow(ctx context.Context, p *FollowPayload) (err error) {
 func (c *Client) Unfollow(ctx context.Context, p *UnfollowPayload) (err error) {
 	_, err = c.UnfollowEndpoint(ctx, p)
 	return
+}
+
+// GetFollowers calls the "GetFollowers" endpoint of the "users" service.
+// GetFollowers may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) GetFollowers(ctx context.Context, p *GetFollowersPayload) (res []*User, err error) {
+	var ires any
+	ires, err = c.GetFollowersEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.([]*User), nil
+}
+
+// GetFollowings calls the "GetFollowings" endpoint of the "users" service.
+// GetFollowings may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) GetFollowings(ctx context.Context, p *GetFollowingsPayload) (res []*User, err error) {
+	var ires any
+	ires, err = c.GetFollowingsEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.([]*User), nil
 }

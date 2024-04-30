@@ -29,6 +29,10 @@ type Service interface {
 	Follow(context.Context, *FollowPayload) (err error)
 	// Unfollow implements Unfollow.
 	Unfollow(context.Context, *UnfollowPayload) (err error)
+	// GetFollowers implements GetFollowers.
+	GetFollowers(context.Context, *GetFollowersPayload) (res []*User, err error)
+	// GetFollowings implements GetFollowings.
+	GetFollowings(context.Context, *GetFollowingsPayload) (res []*User, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -39,7 +43,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [7]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow"}
+var MethodNames = [9]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings"}
 
 // CreateUserPayload is the payload type of the users service CreateUser method.
 type CreateUserPayload struct {
@@ -62,6 +66,18 @@ type FindUserByIDPayload struct {
 type FollowPayload struct {
 	FollowerID int
 	FolloweeID int
+}
+
+// GetFollowersPayload is the payload type of the users service GetFollowers
+// method.
+type GetFollowersPayload struct {
+	ID int
+}
+
+// GetFollowingsPayload is the payload type of the users service GetFollowings
+// method.
+type GetFollowingsPayload struct {
+	ID int
 }
 
 // UnfollowPayload is the payload type of the users service Unfollow method.

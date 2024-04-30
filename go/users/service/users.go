@@ -77,14 +77,7 @@ func (s *usersSvc) FindUserByID(
 		s.logger.Printf("users.FindByID: failed (%s)", err)
 		return nil, users.MakeNotFound(err)
 	}
-	res = &users.User{
-		ID:          user.ID,
-		Username:    user.Username,
-		DisplayName: user.DisplayName,
-		Bio:         user.Bio,
-		CreatedAt:   user.CreatedAt.Format(time.RFC3339),
-		UpdatedAt:   user.UpdatedAt.Format(time.RFC3339),
-	}
+	res = mapRepoUserToSvcUser(user)
 
 	s.logger.Print("users.FindByID")
 	return
@@ -156,6 +149,46 @@ func (s *usersSvc) Unfollow(
 	return nil
 }
 
+func (s *usersSvc) GetFollowers(
+	ctx context.Context,
+	p *users.GetFollowersPayload,
+) ([]*users.User, error) {
+	var res []*users.User
+
+	followers, err := s.usersRepo.GetFollowers(ctx, p.ID)
+	if err != nil {
+		return nil, users.MakeBadRequest(err)
+	}
+
+	for _, follower := range followers {
+		user := mapRepoUserToSvcUser(follower)
+		res = append(res, user)
+	}
+
+	s.logger.Print("users.GetFollowers")
+	return res, nil
+}
+
+func (s *usersSvc) GetFollowings(
+	ctx context.Context,
+	p *users.GetFollowingsPayload,
+) ([]*users.User, error) {
+	var res []*users.User
+
+	followings, err := s.usersRepo.GetFollowings(ctx, p.ID)
+	if err != nil {
+		return nil, users.MakeBadRequest(err)
+	}
+
+	for _, following := range followings {
+		user := mapRepoUserToSvcUser(following)
+		res = append(res, user)
+	}
+
+	s.logger.Print("users.GetFollowings")
+	return res, nil
+}
+
 const (
 	usernameLenMin = 4
 	usernameLenMax = 14
@@ -176,4 +209,15 @@ func validateBio(bio string) bool {
 		return false
 	}
 	return true
+}
+
+func mapRepoUserToSvcUser(user *repository.User) *users.User {
+	return &users.User{
+		ID:          user.ID,
+		Username:    user.Username,
+		DisplayName: user.DisplayName,
+		Bio:         user.Bio,
+		CreatedAt:   user.CreatedAt.Format(time.RFC3339),
+		UpdatedAt:   user.UpdatedAt.Format(time.RFC3339),
+	}
 }

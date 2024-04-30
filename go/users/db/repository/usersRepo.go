@@ -11,6 +11,8 @@ type UsersRepo interface {
 	FindUserByID(ctx context.Context, id int) (*User, error)
 	UpdateUsername(ctx context.Context, id int, username string) error
 	UpdateBio(ctx context.Context, id int, bio string) error
+	GetFollowers(ctx context.Context, id int) ([]*User, error)
+	GetFollowings(ctx context.Context, id int) ([]*User, error)
 }
 
 // User represents an entry of `users` table.
