@@ -3,7 +3,7 @@ import UIKit
 class SearchViewController: UIViewController {
 
   private enum LayoutConstant {
-    static let headerHeight = 44.0
+    static let headerHeight = 96.0
     static let edgePadding = 16.0
   }
 

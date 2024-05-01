@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 class SearchHeaderView: UIView {
@@ -5,6 +6,8 @@ class SearchHeaderView: UIView {
     static let edgeHorizontalPadding = 16.0
     static let edgeTopPadding = 8.0
     static let profileIconButtonSize = 28.0
+    static let searchBarViewHorizontalPadding = 8.0
+    static let searchBarViewBottomPadding = 4.0
     static let settingsEntryPointButtonSize = 28.0
     static let categoryTabButtonWidth = 80.0
     static let categoryTabButtonHeight = 44.0
@@ -19,6 +22,12 @@ class SearchHeaderView: UIView {
     button.contentHorizontalAlignment = .fill
     button.contentVerticalAlignment = .fill
     return button
+  }()
+
+  public let searchBarController: UIHostingController = {
+    let controller = UIHostingController(rootView: SearchBarView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    return controller
   }()
 
   public let settingsEntryPointButton: UIButton = {
@@ -79,6 +88,7 @@ class SearchHeaderView: UIView {
     }
 
     addSubview(profileIconButton)
+    addSubview(searchBarController.view)
     addSubview(settingsEntryPointButton)
     categoryTabsScrollView.addSubview(categoryTabsStackView)
     addSubview(categoryTabsScrollView)
@@ -93,6 +103,14 @@ class SearchHeaderView: UIView {
       profileIconButton.heightAnchor.constraint(
         equalToConstant: LayoutConstant.profileIconButtonSize),
 
+      searchBarController.view.leadingAnchor.constraint(
+        equalTo: profileIconButton.trailingAnchor,
+        constant: LayoutConstant.searchBarViewHorizontalPadding),
+      searchBarController.view.trailingAnchor.constraint(
+        equalTo: settingsEntryPointButton.leadingAnchor,
+        constant: -LayoutConstant.searchBarViewHorizontalPadding),
+      searchBarController.view.centerYAnchor.constraint(equalTo: profileIconButton.centerYAnchor),
+
       settingsEntryPointButton.trailingAnchor.constraint(
         equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       settingsEntryPointButton.topAnchor.constraint(equalTo: profileIconButton.topAnchor),
@@ -103,7 +121,9 @@ class SearchHeaderView: UIView {
 
       categoryTabsScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
       categoryTabsScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      categoryTabsScrollView.topAnchor.constraint(equalTo: settingsEntryPointButton.bottomAnchor),
+      categoryTabsScrollView.topAnchor.constraint(
+        equalTo: searchBarController.view.bottomAnchor,
+        constant: LayoutConstant.searchBarViewBottomPadding),
       categoryTabsScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
       categoryTabsStackView.leadingAnchor.constraint(equalTo: categoryTabsScrollView.leadingAnchor),
@@ -113,4 +133,25 @@ class SearchHeaderView: UIView {
       categoryTabsStackView.bottomAnchor.constraint(equalTo: categoryTabsScrollView.bottomAnchor),
     ])
   }
+}
+
+struct SearchBarView: View {
+  var body: some View {
+    HStack {
+      Spacer()
+      Image(systemName: "magnifyingglass")
+        .foregroundStyle(Color.primary)
+
+      Text("Search")
+        .foregroundStyle(Color.primary)
+        .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+      Spacer()
+    }
+    .background(Color.gray.opacity(0.15))
+    .clipShape(Capsule())
+  }
+}
+
+#Preview{
+  SearchBarView()
 }
