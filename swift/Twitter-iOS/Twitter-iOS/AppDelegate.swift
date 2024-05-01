@@ -1,8 +1,3 @@
-//
-//  AppDelegate.swift
-//  Twitter-iOS
-//
-
 import UIKit
 
 @UIApplicationMain

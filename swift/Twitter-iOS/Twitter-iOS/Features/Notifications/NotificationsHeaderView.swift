@@ -1,9 +1,5 @@
 import UIKit
 
-protocol NotificationsHeaderViewDelegate {
-  func didTapTabButton(_ button: UIButton)
-}
-
 class NotificationsHeaderView: UIView {
 
   private enum LayoutConstant {
@@ -79,7 +75,7 @@ class NotificationsHeaderView: UIView {
     return stackView
   }()
 
-  public var delegate: NotificationsHeaderViewDelegate?
+  public weak var delegate: NotificationsHeaderViewDelegate?
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -139,4 +135,8 @@ class NotificationsHeaderView: UIView {
       bottomAnchor.constraint(equalTo: tabButtonsStackView.bottomAnchor),
     ])
   }
+}
+
+protocol NotificationsHeaderViewDelegate: AnyObject {
+  func didTapTabButton(_ button: UIButton)
 }

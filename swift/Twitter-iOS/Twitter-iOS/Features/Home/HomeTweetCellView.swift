@@ -1,11 +1,5 @@
 import UIKit
 
-protocol HomeTweetCellViewDelegate {
-  func didTapUserIconButton(userName: String, profileIcon: UIImage?)
-
-  func didTapTweet()
-}
-
 class HomeTweetCellView: UIView {
 
   public var tweet: TweetModel? {
@@ -14,7 +8,7 @@ class HomeTweetCellView: UIView {
     }
   }
 
-  public var delegate: HomeTweetCellViewDelegate?
+  public weak var delegate: HomeTweetCellViewDelegate?
 
   public let userIconButton: UIButton = {
     let button = UIButton()
@@ -101,4 +95,10 @@ class HomeTweetCellView: UIView {
   private func didTapTweet() {
     self.delegate?.didTapTweet()
   }
+}
+
+protocol HomeTweetCellViewDelegate: AnyObject {
+  func didTapUserIconButton(userName: String, profileIcon: UIImage?)
+
+  func didTapTweet()
 }

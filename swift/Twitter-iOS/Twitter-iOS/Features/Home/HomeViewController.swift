@@ -54,15 +54,21 @@ class HomeViewController: UIViewController {
     homeHeaderView.followingButton.tabID = homeTabId.following.rawValue
     homeHeaderView.followingButton.delegate = self
 
-    let forYouTabView = HomeTabView()
-    forYouTabView.translatesAutoresizingMaskIntoConstraints = false
-    loadTweetData(view: forYouTabView)
-    homeTabStackView.addArrangedSubview(forYouTabView)
+    let forYouTabViewController = HomeTabViewController()
+    forYouTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    loadTweetData(viewController: forYouTabViewController)
+    addChild(forYouTabViewController)
+    forYouTabViewController.didMove(toParent: self)
+    forYouTabViewController.delegate = self
+    homeTabStackView.addArrangedSubview(forYouTabViewController.view)
 
-    let followingTabView = HomeTabView()
-    followingTabView.translatesAutoresizingMaskIntoConstraints = false
-    loadTweetData(view: followingTabView)
-    homeTabStackView.addArrangedSubview(followingTabView)
+    let followingTabViewController = HomeTabViewController()
+    followingTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
+    loadTweetData(viewController: followingTabViewController)
+    addChild(followingTabViewController)
+    followingTabViewController.didMove(toParent: self)
+    followingTabViewController.delegate = self
+    homeTabStackView.addArrangedSubview(followingTabViewController.view)
 
     homeTabScrollView.delegate = self
 
@@ -88,8 +94,8 @@ class HomeViewController: UIViewController {
       homeTabStackView.bottomAnchor.constraint(equalTo: homeTabScrollView.bottomAnchor),
       homeTabStackView.heightAnchor.constraint(equalTo: homeTabScrollView.heightAnchor),
 
-      forYouTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
-      followingTabView.widthAnchor.constraint(equalTo: view.widthAnchor),
+      forYouTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+      followingTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
@@ -103,14 +109,14 @@ class HomeViewController: UIViewController {
       }, for: .touchUpInside)
   }
 
-  private func loadTweetData(view: HomeTabView) {
+  private func loadTweetData(viewController: HomeTabViewController) {
     var tweets: [TweetModel] = []
     for _ in 0..<30 {
       tweets.append(createFakeTweet())
     }
-    view.tweets = tweets
+    viewController.tweets = tweets
 
-    for tweetCellView in view.tweetCellViews {
+    for tweetCellView in viewController.tweetCellViews {
       tweetCellView.delegate = self
     }
   }
@@ -186,5 +192,13 @@ extension HomeViewController: HomeTweetCellViewDelegate {
   func didTapTweet() {
     let tweetDetailViewController = TweetDetailViewController()
     navigationController?.pushViewController(tweetDetailViewController, animated: true)
+  }
+}
+
+extension HomeViewController: HomeTabViewControllerDelegate {
+  func didScrollVertically(xDelta: CGFloat) {
+    UIView.animate(withDuration: 0.3) {
+      self.homeHeaderView.layer.opacity = xDelta > 0 ? 0.0 : 1.0
+    }
   }
 }

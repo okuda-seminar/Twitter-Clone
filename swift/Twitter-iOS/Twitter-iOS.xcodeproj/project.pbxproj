@@ -14,7 +14,7 @@
 		6540F8982BB44D440029BA46 /* Twitter_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8972BB44D440029BA46 /* Twitter_iOSTests.swift */; };
 		6540F8A22BB44D440029BA46 /* Twitter_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8A12BB44D440029BA46 /* Twitter_iOSUITests.swift */; };
 		6540F8A42BB44D440029BA46 /* Twitter_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8A32BB44D440029BA46 /* Twitter_iOSUITestsLaunchTests.swift */; };
-		6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8B62BB575D30029BA46 /* HomeTabView.swift */; };
+		6540F8B72BB575D30029BA46 /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8B62BB575D30029BA46 /* HomeTabViewController.swift */; };
 		6540F8BA2BB575FF0029BA46 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8B92BB575FF0029BA46 /* TweetModel.swift */; };
 		6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */; };
 		6540F8BE2BB576740029BA46 /* NewTweetEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */; };
@@ -85,7 +85,7 @@
 		6540F89D2BB44D440029BA46 /* Twitter-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Twitter-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8A12BB44D440029BA46 /* Twitter_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Twitter_iOSUITests.swift; sourceTree = "<group>"; };
 		6540F8A32BB44D440029BA46 /* Twitter_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Twitter_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		6540F8B62BB575D30029BA46 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
+		6540F8B62BB575D30029BA46 /* HomeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabViewController.swift; sourceTree = "<group>"; };
 		6540F8B92BB575FF0029BA46 /* TweetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetModel.swift; sourceTree = "<group>"; };
 		6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTweetCellView.swift; sourceTree = "<group>"; };
 		6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEntrypointButtonController.swift; sourceTree = "<group>"; };
@@ -208,7 +208,7 @@
 			children = (
 				6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */,
 				6540F8CE2BB7F7B10029BA46 /* HomeHeaderView.swift */,
-				6540F8B62BB575D30029BA46 /* HomeTabView.swift */,
+				6540F8B62BB575D30029BA46 /* HomeTabViewController.swift */,
 				6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */,
 				6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */,
 			);
@@ -506,7 +506,7 @@
 				6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */,
 				6540F8BA2BB575FF0029BA46 /* TweetModel.swift in Sources */,
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
-				6540F8B72BB575D30029BA46 /* HomeTabView.swift in Sources */,
+				6540F8B72BB575D30029BA46 /* HomeTabViewController.swift in Sources */,
 				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,

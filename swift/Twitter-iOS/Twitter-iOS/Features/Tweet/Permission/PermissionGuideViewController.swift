@@ -52,10 +52,6 @@ extension PermissionGuideViewController: PermissionGuideSheetDelegate {
   }
 }
 
-protocol PermissionGuideSheetDelegate {
-  func didTapDismissArea()
-}
-
 struct PermissionGuideSheet: View {
   private enum LocalizedString {
     static let headerText = String(localized: "Allow X access to your photos")
@@ -68,7 +64,7 @@ struct PermissionGuideSheet: View {
     static let dismissButtonText = String(localized: "Got it")
   }
 
-  public var delegate: PermissionGuideSheetDelegate?
+  public weak var delegate: PermissionGuideSheetDelegate?
 
   var body: some View {
     ZStack {
@@ -120,6 +116,10 @@ struct PermissionGuideSheet: View {
       )
     }
   }
+}
+
+protocol PermissionGuideSheetDelegate: AnyObject {
+  func didTapDismissArea()
 }
 
 #Preview{
