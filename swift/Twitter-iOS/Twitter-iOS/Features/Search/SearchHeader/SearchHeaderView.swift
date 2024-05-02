@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchHeaderView: View {
 
-  public var delegate: SearchHeaderViewDelegate?
+  public weak var delegate: SearchHeaderViewDelegate?
 
   private enum LayoutConstant {
     static let imageSize = 28.0

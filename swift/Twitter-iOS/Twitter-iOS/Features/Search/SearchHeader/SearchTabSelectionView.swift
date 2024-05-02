@@ -1,18 +1,12 @@
 import SwiftUI
 import UIKit
 
-class SearchHeaderSectionView: UIView {
+class SearchTabSelectionView: UIView {
   private enum LayoutConstant {
     static let edgeHorizontalPadding = 16.0
-    static let edgeTopPadding = 8.0
-    static let searchBarViewHorizontalPadding = 8.0
-    static let searchBarViewBottomPadding = 4.0
-    static let settingsEntryPointButtonSize = 28.0
     static let categoryTabButtonWidth = 80.0
     static let categoryTabButtonHeight = 44.0
   }
-
-  public var headerView = SearchHeaderView()
 
   private let categoryTabsScrollView: UIScrollView = {
     let scrollView = UIScrollView()
@@ -60,24 +54,13 @@ class SearchHeaderSectionView: UIView {
       ])
     }
 
-    let searchHeaderHostingController = UIHostingController(rootView: headerView)
-    searchHeaderHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(searchHeaderHostingController.view)
     categoryTabsScrollView.addSubview(categoryTabsStackView)
     addSubview(categoryTabsScrollView)
 
     NSLayoutConstraint.activate([
-      searchHeaderHostingController.view.topAnchor.constraint(equalTo: topAnchor),
-      searchHeaderHostingController.view.leadingAnchor.constraint(
-        equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      searchHeaderHostingController.view.trailingAnchor.constraint(
-        equalTo: trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
-
       categoryTabsScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
       categoryTabsScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      categoryTabsScrollView.topAnchor.constraint(
-        equalTo: searchHeaderHostingController.view.bottomAnchor,
-        constant: LayoutConstant.searchBarViewBottomPadding),
+      categoryTabsScrollView.topAnchor.constraint(equalTo: topAnchor),
       categoryTabsScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
       categoryTabsStackView.leadingAnchor.constraint(equalTo: categoryTabsScrollView.leadingAnchor),

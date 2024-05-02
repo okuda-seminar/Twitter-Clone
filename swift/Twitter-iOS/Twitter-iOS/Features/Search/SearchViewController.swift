@@ -1,14 +1,24 @@
+import SwiftUI
 import UIKit
 
 class SearchViewController: UIViewController {
 
   private enum LayoutConstant {
-    static let headerHeight = 96.0
+    static let headerHeight = 48.0
     static let edgePadding = 16.0
   }
 
-  private let headerSectionView: SearchHeaderSectionView = {
-    let view = SearchHeaderSectionView()
+  private lazy var headerViewHostingController: UIHostingController = {
+    let headerView = SearchHeaderView(delegate: self)
+    let hostingController = UIHostingController(rootView: headerView)
+    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(hostingController)
+    hostingController.didMove(toParent: self)
+    return hostingController
+  }()
+
+  private let headerTabSelectionView: SearchTabSelectionView = {
+    let view = SearchTabSelectionView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -25,7 +35,6 @@ class SearchViewController: UIViewController {
     return view
   }()
 
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/131 - Refactor Search view hierarchy.
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   override func viewDidLoad() {
@@ -36,17 +45,16 @@ class SearchViewController: UIViewController {
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
 
-    view.addSubview(headerSectionView)
+    view.addSubview(headerViewHostingController.view)
+    view.addSubview(headerTabSelectionView)
     view.addSubview(tabsView)
     view.addSubview(newTweetEntryPointButtonController.view)
 
-    headerSectionView.headerView.delegate = self
-
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94 - Fetch Search tab data from server.
-    for button in headerSectionView.categoryTabButtons {
+    for button in headerTabSelectionView.categoryTabButtons {
       button.delegate = self
     }
-    tabsView.loadTabsData(headerSectionView.categoryTabButtons.count)
+    tabsView.loadTabsData(headerTabSelectionView.categoryTabButtons.count)
 
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
@@ -54,14 +62,21 @@ class SearchViewController: UIViewController {
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      headerSectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      headerSectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerSectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      headerSectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
+      headerViewHostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      headerViewHostingController.view.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
+      headerViewHostingController.view.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
+
+      headerTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      headerTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      headerTabSelectionView.topAnchor.constraint(
+        equalTo: headerViewHostingController.view.bottomAnchor),
+      headerTabSelectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
 
       tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
       tabsView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      tabsView.topAnchor.constraint(equalTo: headerSectionView.bottomAnchor),
+      tabsView.topAnchor.constraint(equalTo: headerTabSelectionView.bottomAnchor),
       tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
@@ -75,7 +90,7 @@ class SearchViewController: UIViewController {
 extension SearchViewController: SearchCategoryTabButtonDelegate {
   func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton) {
     for (tabIdx, button) in zip(
-      headerSectionView.categoryTabButtons.indices, headerSectionView.categoryTabButtons)
+      headerTabSelectionView.categoryTabButtons.indices, headerTabSelectionView.categoryTabButtons)
     {
       if button.tabID == selectedButton.tabID {
         button.isSelected = true
