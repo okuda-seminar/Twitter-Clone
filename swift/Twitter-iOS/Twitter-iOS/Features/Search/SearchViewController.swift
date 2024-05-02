@@ -7,8 +7,8 @@ class SearchViewController: UIViewController {
     static let edgePadding = 16.0
   }
 
-  private let headerView: SearchHeaderView = {
-    let view = SearchHeaderView()
+  private let headerSectionView: SearchHeaderSectionView = {
+    let view = SearchHeaderSectionView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -25,6 +25,7 @@ class SearchViewController: UIViewController {
     return view
   }()
 
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/131 - Refactor Search view hierarchy.
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   override func viewDidLoad() {
@@ -35,15 +36,17 @@ class SearchViewController: UIViewController {
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
 
-    view.addSubview(headerView)
+    view.addSubview(headerSectionView)
     view.addSubview(tabsView)
     view.addSubview(newTweetEntryPointButtonController.view)
 
+    headerSectionView.headerView.delegate = self
+
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94 - Fetch Search tab data from server.
-    for button in headerView.categoryTabButtons {
+    for button in headerSectionView.categoryTabButtons {
       button.delegate = self
     }
-    tabsView.loadTabsData(headerView.categoryTabButtons.count)
+    tabsView.loadTabsData(headerSectionView.categoryTabButtons.count)
 
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
@@ -51,14 +54,14 @@ class SearchViewController: UIViewController {
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      headerView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
+      headerSectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      headerSectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      headerSectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      headerSectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
 
       tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
       tabsView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      tabsView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
+      tabsView.topAnchor.constraint(equalTo: headerSectionView.bottomAnchor),
       tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
@@ -66,24 +69,13 @@ class SearchViewController: UIViewController {
       newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
-
-    headerView.settingsEntryPointButton.addAction(
-      .init { _ in
-        self.showExploreSettings()
-      }, for: .touchUpInside)
-  }
-
-  private func showExploreSettings() {
-    let exploreSettingsViewController = ExploreSettingsViewController()
-    exploreSettingsViewController.modalPresentationStyle = .fullScreen
-    present(exploreSettingsViewController, animated: true)
   }
 }
 
 extension SearchViewController: SearchCategoryTabButtonDelegate {
   func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton) {
     for (tabIdx, button) in zip(
-      headerView.categoryTabButtons.indices, headerView.categoryTabButtons)
+      headerSectionView.categoryTabButtons.indices, headerSectionView.categoryTabButtons)
     {
       if button.tabID == selectedButton.tabID {
         button.isSelected = true
@@ -92,5 +84,19 @@ extension SearchViewController: SearchCategoryTabButtonDelegate {
         button.isSelected = false
       }
     }
+  }
+}
+
+extension SearchViewController: SearchHeaderViewDelegate {
+  func didTapProfileIconButton() {
+  }
+
+  func didTapSearchBar() {
+  }
+
+  func didTapSettingsEntryPointButton() {
+    let exploreSettingsViewController = ExploreSettingsViewController()
+    exploreSettingsViewController.modalPresentationStyle = .fullScreen
+    present(exploreSettingsViewController, animated: true)
   }
 }
