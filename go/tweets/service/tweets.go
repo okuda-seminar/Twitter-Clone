@@ -33,6 +33,8 @@ func (s *tweetsSvc) CreateTweet(
 	ctx context.Context,
 	p *tweets.CreateTweetPayload,
 ) (res *tweets.Tweet, err error) {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
+	// - Discuss how we implement the test for CreateTweet method.
 	if !validateTweet(p.Text) {
 		err = tweets.MakeBadRequest(errors.New("tweet is invalid"))
 		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
