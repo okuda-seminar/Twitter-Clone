@@ -18,13 +18,13 @@ func NewTweetsRepoImpl(db *sql.DB) TweetsRepo {
 
 // CreateTweet creates a new tweet entry and inserts it into 'tweets' table.
 func (r *tweetsRepoImpl) CreateTweet(
-	ctx context.Context, 
-	user_id int, 
+	ctx context.Context,
+	user_id int,
 	text string,
 ) (*Tweet, error) {
 	query := "INSERT INTO tweets (user_id, text) VALUES ($1, $2) RETURNING id, created_at"
 	var (
-		id int
+		id         int
 		created_at time.Time
 	)
 
@@ -34,10 +34,10 @@ func (r *tweetsRepoImpl) CreateTweet(
 	}
 
 	tweet := Tweet{
-		Id: 		id,
-		UserId: 	user_id,
-		Text: 		text,
-		CreatedAt: 	created_at,
+		Id:        id,
+		UserId:    user_id,
+		Text:      text,
+		CreatedAt: created_at,
 	}
 
 	return &tweet, nil
