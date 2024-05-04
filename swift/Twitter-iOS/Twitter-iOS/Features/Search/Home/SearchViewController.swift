@@ -54,7 +54,8 @@ class SearchViewController: UIViewController {
     for button in headerTabSelectionView.categoryTabButtons {
       button.delegate = self
     }
-    tabsView.loadTabsData(headerTabSelectionView.categoryTabButtons.count)
+    tabsView.loadTabsData(
+      headerTabSelectionView.categoryTabButtons.count, searchTopicCellViewDelegate: self)
 
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
@@ -113,5 +114,11 @@ extension SearchViewController: SearchHeaderViewDelegate {
     let exploreSettingsViewController = ExploreSettingsViewController()
     exploreSettingsViewController.modalPresentationStyle = .fullScreen
     present(exploreSettingsViewController, animated: true)
+  }
+}
+
+extension SearchViewController: SearchTopicCellViewDelegate {
+  func didSelectSearchTopicCellView(_ view: SearchTopicCellView) {
+    present(TopicDetailViewController(), animated: true)
   }
 }

@@ -24,7 +24,6 @@ class SearchTabView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setUpSubviews()
   }
 
   required init?(coder: NSCoder) {
@@ -34,8 +33,6 @@ class SearchTabView: UIView {
   private func setUpSubviews() {
     topicCellScrollView.addSubview(topicCellStackView)
     addSubview(topicCellScrollView)
-
-    loadSearchTopicModels()
 
     NSLayoutConstraint.activate([
       topicCellScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -50,13 +47,14 @@ class SearchTabView: UIView {
     ])
   }
 
-  private func loadSearchTopicModels() {
+  public func loadSearchTopicModels(_ searchTopicCellViewDelegate: SearchTopicCellViewDelegate?) {
     for _ in 0..<30 {
       let topicModel = createFakeTopicModel()
-      let searchTopicCellViewController = UIHostingController(
-        rootView: SearchTopicCellView(topic: topicModel))
-      topicCellStackView.addArrangedSubview(searchTopicCellViewController.view)
+      let searchTopicCellView = SearchTopicCellView(
+        delegate: searchTopicCellViewDelegate, topic: topicModel)
+      let searchTopicCellViewController = UIHostingController(rootView: searchTopicCellView)
 
+      topicCellStackView.addArrangedSubview(searchTopicCellViewController.view)
       NSLayoutConstraint.activate([
         searchTopicCellViewController.view.heightAnchor.constraint(
           equalToConstant: LayoutConstant.topicCellHeight),
@@ -66,5 +64,12 @@ class SearchTabView: UIView {
           equalTo: topicCellStackView.trailingAnchor),
       ])
     }
+
+    setUpSubviews()
+  }
+
+  @objc
+  private func didSelectSearchTopic(_ topic: TopicModel) {
+
   }
 }

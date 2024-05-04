@@ -6,7 +6,9 @@ struct SearchTopicCellView: View {
     static let cellHorizontalPadding = 18.0
   }
 
-  var topic: TopicModel
+  public weak var delegate: SearchTopicCellViewDelegate?
+
+  public var topic: TopicModel
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -22,12 +24,19 @@ struct SearchTopicCellView: View {
       Text("\(topic.numOfPosts) posts")
         .foregroundStyle(.secondary)
     }
+    .onTapGesture {
+      self.delegate?.didSelectSearchTopicCellView(self)
+    }
     .padding(
       EdgeInsets(
         top: 0, leading: LayoutConstant.cellHorizontalPadding, bottom: 0,
         trailing: LayoutConstant.cellHorizontalPadding))
     Divider()
   }
+}
+
+protocol SearchTopicCellViewDelegate: AnyObject {
+  func didSelectSearchTopicCellView(_ view: SearchTopicCellView)
 }
 
 #Preview{

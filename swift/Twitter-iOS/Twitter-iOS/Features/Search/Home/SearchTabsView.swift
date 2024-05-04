@@ -51,9 +51,11 @@ class SearchTabsView: UIView {
     tabsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
   }
 
-  public func loadTabsData(_ count: Int) {
+  public func loadTabsData(_ count: Int, searchTopicCellViewDelegate: SearchTopicCellViewDelegate?)
+  {
     for _ in 0..<count {
       let tabView = SearchTabView()
+      tabView.loadSearchTopicModels(searchTopicCellViewDelegate)
       tabView.translatesAutoresizingMaskIntoConstraints = false
       tabsStackView.addArrangedSubview(tabView)
       NSLayoutConstraint.activate([
