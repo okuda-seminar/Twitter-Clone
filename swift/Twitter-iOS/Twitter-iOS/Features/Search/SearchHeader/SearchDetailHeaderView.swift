@@ -61,6 +61,7 @@ struct SearchDetailHeaderView: View {
 protocol SearchDetailHeaderViewDelegate: AnyObject {
   func didTapBackButton()
   func didTapSearchBar()
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/133 - Remove didTapSearchFiltersEntryPoint from SearchDetailHeaderViewDelegate and present the filter sheet modally from the view.
   func didTapSearchFiltersEntryPoint()
 }
 
