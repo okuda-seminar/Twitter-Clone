@@ -119,6 +119,8 @@ extension SearchViewController: SearchHeaderViewDelegate {
 
 extension SearchViewController: SearchTopicCellViewDelegate {
   func didSelectSearchTopicCellView(_ view: SearchTopicCellView) {
-    present(TopicDetailViewController(), animated: true)
+    let topicDetailViewController = TopicDetailViewController()
+    topicDetailViewController.topicName = view.topic.name
+    self.navigationController?.pushViewController(topicDetailViewController, animated: true)
   }
 }

@@ -26,7 +26,8 @@ class RootViewController: UITabBarController {
     homeNavigationController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
 
-    let searchViewController = SearchViewController()
+    let searchViewController = UINavigationController(rootViewController: SearchViewController())
+    searchViewController.setNavigationBarHidden(true, animated: false)
     searchViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
 
