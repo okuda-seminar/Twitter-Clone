@@ -39,16 +39,16 @@ func (s *tweetsSvc) CreateTweet(
 		return nil, err
 	}
 
-	tweet, err := s.repository.CreateTweet(ctx,p.UserID, p.Text)
+	tweet, err := s.repository.CreateTweet(ctx, p.UserID, p.Text)
 	if err != nil {
 		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
 		return nil, tweets.MakeBadRequest(err)
 	}
 
 	res = &tweets.Tweet{
-		ID: tweet.Id,
-		UserID: tweet.UserId,
-		Text: tweet.Text,
+		ID:        tweet.Id,
+		UserID:    tweet.UserId,
+		Text:      tweet.Text,
 		CreatedAt: tweet.CreatedAt.Format(time.RFC3339),
 	}
 
@@ -57,7 +57,7 @@ func (s *tweetsSvc) CreateTweet(
 }
 
 // Check whether the length of tweet text is between min and max inclusive.
-func validateTweet(text string) bool{
+func validateTweet(text string) bool {
 	if len(text) < textLenMin || len(text) > textLenMax {
 		return false
 	}
