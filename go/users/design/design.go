@@ -136,8 +136,7 @@ var _ = Service("users", func() {
 		Result(ArrayOf(types.User))
 
 		HTTP(func() {
-			GET("/api/users/followers")
-			Param("id")
+			GET("/api/users/{id}/followers")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -151,8 +150,7 @@ var _ = Service("users", func() {
 		Result(ArrayOf(types.User))
 
 		HTTP(func() {
-			GET("/api/users/followings")
-			Param("id")
+			GET("/api/users/{id}/followings")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})

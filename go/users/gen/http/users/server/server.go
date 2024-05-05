@@ -69,8 +69,8 @@ func New(
 			{"UpdateBio", "POST", "/api/users/{id}/bio"},
 			{"Follow", "POST", "/api/users/follow"},
 			{"Unfollow", "DELETE", "/api/users/follow"},
-			{"GetFollowers", "GET", "/api/users/followers"},
-			{"GetFollowings", "GET", "/api/users/followings"},
+			{"GetFollowers", "GET", "/api/users/{id}/followers"},
+			{"GetFollowings", "GET", "/api/users/{id}/followings"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
@@ -490,7 +490,7 @@ func MountGetFollowersHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/api/users/followers", f)
+	mux.Handle("GET", "/api/users/{id}/followers", f)
 }
 
 // NewGetFollowersHandler creates a HTTP handler which loads the HTTP request
@@ -541,7 +541,7 @@ func MountGetFollowingsHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/api/users/followings", f)
+	mux.Handle("GET", "/api/users/{id}/followings", f)
 }
 
 // NewGetFollowingsHandler creates a HTTP handler which loads the HTTP request

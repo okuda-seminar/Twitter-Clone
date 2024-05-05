@@ -142,6 +142,124 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /api/users/{id}/followers:
+        get:
+            tags:
+                - users
+            summary: GetFollowers users
+            operationId: users#GetFollowers
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    example: 535483667602119241
+                    format: int64
+                  example: 1064524264775771184
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                                example:
+                                    - bio: Perferendis ad magnam neque.
+                                      created_at: "1996-12-01T16:53:30Z"
+                                      display_name: Veritatis nihil nulla et quia sunt.
+                                      id: 7731497475192245215
+                                      updated_at: "2012-03-25T11:23:58Z"
+                                      username: Non possimus necessitatibus placeat hic.
+                                    - bio: Perferendis ad magnam neque.
+                                      created_at: "1996-12-01T16:53:30Z"
+                                      display_name: Veritatis nihil nulla et quia sunt.
+                                      id: 7731497475192245215
+                                      updated_at: "2012-03-25T11:23:58Z"
+                                      username: Non possimus necessitatibus placeat hic.
+                                    - bio: Perferendis ad magnam neque.
+                                      created_at: "1996-12-01T16:53:30Z"
+                                      display_name: Veritatis nihil nulla et quia sunt.
+                                      id: 7731497475192245215
+                                      updated_at: "2012-03-25T11:23:58Z"
+                                      username: Non possimus necessitatibus placeat hic.
+                            example:
+                                - bio: Perferendis ad magnam neque.
+                                  created_at: "1996-12-01T16:53:30Z"
+                                  display_name: Veritatis nihil nulla et quia sunt.
+                                  id: 7731497475192245215
+                                  updated_at: "2012-03-25T11:23:58Z"
+                                  username: Non possimus necessitatibus placeat hic.
+                                - bio: Perferendis ad magnam neque.
+                                  created_at: "1996-12-01T16:53:30Z"
+                                  display_name: Veritatis nihil nulla et quia sunt.
+                                  id: 7731497475192245215
+                                  updated_at: "2012-03-25T11:23:58Z"
+                                  username: Non possimus necessitatibus placeat hic.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/{id}/followings:
+        get:
+            tags:
+                - users
+            summary: GetFollowings users
+            operationId: users#GetFollowings
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    example: 3498459282248307665
+                    format: int64
+                  example: 2744294305781565772
+            responses:
+                "200":
+                    description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
+                                example:
+                                    - bio: Perferendis ad magnam neque.
+                                      created_at: "1996-12-01T16:53:30Z"
+                                      display_name: Veritatis nihil nulla et quia sunt.
+                                      id: 7731497475192245215
+                                      updated_at: "2012-03-25T11:23:58Z"
+                                      username: Non possimus necessitatibus placeat hic.
+                                    - bio: Perferendis ad magnam neque.
+                                      created_at: "1996-12-01T16:53:30Z"
+                                      display_name: Veritatis nihil nulla et quia sunt.
+                                      id: 7731497475192245215
+                                      updated_at: "2012-03-25T11:23:58Z"
+                                      username: Non possimus necessitatibus placeat hic.
+                            example:
+                                - bio: Perferendis ad magnam neque.
+                                  created_at: "1996-12-01T16:53:30Z"
+                                  display_name: Veritatis nihil nulla et quia sunt.
+                                  id: 7731497475192245215
+                                  updated_at: "2012-03-25T11:23:58Z"
+                                  username: Non possimus necessitatibus placeat hic.
+                                - bio: Perferendis ad magnam neque.
+                                  created_at: "1996-12-01T16:53:30Z"
+                                  display_name: Veritatis nihil nulla et quia sunt.
+                                  id: 7731497475192245215
+                                  updated_at: "2012-03-25T11:23:58Z"
+                                  username: Non possimus necessitatibus placeat hic.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /api/users/{id}/username:
         post:
             tags:
@@ -221,126 +339,6 @@ paths:
             responses:
                 "200":
                     description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-    /api/users/followers:
-        get:
-            tags:
-                - users
-            summary: GetFollowers users
-            operationId: users#GetFollowers
-            parameters:
-                - name: id
-                  in: query
-                  allowEmptyValue: true
-                  required: true
-                  schema:
-                    type: integer
-                    example: 535483667602119241
-                    format: int64
-                  example: 1064524264775771184
-            responses:
-                "200":
-                    description: OK response.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/User'
-                                example:
-                                    - bio: Perferendis ad magnam neque.
-                                      created_at: "1996-12-01T16:53:30Z"
-                                      display_name: Nihil nulla et quia sunt.
-                                      id: 2547405496827801593
-                                      updated_at: "2012-03-25T11:23:58Z"
-                                      username: Delectus non possimus necessitatibus placeat hic unde.
-                                    - bio: Perferendis ad magnam neque.
-                                      created_at: "1996-12-01T16:53:30Z"
-                                      display_name: Nihil nulla et quia sunt.
-                                      id: 2547405496827801593
-                                      updated_at: "2012-03-25T11:23:58Z"
-                                      username: Delectus non possimus necessitatibus placeat hic unde.
-                                    - bio: Perferendis ad magnam neque.
-                                      created_at: "1996-12-01T16:53:30Z"
-                                      display_name: Nihil nulla et quia sunt.
-                                      id: 2547405496827801593
-                                      updated_at: "2012-03-25T11:23:58Z"
-                                      username: Delectus non possimus necessitatibus placeat hic unde.
-                            example:
-                                - bio: Perferendis ad magnam neque.
-                                  created_at: "1996-12-01T16:53:30Z"
-                                  display_name: Nihil nulla et quia sunt.
-                                  id: 2547405496827801593
-                                  updated_at: "2012-03-25T11:23:58Z"
-                                  username: Delectus non possimus necessitatibus placeat hic unde.
-                                - bio: Perferendis ad magnam neque.
-                                  created_at: "1996-12-01T16:53:30Z"
-                                  display_name: Nihil nulla et quia sunt.
-                                  id: 2547405496827801593
-                                  updated_at: "2012-03-25T11:23:58Z"
-                                  username: Delectus non possimus necessitatibus placeat hic unde.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-    /api/users/followings:
-        get:
-            tags:
-                - users
-            summary: GetFollowings users
-            operationId: users#GetFollowings
-            parameters:
-                - name: id
-                  in: query
-                  allowEmptyValue: true
-                  required: true
-                  schema:
-                    type: integer
-                    example: 3498459282248307665
-                    format: int64
-                  example: 2744294305781565772
-            responses:
-                "200":
-                    description: OK response.
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/User'
-                                example:
-                                    - bio: Perferendis ad magnam neque.
-                                      created_at: "1996-12-01T16:53:30Z"
-                                      display_name: Nihil nulla et quia sunt.
-                                      id: 2547405496827801593
-                                      updated_at: "2012-03-25T11:23:58Z"
-                                      username: Delectus non possimus necessitatibus placeat hic unde.
-                                    - bio: Perferendis ad magnam neque.
-                                      created_at: "1996-12-01T16:53:30Z"
-                                      display_name: Nihil nulla et quia sunt.
-                                      id: 2547405496827801593
-                                      updated_at: "2012-03-25T11:23:58Z"
-                                      username: Delectus non possimus necessitatibus placeat hic unde.
-                            example:
-                                - bio: Perferendis ad magnam neque.
-                                  created_at: "1996-12-01T16:53:30Z"
-                                  display_name: Nihil nulla et quia sunt.
-                                  id: 2547405496827801593
-                                  updated_at: "2012-03-25T11:23:58Z"
-                                  username: Delectus non possimus necessitatibus placeat hic unde.
-                                - bio: Perferendis ad magnam neque.
-                                  created_at: "1996-12-01T16:53:30Z"
-                                  display_name: Nihil nulla et quia sunt.
-                                  id: 2547405496827801593
-                                  updated_at: "2012-03-25T11:23:58Z"
-                                  username: Delectus non possimus necessitatibus placeat hic unde.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:

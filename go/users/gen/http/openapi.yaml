@@ -132,6 +132,54 @@ paths:
                         $ref: '#/definitions/UsersUpdateBioNotFoundResponseBody'
             schemes:
                 - http
+    /api/users/{id}/followers:
+        get:
+            tags:
+                - users
+            summary: GetFollowers users
+            operationId: users#GetFollowers
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/UserResponse'
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/UsersGetFollowersBadRequestResponseBody'
+            schemes:
+                - http
+    /api/users/{id}/followings:
+        get:
+            tags:
+                - users
+            summary: GetFollowings users
+            operationId: users#GetFollowings
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  type: integer
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/UserResponse'
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/UsersGetFollowingsBadRequestResponseBody'
+            schemes:
+                - http
     /api/users/{id}/username:
         post:
             tags:
@@ -208,54 +256,6 @@ paths:
                     description: Bad Request response.
                     schema:
                         $ref: '#/definitions/UsersUnfollowBadRequestResponseBody'
-            schemes:
-                - http
-    /api/users/followers:
-        get:
-            tags:
-                - users
-            summary: GetFollowers users
-            operationId: users#GetFollowers
-            parameters:
-                - name: id
-                  in: query
-                  required: true
-                  type: integer
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: array
-                        items:
-                            $ref: '#/definitions/UserResponse'
-                "400":
-                    description: Bad Request response.
-                    schema:
-                        $ref: '#/definitions/UsersGetFollowersBadRequestResponseBody'
-            schemes:
-                - http
-    /api/users/followings:
-        get:
-            tags:
-                - users
-            summary: GetFollowings users
-            operationId: users#GetFollowings
-            parameters:
-                - name: id
-                  in: query
-                  required: true
-                  type: integer
-            responses:
-                "200":
-                    description: OK response.
-                    schema:
-                        type: array
-                        items:
-                            $ref: '#/definitions/UserResponse'
-                "400":
-                    description: Bad Request response.
-                    schema:
-                        $ref: '#/definitions/UsersGetFollowingsBadRequestResponseBody'
             schemes:
                 - http
     /swagger.json:
@@ -376,32 +376,32 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Laborum veniam natus.
+                example: Natus inventore voluptas eum et.
             created_at:
                 type: string
-                example: "1994-09-03T15:10:30Z"
+                example: "1971-10-10T23:24:09Z"
                 format: date-time
             display_name:
                 type: string
-                example: Et culpa ratione tempore.
+                example: Tempore mollitia laborum veniam natus.
             id:
                 type: integer
-                example: 2885574777947438764
+                example: 4412904184276681572
                 format: int64
             updated_at:
                 type: string
-                example: "1997-06-10T13:55:08Z"
+                example: "2012-12-02T03:21:12Z"
                 format: date-time
             username:
                 type: string
-                example: Est sapiente adipisci.
+                example: Sapiente adipisci quia et culpa.
         example:
-            bio: Et fugit expedita id odit fugit.
+            bio: Odit fugit.
             created_at: "2001-06-13T23:03:07Z"
-            display_name: Omnis illum non.
-            id: 7753723633712686937
+            display_name: Fugit expedita.
+            id: 9044943360573654762
             updated_at: "1980-02-07T02:04:37Z"
-            username: Est veniam iste ea ullam eligendi assumenda.
+            username: Assumenda dolorum omnis illum non facilis.
         required:
             - id
             - username

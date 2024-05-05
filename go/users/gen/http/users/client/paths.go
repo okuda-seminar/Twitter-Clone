@@ -47,11 +47,11 @@ func UnfollowUsersPath() string {
 }
 
 // GetFollowersUsersPath returns the URL path to the users service GetFollowers HTTP endpoint.
-func GetFollowersUsersPath() string {
-	return "/api/users/followers"
+func GetFollowersUsersPath(id int) string {
+	return fmt.Sprintf("/api/users/%v/followers", id)
 }
 
 // GetFollowingsUsersPath returns the URL path to the users service GetFollowings HTTP endpoint.
-func GetFollowingsUsersPath() string {
-	return "/api/users/followings"
+func GetFollowingsUsersPath(id int) string {
+	return fmt.Sprintf("/api/users/%v/followings", id)
 }

@@ -332,7 +332,7 @@ GetFollowers implements GetFollowers.
     -id INT: 
 
 Example:
-    %[1]s users get-followers --id 8647041411894579986
+    %[1]s users get-followers --id 2547405496827801593
 `, os.Args[0])
 }
 
@@ -343,6 +343,6 @@ GetFollowings implements GetFollowings.
     -id INT: 
 
 Example:
-    %[1]s users get-followings --id 5272198401566204443
+    %[1]s users get-followings --id 5481851334793077583
 `, os.Args[0])
 }

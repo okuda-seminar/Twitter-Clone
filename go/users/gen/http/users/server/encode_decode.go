@@ -560,12 +560,11 @@ func DecodeGetFollowersRequest(mux goahttp.Muxer, decoder func(*http.Request) go
 		var (
 			id  int
 			err error
+
+			params = mux.Vars(r)
 		)
 		{
-			idRaw := r.URL.Query().Get("id")
-			if idRaw == "" {
-				err = goa.MergeErrors(err, goa.MissingFieldError("id", "query string"))
-			}
+			idRaw := params["id"]
 			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
@@ -629,12 +628,11 @@ func DecodeGetFollowingsRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 		var (
 			id  int
 			err error
+
+			params = mux.Vars(r)
 		)
 		{
-			idRaw := r.URL.Query().Get("id")
-			if idRaw == "" {
-				err = goa.MergeErrors(err, goa.MissingFieldError("id", "query string"))
-			}
+			idRaw := params["id"]
 			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
