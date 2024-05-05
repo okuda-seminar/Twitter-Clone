@@ -2,50 +2,93 @@ import UIKit
 
 class CommunitiesViewController: UIViewController {
   private enum LayoutConstant {
-    static let headerViewHeight = 64.0
     static let leadingPadding = 16.0
+    static let headlineLabelTopPadding = 160.0
   }
 
-  private let headerView: CommunitiesHeaderView = {
-    let view = CommunitiesHeaderView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+  private enum LocalizedString {
+    static let title = String(localized: "Communities")
+    static let headlineLabelText = String(localized: "Discover new Communities")
+    static let showMoreText = String(localized: "Show more")
+  }
+
+  private lazy var profileIconButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
+    button.tintColor = .black
+    button.image = UIImage(systemName: "person.circle.fill")
+    return button
   }()
 
-  private let homeView: CommunitiesHomeView = {
-    let view = CommunitiesHomeView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+  private lazy var searchButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(pushCommunitiesSearchViewController)
+    )
+    button.tintColor = .black
+    button.image = UIImage(systemName: "magnifyingglass")
+    return button
+  }()
+
+  private lazy var newCommunityCreationEntryPointButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(showNewCommunityCreationSheet))
+    button.tintColor = .black
+    button.image = UIImage(systemName: "person.2")
+    return button
+  }()
+
+  private let headlineLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = LocalizedString.headlineLabelText
+    label.tintColor = .black
+    label.sizeToFit()
+    return label
+  }()
+
+  private let showMoreButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(LocalizedString.showMoreText, for: .normal)
+    button.setTitleColor(.systemBlue, for: .normal)
+    button.sizeToFit()
+    return button
   }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.addSubview(headerView)
-    view.addSubview(homeView)
     view.backgroundColor = .systemBackground
+    view.addSubview(headlineLabel)
+    view.addSubview(showMoreButton)
 
-    let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headerView.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
-      headerView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerViewHeight),
+      headlineLabel.leadingAnchor.constraint(
+        equalTo: view.leadingAnchor, constant: LayoutConstant.leadingPadding),
+      headlineLabel.topAnchor.constraint(
+        equalTo: view.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
 
-      homeView.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.leadingPadding),
-      homeView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      homeView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-      homeView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      showMoreButton.leadingAnchor.constraint(equalTo: headlineLabel.leadingAnchor),
+      showMoreButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
     ])
 
-    headerView.newCommunityCreationEntryPointButton.addAction(
+    // set up the navigation header
+    title = LocalizedString.title
+    navigationItem.leftBarButtonItems = [profileIconButton]
+    navigationItem.rightBarButtonItems = [newCommunityCreationEntryPointButton, searchButton]
+
+    showMoreButton.addAction(
       .init { _ in
-        self.showNewCommunityCreationSheet()
+        self.pushCommunitiesSearchViewController()
       }, for: .touchUpInside)
   }
 
+  @objc
+  private func slideInSideMenu() {
+
+  }
+
+  @objc
   private func showNewCommunityCreationSheet() {
     // We only show the sheet for non premium users.
     let blockedNewCommunityCreationBottomSheetViewController =
@@ -57,5 +100,10 @@ class CommunitiesViewController: UIViewController {
       sheet.prefersGrabberVisible = true
     }
     present(blockedNewCommunityCreationBottomSheetViewController, animated: true, completion: nil)
+  }
+
+  @objc
+  private func pushCommunitiesSearchViewController() {
+    navigationController?.pushViewController(CommunitiesSearchViewController(), animated: true)
   }
 }

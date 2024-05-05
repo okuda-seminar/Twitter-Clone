@@ -31,7 +31,8 @@ class RootViewController: UITabBarController {
     searchViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
 
-    let communitiesViewController = CommunitiesViewController()
+    let communitiesViewController = UINavigationController(
+      rootViewController: CommunitiesViewController())
     communitiesViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "person"), tag: TabBarItemTag.communities.rawValue)
 
