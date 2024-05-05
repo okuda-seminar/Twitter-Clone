@@ -12,6 +12,13 @@ class TopicDetailViewController: UIViewController {
 
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
+  private lazy var searchFiltersEntryPointButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(presentSearchFilters))
+    button.image = UIImage(systemName: "line.3.horizontal.decrease.circle")
+    return button
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -19,43 +26,36 @@ class TopicDetailViewController: UIViewController {
   }
 
   private func setUpSubviews() {
-    let headerViewHostingController = UIHostingController(
-      rootView: SearchDetailHeaderView(delegate: self, searchQuery: topicName))
-    addChild(headerViewHostingController)
-    headerViewHostingController.didMove(toParent: self)
-    headerViewHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
 
     view.backgroundColor = .white
-    view.addSubview(headerViewHostingController.view)
     view.addSubview(newTweetEntryPointButtonController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      headerViewHostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-      headerViewHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      headerViewHostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      headerViewHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
       newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
+
+    // set up navigation bar
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    navigationController?.navigationBar.backIndicatorImage = backButtonImage
+    navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    navigationItem.rightBarButtonItems = [searchFiltersEntryPointButton]
+    let searchBar = TapOnlySearchBar()
+    searchBar.delegate = self
+    searchBar.text = topicName
+    navigationItem.titleView = searchBar
   }
+
+  @objc
+  private func presentSearchFilters() {}
 }
 
-extension TopicDetailViewController: SearchDetailHeaderViewDelegate {
-  func didTapBackButton() {
-  }
-
-  func didTapSearchBar() {
-  }
-
-  func didTapSearchFiltersEntryPoint() {
-    // show search filters full screen modal view.
-  }
+extension TopicDetailViewController: TapOnlySearchBarDelegate {
+  func didTapSearchBar() {}
 }

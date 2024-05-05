@@ -24,7 +24,6 @@ class CommunitiesViewController: UIViewController {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(pushCommunitiesSearchViewController)
     )
-    button.tintColor = .black
     button.image = UIImage(systemName: "magnifyingglass")
     return button
   }()
@@ -32,7 +31,6 @@ class CommunitiesViewController: UIViewController {
   private lazy var newCommunityCreationEntryPointButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(showNewCommunityCreationSheet))
-    button.tintColor = .black
     button.image = UIImage(systemName: "person.2")
     return button
   }()
@@ -73,6 +71,7 @@ class CommunitiesViewController: UIViewController {
     ])
 
     // set up the navigation header
+    navigationController?.navigationBar.tintColor = .black
     title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [newCommunityCreationEntryPointButton, searchButton]
@@ -84,9 +83,7 @@ class CommunitiesViewController: UIViewController {
   }
 
   @objc
-  private func slideInSideMenu() {
-
-  }
+  private func slideInSideMenu() {}
 
   @objc
   private func showNewCommunityCreationSheet() {
