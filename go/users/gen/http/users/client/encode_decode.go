@@ -10,7 +10,6 @@ package client
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -633,7 +632,17 @@ func DecodeUnfollowResponse(decoder func(*http.Response) goahttp.Decoder, restor
 // BuildGetFollowersRequest instantiates a HTTP request object with method and
 // path set to call the "users" service "GetFollowers" endpoint
 func (c *Client) BuildGetFollowersRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowersUsersPath()}
+	var (
+		id int
+	)
+	{
+		p, ok := v.(*users.GetFollowersPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "GetFollowers", "*users.GetFollowersPayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowersUsersPath(id)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "GetFollowers", u.String(), err)
@@ -643,21 +652,6 @@ func (c *Client) BuildGetFollowersRequest(ctx context.Context, v any) (*http.Req
 	}
 
 	return req, nil
-}
-
-// EncodeGetFollowersRequest returns an encoder for requests sent to the users
-// GetFollowers server.
-func EncodeGetFollowersRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.GetFollowersPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "GetFollowers", "*users.GetFollowersPayload", v)
-		}
-		values := req.URL.Query()
-		values.Add("id", fmt.Sprintf("%v", p.ID))
-		req.URL.RawQuery = values.Encode()
-		return nil
-	}
 }
 
 // DecodeGetFollowersResponse returns a decoder for responses returned by the
@@ -726,7 +720,17 @@ func DecodeGetFollowersResponse(decoder func(*http.Response) goahttp.Decoder, re
 // BuildGetFollowingsRequest instantiates a HTTP request object with method and
 // path set to call the "users" service "GetFollowings" endpoint
 func (c *Client) BuildGetFollowingsRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowingsUsersPath()}
+	var (
+		id int
+	)
+	{
+		p, ok := v.(*users.GetFollowingsPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "GetFollowings", "*users.GetFollowingsPayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetFollowingsUsersPath(id)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "GetFollowings", u.String(), err)
@@ -736,21 +740,6 @@ func (c *Client) BuildGetFollowingsRequest(ctx context.Context, v any) (*http.Re
 	}
 
 	return req, nil
-}
-
-// EncodeGetFollowingsRequest returns an encoder for requests sent to the users
-// GetFollowings server.
-func EncodeGetFollowingsRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.GetFollowingsPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "GetFollowings", "*users.GetFollowingsPayload", v)
-		}
-		values := req.URL.Query()
-		values.Add("id", fmt.Sprintf("%v", p.ID))
-		req.URL.RawQuery = values.Encode()
-		return nil
-	}
 }
 
 // DecodeGetFollowingsResponse returns a decoder for responses returned by the

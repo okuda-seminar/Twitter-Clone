@@ -256,15 +256,10 @@ func (c *Client) Unfollow() goa.Endpoint {
 // service GetFollowers server.
 func (c *Client) GetFollowers() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetFollowersRequest(c.encoder)
 		decodeResponse = DecodeGetFollowersResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildGetFollowersRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
@@ -280,15 +275,10 @@ func (c *Client) GetFollowers() goa.Endpoint {
 // service GetFollowings server.
 func (c *Client) GetFollowings() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetFollowingsRequest(c.encoder)
 		decodeResponse = DecodeGetFollowingsResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildGetFollowingsRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
