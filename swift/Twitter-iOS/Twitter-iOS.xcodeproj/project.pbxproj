@@ -50,6 +50,7 @@
 		658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */; };
 		658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08702BE8BACC006C6A9E /* SearchInputViewController.swift */; };
 		658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */; };
+		658D08762BE8FE47006C6A9E /* CommunitiesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08752BE8FE47006C6A9E /* CommunitiesCollectionView.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -122,6 +123,7 @@
 		658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapOnlySearchBar.swift; sourceTree = "<group>"; };
 		658D08702BE8BACC006C6A9E /* SearchInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewController.swift; sourceTree = "<group>"; };
 		658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Core.swift"; sourceTree = "<group>"; };
+		658D08752BE8FE47006C6A9E /* CommunitiesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesCollectionView.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */,
 				658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */,
 				6540F8ED2BCA28070029BA46 /* CommunitiesViewController.swift */,
+				658D08752BE8FE47006C6A9E /* CommunitiesCollectionView.swift */,
 			);
 			path = Communities;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
 				6540F8852BB44D430029BA46 /* RootViewController.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
+				658D08762BE8FE47006C6A9E /* CommunitiesCollectionView.swift in Sources */,
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
 				6540F8DC2BC424190029BA46 /* SearchCategoryModel.swift in Sources */,
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,

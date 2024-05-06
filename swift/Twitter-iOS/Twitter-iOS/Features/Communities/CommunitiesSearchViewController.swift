@@ -21,12 +21,10 @@ class CommunitiesSearchViewController: UIViewController {
     let backButtonImage = UIImage(systemName: "arrow.left")
     navigationController?.navigationBar.backIndicatorImage = backButtonImage
     navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-    navigationItem.backButtonDisplayMode = .minimal
 
     view.backgroundColor = .systemBackground
     view.addSubview(dummyButton)
 
-    //    let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
       dummyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       dummyButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),

@@ -29,6 +29,7 @@ class HomeViewController: UIViewController {
   }()
 
   private let homeHeaderView: HomeHeaderView = {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/138 - Replace custom home header view with Apple's navigation bar items.
     let view = HomeHeaderView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view

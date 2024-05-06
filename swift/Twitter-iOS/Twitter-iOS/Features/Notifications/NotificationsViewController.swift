@@ -7,6 +7,7 @@ class NotificationsViewController: UIViewController {
   }
 
   private let headerView: NotificationsHeaderView = {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/138 - Replace custom home header view with Apple's navigation bar items.
     let view = NotificationsHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view

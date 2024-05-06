@@ -2,8 +2,9 @@ import UIKit
 
 class CommunitiesViewController: UIViewController {
   private enum LayoutConstant {
-    static let leadingPadding = 16.0
-    static let headlineLabelTopPadding = 160.0
+    static let edgePadding = 16.0
+    static let collectionViewVerticalPadding = 16.0
+    static let collectionViewCellHeight = 44.0
   }
 
   private enum LocalizedString {
@@ -11,6 +12,8 @@ class CommunitiesViewController: UIViewController {
     static let headlineLabelText = String(localized: "Discover new Communities")
     static let showMoreText = String(localized: "Show more")
   }
+
+  private var communities = ["sample", "community", "with", "collection view"]
 
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
@@ -54,18 +57,42 @@ class CommunitiesViewController: UIViewController {
     return button
   }()
 
+  private lazy var collectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .vertical
+
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    collectionView.translatesAutoresizingMaskIntoConstraints = false
+    collectionView.delegate = self
+    collectionView.dataSource = self
+    collectionView.register(
+      CommunitiesCollectionViewCell.self,
+      forCellWithReuseIdentifier: "CommunitiesCollectionViewCell")
+    return collectionView
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = .systemBackground
     view.addSubview(headlineLabel)
     view.addSubview(showMoreButton)
+    view.addSubview(collectionView)
 
+    let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
       headlineLabel.leadingAnchor.constraint(
-        equalTo: view.leadingAnchor, constant: LayoutConstant.leadingPadding),
+        equalTo: view.leadingAnchor, constant: LayoutConstant.edgePadding),
       headlineLabel.topAnchor.constraint(
-        equalTo: view.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
+        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
+
+      collectionView.topAnchor.constraint(
+        equalTo: headlineLabel.bottomAnchor, constant: LayoutConstant.collectionViewVerticalPadding),
+      collectionView.leadingAnchor.constraint(equalTo: headlineLabel.leadingAnchor),
+      collectionView.bottomAnchor.constraint(
+        equalTo: showMoreButton.topAnchor, constant: -LayoutConstant.collectionViewVerticalPadding),
+      collectionView.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor, constant: -LayoutConstant.edgePadding),
 
       showMoreButton.leadingAnchor.constraint(equalTo: headlineLabel.leadingAnchor),
       showMoreButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -73,7 +100,7 @@ class CommunitiesViewController: UIViewController {
 
     // set up the navigation header
     navigationController?.navigationBar.tintColor = .black
-    title = LocalizedString.title
+    navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [newCommunityCreationEntryPointButton, searchButton]
 
@@ -102,6 +129,40 @@ class CommunitiesViewController: UIViewController {
 
   @objc
   private func pushCommunitiesSearchViewController() {
+    navigationItem.backButtonDisplayMode = .minimal
     navigationController?.pushViewController(CommunitiesSearchViewController(), animated: true)
+  }
+}
+
+extension CommunitiesViewController: UICollectionViewDelegate {}
+
+extension CommunitiesViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+    -> Int
+  {
+    return communities.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+    -> UICollectionViewCell
+  {
+    let cell =
+      collectionView.dequeueReusableCell(
+        withReuseIdentifier: "CommunitiesCollectionViewCell", for: indexPath)
+      as! CommunitiesCollectionViewCell
+    cell.titleLabel.text = communities[indexPath.row]
+    cell.titleLabel.sizeToFit()
+    cell.backgroundColor = .branededLightBlue
+    return cell
+  }
+}
+
+extension CommunitiesViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(
+    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+    return CGSize(
+      width: collectionView.frame.width, height: LayoutConstant.collectionViewCellHeight)
   }
 }
