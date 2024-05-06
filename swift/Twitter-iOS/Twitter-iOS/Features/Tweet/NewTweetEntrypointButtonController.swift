@@ -35,7 +35,7 @@ final class NewTweetEntrypointButton: UIButton {
     layer.cornerRadius = LayoutConstant.buttonSize / 2
     translatesAutoresizingMaskIntoConstraints = false
     tintColor = .white
-    backgroundColor = .systemBlue
+    backgroundColor = .brandedBlue
 
     NSLayoutConstraint.activate([
       widthAnchor.constraint(equalToConstant: LayoutConstant.buttonSize),

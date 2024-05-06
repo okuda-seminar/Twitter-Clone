@@ -25,6 +25,7 @@ class CommunitiesViewController: UIViewController {
       title: "", style: .plain, target: self, action: #selector(pushCommunitiesSearchViewController)
     )
     button.image = UIImage(systemName: "magnifyingglass")
+    button.tintColor = .black
     return button
   }()
 
@@ -48,7 +49,7 @@ class CommunitiesViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(LocalizedString.showMoreText, for: .normal)
-    button.setTitleColor(.systemBlue, for: .normal)
+    button.setTitleColor(.branededLightBlue, for: .normal)
     button.sizeToFit()
     return button
   }()

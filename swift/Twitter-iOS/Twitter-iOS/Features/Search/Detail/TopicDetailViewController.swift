@@ -57,5 +57,7 @@ class TopicDetailViewController: UIViewController {
 }
 
 extension TopicDetailViewController: TapOnlySearchBarDelegate {
-  func didTapSearchBar() {}
+  func didTapSearchBar() {
+    print("called")
+  }
 }

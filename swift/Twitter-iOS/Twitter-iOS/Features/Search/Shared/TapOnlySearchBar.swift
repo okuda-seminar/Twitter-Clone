@@ -21,16 +21,20 @@ class TapOnlySearchBar: UIView {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = LocalizedString.title
-    label.textColor = .lightGray
+    label.textColor = .brandedLightGrayText
     return label
   }()
 
   private let searchIcon: UIImageView = {
     let imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
     imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.tintColor = .lightGray
+    imageView.tintColor = .brandedLightGrayText
     return imageView
   }()
+
+  override var intrinsicContentSize: CGSize {
+    return UIView.layoutFittingExpandedSize
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -42,6 +46,8 @@ class TapOnlySearchBar: UIView {
   }
 
   private func setUpSubviews() {
+    translatesAutoresizingMaskIntoConstraints = false
+    backgroundColor = .brandedLightGrayBackground
     addSubview(titleLabel)
     addSubview(searchIcon)
 
@@ -53,10 +59,16 @@ class TapOnlySearchBar: UIView {
         equalTo: titleLabel.leadingAnchor, constant: -LayoutConstant.searchIconTrailingPadding),
       searchIcon.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
+
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(propagateTapEventToDelegate))
+    titleLabel.addGestureRecognizer(tapGestureRecognizer)
+    searchIcon.addGestureRecognizer(tapGestureRecognizer)
+    isUserInteractionEnabled = true
   }
 
-  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    super.touchesEnded(touches, with: event)
+  @objc
+  private func propagateTapEventToDelegate() {
     delegate?.didTapSearchBar()
   }
 }

@@ -126,10 +126,12 @@ extension SearchHomeViewController: SearchTopicCellViewDelegate {
   func didSelectSearchTopicCellView(_ view: SearchTopicCellView) {
     let topicDetailViewController = TopicDetailViewController()
     topicDetailViewController.topicName = view.topic.name
-    self.navigationController?.pushViewController(topicDetailViewController, animated: true)
+    navigationController?.pushViewController(topicDetailViewController, animated: true)
   }
 }
 
 extension SearchHomeViewController: TapOnlySearchBarDelegate {
-  func didTapSearchBar() {}
+  func didTapSearchBar() {
+    navigationController?.pushViewController(SearchInputViewController(), animated: true)
+  }
 }

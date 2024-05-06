@@ -10,7 +10,7 @@ class CommunitiesSearchViewController: UIViewController {
     let dummyButton = UIButton()
     dummyButton.translatesAutoresizingMaskIntoConstraints = false
     dummyButton.setTitle("OK", for: .normal)
-    dummyButton.setTitleColor(.systemBlue, for: .normal)
+    dummyButton.setTitleColor(.brandedBlue, for: .normal)
     dummyButton.sizeToFit()
     dummyButton.addAction(
       .init { _ in

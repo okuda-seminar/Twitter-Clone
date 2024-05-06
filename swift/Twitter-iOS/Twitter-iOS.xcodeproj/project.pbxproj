@@ -19,8 +19,6 @@
 		6540F8BC2BB5762F0029BA46 /* HomeTweetCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */; };
 		6540F8BE2BB576740029BA46 /* NewTweetEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */; };
 		6540F8C02BB5768F0029BA46 /* NewTweetEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */; };
-		6540F8C22BB576AD0029BA46 /* NewTweetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */; };
-		6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C62BB577140029BA46 /* RoundedButtonStyle.swift */; };
 		6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */; };
 		6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */; };
 		6540F8CF2BB7F7B10029BA46 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8CE2BB7F7B10029BA46 /* HomeHeaderView.swift */; };
@@ -50,6 +48,8 @@
 		658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */; };
 		658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */; };
 		658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */; };
+		658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08702BE8BACC006C6A9E /* SearchInputViewController.swift */; };
+		658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -91,8 +91,6 @@
 		6540F8BB2BB5762F0029BA46 /* HomeTweetCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTweetCellView.swift; sourceTree = "<group>"; };
 		6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEntrypointButtonController.swift; sourceTree = "<group>"; };
 		6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetEditViewController.swift; sourceTree = "<group>"; };
-		6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTweetButton.swift; sourceTree = "<group>"; };
-		6540F8C62BB577140029BA46 /* RoundedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButtonStyle.swift; sourceTree = "<group>"; };
 		6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTabButtonStyle.swift; sourceTree = "<group>"; };
 		6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		6540F8CE2BB7F7B10029BA46 /* HomeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
@@ -122,6 +120,8 @@
 		658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetailViewController.swift; sourceTree = "<group>"; };
 		658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesSearchViewController.swift; sourceTree = "<group>"; };
 		658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapOnlySearchBar.swift; sourceTree = "<group>"; };
+		658D08702BE8BACC006C6A9E /* SearchInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewController.swift; sourceTree = "<group>"; };
+		658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Core.swift"; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -236,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				65F908482BE1273700C6C8B3 /* Permission */,
-				6540F8C12BB576AD0029BA46 /* NewTweetButton.swift */,
 				6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */,
 				6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */,
 				65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */,
@@ -256,6 +255,7 @@
 		6540F8C42BB576F80029BA46 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				658D08722BE8C391006C6A9E /* Color */,
 				65F908432BE119AD00C6C8B3 /* Navigation */,
 				6540F8C52BB577020029BA46 /* ButtonStyle */,
 			);
@@ -266,7 +266,6 @@
 			isa = PBXGroup;
 			children = (
 				6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */,
-				6540F8C62BB577140029BA46 /* RoundedButtonStyle.swift */,
 			);
 			path = ButtonStyle;
 			sourceTree = "<group>";
@@ -274,10 +273,10 @@
 		6540F8D22BC018910029BA46 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				658D086F2BE8BA8D006C6A9E /* Input */,
 				658D086C2BE7B5F5006C6A9E /* Shared */,
 				658D08662BE63DFA006C6A9E /* Detail */,
 				658D08672BE63E03006C6A9E /* Home */,
-				65F9084B2BE3BEC500C6C8B3 /* SearchHeader */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -364,6 +363,7 @@
 				6540F8DB2BC424180029BA46 /* SearchCategoryModel.swift */,
 				6540F8E12BC565980029BA46 /* SearchTabView.swift */,
 				6540F8E52BC817310029BA46 /* SearchTabsView.swift */,
+				65F9084C2BE3BEDE00C6C8B3 /* SearchTabSelectionView.swift */,
 				6540F8DD2BC564A50029BA46 /* SearchTopicCellView.swift */,
 				6540F8D32BC018B30029BA46 /* SearchHomeViewController.swift */,
 			);
@@ -377,6 +377,22 @@
 				658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		658D086F2BE8BA8D006C6A9E /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				658D08702BE8BACC006C6A9E /* SearchInputViewController.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
+		658D08722BE8C391006C6A9E /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */,
+			);
+			path = Color;
 			sourceTree = "<group>";
 		};
 		65F908432BE119AD00C6C8B3 /* Navigation */ = {
@@ -394,14 +410,6 @@
 				65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */,
 			);
 			path = Permission;
-			sourceTree = "<group>";
-		};
-		65F9084B2BE3BEC500C6C8B3 /* SearchHeader */ = {
-			isa = PBXGroup;
-			children = (
-				65F9084C2BE3BEDE00C6C8B3 /* SearchTabSelectionView.swift */,
-			);
-			path = SearchHeader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -539,13 +547,13 @@
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
 				6540F8DC2BC424190029BA46 /* SearchCategoryModel.swift in Sources */,
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,
+				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */,
 				6540F8BA2BB575FF0029BA46 /* TweetModel.swift in Sources */,
 				65F9084D2BE3BEDE00C6C8B3 /* SearchTabSelectionView.swift in Sources */,
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				6540F8B72BB575D30029BA46 /* HomeTabViewController.swift in Sources */,
-				6540F8C72BB577140029BA46 /* RoundedButtonStyle.swift in Sources */,
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
@@ -560,6 +568,7 @@
 				6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
+				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,
 				658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */,
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
@@ -576,7 +585,6 @@
 				6540F8EB2BC972E70029BA46 /* NotificationsHeaderView.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				6540F8F72BCFEB070029BA46 /* MessagesHeaderView.swift in Sources */,
-				6540F8C22BB576AD0029BA46 /* NewTweetButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
