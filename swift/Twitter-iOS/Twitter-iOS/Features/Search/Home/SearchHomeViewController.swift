@@ -71,8 +71,7 @@ class SearchHomeViewController: UIViewController {
     NSLayoutConstraint.activate([
       headerTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
       headerTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerTabSelectionView.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor),
+      headerTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerTabSelectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
 
       tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
@@ -132,6 +131,7 @@ extension SearchHomeViewController: SearchTopicCellViewDelegate {
 
 extension SearchHomeViewController: TapOnlySearchBarDelegate {
   func didTapSearchBar() {
+    navigationItem.backButtonDisplayMode = .minimal
     navigationController?.pushViewController(SearchInputViewController(), animated: true)
   }
 }

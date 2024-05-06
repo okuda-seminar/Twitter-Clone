@@ -58,6 +58,7 @@ class TopicDetailViewController: UIViewController {
 
 extension TopicDetailViewController: TapOnlySearchBarDelegate {
   func didTapSearchBar() {
-    print("called")
+    navigationItem.backButtonDisplayMode = .minimal
+    navigationController?.pushViewController(SearchInputViewController(), animated: true)
   }
 }

@@ -22,6 +22,8 @@ class TapOnlySearchBar: UIView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = LocalizedString.title
     label.textColor = .brandedLightGrayText
+    label.isUserInteractionEnabled = true
+    label.sizeToFit()
     return label
   }()
 
@@ -29,6 +31,7 @@ class TapOnlySearchBar: UIView {
     let imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.tintColor = .brandedLightGrayText
+    imageView.isUserInteractionEnabled = true
     return imageView
   }()
 
@@ -38,6 +41,7 @@ class TapOnlySearchBar: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+    // Need to call method here once to make layoutSubviews after frame size is fixed.
     setUpSubviews()
   }
 
@@ -45,8 +49,20 @@ class TapOnlySearchBar: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    setUpSubviews()
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(propagateTapEventToDelegate))
+    addGestureRecognizer(tapGestureRecognizer)
+    titleLabel.addGestureRecognizer(tapGestureRecognizer)
+    searchIcon.addGestureRecognizer(tapGestureRecognizer)
+    isUserInteractionEnabled = true
+  }
+
   private func setUpSubviews() {
     translatesAutoresizingMaskIntoConstraints = false
+    layer.cornerRadius = frame.height / 2
     backgroundColor = .brandedLightGrayBackground
     addSubview(titleLabel)
     addSubview(searchIcon)
@@ -59,12 +75,6 @@ class TapOnlySearchBar: UIView {
         equalTo: titleLabel.leadingAnchor, constant: -LayoutConstant.searchIconTrailingPadding),
       searchIcon.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
-
-    let tapGestureRecognizer = UITapGestureRecognizer(
-      target: self, action: #selector(propagateTapEventToDelegate))
-    titleLabel.addGestureRecognizer(tapGestureRecognizer)
-    searchIcon.addGestureRecognizer(tapGestureRecognizer)
-    isUserInteractionEnabled = true
   }
 
   @objc
