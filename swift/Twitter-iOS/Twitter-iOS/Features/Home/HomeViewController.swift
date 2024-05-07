@@ -35,11 +35,16 @@ class HomeViewController: UIViewController {
     return view
   }()
 
-  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
+  private lazy var newTweetEntryPointButtonController: NewTweetEntrypointButtonController = {
+    let viewController = NewTweetEntrypointButtonController()
+    viewController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(viewController)
+    viewController.didMove(toParent: self)
+    return viewController
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     setUpSubviews()
   }
 
