@@ -29,8 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Qui error inventore.",
-      "username": "Aspernatur quam repellat dolor laboriosam ut."
+      "display_name": "Iure sapiente ut doloremque nostrum culpa cupiditate.",
+      "username": "Non et voluptatem autem totam praesentium soluta."
    }'` + "\n" +
 		""
 }
@@ -239,8 +239,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Qui error inventore.",
-      "username": "Aspernatur quam repellat dolor laboriosam ut."
+      "display_name": "Iure sapiente ut doloremque nostrum culpa cupiditate.",
+      "username": "Non et voluptatem autem totam praesentium soluta."
    }'
 `, os.Args[0])
 }
@@ -253,47 +253,47 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": 4605757074257909868
+      "id": "Nihil eius."
    }'
 `, os.Args[0])
 }
 
 func usersFindUserByIDUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users find-user-by-id -id INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users find-user-by-id -id STRING
 
 FindUserByID implements FindUserByID.
-    -id INT: 
+    -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id 6412259281386706229
+    %[1]s users find-user-by-id --id "Veritatis nihil nulla et quia sunt."
 `, os.Args[0])
 }
 
 func usersUpdateUsernameUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-username -body JSON -id INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-username -body JSON -id STRING
 
 UpdateUsername implements UpdateUsername.
     -body JSON: 
-    -id INT: 
+    -id STRING: 
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Odit et omnis placeat similique voluptatem id."
-   }' --id 3960660096043873810
+      "username": "Quos maiores."
+   }' --id "In aliquid et."
 `, os.Args[0])
 }
 
 func usersUpdateBioUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-bio -body JSON -id INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-bio -body JSON -id STRING
 
 UpdateBio implements UpdateBio.
     -body JSON: 
-    -id INT: 
+    -id STRING: 
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Voluptas nobis omnis."
-   }' --id 4947093462436013363
+      "bio": "Debitis necessitatibus fuga."
+   }' --id "Labore error."
 `, os.Args[0])
 }
 
@@ -305,8 +305,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followee_id": 8492160358191620196,
-      "follower_id": 6881001417419968319
+      "followee_id": "Qui qui.",
+      "follower_id": "Eos et itaque labore molestiae excepturi odit."
    }'
 `, os.Args[0])
 }
@@ -319,30 +319,30 @@ Unfollow implements Unfollow.
 
 Example:
     %[1]s users unfollow --body '{
-      "followee_id": 6202834779766302284,
-      "follower_id": 4698722160625222812
+      "followee_id": "Minus illo repudiandae tempore.",
+      "follower_id": "Soluta itaque eaque voluptatum est consequatur."
    }'
 `, os.Args[0])
 }
 
 func usersGetFollowersUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followers -id INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followers -id STRING
 
 GetFollowers implements GetFollowers.
-    -id INT: 
+    -id STRING: 
 
 Example:
-    %[1]s users get-followers --id 2547405496827801593
+    %[1]s users get-followers --id "Illum non facilis."
 `, os.Args[0])
 }
 
 func usersGetFollowingsUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followings -id INT
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users get-followings -id STRING
 
 GetFollowings implements GetFollowings.
-    -id INT: 
+    -id STRING: 
 
 Example:
-    %[1]s users get-followings --id 5481851334793077583
+    %[1]s users get-followings --id "Aliquam molestiae."
 `, os.Args[0])
 }

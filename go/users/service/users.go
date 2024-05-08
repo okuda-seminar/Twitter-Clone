@@ -40,14 +40,7 @@ func (s *usersSvc) CreateUser(
 		return nil, users.MakeBadRequest(err)
 	}
 
-	res = &users.User{
-		ID:          user.ID,
-		Username:    user.Username,
-		DisplayName: user.DisplayName,
-		Bio:         user.Bio,
-		CreatedAt:   user.CreatedAt.Format(time.RFC3339),
-		UpdatedAt:   user.UpdatedAt.Format(time.RFC3339),
-	}
+	res = mapRepoUserToSvcUser(user)
 
 	s.logger.Print("users.CreateUser")
 	return
@@ -216,7 +209,7 @@ func validateBio(bio string) bool {
 
 func mapRepoUserToSvcUser(user *repository.User) *users.User {
 	return &users.User{
-		ID:          user.ID,
+		ID:          user.ID.String(),
 		Username:    user.Username,
 		DisplayName: user.DisplayName,
 		Bio:         user.Bio,

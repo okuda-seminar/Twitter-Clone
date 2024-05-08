@@ -1,6 +1,10 @@
 package design
 
-import . "goa.design/goa/v3/dsl"
+import (
+	"tweets/design/types"
+
+	. "goa.design/goa/v3/dsl"
+)
 
 var _ = API("tweets", func() {
 	Title("Tweets Service")
@@ -20,11 +24,11 @@ var _ = Service("tweets", func() {
 
 	Method("CreateTweet", func() {
 		Payload(func() {
-			Field(1, "user_id", Int)
+			Field(1, "user_id", String)
 			Field(2, "text", String)
 			Required("user_id", "text")
 		})
-		Result(Tweet)
+		Result(types.Tweet)
 
 		HTTP(func() {
 			POST("/api/tweets")

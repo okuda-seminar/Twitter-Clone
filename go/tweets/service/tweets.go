@@ -8,6 +8,8 @@ import (
 	"time"
 	"tweets/db/repository"
 	"tweets/gen/tweets"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -37,22 +39,24 @@ func (s *tweetsSvc) CreateTweet(
 	// - Discuss how we implement the test for CreateTweet method.
 	if !validateTweet(p.Text) {
 		err = tweets.MakeBadRequest(errors.New("tweet is invalid"))
-		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
+		s.logger.Printf("tweets.CreateTweet: failed (%s)\n", err)
 		return nil, err
 	}
 
-	tweet, err := s.repository.CreateTweet(ctx, p.UserID, p.Text)
+	userId, err := uuid.Parse(p.UserID)
+	if err != nil {
+		err = tweets.MakeBadRequest(err)
+		s.logger.Printf("tweets.CreateTweet: failed (%s)\n", err)
+		return nil, err
+	}
+
+	tweet, err := s.repository.CreateTweet(ctx, userId, p.Text)
 	if err != nil {
 		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
 		return nil, tweets.MakeBadRequest(err)
 	}
 
-	res = &tweets.Tweet{
-		ID:        tweet.Id,
-		UserID:    tweet.UserId,
-		Text:      tweet.Text,
-		CreatedAt: tweet.CreatedAt.Format(time.RFC3339),
-	}
+	res = mapRepoTweetToSvcTweet(tweet)
 
 	s.logger.Print("tweets.CreateTweet")
 	return
@@ -64,4 +68,13 @@ func validateTweet(text string) bool {
 		return false
 	}
 	return true
+}
+
+func mapRepoTweetToSvcTweet(tweet *repository.Tweet) *tweets.Tweet {
+	return &tweets.Tweet{
+		ID:        tweet.Id.String(),
+		UserID:    tweet.UserId.String(),
+		Text:      tweet.Text,
+		CreatedAt: tweet.CreatedAt.Format(time.RFC3339),
+	}
 }

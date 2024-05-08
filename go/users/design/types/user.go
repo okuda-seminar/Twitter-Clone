@@ -3,7 +3,9 @@ package types
 import . "goa.design/goa/v3/dsl"
 
 var User = Type("User", func() {
-	Attribute("id", Int)
+	Attribute("id", String, func() {
+		Format(FormatUUID)
+	})
 	Attribute("username", String)
 	Attribute("display_name", String)
 	Attribute("bio", String)

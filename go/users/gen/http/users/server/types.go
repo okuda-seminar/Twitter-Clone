@@ -23,7 +23,7 @@ type CreateUserRequestBody struct {
 // DeleteUserRequestBody is the type of the "users" service "DeleteUser"
 // endpoint HTTP request body.
 type DeleteUserRequestBody struct {
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 }
 
 // UpdateUsernameRequestBody is the type of the "users" service
@@ -41,21 +41,21 @@ type UpdateBioRequestBody struct {
 // FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
 // request body.
 type FollowRequestBody struct {
-	FollowerID *int `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
-	FolloweeID *int `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
+	FollowerID *string `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
+	FolloweeID *string `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
 }
 
 // UnfollowRequestBody is the type of the "users" service "Unfollow" endpoint
 // HTTP request body.
 type UnfollowRequestBody struct {
-	FollowerID *int `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
-	FolloweeID *int `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
+	FollowerID *string `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
+	FolloweeID *string `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
 }
 
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	ID          int    `form:"id" json:"id" xml:"id"`
+	ID          string `form:"id" json:"id" xml:"id"`
 	Username    string `form:"username" json:"username" xml:"username"`
 	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
@@ -66,7 +66,7 @@ type CreateUserResponseBody struct {
 // FindUserByIDResponseBody is the type of the "users" service "FindUserByID"
 // endpoint HTTP response body.
 type FindUserByIDResponseBody struct {
-	ID          int    `form:"id" json:"id" xml:"id"`
+	ID          string `form:"id" json:"id" xml:"id"`
 	Username    string `form:"username" json:"username" xml:"username"`
 	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
@@ -300,7 +300,7 @@ type GetFollowingsBadRequestResponseBody struct {
 
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
-	ID          int    `form:"id" json:"id" xml:"id"`
+	ID          string `form:"id" json:"id" xml:"id"`
 	Username    string `form:"username" json:"username" xml:"username"`
 	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
@@ -544,7 +544,7 @@ func NewDeleteUserPayload(body *DeleteUserRequestBody) *users.DeleteUserPayload 
 }
 
 // NewFindUserByIDPayload builds a users service FindUserByID endpoint payload.
-func NewFindUserByIDPayload(id int) *users.FindUserByIDPayload {
+func NewFindUserByIDPayload(id string) *users.FindUserByIDPayload {
 	v := &users.FindUserByIDPayload{}
 	v.ID = id
 
@@ -553,7 +553,7 @@ func NewFindUserByIDPayload(id int) *users.FindUserByIDPayload {
 
 // NewUpdateUsernamePayload builds a users service UpdateUsername endpoint
 // payload.
-func NewUpdateUsernamePayload(body *UpdateUsernameRequestBody, id int) *users.UpdateUsernamePayload {
+func NewUpdateUsernamePayload(body *UpdateUsernameRequestBody, id string) *users.UpdateUsernamePayload {
 	v := &users.UpdateUsernamePayload{
 		Username: *body.Username,
 	}
@@ -563,7 +563,7 @@ func NewUpdateUsernamePayload(body *UpdateUsernameRequestBody, id int) *users.Up
 }
 
 // NewUpdateBioPayload builds a users service UpdateBio endpoint payload.
-func NewUpdateBioPayload(body *UpdateBioRequestBody, id int) *users.UpdateBioPayload {
+func NewUpdateBioPayload(body *UpdateBioRequestBody, id string) *users.UpdateBioPayload {
 	v := &users.UpdateBioPayload{
 		Bio: *body.Bio,
 	}
@@ -593,7 +593,7 @@ func NewUnfollowPayload(body *UnfollowRequestBody) *users.UnfollowPayload {
 }
 
 // NewGetFollowersPayload builds a users service GetFollowers endpoint payload.
-func NewGetFollowersPayload(id int) *users.GetFollowersPayload {
+func NewGetFollowersPayload(id string) *users.GetFollowersPayload {
 	v := &users.GetFollowersPayload{}
 	v.ID = id
 
@@ -602,7 +602,7 @@ func NewGetFollowersPayload(id int) *users.GetFollowersPayload {
 
 // NewGetFollowingsPayload builds a users service GetFollowings endpoint
 // payload.
-func NewGetFollowingsPayload(id int) *users.GetFollowingsPayload {
+func NewGetFollowingsPayload(id string) *users.GetFollowingsPayload {
 	v := &users.GetFollowingsPayload{}
 	v.ID = id
 

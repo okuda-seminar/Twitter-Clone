@@ -69,7 +69,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -85,19 +85,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
         description: CreateTweet_BadRequest_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: true
+            temporary: false
+            timeout: false
         required:
             - name
             - id
@@ -112,7 +112,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -128,18 +128,18 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: CreateTweet_NotFound_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -154,14 +154,13 @@ definitions:
         properties:
             text:
                 type: string
-                example: Sit dolorem.
+                example: Vel odio tempora qui et tempora.
             user_id:
-                type: integer
-                example: 7490648830196259010
-                format: int64
+                type: string
+                example: Dolore quibusdam ipsam sapiente ut id.
         example:
-            text: Consequuntur perferendis et.
-            user_id: 5060174367728385028
+            text: Ab repudiandae qui sunt suscipit.
+            user_id: Amet amet neque vel.
         required:
             - user_id
             - text
@@ -171,24 +170,22 @@ definitions:
         properties:
             created_at:
                 type: string
-                example: "1981-08-21T11:06:41Z"
+                example: "1976-07-22T05:20:56Z"
                 format: date-time
             id:
-                type: integer
-                example: 3478854592352156500
-                format: int64
+                type: string
+                example: Iure delectus aut molestiae amet vitae.
             text:
                 type: string
-                example: Voluptatem et amet.
+                example: Tempora eos quia aut.
             user_id:
-                type: integer
-                example: 966348111099881345
-                format: int64
+                type: string
+                example: Quia corrupti corporis sed.
         example:
-            created_at: "1989-09-02T14:39:09Z"
-            id: 5632408719802807624
-            text: Consequatur ea.
-            user_id: 3046415697951589746
+            created_at: "1979-11-14T03:42:43Z"
+            id: Qui dolor nemo rerum fugit.
+            text: Cumque iusto deleniti.
+            user_id: Harum facilis cum adipisci.
         required:
             - id
             - user_id
