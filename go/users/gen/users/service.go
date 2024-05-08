@@ -53,55 +53,55 @@ type CreateUserPayload struct {
 
 // DeleteUserPayload is the payload type of the users service DeleteUser method.
 type DeleteUserPayload struct {
-	ID int
+	ID string
 }
 
 // FindUserByIDPayload is the payload type of the users service FindUserByID
 // method.
 type FindUserByIDPayload struct {
-	ID int
+	ID string
 }
 
 // FollowPayload is the payload type of the users service Follow method.
 type FollowPayload struct {
-	FollowerID int
-	FolloweeID int
+	FollowerID string
+	FolloweeID string
 }
 
 // GetFollowersPayload is the payload type of the users service GetFollowers
 // method.
 type GetFollowersPayload struct {
-	ID int
+	ID string
 }
 
 // GetFollowingsPayload is the payload type of the users service GetFollowings
 // method.
 type GetFollowingsPayload struct {
-	ID int
+	ID string
 }
 
 // UnfollowPayload is the payload type of the users service Unfollow method.
 type UnfollowPayload struct {
-	FollowerID int
-	FolloweeID int
+	FollowerID string
+	FolloweeID string
 }
 
 // UpdateBioPayload is the payload type of the users service UpdateBio method.
 type UpdateBioPayload struct {
-	ID  int
+	ID  string
 	Bio string
 }
 
 // UpdateUsernamePayload is the payload type of the users service
 // UpdateUsername method.
 type UpdateUsernamePayload struct {
-	ID       int
+	ID       string
 	Username string
 }
 
 // User is the result type of the users service CreateUser method.
 type User struct {
-	ID          int
+	ID          string
 	Username    string
 	DisplayName string
 	Bio         string

@@ -12,7 +12,6 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"strconv"
 	users "users/gen/users"
 
 	goahttp "goa.design/goa/v3/http"
@@ -178,22 +177,11 @@ func EncodeFindUserByIDResponse(encoder func(context.Context, http.ResponseWrite
 func DecodeFindUserByIDRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id  int
-			err error
+			id string
 
 			params = mux.Vars(r)
 		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		if err != nil {
-			return nil, err
-		}
+		id = params["id"]
 		payload := NewFindUserByIDPayload(id)
 
 		return payload, nil
@@ -259,21 +247,11 @@ func DecodeUpdateUsernameRequest(mux goahttp.Muxer, decoder func(*http.Request) 
 		}
 
 		var (
-			id int
+			id string
 
 			params = mux.Vars(r)
 		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		if err != nil {
-			return nil, err
-		}
+		id = params["id"]
 		payload := NewUpdateUsernamePayload(&body, id)
 
 		return payload, nil
@@ -352,21 +330,11 @@ func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goaht
 		}
 
 		var (
-			id int
+			id string
 
 			params = mux.Vars(r)
 		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		if err != nil {
-			return nil, err
-		}
+		id = params["id"]
 		payload := NewUpdateBioPayload(&body, id)
 
 		return payload, nil
@@ -558,22 +526,11 @@ func EncodeGetFollowersResponse(encoder func(context.Context, http.ResponseWrite
 func DecodeGetFollowersRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id  int
-			err error
+			id string
 
 			params = mux.Vars(r)
 		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		if err != nil {
-			return nil, err
-		}
+		id = params["id"]
 		payload := NewGetFollowersPayload(id)
 
 		return payload, nil
@@ -626,22 +583,11 @@ func EncodeGetFollowingsResponse(encoder func(context.Context, http.ResponseWrit
 func DecodeGetFollowingsRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id  int
-			err error
+			id string
 
 			params = mux.Vars(r)
 		)
-		{
-			idRaw := params["id"]
-			v, err2 := strconv.ParseInt(idRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("id", idRaw, "integer"))
-			}
-			id = int(v)
-		}
-		if err != nil {
-			return nil, err
-		}
+		id = params["id"]
 		payload := NewGetFollowingsPayload(id)
 
 		return payload, nil

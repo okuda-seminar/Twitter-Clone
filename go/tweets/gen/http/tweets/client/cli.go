@@ -21,7 +21,7 @@ func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Incidunt non vel non.\",\n      \"user_id\": 1887709519386705448\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Est distinctio iste.\",\n      \"user_id\": \"Ab quod dolor et nam et aut.\"\n   }'")
 		}
 	}
 	v := &tweets.CreateTweetPayload{

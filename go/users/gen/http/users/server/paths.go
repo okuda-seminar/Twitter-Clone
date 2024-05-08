@@ -22,17 +22,17 @@ func DeleteUserUsersPath() string {
 }
 
 // FindUserByIDUsersPath returns the URL path to the users service FindUserByID HTTP endpoint.
-func FindUserByIDUsersPath(id int) string {
+func FindUserByIDUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v", id)
 }
 
 // UpdateUsernameUsersPath returns the URL path to the users service UpdateUsername HTTP endpoint.
-func UpdateUsernameUsersPath(id int) string {
+func UpdateUsernameUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v/username", id)
 }
 
 // UpdateBioUsersPath returns the URL path to the users service UpdateBio HTTP endpoint.
-func UpdateBioUsersPath(id int) string {
+func UpdateBioUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v/bio", id)
 }
 
@@ -47,11 +47,11 @@ func UnfollowUsersPath() string {
 }
 
 // GetFollowersUsersPath returns the URL path to the users service GetFollowers HTTP endpoint.
-func GetFollowersUsersPath(id int) string {
+func GetFollowersUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v/followers", id)
 }
 
 // GetFollowingsUsersPath returns the URL path to the users service GetFollowings HTTP endpoint.
-func GetFollowingsUsersPath(id int) string {
+func GetFollowingsUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v/followings", id)
 }

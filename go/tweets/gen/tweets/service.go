@@ -38,14 +38,14 @@ var MethodNames = [1]string{"CreateTweet"}
 // CreateTweetPayload is the payload type of the tweets service CreateTweet
 // method.
 type CreateTweetPayload struct {
-	UserID int
+	UserID string
 	Text   string
 }
 
 // Tweet is the result type of the tweets service CreateTweet method.
 type Tweet struct {
-	ID        int
-	UserID    int
+	ID        string
+	UserID    string
 	Text      string
 	CreatedAt string
 }

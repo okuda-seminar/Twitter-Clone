@@ -16,15 +16,15 @@ import (
 // CreateTweetRequestBody is the type of the "tweets" service "CreateTweet"
 // endpoint HTTP request body.
 type CreateTweetRequestBody struct {
-	UserID int    `form:"user_id" json:"user_id" xml:"user_id"`
+	UserID string `form:"user_id" json:"user_id" xml:"user_id"`
 	Text   string `form:"text" json:"text" xml:"text"`
 }
 
 // CreateTweetResponseBody is the type of the "tweets" service "CreateTweet"
 // endpoint HTTP response body.
 type CreateTweetResponseBody struct {
-	ID        *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	UserID    *int    `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	ID        *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID    *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	Text      *string `form:"text,omitempty" json:"text,omitempty" xml:"text,omitempty"`
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 }

@@ -29,8 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` tweets create-tweet --body '{
-      "text": "Incidunt non vel non.",
-      "user_id": 1887709519386705448
+      "text": "Est distinctio iste.",
+      "user_id": "Ab quod dolor et nam et aut."
    }'` + "\n" +
 		""
 }
@@ -149,8 +149,8 @@ CreateTweet implements CreateTweet.
 
 Example:
     %[1]s tweets create-tweet --body '{
-      "text": "Incidunt non vel non.",
-      "user_id": 1887709519386705448
+      "text": "Est distinctio iste.",
+      "user_id": "Ab quod dolor et nam et aut."
    }'
 `, os.Args[0])
 }

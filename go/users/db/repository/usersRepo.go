@@ -3,16 +3,18 @@ package repository
 import (
 	"context"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UsersRepo interface {
 	CreateUser(ctx context.Context, username string, display_name string) (*User, error)
-	DeleteUser(ctx context.Context, id int) error
-	FindUserByID(ctx context.Context, id int) (*User, error)
-	UpdateUsername(ctx context.Context, id int, username string) error
-	UpdateBio(ctx context.Context, id int, bio string) error
-	GetFollowers(ctx context.Context, id int) ([]*User, error)
-	GetFollowings(ctx context.Context, id int) ([]*User, error)
+	DeleteUser(ctx context.Context, id string) error
+	FindUserByID(ctx context.Context, id string) (*User, error)
+	UpdateUsername(ctx context.Context, id string, username string) error
+	UpdateBio(ctx context.Context, id string, bio string) error
+	GetFollowers(ctx context.Context, id string) ([]*User, error)
+	GetFollowings(ctx context.Context, id string) ([]*User, error)
 }
 
 // User represents an entry of `users` table.
@@ -30,7 +32,7 @@ type UsersRepo interface {
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/101
 // - Consider how to suggest username and check if one selected by a user is unique
 type User struct {
-	ID          int
+	ID          uuid.UUID
 	Username    string
 	DisplayName string
 	Bio         string

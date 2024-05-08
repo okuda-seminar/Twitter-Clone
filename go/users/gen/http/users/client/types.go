@@ -23,7 +23,7 @@ type CreateUserRequestBody struct {
 // DeleteUserRequestBody is the type of the "users" service "DeleteUser"
 // endpoint HTTP request body.
 type DeleteUserRequestBody struct {
-	ID int `form:"id" json:"id" xml:"id"`
+	ID string `form:"id" json:"id" xml:"id"`
 }
 
 // UpdateUsernameRequestBody is the type of the "users" service
@@ -41,21 +41,21 @@ type UpdateBioRequestBody struct {
 // FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
 // request body.
 type FollowRequestBody struct {
-	FollowerID int `form:"follower_id" json:"follower_id" xml:"follower_id"`
-	FolloweeID int `form:"followee_id" json:"followee_id" xml:"followee_id"`
+	FollowerID string `form:"follower_id" json:"follower_id" xml:"follower_id"`
+	FolloweeID string `form:"followee_id" json:"followee_id" xml:"followee_id"`
 }
 
 // UnfollowRequestBody is the type of the "users" service "Unfollow" endpoint
 // HTTP request body.
 type UnfollowRequestBody struct {
-	FollowerID int `form:"follower_id" json:"follower_id" xml:"follower_id"`
-	FolloweeID int `form:"followee_id" json:"followee_id" xml:"followee_id"`
+	FollowerID string `form:"follower_id" json:"follower_id" xml:"follower_id"`
+	FolloweeID string `form:"followee_id" json:"followee_id" xml:"followee_id"`
 }
 
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID          *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
 	Bio         *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
@@ -66,7 +66,7 @@ type CreateUserResponseBody struct {
 // FindUserByIDResponseBody is the type of the "users" service "FindUserByID"
 // endpoint HTTP response body.
 type FindUserByIDResponseBody struct {
-	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID          *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
 	Bio         *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
@@ -300,7 +300,7 @@ type GetFollowingsBadRequestResponseBody struct {
 
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
-	ID          *int    `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID          *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
 	Bio         *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
@@ -617,6 +617,9 @@ func ValidateCreateUserResponseBody(body *CreateUserResponseBody) (err error) {
 	if body.UpdatedAt == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
 	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
+	}
 	if body.CreatedAt != nil {
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
 	}
@@ -646,6 +649,9 @@ func ValidateFindUserByIDResponseBody(body *FindUserByIDResponseBody) (err error
 	}
 	if body.UpdatedAt == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
+	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
 	}
 	if body.CreatedAt != nil {
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
@@ -963,6 +969,9 @@ func ValidateUserResponse(body *UserResponse) (err error) {
 	}
 	if body.UpdatedAt == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("updated_at", "body"))
+	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
 	}
 	if body.CreatedAt != nil {
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))

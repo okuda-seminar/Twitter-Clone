@@ -19,8 +19,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateTweetRequestBody'
                         example:
-                            text: Incidunt non vel non.
-                            user_id: 1887709519386705448
+                            text: Est distinctio iste.
+                            user_id: Ab quod dolor et nam et aut.
             responses:
                 "200":
                     description: Created tweet
@@ -29,10 +29,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Tweet'
                             example:
-                                created_at: "2008-08-20T06:07:39Z"
-                                id: 293870657722736448
-                                text: Amet ea consectetur ullam eum nihil qui.
-                                user_id: 1327403335748467878
+                                created_at: "1992-09-19T05:43:44Z"
+                                id: Qui suscipit quasi autem est.
+                                text: Mollitia similique corporis.
+                                user_id: A vel debitis.
                 "400":
                     description: 'BadRequest: Failed to create tweet'
                     content:
@@ -61,14 +61,13 @@ components:
             properties:
                 text:
                     type: string
-                    example: Quia consequuntur quidem.
+                    example: Quia dignissimos dolor rerum.
                 user_id:
-                    type: integer
-                    example: 8669695001717945560
-                    format: int64
+                    type: string
+                    example: Eaque ratione.
             example:
-                text: Hic magni quasi sint qui voluptates.
-                user_id: 7374144689305268737
+                text: Sit quaerat et est eos.
+                user_id: Qui nulla tempora.
             required:
                 - user_id
                 - text
@@ -78,7 +77,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: true
+                    example: false
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -118,24 +117,22 @@ components:
             properties:
                 created_at:
                     type: string
-                    example: "2014-03-10T15:17:42Z"
+                    example: "1999-01-07T16:41:30Z"
                     format: date-time
                 id:
-                    type: integer
-                    example: 5207367223163721910
-                    format: int64
+                    type: string
+                    example: Enim dolore est consequatur.
                 text:
                     type: string
-                    example: Laboriosam sit ipsa esse.
+                    example: Odit eos.
                 user_id:
-                    type: integer
-                    example: 9161961933110140659
-                    format: int64
+                    type: string
+                    example: Ad ut.
             example:
-                created_at: "1985-09-11T08:01:16Z"
-                id: 7398295434747283539
-                text: Quia dignissimos dolor rerum.
-                user_id: 4621870345585743566
+                created_at: "1994-06-20T09:43:53Z"
+                id: Sed qui earum.
+                text: Occaecati rerum.
+                user_id: Facilis et.
             required:
                 - id
                 - user_id

@@ -201,7 +201,7 @@ func DecodeDeleteUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 // path set to call the "users" service "FindUserByID" endpoint
 func (c *Client) BuildFindUserByIDRequest(ctx context.Context, v any) (*http.Request, error) {
 	var (
-		id int
+		id string
 	)
 	{
 		p, ok := v.(*users.FindUserByIDPayload)
@@ -283,7 +283,7 @@ func DecodeFindUserByIDResponse(decoder func(*http.Response) goahttp.Decoder, re
 // and path set to call the "users" service "UpdateUsername" endpoint
 func (c *Client) BuildUpdateUsernameRequest(ctx context.Context, v any) (*http.Request, error) {
 	var (
-		id int
+		id string
 	)
 	{
 		p, ok := v.(*users.UpdateUsernamePayload)
@@ -383,7 +383,7 @@ func DecodeUpdateUsernameResponse(decoder func(*http.Response) goahttp.Decoder, 
 // path set to call the "users" service "UpdateBio" endpoint
 func (c *Client) BuildUpdateBioRequest(ctx context.Context, v any) (*http.Request, error) {
 	var (
-		id int
+		id string
 	)
 	{
 		p, ok := v.(*users.UpdateBioPayload)
@@ -633,7 +633,7 @@ func DecodeUnfollowResponse(decoder func(*http.Response) goahttp.Decoder, restor
 // path set to call the "users" service "GetFollowers" endpoint
 func (c *Client) BuildGetFollowersRequest(ctx context.Context, v any) (*http.Request, error) {
 	var (
-		id int
+		id string
 	)
 	{
 		p, ok := v.(*users.GetFollowersPayload)
@@ -721,7 +721,7 @@ func DecodeGetFollowersResponse(decoder func(*http.Response) goahttp.Decoder, re
 // path set to call the "users" service "GetFollowings" endpoint
 func (c *Client) BuildGetFollowingsRequest(ctx context.Context, v any) (*http.Request, error) {
 	var (
-		id int
+		id string
 	)
 	{
 		p, ok := v.(*users.GetFollowingsPayload)

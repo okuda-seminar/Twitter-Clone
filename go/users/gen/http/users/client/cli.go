@@ -10,7 +10,6 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	users "users/gen/users"
 )
 
@@ -22,7 +21,7 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Qui error inventore.\",\n      \"username\": \"Aspernatur quam repellat dolor laboriosam ut.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Iure sapiente ut doloremque nostrum culpa cupiditate.\",\n      \"username\": \"Non et voluptatem autem totam praesentium soluta.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
@@ -41,7 +40,7 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": 4605757074257909868\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"Nihil eius.\"\n   }'")
 		}
 	}
 	v := &users.DeleteUserPayload{
@@ -54,15 +53,9 @@ func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayloa
 // BuildFindUserByIDPayload builds the payload for the users FindUserByID
 // endpoint from CLI flags.
 func BuildFindUserByIDPayload(usersFindUserByIDID string) (*users.FindUserByIDPayload, error) {
-	var err error
-	var id int
+	var id string
 	{
-		var v int64
-		v, err = strconv.ParseInt(usersFindUserByIDID, 10, strconv.IntSize)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
+		id = usersFindUserByIDID
 	}
 	v := &users.FindUserByIDPayload{}
 	v.ID = id
@@ -78,17 +71,12 @@ func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsern
 	{
 		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Odit et omnis placeat similique voluptatem id.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Quos maiores.\"\n   }'")
 		}
 	}
-	var id int
+	var id string
 	{
-		var v int64
-		v, err = strconv.ParseInt(usersUpdateUsernameID, 10, strconv.IntSize)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
+		id = usersUpdateUsernameID
 	}
 	v := &users.UpdateUsernamePayload{
 		Username: body.Username,
@@ -106,17 +94,12 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Voluptas nobis omnis.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Debitis necessitatibus fuga.\"\n   }'")
 		}
 	}
-	var id int
+	var id string
 	{
-		var v int64
-		v, err = strconv.ParseInt(usersUpdateBioID, 10, strconv.IntSize)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
+		id = usersUpdateBioID
 	}
 	v := &users.UpdateBioPayload{
 		Bio: body.Bio,
@@ -134,7 +117,7 @@ func BuildFollowPayload(usersFollowBody string) (*users.FollowPayload, error) {
 	{
 		err = json.Unmarshal([]byte(usersFollowBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": 8492160358191620196,\n      \"follower_id\": 6881001417419968319\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": \"Qui qui.\",\n      \"follower_id\": \"Eos et itaque labore molestiae excepturi odit.\"\n   }'")
 		}
 	}
 	v := &users.FollowPayload{
@@ -153,7 +136,7 @@ func BuildUnfollowPayload(usersUnfollowBody string) (*users.UnfollowPayload, err
 	{
 		err = json.Unmarshal([]byte(usersUnfollowBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": 6202834779766302284,\n      \"follower_id\": 4698722160625222812\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": \"Minus illo repudiandae tempore.\",\n      \"follower_id\": \"Soluta itaque eaque voluptatum est consequatur.\"\n   }'")
 		}
 	}
 	v := &users.UnfollowPayload{
@@ -167,15 +150,9 @@ func BuildUnfollowPayload(usersUnfollowBody string) (*users.UnfollowPayload, err
 // BuildGetFollowersPayload builds the payload for the users GetFollowers
 // endpoint from CLI flags.
 func BuildGetFollowersPayload(usersGetFollowersID string) (*users.GetFollowersPayload, error) {
-	var err error
-	var id int
+	var id string
 	{
-		var v int64
-		v, err = strconv.ParseInt(usersGetFollowersID, 10, strconv.IntSize)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
+		id = usersGetFollowersID
 	}
 	v := &users.GetFollowersPayload{}
 	v.ID = id
@@ -186,15 +163,9 @@ func BuildGetFollowersPayload(usersGetFollowersID string) (*users.GetFollowersPa
 // BuildGetFollowingsPayload builds the payload for the users GetFollowings
 // endpoint from CLI flags.
 func BuildGetFollowingsPayload(usersGetFollowingsID string) (*users.GetFollowingsPayload, error) {
-	var err error
-	var id int
+	var id string
 	{
-		var v int64
-		v, err = strconv.ParseInt(usersGetFollowingsID, 10, strconv.IntSize)
-		id = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for id, must be INT")
-		}
+		id = usersGetFollowingsID
 	}
 	v := &users.GetFollowingsPayload{}
 	v.ID = id

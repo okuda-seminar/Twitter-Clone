@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS tweets (
-    "id" SERIAL PRIMARY KEY,
-    "user_id" INT,
+    "id" UUID PRIMARY KEY,
+    "user_id" UUID NOT NULL,
     "text" VARCHAR(140) NOT NULL,
     "created_at" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
