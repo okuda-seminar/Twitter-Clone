@@ -34,7 +34,7 @@ class RootViewController: UITabBarController {
     let communitiesViewController = UINavigationController(
       rootViewController: CommunitiesViewController())
     communitiesViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "person"), tag: TabBarItemTag.communities.rawValue)
+      title: "", image: UIImage(systemName: "person.2"), tag: TabBarItemTag.communities.rawValue)
 
     let notificationsViewController = NotificationsViewController()
     notificationsViewController.tabBarItem = UITabBarItem(

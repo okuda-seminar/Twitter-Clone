@@ -53,6 +53,8 @@
 		658D08762BE8FE47006C6A9E /* CommunitiesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08752BE8FE47006C6A9E /* CommunitiesCollectionView.swift */; };
 		658D08782BEA605A006C6A9E /* NewMessageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08772BEA605A006C6A9E /* NewMessageEditViewController.swift */; };
 		658D087A2BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08792BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift */; };
+		658D087D2BEBA069006C6A9E /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */; };
+		658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D087E2BEBA774006C6A9E /* UserModel.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -128,6 +130,8 @@
 		658D08752BE8FE47006C6A9E /* CommunitiesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesCollectionView.swift; sourceTree = "<group>"; };
 		658D08772BEA605A006C6A9E /* NewMessageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEditViewController.swift; sourceTree = "<group>"; };
 		658D08792BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEntrypointButtonController.swift; sourceTree = "<group>"; };
+		658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		658D087E2BEBA774006C6A9E /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				6540F8E72BC9728E0029BA46 /* Notifications */,
 				6540F8D22BC018910029BA46 /* Search */,
 				6540F8F82BD294BF0029BA46 /* Settings */,
+				658D087B2BEBA045006C6A9E /* SideMenu */,
 				6540F8B82BB575E80029BA46 /* Tweet */,
 				6567CBCF2BD7DD8E00242716 /* User */,
 			);
@@ -350,6 +355,7 @@
 		6567CBCF2BD7DD8E00242716 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				658D087E2BEBA774006C6A9E /* UserModel.swift */,
 				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
 				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
@@ -402,6 +408,14 @@
 				658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */,
 			);
 			path = Color;
+			sourceTree = "<group>";
+		};
+		658D087B2BEBA045006C6A9E /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		65F908432BE119AD00C6C8B3 /* Navigation */ = {
@@ -551,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
+				658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */,
 				6540F8852BB44D430029BA46 /* RootViewController.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
 				658D08762BE8FE47006C6A9E /* CommunitiesCollectionView.swift in Sources */,
@@ -566,6 +581,7 @@
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				6540F8B72BB575D30029BA46 /* HomeTabViewController.swift in Sources */,
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
+				658D087D2BEBA069006C6A9E /* SideMenuViewController.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
