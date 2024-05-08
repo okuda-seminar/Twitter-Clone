@@ -55,6 +55,7 @@
 		658D087A2BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08792BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift */; };
 		658D087D2BEBA069006C6A9E /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */; };
 		658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D087E2BEBA774006C6A9E /* UserModel.swift */; };
+		658D08812BEBABD9006C6A9E /* SideMenuAdditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08802BEBABD9006C6A9E /* SideMenuAdditionViewController.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -132,6 +133,7 @@
 		658D08792BEA60F5006C6A9E /* NewMessageEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEntrypointButtonController.swift; sourceTree = "<group>"; };
 		658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		658D087E2BEBA774006C6A9E /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		658D08802BEBABD9006C6A9E /* SideMenuAdditionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuAdditionViewController.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 			isa = PBXGroup;
 			children = (
 				658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */,
+				658D08802BEBABD9006C6A9E /* SideMenuAdditionViewController.swift */,
 			);
 			path = SideMenu;
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
 				6540F8DC2BC424190029BA46 /* SearchCategoryModel.swift in Sources */,
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,
+				658D08812BEBABD9006C6A9E /* SideMenuAdditionViewController.swift in Sources */,
 				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
 				658D08782BEA605A006C6A9E /* NewMessageEditViewController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,

@@ -17,7 +17,13 @@ class SideMenuViewController: UIViewController {
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(hostingController)
     hostingController.didMove(toParent: self)
-    view = hostingController.view
+    view.addSubview(hostingController.view)
+
+    NSLayoutConstraint.activate([
+      hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
   }
 }
 

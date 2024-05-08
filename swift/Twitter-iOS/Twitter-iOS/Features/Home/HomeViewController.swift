@@ -97,7 +97,6 @@ class HomeViewController: UIViewController {
       homeTabStackView.topAnchor.constraint(equalTo: homeTabScrollView.topAnchor),
       homeTabStackView.leadingAnchor.constraint(equalTo: homeTabScrollView.leadingAnchor),
       homeTabStackView.trailingAnchor.constraint(equalTo: homeTabScrollView.trailingAnchor),
-      homeTabStackView.bottomAnchor.constraint(equalTo: homeTabScrollView.bottomAnchor),
       homeTabStackView.heightAnchor.constraint(equalTo: homeTabScrollView.heightAnchor),
 
       forYouTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),

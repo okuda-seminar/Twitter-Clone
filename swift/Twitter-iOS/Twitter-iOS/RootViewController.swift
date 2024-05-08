@@ -40,7 +40,8 @@ class RootViewController: UITabBarController {
     notificationsViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
 
-    let messagesViewController = MessagesViewController()
+    let messagesViewController = SideMenuAdditionViewController()
+    messagesViewController.mainViewController = MessagesViewController()
     messagesViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "envelope"), tag: TabBarItemTag.messages.rawValue)
 
