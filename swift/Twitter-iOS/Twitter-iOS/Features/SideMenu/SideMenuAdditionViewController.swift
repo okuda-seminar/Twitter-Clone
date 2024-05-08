@@ -90,6 +90,7 @@ class SideMenuAdditionViewController: UIViewController {
       .init { _ in
         self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
         self.overlayView.alpha = 1.0
+        self.overlayView.layer.opacity = 0.5
       }, for: .touchUpInside)
     overlayView.addGestureRecognizer(backGroundTapGestureRecognizer)
 
