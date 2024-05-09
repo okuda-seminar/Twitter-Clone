@@ -95,9 +95,19 @@ class SideMenuAdditionViewController: UIViewController {
     overlayView.addGestureRecognizer(backGroundTapGestureRecognizer)
 
     Task {
-      scrollView.setContentOffset(
-        CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: false)
+      resetToDefault()
     }
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    resetToDefault()
+  }
+
+  private func resetToDefault() {
+    overlayView.alpha = 0.0
+    scrollView.setContentOffset(
+      CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: false)
   }
 
   @objc
