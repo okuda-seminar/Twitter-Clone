@@ -1,6 +1,7 @@
 import UIKit
 
-class RootViewController: UIViewController {
+class AppRootViewController: UIViewController {
+
   private lazy var mainViewController: MainRootViewController = {
     let viewController = MainRootViewController()
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -32,6 +33,7 @@ class RootViewController: UIViewController {
 
   private lazy var sideMenuViewController: SideMenuViewController = {
     var viewController = SideMenuViewController()
+    viewController.sideMenuViewDelegate = self
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(viewController)
     viewController.didMove(toParent: self)
@@ -40,9 +42,11 @@ class RootViewController: UIViewController {
 
   private lazy var backGroundTapGestureRecognizer: UITapGestureRecognizer = {
     var gestureRecognizer = UITapGestureRecognizer()
-    gestureRecognizer.addTarget(self, action: #selector(hideSideMenu))
+    gestureRecognizer.addTarget(self, action: #selector(didTapOverlayView))
     return gestureRecognizer
   }()
+
+  // MARK: - Layout
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -80,82 +84,62 @@ class RootViewController: UIViewController {
       overlayView.trailingAnchor.constraint(equalTo: mainViewController.view.trailingAnchor),
     ])
 
-    //    mainViewController.profileIconButton.addAction(
-    //      .init { _ in
-    //        self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    //        self.overlayView.alpha = 1.0
-    //        self.overlayView.layer.opacity = 0.5
-    //      }, for: .touchUpInside)
     overlayView.addGestureRecognizer(backGroundTapGestureRecognizer)
 
     Task {
-      resetToDefault()
+      hideSideMenu(animated: false)
     }
   }
 
+  // MARK: - Public API
+
+  public func showSideMenu() {
+    scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    overlayView.alpha = 1.0
+    overlayView.layer.opacity = 0.5
+  }
+
   @objc
-  private func hideSideMenu() {
+  public func hideSideMenu(animated: Bool = true) {
     scrollView.setContentOffset(
-      CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: true)
-    mainViewController.view.backgroundColor = .systemBackground
+      CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: animated)
     overlayView.alpha = 0.0
   }
 
-  private func resetToDefault() {
-    overlayView.alpha = 0.0
-    scrollView.setContentOffset(
-      CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: false)
+  // Private API
+  @objc
+  private func didTapOverlayView() {
+    // Without this wrap, animated becomes false when tapping overlay view.
+    hideSideMenu()
   }
 }
 
-class MainRootViewController: UITabBarController {
-  private enum TabBarItemTag: Int {
-    case home
-    case search
-    case communities
-    case notifications
-    case messages
+extension AppRootViewController: SideMenuViewDelegate {
+  func didTapUserIconButton() {
+    hideSideMenu()
+  }
+}
+
+class ViewControllerWithUserIconButton: UIViewController {
+
+  private var rootViewController: UIViewController {
+    var viewController = self as UIViewController
+    while let parent = viewController.parent {
+      viewController = parent
+    }
+    return viewController
   }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    setUpTabBar()
-    setUpSubviews()
+  @objc
+  public func showSideMenu() {
+    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
+    rootViewController.showSideMenu()
   }
 
-  private func setUpTabBar() {
-    tabBar.backgroundColor = .systemBackground
-  }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
 
-  private func setUpSubviews() {
-    let homeNavigationController = UINavigationController(rootViewController: HomeViewController())
-    homeNavigationController.setNavigationBarHidden(true, animated: false)
-    homeNavigationController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
-
-    let searchViewController = UINavigationController(
-      rootViewController: SearchHomeViewController())
-    searchViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
-
-    let communitiesViewController = UINavigationController(
-      rootViewController: CommunitiesViewController())
-    communitiesViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "person.2"), tag: TabBarItemTag.communities.rawValue)
-
-    let notificationsViewController = NotificationsViewController()
-    notificationsViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
-
-    let messagesViewController = UINavigationController(
-      rootViewController: MessagesViewController())
-    messagesViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "envelope"), tag: TabBarItemTag.messages.rawValue)
-
-    viewControllers = [
-      homeNavigationController, searchViewController, communitiesViewController,
-      notificationsViewController, messagesViewController,
-    ]
+    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
+    rootViewController.hideSideMenu(animated: false)
   }
 }

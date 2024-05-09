@@ -4,6 +4,8 @@ import UIKit
 class SideMenuViewController: UIViewController {
   var user = createFakeUser()
 
+  public weak var sideMenuViewDelegate: SideMenuViewDelegate?
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -13,7 +15,7 @@ class SideMenuViewController: UIViewController {
     let hostingController = UIHostingController(
       rootView: SideMenuView(
         userName: user.userName, numOfFollowing: user.numOfFollowing,
-        numOfFollowers: user.numOfFollowers))
+        numOfFollowers: user.numOfFollowers, delegate: sideMenuViewDelegate))
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(hostingController)
     hostingController.didMove(toParent: self)
@@ -31,9 +33,10 @@ struct SideMenuView: View {
   public var userName: String
   public var numOfFollowing: Int
   public var numOfFollowers: Int
+  public weak var delegate: SideMenuViewDelegate?
 
   private enum LayoutConstant {
-    static let imageSize = 18.0
+    static let imageSize = 20.0
   }
 
   private enum LocalizedString {
@@ -51,7 +54,16 @@ struct SideMenuView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      Image(systemName: "person.circle.fill")
+      Button(
+        action: {
+          delegate?.didTapUserIconButton()
+        },
+        label: {
+          Image(systemName: "person.circle.fill")
+            .resizable()
+            .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+            .foregroundStyle(.black)
+        })
 
       Text("@\(userName)")
 
@@ -119,6 +131,10 @@ struct SideMenuView: View {
     }
     .padding()
   }
+}
+
+protocol SideMenuViewDelegate: AnyObject {
+  func didTapUserIconButton()
 }
 
 private let fakeUser = createFakeUser()

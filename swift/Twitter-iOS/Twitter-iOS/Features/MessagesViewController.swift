@@ -8,7 +8,7 @@ class MessagesViewController: UIViewController {
   }
 
   private enum LocalizedString {
-    static let title = String(localized: "Communities")
+    static let title = String(localized: "Messages")
   }
 
   private lazy var newMessageEntryPointButtonController: NewMessageEntrypointButtonController = {

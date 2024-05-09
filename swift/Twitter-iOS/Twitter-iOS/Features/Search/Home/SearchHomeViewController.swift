@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-class SearchHomeViewController: UIViewController {
+class SearchHomeViewController: ViewControllerWithUserIconButton {
 
   private enum LayoutConstant {
     static let headerHeight = 48.0
@@ -13,6 +13,8 @@ class SearchHomeViewController: UIViewController {
       title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
     button.tintColor = .black
     button.image = UIImage(systemName: "person.circle.fill")
+    button.action = #selector(showSideMenu)
+    button.target = self
     return button
   }()
 
