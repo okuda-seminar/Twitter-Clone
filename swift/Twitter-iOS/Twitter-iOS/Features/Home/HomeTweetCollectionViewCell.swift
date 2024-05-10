@@ -1,14 +1,18 @@
 import UIKit
 
-class HomeTweetCellView: UIView {
-
+class HomeTweetCollectionViewCell: UICollectionViewCell {
   public var tweet: TweetModel? {
     didSet {
-      setUpSubviews()
+      guard let tweet else { return }
+      userNameLabel.text = tweet.userName
+      userNameLabel.sizeToFit()
+      bodyTextLabel.text = tweet.bodyText
+      bodyTextLabel.sizeToFit()
+      userIconButton.setImage(tweet.userIcon, for: .normal)
     }
   }
 
-  public weak var delegate: HomeTweetCellViewDelegate?
+  public weak var delegate: HomeTweetCollectionViewCellDelegate?
 
   public let userIconButton: UIButton = {
     let button = UIButton()
@@ -23,8 +27,25 @@ class HomeTweetCellView: UIView {
     static let horizontalEdgePadding = 16.0
   }
 
+  private let userNameLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+    return label
+  }()
+
+  private let bodyTextLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+    label.numberOfLines = 0
+    label.lineBreakMode = .byWordWrapping
+    return label
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: frame)
+    setUpSubviews()
   }
 
   required init?(coder: NSCoder) {
@@ -32,30 +53,15 @@ class HomeTweetCellView: UIView {
   }
 
   private func setUpSubviews() {
-    guard let tweet else { return }
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.alignment = .fill
 
-    userIconButton.setImage(tweet.userIcon, for: .normal)
-
     let infoStackView = UIStackView()
     infoStackView.translatesAutoresizingMaskIntoConstraints = false
     infoStackView.axis = .vertical
     infoStackView.alignment = .leading
-
-    let userNameLabel = UILabel()
-    userNameLabel.translatesAutoresizingMaskIntoConstraints = false
-    userNameLabel.text = tweet.userName
-    userNameLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-
-    let bodyTextLabel = UILabel()
-    bodyTextLabel.translatesAutoresizingMaskIntoConstraints = false
-    bodyTextLabel.text = tweet.bodyText
-    bodyTextLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-    bodyTextLabel.numberOfLines = 0
-    bodyTextLabel.lineBreakMode = .byWordWrapping
 
     stackView.addArrangedSubview(userIconButton)
     stackView.addArrangedSubview(infoStackView)
@@ -81,11 +87,6 @@ class HomeTweetCellView: UIView {
       bottomAnchor.constraint(equalTo: bodyTextLabel.bottomAnchor),
     ])
 
-    userIconButton.addAction(
-      .init { _ in
-        self.delegate?.didTapUserIconButton(userName: tweet.userName, profileIcon: tweet.userIcon)
-      }, for: .touchUpInside)
-
     let tapGestureRecognizer = UITapGestureRecognizer(
       target: self, action: #selector(didTapTweet))
     infoStackView.addGestureRecognizer(tapGestureRecognizer)
@@ -95,9 +96,15 @@ class HomeTweetCellView: UIView {
   private func didTapTweet() {
     self.delegate?.didTapTweet()
   }
+
+  @objc
+  private func notifyTapUserIconButton() {
+    guard let tweet else { return }
+    delegate?.didTapUserIconButton(userName: tweet.userName, profileIcon: tweet.userIcon)
+  }
 }
 
-protocol HomeTweetCellViewDelegate: AnyObject {
+protocol HomeTweetCollectionViewCellDelegate: AnyObject {
   func didTapUserIconButton(userName: String, profileIcon: UIImage?)
 
   func didTapTweet()

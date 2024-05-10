@@ -3,6 +3,8 @@ import UIKit
 
 final class HomeTabViewController: UIViewController {
 
+  // MARK: - Public variables
+
   public var tweets: [TweetModel]? {
     didSet {
       setUpSubviews()
@@ -11,22 +13,25 @@ final class HomeTabViewController: UIViewController {
 
   public weak var delegate: HomeTabViewControllerDelegate?
 
-  public var tweetCellViews: [HomeTweetCellView] = []
+  // MARK: - Private variables
 
-  private var scrollViewYOffset = 0.0 {
-    didSet {
-      if oldValue != scrollViewYOffset {
-        self.delegate?.didScrollVertically(xDelta: scrollViewYOffset - oldValue)
-      }
-    }
+  private enum LayoutConstant {
+    static let collectionViewCellHeight = 44.0
   }
 
-  private let verticalScrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.showsVerticalScrollIndicator = false
-    return scrollView
+  private lazy var collectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .vertical
+    //    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    collectionView.translatesAutoresizingMaskIntoConstraints = false
+    collectionView.delegate = self
+    collectionView.dataSource = self
+    collectionView.register(
+      HomeTweetCollectionViewCell.self,
+      forCellWithReuseIdentifier: "HomeTweetCollectionViewCell")
+    return collectionView
   }()
 
   override func viewDidLoad() {
@@ -35,55 +40,49 @@ final class HomeTabViewController: UIViewController {
   }
 
   private func setUpSubviews() {
-    guard let tweets else { return }
-
     view.backgroundColor = UIColor.systemBackground
-
-    verticalScrollView.delegate = self
-
-    let contentStackView = UIStackView()
-    contentStackView.translatesAutoresizingMaskIntoConstraints = false
-    contentStackView.axis = .vertical
-    contentStackView.spacing = 5
-
-    verticalScrollView.addSubview(contentStackView)
-    view.addSubview(verticalScrollView)
-
-    for tweet in tweets {
-      let dividerView = UIView()
-      dividerView.translatesAutoresizingMaskIntoConstraints = false
-      dividerView.backgroundColor = UIColor.lightGray
-
-      let tweetCellView = HomeTweetCellView()
-      tweetCellView.translatesAutoresizingMaskIntoConstraints = false
-      tweetCellView.tweet = tweet
-
-      contentStackView.addArrangedSubview(dividerView)
-      contentStackView.addArrangedSubview(tweetCellView)
-      tweetCellViews.append(tweetCellView)
-
-      NSLayoutConstraint.activate([
-        tweetCellView.widthAnchor.constraint(equalTo: view.widthAnchor)
-      ])
-    }
+    view.addSubview(collectionView)
 
     NSLayoutConstraint.activate([
-      verticalScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-      verticalScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      verticalScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      verticalScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-      contentStackView.topAnchor.constraint(equalTo: verticalScrollView.topAnchor),
-      contentStackView.leadingAnchor.constraint(equalTo: verticalScrollView.leadingAnchor),
-      contentStackView.trailingAnchor.constraint(equalTo: verticalScrollView.trailingAnchor),
-      contentStackView.bottomAnchor.constraint(equalTo: verticalScrollView.bottomAnchor),
+      collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+      collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
   }
 }
 
-extension HomeTabViewController: UIScrollViewDelegate {
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    scrollViewYOffset = scrollView.contentOffset.y
+extension HomeTabViewController: UICollectionViewDelegate {}
+
+extension HomeTabViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+    -> Int
+  {
+    guard let tweets else { return 0 }
+    return tweets.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+    -> UICollectionViewCell
+  {
+    let cell =
+      collectionView.dequeueReusableCell(
+        withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
+      as! HomeTweetCollectionViewCell
+    cell.tweet = tweets?[indexPath.row]
+    return cell
+  }
+}
+
+extension HomeTabViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(
+    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/149
+    // - Replace fixed size of HomeTweetCollectionViewCell with a dynamic one.
+    return CGSize(
+      width: view.frame.width, height: 80)
   }
 }
 

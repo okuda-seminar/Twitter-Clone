@@ -121,9 +121,9 @@ class HomeViewController: UIViewController {
     }
     viewController.tweets = tweets
 
-    for tweetCellView in viewController.tweetCellViews {
-      tweetCellView.delegate = self
-    }
+    //    for tweetCellView in viewController.tweetCellViews {
+    //      tweetCellView.delegate = self
+    //    }
   }
 
   private func showTimelineSettings() {
@@ -186,19 +186,19 @@ extension HomeViewController: HomeHeaderButtonDelegate {
   }
 }
 
-extension HomeViewController: HomeTweetCellViewDelegate {
-  func didTapUserIconButton(userName: String, profileIcon: UIImage?) {
-    let userProfileViewController = UserProfileViewController()
-    userProfileViewController.userName = userName
-    userProfileViewController.profileIcon = profileIcon
-    navigationController?.pushViewController(userProfileViewController, animated: true)
-  }
-
-  func didTapTweet() {
-    let tweetDetailViewController = TweetDetailViewController()
-    navigationController?.pushViewController(tweetDetailViewController, animated: true)
-  }
-}
+//extension HomeViewController: HomeTweetCellViewDelegate {
+//  func didTapUserIconButton(userName: String, profileIcon: UIImage?) {
+//    let userProfileViewController = UserProfileViewController()
+//    userProfileViewController.userName = userName
+//    userProfileViewController.profileIcon = profileIcon
+//    navigationController?.pushViewController(userProfileViewController, animated: true)
+//  }
+//
+//  func didTapTweet() {
+//    let tweetDetailViewController = TweetDetailViewController()
+//    navigationController?.pushViewController(tweetDetailViewController, animated: true)
+//  }
+//}
 
 extension HomeViewController: HomeTabViewControllerDelegate {
   func didScrollVertically(xDelta: CGFloat) {
