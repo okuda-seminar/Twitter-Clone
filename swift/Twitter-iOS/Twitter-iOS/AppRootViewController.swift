@@ -13,6 +13,8 @@ class AppRootViewController: UIViewController {
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
     scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.showsHorizontalScrollIndicator = false
+    scrollView.showsVerticalScrollIndicator = false
     return scrollView
   }()
 
@@ -69,7 +71,9 @@ class AppRootViewController: UIViewController {
       scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
       stackView.topAnchor.constraint(equalTo: view.topAnchor),
+      stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
       stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
 
       sideMenuViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
       sideMenuViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
