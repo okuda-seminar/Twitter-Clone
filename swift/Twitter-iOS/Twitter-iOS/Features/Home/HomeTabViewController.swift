@@ -76,6 +76,7 @@ extension HomeTabViewController: UIContextMenuInteractionDelegate {
           title: LocalizedLongTapActionString.unfollow,
           image: UIImage(systemName: "person.fill.xmark")
         ) { action in
+          UserService.sharedInstance.unfollowUser("@mockUserName")
         }
 
         let addOrRemoveFromListsAction = UIAction(
@@ -88,12 +89,14 @@ extension HomeTabViewController: UIContextMenuInteractionDelegate {
           title: LocalizedLongTapActionString.mute,
           image: UIImage(systemName: "speaker.slash")
         ) { action in
+          UserService.sharedInstance.muteUser("@mockUserName")
         }
 
         let blockAction = UIAction(
           title: LocalizedLongTapActionString.block,
           image: UIImage(systemName: "xmark.circle")
         ) { action in
+          UserService.sharedInstance.blockUser("@mockUserName")
         }
 
         let reportAction = UIAction(
