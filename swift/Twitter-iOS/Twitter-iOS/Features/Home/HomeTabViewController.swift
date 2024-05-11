@@ -31,6 +31,7 @@ final class HomeTabViewController: UIViewController {
     collectionView.register(
       HomeTweetCollectionViewCell.self,
       forCellWithReuseIdentifier: "HomeTweetCollectionViewCell")
+
     return collectionView
   }()
 
@@ -54,6 +55,62 @@ final class HomeTabViewController: UIViewController {
 
 extension HomeTabViewController: UICollectionViewDelegate {}
 
+extension HomeTabViewController: UIContextMenuInteractionDelegate {
+  private enum LocalizedLongTapActionString {
+    static let unfollow = String(localized: "Unfollow")
+    static let addOrRemoveFromLists = String(localized: "Add/remove from Lists")
+    static let block = String(localized: "Block")
+    static let mute = String(localized: "Mute")
+    static let reportPost = String(localized: "Report post")
+  }
+
+  func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    configurationForMenuAtLocation location: CGPoint
+  ) -> UIContextMenuConfiguration? {
+    return UIContextMenuConfiguration(
+      identifier: nil,
+      previewProvider: nil,
+      actionProvider: { suggestedActions in
+        let unfollowAction = UIAction(
+          title: LocalizedLongTapActionString.unfollow,
+          image: UIImage(systemName: "person.fill.xmark")
+        ) { action in
+        }
+
+        let addOrRemoveFromListsAction = UIAction(
+          title: LocalizedLongTapActionString.addOrRemoveFromLists,
+          image: UIImage(systemName: "list.clipboard")
+        ) { action in
+        }
+
+        let muteAction = UIAction(
+          title: LocalizedLongTapActionString.mute,
+          image: UIImage(systemName: "speaker.slash")
+        ) { action in
+        }
+
+        let blockAction = UIAction(
+          title: LocalizedLongTapActionString.block,
+          image: UIImage(systemName: "xmark.circle")
+        ) { action in
+        }
+
+        let reportAction = UIAction(
+          title: LocalizedLongTapActionString.reportPost,
+          image: UIImage(systemName: "flag")
+        ) { action in
+        }
+
+        return UIMenu(
+          title: "Select Action",
+          children: [
+            unfollowAction, addOrRemoveFromListsAction, muteAction, blockAction, reportAction,
+          ])
+      })
+  }
+}
+
 extension HomeTabViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
     -> Int
@@ -70,6 +127,8 @@ extension HomeTabViewController: UICollectionViewDataSource {
         withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
       as! HomeTweetCollectionViewCell
     cell.tweet = tweets?[indexPath.row]
+    let interaction = UIContextMenuInteraction(delegate: self)
+    cell.addInteraction(interaction)
     return cell
   }
 }

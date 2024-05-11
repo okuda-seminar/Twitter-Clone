@@ -15,6 +15,7 @@ class AppRootViewController: UIViewController {
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.showsVerticalScrollIndicator = false
+    scrollView.bounces = false
     return scrollView
   }()
 
