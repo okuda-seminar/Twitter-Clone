@@ -81,6 +81,10 @@ struct SideMenuView: View {
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.profile)
       }
+      .onTapGesture {
+        delegate?.didTapUserProfile()
+      }
+
       HStack {
         // We need to align image aspects in prod.
         Image(systemName: "person.2")
@@ -135,6 +139,7 @@ struct SideMenuView: View {
 
 protocol SideMenuViewDelegate: AnyObject {
   func didTapUserIconButton()
+  func didTapUserProfile()
 }
 
 private let fakeUser = createFakeUser()

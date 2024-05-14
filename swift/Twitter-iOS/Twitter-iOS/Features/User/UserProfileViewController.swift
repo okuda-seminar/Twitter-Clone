@@ -61,6 +61,7 @@ class UserProfileViewController: UIViewController {
       .init { _ in
         self.navigationController?.delegate = nil
         self.navigationController?.popViewController(animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
       }, for: .touchUpInside)
 
     userNameLabel.text = userName
@@ -88,6 +89,10 @@ class UserProfileViewController: UIViewController {
       userNameLabel.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
       userNameLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor),
     ])
+
+
+    // Hide navigation bar
+    navigationController?.setNavigationBarHidden(true, animated: false)
   }
 
   @objc
@@ -95,8 +100,8 @@ class UserProfileViewController: UIViewController {
     let userProfileIconDetailViewController = UserProfileIconDetailViewController()
     userProfileIconDetailViewController.modalPresentationStyle = .fullScreen
     userProfileIconDetailViewController.profileIcon = profileIcon
-    self.navigationController?.delegate = self
-    self.navigationController?.pushViewController(
+    navigationController?.delegate = self
+    navigationController?.pushViewController(
       userProfileIconDetailViewController, animated: true)
   }
 }

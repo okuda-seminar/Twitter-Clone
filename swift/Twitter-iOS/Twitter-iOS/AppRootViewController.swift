@@ -2,7 +2,7 @@ import UIKit
 
 class AppRootViewController: UIViewController {
 
-  private lazy var mainViewController: MainRootViewController = {
+  private lazy var mainRootViewController: MainRootViewController = {
     let viewController = MainRootViewController()
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(viewController)
@@ -59,7 +59,7 @@ class AppRootViewController: UIViewController {
 
   private func setUpSubviews() {
     stackView.addArrangedSubview(sideMenuViewController.view)
-    stackView.addArrangedSubview(mainViewController.view)
+    stackView.addArrangedSubview(mainRootViewController.view)
     scrollView.addSubview(stackView)
     view.addSubview(scrollView)
     view.addSubview(overlayView)
@@ -79,14 +79,14 @@ class AppRootViewController: UIViewController {
       sideMenuViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
       sideMenuViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-      mainViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-      mainViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      mainViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+      mainRootViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+      mainRootViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      mainRootViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
 
-      overlayView.topAnchor.constraint(equalTo: mainViewController.view.topAnchor),
-      overlayView.leadingAnchor.constraint(equalTo: mainViewController.view.leadingAnchor),
-      overlayView.bottomAnchor.constraint(equalTo: mainViewController.view.bottomAnchor),
-      overlayView.trailingAnchor.constraint(equalTo: mainViewController.view.trailingAnchor),
+      overlayView.topAnchor.constraint(equalTo: mainRootViewController.view.topAnchor),
+      overlayView.leadingAnchor.constraint(equalTo: mainRootViewController.view.leadingAnchor),
+      overlayView.bottomAnchor.constraint(equalTo: mainRootViewController.view.bottomAnchor),
+      overlayView.trailingAnchor.constraint(equalTo: mainRootViewController.view.trailingAnchor),
     ])
 
     overlayView.addGestureRecognizer(backGroundTapGestureRecognizer)
@@ -122,6 +122,14 @@ class AppRootViewController: UIViewController {
 extension AppRootViewController: SideMenuViewDelegate {
   func didTapUserIconButton() {
     hideSideMenu()
+  }
+
+  func didTapUserProfile() {
+    hideSideMenu()
+    guard let selectedViewController = mainRootViewController.selectedViewController as? UINavigationController else { return }
+    let userProfileViewController = UserProfileViewController()
+    userProfileViewController.userName = "Default user name"
+    selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 }
 
