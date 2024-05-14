@@ -17,6 +17,10 @@ install crds
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/crds/application-crd.yaml
 ```
+```
+kubectl create namespace argo-rollouts
+```
+
 
 ```
 kubectl apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/stable/manifests/install.yaml
@@ -38,7 +42,11 @@ kustomize build kustomize/base | kubectl apply -f -
 kustomize build kustomize/overlays/stg | kubectl apply  -f -
 ```
 
+# Swap between blue/greeen deployment and canary deployment
+in `overlays/stg/kustomization.yaml`, you can urilize by commenting our either `delete-canary.yaml` or `delete-bluegreen.yaml`
+
 ## Appendix
+you can get the pass for argoCD
 ```
 kubectl -n argocd get secret/argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
