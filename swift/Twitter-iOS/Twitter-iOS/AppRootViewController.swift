@@ -126,7 +126,10 @@ extension AppRootViewController: SideMenuViewDelegate {
 
   func didTapUserProfile() {
     hideSideMenu()
-    guard let selectedViewController = mainRootViewController.selectedViewController as? UINavigationController else { return }
+    guard
+      let selectedViewController = mainRootViewController.selectedViewController
+        as? UINavigationController
+    else { return }
     let userProfileViewController = UserProfileViewController()
     userProfileViewController.userName = "Default user name"
     selectedViewController.pushViewController(userProfileViewController, animated: true)

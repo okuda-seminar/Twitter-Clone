@@ -90,7 +90,6 @@ class UserProfileViewController: UIViewController {
       userNameLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor),
     ])
 
-
     // Hide navigation bar
     navigationController?.setNavigationBarHidden(true, animated: false)
   }
