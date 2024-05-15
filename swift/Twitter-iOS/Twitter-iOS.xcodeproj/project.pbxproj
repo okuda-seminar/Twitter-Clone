@@ -61,6 +61,7 @@
 		658D088C2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D088B2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift */; };
 		658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D088D2BF3A02D006C6A9E /* CommunityModel.swift */; };
 		658D08912BF4FD50006C6A9E /* MessagesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08902BF4FD50006C6A9E /* MessagesSettingsView.swift */; };
+		658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08932BF503B4006C6A9E /* CheckboxStyle.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -144,6 +145,7 @@
 		658D088B2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesCollectionCell.swift; sourceTree = "<group>"; };
 		658D088D2BF3A02D006C6A9E /* CommunityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModel.swift; sourceTree = "<group>"; };
 		658D08902BF4FD50006C6A9E /* MessagesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSettingsView.swift; sourceTree = "<group>"; };
+		658D08932BF503B4006C6A9E /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -281,9 +283,10 @@
 		6540F8C42BB576F80029BA46 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				6540F8C52BB577020029BA46 /* ButtonStyle */,
 				658D08722BE8C391006C6A9E /* Color */,
 				65F908432BE119AD00C6C8B3 /* Navigation */,
-				6540F8C52BB577020029BA46 /* ButtonStyle */,
+				658D08922BF5038E006C6A9E /* Toggle */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -468,6 +471,14 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		658D08922BF5038E006C6A9E /* Toggle */ = {
+			isa = PBXGroup;
+			children = (
+				658D08932BF503B4006C6A9E /* CheckboxStyle.swift */,
+			);
+			path = Toggle;
+			sourceTree = "<group>";
+		};
 		65F908432BE119AD00C6C8B3 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -628,6 +639,7 @@
 				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
 				658D08782BEA605A006C6A9E /* NewMessageEditViewController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
+				658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */,
 				6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */,
 				6540F8BA2BB575FF0029BA46 /* TweetModel.swift in Sources */,
 				65F9084D2BE3BEDE00C6C8B3 /* SearchTabSelectionView.swift in Sources */,

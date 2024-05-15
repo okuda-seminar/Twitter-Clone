@@ -24,6 +24,8 @@ struct MessagesSettingsView: View {
 
   @State private var isMediaEnabled = true
   @State private var isNoOneOptionEnabled = true
+  @State private var isVerifiedUsersOptionEnabled = false
+  @State private var isEveryOneOptionEnabled = false
   @State private var isAddressBookEnabled = true
 
   var body: some View {
@@ -66,19 +68,25 @@ struct MessagesSettingsView: View {
             label: {
               Text(LocalizedString.noOneOptionTitle)
               Spacer()
-            })
+            }
+          )
+          .toggleStyle(CheckboxStyle())
           Toggle(
-            isOn: $isMediaEnabled,
+            isOn: $isVerifiedUsersOptionEnabled,
             label: {
               Text(LocalizedString.verifiedUsersOptionTitle)
               Spacer()
-            })
+            }
+          )
+          .toggleStyle(CheckboxStyle())
           Toggle(
-            isOn: $isMediaEnabled,
+            isOn: $isEveryOneOptionEnabled,
             label: {
               Text(LocalizedString.everyoneOptionTitle)
               Spacer()
-            })
+            }
+          )
+          .toggleStyle(CheckboxStyle())
         }
 
         Divider()
