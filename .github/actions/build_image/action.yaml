@@ -1,8 +1,6 @@
 name: "Build the image"
 
 inputs:
-  manifests-repository:
-    required: true
   dockerhub-username:
     required: true
   dockerhub-token:
@@ -45,6 +43,7 @@ runs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        context: ./docker
+        context: ./go/tweets
+        file: ./docker/app.Dockerfile
         push: true
         tags: kawa1/twitter-clone:${{ env.IMAGE_TAG }}
