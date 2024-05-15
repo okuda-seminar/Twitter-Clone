@@ -11,24 +11,18 @@ on:
           - staging
           - production
 
-env:
-  MANIFEST_REPO: okuda-seminar/Twitter-Clone
-
 jobs:
   build_image:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          submodules: recursive
-          ref: main
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
       - name: build image
         id: build-image
         uses: ./.github/actions/build_image
         with:
-          manifests-repository: ${{ env.MANIFEST_REPO }}
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
