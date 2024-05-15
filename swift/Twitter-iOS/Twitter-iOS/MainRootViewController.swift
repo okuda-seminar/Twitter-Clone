@@ -36,9 +36,10 @@ class MainRootViewController: UITabBarController {
     communitiesViewController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "person.2"), tag: TabBarItemTag.communities.rawValue)
 
-    let notificationsViewController = NotificationsViewController()
-    notificationsViewController.tabBarItem = UITabBarItem(
-      title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
+		let notificationsViewController = UINavigationController(
+			rootViewController: NotificationsViewController())
+		notificationsViewController.tabBarItem = UITabBarItem(
+			title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
 
     let messagesViewController = UINavigationController(
       rootViewController: MessagesViewController())
