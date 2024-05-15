@@ -1,10 +1,10 @@
 import SwiftUI
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: ViewControllerWithUserIconButton {
 
   private enum LayoutConstant {
-    static let homeHeaderHeight = 72.0
+    static let homeTabSelectionHeight = 48.0
     static let edgePadding = 16.0
   }
 
@@ -28,12 +28,30 @@ class HomeViewController: UIViewController {
     return stackView
   }()
 
-  private let homeHeaderView: HomeHeaderView = {
+  private let homeTabSelectionView: HomeTabSelectionView = {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/138 - Replace custom home header view with Apple's navigation bar items.
-    let view = HomeHeaderView(frame: .zero)
+    let view = HomeTabSelectionView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+	
+	private lazy var profileIconButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
+		button.tintColor = .black
+		button.image = UIImage(systemName: "person.circle.fill")
+		button.action = #selector(showSideMenu)
+		button.target = self
+		return button
+	}()
+
+	private lazy var timelineSettingsEntryPointButton: UIBarButtonItem = {
+		let button = UIBarButtonItem(
+			title: "", style: .plain, target: self, action: #selector(presentTimelineSettings))
+		button.tintColor = .black
+		button.image = UIImage(systemName: "gear")
+		return button
+	}()
 
   private lazy var newTweetEntryPointButtonController: NewTweetEntrypointButtonController = {
     let viewController = NewTweetEntrypointButtonController()
@@ -50,15 +68,15 @@ class HomeViewController: UIViewController {
 
   private func setUpSubviews() {
     view.backgroundColor = .white
-    view.addSubview(homeHeaderView)
+    view.addSubview(homeTabSelectionView)
     view.addSubview(homeTabScrollView)
     view.addSubview(newTweetEntryPointButtonController.view)
     homeTabScrollView.addSubview(homeTabStackView)
 
-    homeHeaderView.forYouButton.tabID = homeTabId.forYou.rawValue
-    homeHeaderView.forYouButton.delegate = self
-    homeHeaderView.followingButton.tabID = homeTabId.following.rawValue
-    homeHeaderView.followingButton.delegate = self
+    homeTabSelectionView.forYouButton.tabID = homeTabId.forYou.rawValue
+    homeTabSelectionView.forYouButton.delegate = self
+    homeTabSelectionView.followingButton.tabID = homeTabId.following.rawValue
+    homeTabSelectionView.followingButton.delegate = self
 
     let forYouTabViewController = HomeTabViewController()
     forYouTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -84,12 +102,12 @@ class HomeViewController: UIViewController {
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      homeHeaderView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      homeHeaderView.heightAnchor.constraint(equalToConstant: LayoutConstant.homeHeaderHeight),
-      homeHeaderView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      homeHeaderView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      homeTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      homeTabSelectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.homeTabSelectionHeight),
+      homeTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      homeTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
 
-      homeTabScrollView.topAnchor.constraint(equalTo: homeHeaderView.bottomAnchor),
+      homeTabScrollView.topAnchor.constraint(equalTo: homeTabSelectionView.bottomAnchor),
       homeTabScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       homeTabScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       homeTabScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -107,13 +125,17 @@ class HomeViewController: UIViewController {
       newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
+		
+		// set up the navigation header
+		navigationController?.navigationBar.tintColor = .black
+		title = ""
+		navigationItem.leftBarButtonItems = [profileIconButton]
+		navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
+		let imageView = UIImageView(image: UIImage(systemName: "apple.logo"))
+		navigationItem.titleView = imageView
 
-    homeHeaderView.settingsEntryPointButton.addAction(
-      .init { _ in
-        self.showTimelineSettings()
-      }, for: .touchUpInside)
   }
-
+	
   private func loadTweetData(viewController: HomeTabViewController) {
     var tweets: [TweetModel] = []
     for _ in 0..<30 {
@@ -125,12 +147,16 @@ class HomeViewController: UIViewController {
     //      tweetCellView.delegate = self
     //    }
   }
+	
+	@objc
+	private func slideInSideMenu() {}
 
-  private func showTimelineSettings() {
-    let timelineSettingsViewController = TimelineSettingsViewController()
-    timelineSettingsViewController.modalPresentationStyle = .fullScreen
-    present(timelineSettingsViewController, animated: true)
-  }
+	@objc
+	private func presentTimelineSettings() {
+		let timelineSettingsViewController = TimelineSettingsViewController()
+		timelineSettingsViewController.modalPresentationStyle = .fullScreen
+		present(timelineSettingsViewController, animated: true)
+	}
 }
 
 extension HomeViewController: UIScrollViewDelegate {
@@ -138,7 +164,7 @@ extension HomeViewController: UIScrollViewDelegate {
     let curXOffset = scrollView.contentOffset.x
     var selectedButtonIdx = 0
 
-    for left in 0...homeHeaderView.allButtons.count - 1 {
+    for left in 0...homeTabSelectionView.allButtons.count - 1 {
       let leftXOffset = homeTabStackView.arrangedSubviews[left].frame.origin.x
       let rightXOffset = homeTabStackView.arrangedSubviews[left + 1].frame.origin.x
       guard leftXOffset <= curXOffset && curXOffset <= curXOffset else { continue }
@@ -153,7 +179,7 @@ extension HomeViewController: UIScrollViewDelegate {
       break
     }
 
-    for (idx, button) in zip(homeHeaderView.allButtons.indices, homeHeaderView.allButtons) {
+    for (idx, button) in zip(homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons) {
       if idx == selectedButtonIdx {
         updateSelectedButtonUI(button)
       } else {
@@ -165,7 +191,7 @@ extension HomeViewController: UIScrollViewDelegate {
 
 extension HomeViewController: HomeHeaderButtonDelegate {
   func didTapHomeHeaderButton(selectedButton: HomeHeaderButton) {
-    for (idx, button) in zip(homeHeaderView.allButtons.indices, homeHeaderView.allButtons) {
+    for (idx, button) in zip(homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons) {
       if button.tabID == selectedButton.tabID {
         updateSelectedButtonUI(button)
 
@@ -203,7 +229,7 @@ extension HomeViewController: HomeHeaderButtonDelegate {
 extension HomeViewController: HomeTabViewControllerDelegate {
   func didScrollVertically(xDelta: CGFloat) {
     UIView.animate(withDuration: 0.3) {
-      self.homeHeaderView.layer.opacity = xDelta > 0 ? 0.0 : 1.0
+      self.homeTabSelectionView.layer.opacity = xDelta > 0 ? 0.0 : 1.0
     }
   }
 }
