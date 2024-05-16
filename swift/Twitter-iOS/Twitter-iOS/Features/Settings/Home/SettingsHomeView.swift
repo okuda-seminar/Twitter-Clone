@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsHomeView: View {
   @Environment(\.dismiss) private var dismiss
+  @State public var openNotifications = false
 
   private enum LocalizedString {
     static let navigationTitle = String(localized: "Settings")
@@ -29,11 +30,16 @@ struct SettingsHomeView: View {
             title: LocalizedString.yourAccountTitle,
             caption: LocalizedString.yourAccountCaption)
 
-          NavigationLink(destination: NotificationsSettingsView()) {
-            SettingsHomeStackItem(
-              icon: Image(systemName: "bell"),
-              title: LocalizedString.notificationsTitle,
-              caption: LocalizedString.notificationsCaption)
+          SettingsHomeStackItem(
+            icon: Image(systemName: "bell"),
+            title: LocalizedString.notificationsTitle,
+            caption: LocalizedString.notificationsCaption
+          )
+          .onTapGesture {
+            openNotifications.toggle()
+          }
+          .navigationDestination(isPresented: $openNotifications) {
+            NotificationsSettingsView()
           }
         }
       }
@@ -77,6 +83,7 @@ struct SettingsHomeStackItem: View {
           .multilineTextAlignment(.leading)
       }
       .padding()
+      Spacer()
 
       Image(systemName: "chevron.right")
         .foregroundStyle(Color(uiColor: .lightGray))

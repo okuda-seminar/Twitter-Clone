@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 class NotificationsViewController: UIViewController {
@@ -46,6 +47,17 @@ class NotificationsViewController: UIViewController {
     ])
 
     headerView.delegate = self
+    headerView.settingsEntryPointButton.addAction(
+      .init { _ in
+        let viewController = UIHostingController(
+          rootView: SettingsHomeView(openNotifications: true))
+        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController, animated: true)
+      }, for: .touchUpInside)
+  }
+
+  @objc
+  private func showNotificationsSettings() {
   }
 }
 
