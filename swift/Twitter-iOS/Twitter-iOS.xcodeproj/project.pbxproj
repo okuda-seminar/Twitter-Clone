@@ -61,6 +61,8 @@
 		658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D088D2BF3A02D006C6A9E /* CommunityModel.swift */; };
 		658D08912BF4FD50006C6A9E /* MessagesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08902BF4FD50006C6A9E /* MessagesSettingsView.swift */; };
 		658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08932BF503B4006C6A9E /* CheckboxStyle.swift */; };
+		658D08972BF62B91006C6A9E /* SettingsHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08962BF62B91006C6A9E /* SettingsHomeView.swift */; };
+		658D089A2BF63058006C6A9E /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08992BF63058006C6A9E /* NotificationsSettingsView.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -144,6 +146,8 @@
 		658D088D2BF3A02D006C6A9E /* CommunityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityModel.swift; sourceTree = "<group>"; };
 		658D08902BF4FD50006C6A9E /* MessagesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSettingsView.swift; sourceTree = "<group>"; };
 		658D08932BF503B4006C6A9E /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
+		658D08962BF62B91006C6A9E /* SettingsHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHomeView.swift; sourceTree = "<group>"; };
+		658D08992BF63058006C6A9E /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -344,7 +348,9 @@
 			isa = PBXGroup;
 			children = (
 				6540F9012BD3765C0029BA46 /* Explore */,
+				658D08952BF62B5A006C6A9E /* Home */,
 				658D088F2BF4FD1A006C6A9E /* Messages */,
+				658D08982BF63039006C6A9E /* Notifications */,
 				6540F9002BD3764B0029BA46 /* Timeline */,
 			);
 			path = Settings;
@@ -474,6 +480,22 @@
 				658D08932BF503B4006C6A9E /* CheckboxStyle.swift */,
 			);
 			path = Toggle;
+			sourceTree = "<group>";
+		};
+		658D08952BF62B5A006C6A9E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				658D08962BF62B91006C6A9E /* SettingsHomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		658D08982BF63039006C6A9E /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				658D08992BF63058006C6A9E /* NotificationsSettingsView.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		65F908432BE119AD00C6C8B3 /* Navigation */ = {
@@ -646,6 +668,7 @@
 				658D087D2BEBA069006C6A9E /* SideMenuViewController.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */,
+				658D089A2BF63058006C6A9E /* NotificationsSettingsView.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewTweetEditViewController.swift in Sources */,
@@ -668,6 +691,7 @@
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				6540F8BC2BB5762F0029BA46 /* HomeTweetCollectionViewCell.swift in Sources */,
 				65F908472BE11E2F00C6C8B3 /* PermissionGuideViewController.swift in Sources */,
+				658D08972BF62B91006C6A9E /* SettingsHomeView.swift in Sources */,
 				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
 				6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
