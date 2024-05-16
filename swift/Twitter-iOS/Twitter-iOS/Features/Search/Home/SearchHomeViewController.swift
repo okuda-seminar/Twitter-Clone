@@ -10,11 +10,9 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
 
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
-      title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
+      title: "", style: .plain, target: self, action: #selector(showSideMenu))
     button.tintColor = .black
     button.image = UIImage(systemName: "person.circle.fill")
-    button.action = #selector(showSideMenu)
-    button.target = self
     return button
   }()
 
@@ -97,8 +95,7 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
     navigationItem.titleView = searchBar
   }
 
-  @objc
-  private func slideInSideMenu() {}
+  // MARK: - Settings
 
   @objc
   private func presentExploreSettings() {

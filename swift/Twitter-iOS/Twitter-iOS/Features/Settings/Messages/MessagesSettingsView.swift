@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MessagesSettingsView: View {
+  @Environment(\.dismiss) private var dismiss
+
   private enum LocalizedString {
     static let headerTitle = String(localized: "Messages settings")
     static let dismissButtonTitle = String(localized: "Done")
@@ -33,7 +35,6 @@ struct MessagesSettingsView: View {
       HStack {
         Button(
           action: {
-
           },
           label: {
             Image(systemName: "arrow.left")
@@ -43,10 +44,13 @@ struct MessagesSettingsView: View {
         Text(LocalizedString.headerTitle)
         Spacer()
         Button(
-          action: {},
+          action: {
+            dismiss()
+          },
           label: {
             Text(LocalizedString.dismissButtonTitle)
               .foregroundStyle(.black)
+              .underline()
           })
       }
 
@@ -96,7 +100,10 @@ struct MessagesSettingsView: View {
           label: {
             Text(LocalizedString.mediaOptionTitle)
             Spacer()
-          })
+          }
+        )
+        .padding(.trailing, 2)
+
         Text(LocalizedString.mediaOptionCaption)
           .font(.caption2)
 
@@ -105,7 +112,9 @@ struct MessagesSettingsView: View {
           label: {
             Text(LocalizedString.addressBookOption)
             Spacer()
-          })
+          }
+        )
+        .padding(.trailing, 2)
       }
     }
     .padding()
