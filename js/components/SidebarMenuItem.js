@@ -33,11 +33,11 @@ export default function SidebarMenuItem({ text, Icon, active }) {
         fontWeight={active ? "bold" : "normal"}
         fontSize="15px"
         backgroundColor="gray.400"
-          display= {isHovered ? "inline" : "none" } 
-          position= "absolute"
-          top= "100%"           
-          left= "50%" 
-          transform= "translate(-50%, -50%)"         
+        display= {{ xl: "none", base: isHovered ? "inline" : "none" } }
+        position= "absolute"
+        top= "100%"           
+        left= "50%" 
+        transform= "translate(-50%, -50%)"         
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
       >
         {text}

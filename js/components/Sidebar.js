@@ -93,11 +93,12 @@ export default function Sidebar() {
       </Button>
 
       <Flex
+        className={`hoverEffect ${isHovered ? "bg-blue-100" : ""}`}
         display="flex"
         alignItems="center"
         position="absolute"
         bottom={2}
-        _hover={{ bg: "gray.200" }}
+        _hover={{ bg: "gray.200" ,borderRadius:"full"}}
         // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/88 - Define color constants and Remove all inline color definitions.
         p={{ base: 0, xl: 3 }}
       >
