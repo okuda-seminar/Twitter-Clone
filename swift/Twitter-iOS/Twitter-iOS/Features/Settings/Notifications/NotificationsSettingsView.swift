@@ -70,7 +70,7 @@ struct NotificationsSettingsView: View {
 
 /// Probably we can create a shared stack item.
 struct NotificationsStackItem: View {
-  public var icon: Image?
+  public var icon: Image
   public var title: String
   public var caption: String
 

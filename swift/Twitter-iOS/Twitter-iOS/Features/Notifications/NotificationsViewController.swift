@@ -50,7 +50,7 @@ class NotificationsViewController: UIViewController {
     headerView.settingsEntryPointButton.addAction(
       .init { _ in
         let viewController = UIHostingController(
-          rootView: SettingsHomeView(openNotifications: true))
+          rootView: SettingsHomeView())
         viewController.modalPresentationStyle = .fullScreen
         self.present(viewController, animated: true)
       }, for: .touchUpInside)

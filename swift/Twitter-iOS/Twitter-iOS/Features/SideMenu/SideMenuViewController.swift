@@ -50,6 +50,7 @@ struct SideMenuView: View {
     static let followerRequests = String(localized: "Follower Requests")
     static let monetization = String(localized: "Monetization")
     static let settingsAndSupport = String(localized: "Settings and Support")
+    static let settingsAndPrivacy = String(localized: "Settings and privacy")
   }
 
   var body: some View {
@@ -132,6 +133,15 @@ struct SideMenuView: View {
         .padding(.top)
 
       Text(LocalizedString.settingsAndSupport)
+
+      HStack {
+        Image(systemName: "gear")
+        Text(LocalizedString.settingsAndPrivacy)
+      }
+      .padding()
+      .onTapGesture {
+        delegate?.didTapSettingsAndPrivacy()
+      }
     }
     .padding()
   }
@@ -140,6 +150,7 @@ struct SideMenuView: View {
 protocol SideMenuViewDelegate: AnyObject {
   func didTapUserIconButton()
   func didTapUserProfile()
+  func didTapSettingsAndPrivacy()
 }
 
 private let fakeUser = createFakeUser()

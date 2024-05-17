@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 class AppRootViewController: UIViewController {
@@ -133,6 +134,16 @@ extension AppRootViewController: SideMenuViewDelegate {
     let userProfileViewController = UserProfileViewController()
     userProfileViewController.userName = "Default user name"
     selectedViewController.pushViewController(userProfileViewController, animated: true)
+  }
+
+  func didTapSettingsAndPrivacy() {
+    hideSideMenu()
+    guard
+      let selectedViewController = mainRootViewController.selectedViewController
+        as? UINavigationController
+    else { return }
+    let settingsViewController = SettingsHomeViewController()
+    selectedViewController.pushViewController(settingsViewController, animated: true)
   }
 }
 
