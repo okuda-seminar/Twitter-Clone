@@ -49,15 +49,10 @@ class NotificationsViewController: UIViewController {
     headerView.delegate = self
     headerView.settingsEntryPointButton.addAction(
       .init { _ in
-        let viewController = UIHostingController(
-          rootView: SettingsHomeView())
-        viewController.modalPresentationStyle = .fullScreen
-        self.present(viewController, animated: true)
+        let notificationsSettingsViewController = NotificationsSettingsViewController()
+        notificationsSettingsViewController.modalPresentationStyle = .fullScreen
+        self.present(notificationsSettingsViewController, animated: true)
       }, for: .touchUpInside)
-  }
-
-  @objc
-  private func showNotificationsSettings() {
   }
 }
 

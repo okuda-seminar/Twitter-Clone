@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 
 class SettingsHomeViewController: UIViewController {
+
   private enum LocalizedString {
     static let title = String(localized: "Settings")
   }
@@ -11,7 +12,7 @@ class SettingsHomeViewController: UIViewController {
   }
 
   private func setSubviews() {
-    let hostingController = UIHostingController(rootView: SettingsHomeView())
+    let hostingController = UIHostingController(rootView: SettingsHomeView(delegate: self))
     addChild(hostingController)
     hostingController.didMove(toParent: self)
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -27,18 +28,22 @@ class SettingsHomeViewController: UIViewController {
     ])
 
     // set up navigation
+    navigationItem.backButtonDisplayMode = .minimal
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = []
   }
+}
 
-  @objc
-  private func dismissView() {
-    dismiss(animated: true)
+extension SettingsHomeViewController: SettingsHomeViewDelegate {
+  func pushNotificationsSettings() {
+    navigationController?.pushViewController(NotificationsSettingsViewController(), animated: true)
   }
 }
 
 struct SettingsHomeView: View {
   @Environment(\.dismiss) private var dismiss
+
+  public weak var delegate: SettingsHomeViewDelegate?
 
   private enum LocalizedString {
     static let navigationTitle = String(localized: "Settings")
@@ -69,9 +74,16 @@ struct SettingsHomeView: View {
           title: LocalizedString.notificationsTitle,
           caption: LocalizedString.notificationsCaption
         )
+        .onTapGesture {
+          delegate?.pushNotificationsSettings()
+        }
       }
     }
   }
+}
+
+protocol SettingsHomeViewDelegate: AnyObject {
+  func pushNotificationsSettings()
 }
 
 struct SettingsHomeStackItem: View {

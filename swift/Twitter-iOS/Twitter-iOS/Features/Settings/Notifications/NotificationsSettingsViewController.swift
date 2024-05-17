@@ -1,14 +1,41 @@
-//
-
 import SwiftUI
+import UIKit
+
+class NotificationsSettingsViewController: UIViewController {
+  private enum LocalizedString {
+    static let title = String(localized: "Notifications")
+  }
+
+  override func viewDidLoad() {
+    setSubviews()
+  }
+
+  private func setSubviews() {
+    let hostingController = UIHostingController(rootView: NotificationsSettingsView())
+    addChild(hostingController)
+    hostingController.didMove(toParent: self)
+    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+    view.addSubview(hostingController.view)
+
+    let layoutGuide = view.safeAreaLayoutGuide
+    NSLayoutConstraint.activate([
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+    ])
+
+    // set up navigation
+    navigationItem.title = LocalizedString.title
+    navigationItem.leftBarButtonItems = []
+  }
+}
 
 struct NotificationsSettingsView: View {
   @Environment(\.dismiss) private var dismiss
 
   private enum LocalizedString {
-    static let navigationTitle = String(localized: "Notifications")
-    static let dismissButtonTitle = String(localized: "Done")
-
     static let headerCaption = String(
       localized:
         "Select the kinds of notifications you get about your activities, interests, and recommendations."
@@ -24,45 +51,15 @@ struct NotificationsSettingsView: View {
   }
 
   var body: some View {
-    NavigationStack {
-      ScrollView {
-        VStack {
-          NotificationsStackItem(
-            icon: Image(systemName: "line.3.horizontal.decrease.circle"),
-            title: LocalizedString.filtersTitle, caption: LocalizedString.filtersCaption)
+    ScrollView {
+      VStack {
+        NotificationsStackItem(
+          icon: Image(systemName: "line.3.horizontal.decrease.circle"),
+          title: LocalizedString.filtersTitle, caption: LocalizedString.filtersCaption)
 
-          NotificationsStackItem(
-            icon: Image(systemName: "airport.express"), title: LocalizedString.preferencesTitle,
-            caption: LocalizedString.preferencesCaption)
-        }
-        .navigationTitle(LocalizedString.navigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-          ToolbarItem(placement: .topBarLeading) {
-            Button(
-              action: {
-                dismiss()
-              },
-              label: {
-                Image(systemName: "arrow.left")
-                  .foregroundStyle(.black)
-              })
-          }
-
-          ToolbarItem(placement: .topBarTrailing) {
-            Button(
-              action: {
-                // Need to dismiss the sheet itself, not just go back.
-                dismiss()
-              },
-              label: {
-                Text(LocalizedString.dismissButtonTitle)
-                  .underline()
-                  .foregroundStyle(.black)
-              })
-          }
-        }
+        NotificationsStackItem(
+          icon: Image(systemName: "airport.express"), title: LocalizedString.preferencesTitle,
+          caption: LocalizedString.preferencesCaption)
       }
     }
   }
