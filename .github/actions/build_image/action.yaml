@@ -5,6 +5,8 @@ inputs:
     required: true
   dockerhub-token:
     required: true
+  context:
+    required: true
 
 runs:
   using: "composite"
@@ -43,7 +45,7 @@ runs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        context: ./go/tweets
-        file: ./go/tweets/docker/app.Dockerfile
+        context: ${{ inputs.context }}
+        file: ${{ inputs.context }}/docker/sample.Dockerfile
         push: true
         tags: kawa1/twitter-clone:${{ env.IMAGE_TAG }}
