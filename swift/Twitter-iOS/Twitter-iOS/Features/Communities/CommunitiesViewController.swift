@@ -10,6 +10,7 @@ class CommunitiesViewController: UIViewController {
   private enum LocalizedString {
     static let title = String(localized: "Communities")
     static let headlineLabelText = String(localized: "Discover new Communities")
+    static let seeLessOften = String(localized: "See less often")
     static let showMoreText = String(localized: "Show more")
   }
 
@@ -48,6 +49,23 @@ class CommunitiesViewController: UIViewController {
     return label
   }()
 
+  private let feedbackButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+    button.tintColor = .black
+    button.translatesAutoresizingMaskIntoConstraints = false
+
+    var actions = [UIMenuElement]()
+    actions.append(
+      UIAction(title: LocalizedString.seeLessOften, image: UIImage(systemName: "face.dashed")) {
+        _ in
+        print("See less often is tapped.")
+      })
+    button.menu = UIMenu(title: "", children: actions)
+    button.showsMenuAsPrimaryAction = true
+    return button
+  }()
+
   private let showMoreButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +94,7 @@ class CommunitiesViewController: UIViewController {
 
     view.backgroundColor = .systemBackground
     view.addSubview(headlineLabel)
+    view.addSubview(feedbackButton)
     view.addSubview(showMoreButton)
     view.addSubview(collectionView)
 
@@ -85,6 +104,10 @@ class CommunitiesViewController: UIViewController {
         equalTo: view.leadingAnchor, constant: LayoutConstant.edgePadding),
       headlineLabel.topAnchor.constraint(
         equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
+
+      feedbackButton.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor, constant: -LayoutConstant.edgePadding),
+      feedbackButton.centerYAnchor.constraint(equalTo: headlineLabel.centerYAnchor),
 
       collectionView.topAnchor.constraint(
         equalTo: headlineLabel.bottomAnchor, constant: LayoutConstant.collectionViewVerticalPadding),

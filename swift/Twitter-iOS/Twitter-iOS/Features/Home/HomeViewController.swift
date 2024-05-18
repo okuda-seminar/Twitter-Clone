@@ -65,7 +65,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   }
 
   private func setUpSubviews() {
-    view.backgroundColor = .white
+    view.backgroundColor = .systemBackground
     view.addSubview(homeTabSelectionView)
     view.addSubview(homeTabScrollView)
     view.addSubview(newTweetEntryPointButtonController.view)
