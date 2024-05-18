@@ -208,6 +208,7 @@
 				6540F8802BB44D430029BA46 /* AppDelegate.swift */,
 				6540F8842BB44D430029BA46 /* AppRootViewController.swift */,
 				658D08822BECF45F006C6A9E /* MainRootViewController.swift */,
+				658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */,
 				6540F8822BB44D430029BA46 /* SceneDelegate.swift */,
 				6540F8B32BB575580029BA46 /* Features */,
 				6540F8C32BB576C00029BA46 /* SDK */,
@@ -254,7 +255,6 @@
 				6540F8E72BC9728E0029BA46 /* Notifications */,
 				6540F8D22BC018910029BA46 /* Search */,
 				6540F8F82BD294BF0029BA46 /* Settings */,
-				658D087B2BEBA045006C6A9E /* SideMenu */,
 				6540F8B82BB575E80029BA46 /* Tweet */,
 				6567CBCF2BD7DD8E00242716 /* User */,
 			);
@@ -432,14 +432,6 @@
 				658D08732BE8C3A6006C6A9E /* UIColor+Core.swift */,
 			);
 			path = Color;
-			sourceTree = "<group>";
-		};
-		658D087B2BEBA045006C6A9E /* SideMenu */ = {
-			isa = PBXGroup;
-			children = (
-				658D087C2BEBA068006C6A9E /* SideMenuViewController.swift */,
-			);
-			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		658D08842BEE5C12006C6A9E /* Foundation */ = {
