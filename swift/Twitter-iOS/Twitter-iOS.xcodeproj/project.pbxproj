@@ -22,7 +22,7 @@
 		6540F8C92BB5775C0029BA46 /* HeaderTabButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */; };
 		6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */; };
 		6540F8CF2BB7F7B10029BA46 /* HomeTabSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8CE2BB7F7B10029BA46 /* HomeTabSelectionView.swift */; };
-		6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */; };
+		6540F8D12BBAD0B70029BA46 /* HomeTabSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D02BBAD0B70029BA46 /* HomeTabSelectionButton.swift */; };
 		6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D32BC018B30029BA46 /* SearchHomeViewController.swift */; };
 		6540F8D82BC0213D0029BA46 /* SearchCategoryTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */; };
 		6540F8DC2BC424190029BA46 /* SearchCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8DB2BC424180029BA46 /* SearchCategoryModel.swift */; };
@@ -107,7 +107,7 @@
 		6540F8C82BB5775C0029BA46 /* HeaderTabButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTabButtonStyle.swift; sourceTree = "<group>"; };
 		6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		6540F8CE2BB7F7B10029BA46 /* HomeTabSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabSelectionView.swift; sourceTree = "<group>"; };
-		6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderButton.swift; sourceTree = "<group>"; };
+		6540F8D02BBAD0B70029BA46 /* HomeTabSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabSelectionButton.swift; sourceTree = "<group>"; };
 		6540F8D32BC018B30029BA46 /* SearchHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewController.swift; sourceTree = "<group>"; };
 		6540F8D72BC0213D0029BA46 /* SearchCategoryTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategoryTabButton.swift; sourceTree = "<group>"; };
 		6540F8DB2BC424180029BA46 /* SearchCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategoryModel.swift; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 		6540F8B22BB5753B0029BA46 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				6540F8D02BBAD0B70029BA46 /* HomeHeaderButton.swift */,
+				6540F8D02BBAD0B70029BA46 /* HomeTabSelectionButton.swift */,
 				6540F8CE2BB7F7B10029BA46 /* HomeTabSelectionView.swift */,
 				6540F8B62BB575D30029BA46 /* HomeTabViewController.swift */,
 				6540F8BB2BB5762F0029BA46 /* HomeTweetCollectionViewCell.swift */,
@@ -689,7 +689,7 @@
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				6540F8E62BC817310029BA46 /* SearchTabsView.swift in Sources */,
 				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,
-				6540F8D12BBAD0B70029BA46 /* HomeHeaderButton.swift in Sources */,
+				6540F8D12BBAD0B70029BA46 /* HomeTabSelectionButton.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
 				6540F8EB2BC972E70029BA46 /* NotificationsHeaderView.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,

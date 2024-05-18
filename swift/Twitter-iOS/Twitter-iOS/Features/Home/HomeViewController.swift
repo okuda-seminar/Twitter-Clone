@@ -192,8 +192,8 @@ extension HomeViewController: UIScrollViewDelegate {
   }
 }
 
-extension HomeViewController: HomeHeaderButtonDelegate {
-  func didTapHomeHeaderButton(selectedButton: HomeHeaderButton) {
+extension HomeViewController: HomeTabSelectionButtonDelegate {
+  func didTapHomeTabSelectionButton(selectedButton: HomeTabSelectionButton) {
     for (idx, button) in zip(
       homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons)
     {
@@ -208,11 +208,11 @@ extension HomeViewController: HomeHeaderButtonDelegate {
     }
   }
 
-  private func updateSelectedButtonUI(_ button: HomeHeaderButton) {
+  private func updateSelectedButtonUI(_ button: HomeTabSelectionButton) {
     button.isSelected = true
   }
 
-  private func updateUnselectedButtonUI(_ button: HomeHeaderButton) {
+  private func updateUnselectedButtonUI(_ button: HomeTabSelectionButton) {
     button.isSelected = false
   }
 }

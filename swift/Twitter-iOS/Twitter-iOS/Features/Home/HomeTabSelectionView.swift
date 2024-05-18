@@ -8,23 +8,23 @@ class HomeTabSelectionView: UIView {
     static let followingButtonTitle = String(localized: "Following")
   }
 
-  public let forYouButton: HomeHeaderButton = {
-    let button = HomeHeaderButton()
+  public let forYouButton: HomeTabSelectionButton = {
+    let button = HomeTabSelectionButton()
     button.setTitle(LocalizedString.forYouButtonTitle, for: .normal)
     button.isSelected = true
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
 
-  public let followingButton: HomeHeaderButton = {
-    let button = HomeHeaderButton()
+  public let followingButton: HomeTabSelectionButton = {
+    let button = HomeTabSelectionButton()
     button.setTitle(LocalizedString.followingButtonTitle, for: .normal)
     button.isSelected = false
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
 
-  public lazy var allButtons: [HomeHeaderButton] = {
+  public lazy var allButtons: [HomeTabSelectionButton] = {
     return [forYouButton, followingButton]
   }()
 

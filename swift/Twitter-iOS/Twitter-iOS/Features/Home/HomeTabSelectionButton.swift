@@ -1,13 +1,13 @@
 import UIKit
 
-protocol HomeHeaderButtonDelegate: AnyObject {
-  func didTapHomeHeaderButton(selectedButton: HomeHeaderButton)
+protocol HomeTabSelectionButtonDelegate: AnyObject {
+  func didTapHomeTabSelectionButton(selectedButton: HomeTabSelectionButton)
 }
 
-class HomeHeaderButton: UIButton {
+class HomeTabSelectionButton: UIButton {
 
   public var tabID: String?
-  public weak var delegate: HomeHeaderButtonDelegate?
+  public weak var delegate: HomeTabSelectionButtonDelegate?
 
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -21,6 +21,6 @@ class HomeHeaderButton: UIButton {
 
   @objc
   public func didTap() {
-    self.delegate?.didTapHomeHeaderButton(selectedButton: self)
+    self.delegate?.didTapHomeTabSelectionButton(selectedButton: self)
   }
 }
