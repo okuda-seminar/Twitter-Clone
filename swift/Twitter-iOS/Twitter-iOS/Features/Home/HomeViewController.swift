@@ -34,22 +34,22 @@ class HomeViewController: ViewControllerWithUserIconButton {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
-	
-	private lazy var profileIconButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: "", style: .plain, target: self, action: #selector(showSideMenu))
-		button.tintColor = .black
-		button.image = UIImage(systemName: "person.circle.fill")
-		return button
-	}()
 
-	private lazy var timelineSettingsEntryPointButton: UIBarButtonItem = {
-		let button = UIBarButtonItem(
-			title: "", style: .plain, target: self, action: #selector(presentExploreSettings))
-		button.tintColor = .black
-		button.image = UIImage(systemName: "gear")
-		return button
-	}()
+  private lazy var profileIconButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(showSideMenu))
+    button.tintColor = .black
+    button.image = UIImage(systemName: "person.circle.fill")
+    return button
+  }()
+
+  private lazy var timelineSettingsEntryPointButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(
+      title: "", style: .plain, target: self, action: #selector(presentExploreSettings))
+    button.tintColor = .black
+    button.image = UIImage(systemName: "gear")
+    return button
+  }()
 
   private lazy var newTweetEntryPointButtonController: NewTweetEntrypointButtonController = {
     let viewController = NewTweetEntrypointButtonController()
@@ -101,7 +101,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
     NSLayoutConstraint.activate([
       homeTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      homeTabSelectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.homeTabSelectionHeight),
+      homeTabSelectionView.heightAnchor.constraint(
+        equalToConstant: LayoutConstant.homeTabSelectionHeight),
       homeTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
       homeTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
 
@@ -123,14 +124,14 @@ class HomeViewController: ViewControllerWithUserIconButton {
       newTweetEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
-		
-		// set up the navigation header
-		navigationController?.navigationBar.tintColor = .black
-		title = ""
-		navigationItem.leftBarButtonItems = [profileIconButton]
-		navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
-		let imageView = UIImageView(image: UIImage(systemName: "apple.logo"))
-		navigationItem.titleView = imageView
+
+    // set up the navigation header
+    navigationController?.navigationBar.tintColor = .black
+    title = ""
+    navigationItem.leftBarButtonItems = [profileIconButton]
+    navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
+    let imageView = UIImageView(image: UIImage(systemName: "apple.logo"))
+    navigationItem.titleView = imageView
   }
 
   private func loadTweetData(viewController: HomeTabViewController) {
@@ -150,13 +151,13 @@ class HomeViewController: ViewControllerWithUserIconButton {
     timelineSettingsViewController.modalPresentationStyle = .fullScreen
     present(timelineSettingsViewController, animated: true)
   }
-	
-	@objc
-	private func presentExploreSettings() {
-		let timelineSettingsViewController = TimelineSettingsViewController()
-		timelineSettingsViewController.modalPresentationStyle = .fullScreen
-		present(timelineSettingsViewController, animated: true)
-	}
+
+  @objc
+  private func presentExploreSettings() {
+    let timelineSettingsViewController = TimelineSettingsViewController()
+    timelineSettingsViewController.modalPresentationStyle = .fullScreen
+    present(timelineSettingsViewController, animated: true)
+  }
 }
 
 extension HomeViewController: UIScrollViewDelegate {
@@ -179,7 +180,9 @@ extension HomeViewController: UIScrollViewDelegate {
       break
     }
 
-    for (idx, button) in zip(homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons) {
+    for (idx, button) in zip(
+      homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons)
+    {
       if idx == selectedButtonIdx {
         updateSelectedButtonUI(button)
       } else {
@@ -191,7 +194,9 @@ extension HomeViewController: UIScrollViewDelegate {
 
 extension HomeViewController: HomeHeaderButtonDelegate {
   func didTapHomeHeaderButton(selectedButton: HomeHeaderButton) {
-    for (idx, button) in zip(homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons) {
+    for (idx, button) in zip(
+      homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons)
+    {
       if button.tabID == selectedButton.tabID {
         updateSelectedButtonUI(button)
 

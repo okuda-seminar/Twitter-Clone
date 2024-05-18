@@ -22,7 +22,7 @@ class MainRootViewController: UITabBarController {
 
   private func setUpSubviews() {
     let homeNavigationController = UINavigationController(
-			rootViewController: HomeViewController())
+      rootViewController: HomeViewController())
     homeNavigationController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
 
