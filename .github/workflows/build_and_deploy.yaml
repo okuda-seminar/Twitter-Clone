@@ -1,5 +1,5 @@
-name: "build and deploy"
-run-name: "Branch: ${{ github.ref_name }} Env: ${{ inputs.environment }}"
+name: "build and deploy for tweets"
+run-name: "Service: Tweets, Branch: ${{ github.ref_name }}, Env: ${{ inputs.environment }}"
 on:
   workflow_dispatch:
     inputs:
@@ -26,3 +26,4 @@ jobs:
         with:
           dockerhub-username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+          context: ./go/tweets
