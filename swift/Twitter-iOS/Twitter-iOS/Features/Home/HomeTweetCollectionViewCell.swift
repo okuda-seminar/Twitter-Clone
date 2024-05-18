@@ -12,8 +12,6 @@ class HomeTweetCollectionViewCell: UICollectionViewCell {
     }
   }
 
-  public weak var delegate: HomeTweetCollectionViewCellDelegate?
-
   public let userIconButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -86,26 +84,5 @@ class HomeTweetCollectionViewCell: UICollectionViewCell {
 
       bottomAnchor.constraint(equalTo: bodyTextLabel.bottomAnchor),
     ])
-
-    let tapGestureRecognizer = UITapGestureRecognizer(
-      target: self, action: #selector(didTapTweet))
-    infoStackView.addGestureRecognizer(tapGestureRecognizer)
   }
-
-  @objc
-  private func didTapTweet() {
-    self.delegate?.didTapTweet()
-  }
-
-  @objc
-  private func notifyTapUserIconButton() {
-    guard let tweet else { return }
-    delegate?.didTapUserIconButton(userName: tweet.userName, profileIcon: tweet.userIcon)
-  }
-}
-
-protocol HomeTweetCollectionViewCellDelegate: AnyObject {
-  func didTapUserIconButton(userName: String, profileIcon: UIImage?)
-
-  func didTapTweet()
 }

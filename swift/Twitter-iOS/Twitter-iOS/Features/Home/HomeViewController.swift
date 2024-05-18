@@ -127,11 +127,13 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
     // set up the navigation header
     navigationController?.navigationBar.tintColor = .black
-    title = ""
+    navigationItem.backButtonDisplayMode = .minimal
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    navigationController?.navigationBar.backIndicatorImage = backButtonImage
+    navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
-    let imageView = UIImageView(image: UIImage(systemName: "apple.logo"))
-    navigationItem.titleView = imageView
+    navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))
   }
 
   private func loadTweetData(viewController: HomeTabViewController) {
@@ -140,10 +142,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
       tweets.append(createFakeTweet())
     }
     viewController.tweets = tweets
-
-    //    for tweetCellView in viewController.tweetCellViews {
-    //      tweetCellView.delegate = self
-    //    }
   }
 
   private func showTimelineSettings() {
@@ -236,5 +234,10 @@ extension HomeViewController: HomeTabViewControllerDelegate {
     UIView.animate(withDuration: 0.3) {
       self.homeTabSelectionView.layer.opacity = xDelta > 0 ? 0.0 : 1.0
     }
+  }
+
+  func didTapTweetCell(_ cell: HomeTweetCollectionViewCell) {
+    let tweetDetailViewController = TweetDetailViewController()
+    navigationController?.pushViewController(tweetDetailViewController, animated: true)
   }
 }

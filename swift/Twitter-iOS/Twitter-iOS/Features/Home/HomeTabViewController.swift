@@ -53,7 +53,15 @@ final class HomeTabViewController: UIViewController {
   }
 }
 
-extension HomeTabViewController: UICollectionViewDelegate {}
+extension HomeTabViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let cell =
+      collectionView.dequeueReusableCell(
+        withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
+      as! HomeTweetCollectionViewCell
+    delegate?.didTapTweetCell(cell)
+  }
+}
 
 extension HomeTabViewController: UIContextMenuInteractionDelegate {
   private enum LocalizedLongTapActionString {
@@ -132,6 +140,7 @@ extension HomeTabViewController: UICollectionViewDataSource {
     cell.tweet = tweets?[indexPath.row]
     let interaction = UIContextMenuInteraction(delegate: self)
     cell.addInteraction(interaction)
+
     return cell
   }
 }
@@ -150,4 +159,5 @@ extension HomeTabViewController: UICollectionViewDelegateFlowLayout {
 
 protocol HomeTabViewControllerDelegate: AnyObject {
   func didScrollVertically(xDelta: CGFloat)
+  func didTapTweetCell(_ cell: HomeTweetCollectionViewCell)
 }
