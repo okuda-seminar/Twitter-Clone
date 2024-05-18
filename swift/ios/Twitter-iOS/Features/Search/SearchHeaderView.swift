@@ -48,6 +48,6 @@ struct SearchHeaderView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchHeaderView(showSearchHome: .constant(false))
 }

@@ -154,6 +154,6 @@ struct HomeHeaderButton: View {
   }
 }
 
-#Preview{
+#Preview {
   HomeView(enableSideMenu: .constant(true))
 }

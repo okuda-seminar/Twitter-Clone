@@ -100,6 +100,6 @@ struct NotificationsStackItem: View {
   }
 }
 
-#Preview{
+#Preview {
   NotificationsSettingsView()
 }

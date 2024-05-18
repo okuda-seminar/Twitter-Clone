@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 class HomeTabSelectionView: UIView {
-	
+
   private enum LocalizedString {
     static let forYouButtonTitle = String(localized: "For You")
     static let followingButtonTitle = String(localized: "Following")
@@ -43,7 +43,7 @@ class HomeTabSelectionView: UIView {
     stackView.distribution = .fillEqually
     stackView.translatesAutoresizingMaskIntoConstraints = false
 
-		addSubview(stackView)
+    addSubview(stackView)
 
     NSLayoutConstraint.activate([
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor),

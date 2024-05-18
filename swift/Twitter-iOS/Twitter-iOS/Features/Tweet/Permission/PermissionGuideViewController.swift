@@ -122,6 +122,6 @@ protocol PermissionGuideSheetDelegate: AnyObject {
   func didTapDismissArea()
 }
 
-#Preview{
+#Preview {
   PermissionGuideSheet()
 }

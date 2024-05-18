@@ -30,6 +30,6 @@ struct CheckboxStyleCatalog: View {
   }
 }
 
-#Preview{
+#Preview {
   CheckboxStyleCatalog()
 }

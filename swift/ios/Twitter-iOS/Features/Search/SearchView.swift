@@ -25,6 +25,6 @@ struct SearchView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchView(enableSideMenu: .constant(true))
 }

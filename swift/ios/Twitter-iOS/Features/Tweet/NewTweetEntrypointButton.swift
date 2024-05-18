@@ -30,6 +30,6 @@ struct NewTweetEntrypointButton: View {
   }
 }
 
-#Preview{
+#Preview {
   NewTweetEntrypointButton()
 }

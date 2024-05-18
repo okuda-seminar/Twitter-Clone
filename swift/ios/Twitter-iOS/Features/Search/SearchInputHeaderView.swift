@@ -61,6 +61,6 @@ struct SearchBarView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchInputHeaderView(searchQuery: .constant(""), showSearchHome: .constant(false))
 }
