@@ -57,7 +57,7 @@ struct SideMenuView: View {
     VStack(alignment: .leading) {
       Button(
         action: {
-          delegate?.didTapUserIconButton()
+          delegate?.didTapUserProfile()
         },
         label: {
           Image(systemName: "person.circle.fill")
@@ -148,7 +148,6 @@ struct SideMenuView: View {
 }
 
 protocol SideMenuViewDelegate: AnyObject {
-  func didTapUserIconButton()
   func didTapUserProfile()
   func didTapSettingsAndPrivacy()
 }

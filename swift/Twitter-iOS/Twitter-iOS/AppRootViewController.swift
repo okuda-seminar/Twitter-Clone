@@ -121,9 +121,6 @@ class AppRootViewController: UIViewController {
 }
 
 extension AppRootViewController: SideMenuViewDelegate {
-  func didTapUserIconButton() {
-    hideSideMenu()
-  }
 
   func didTapUserProfile() {
     hideSideMenu()
