@@ -7,7 +7,9 @@ class BannerController {
   private let dataSource = BannerViewDataSource()
 
   private enum LayoutConstant {
-    static let topPadding = 240.0
+    static let topPadding = 96.0
+    static let bannerHeight = 128.0
+    static let animationDuration = 0.3
   }
 
   private let hostingController: UIHostingController<BannerView>
@@ -17,7 +19,6 @@ class BannerController {
   public init(message: String) {
     hostingController = UIHostingController(
       rootView: BannerView(dataSource: dataSource, headlineText: message))
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 
     let defaultCenter = NotificationCenter.default
     defaultCenter.addObserver(
@@ -31,17 +32,15 @@ class BannerController {
     hostingController.didMove(toParent: parent)
     parent.view.addSubview(hostingController.view)
 
-    let layoutGuide = parent.view.safeAreaLayoutGuide
-    NSLayoutConstraint.activate([
-      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-    ])
+    hostingController.view.frame = CGRect(
+      x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: LayoutConstant.bannerHeight)
 
     UIView.animate(
-      withDuration: 0.3, delay: 0, options: .curveEaseIn,
+      withDuration: LayoutConstant.animationDuration, delay: 0, options: .curveEaseIn,
       animations: {
-        self.hostingController.view.frame.origin.y = LayoutConstant.topPadding
+        self.hostingController.view.frame = CGRect(
+          x: 0, y: LayoutConstant.topPadding, width: UIScreen.main.bounds.size.width,
+          height: LayoutConstant.bannerHeight)
       }
     ) { _ in
       DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
@@ -53,9 +52,10 @@ class BannerController {
   @objc
   public func dismissPresentingBanner() {
     UIView.animate(
-      withDuration: 0.3,
+      withDuration: LayoutConstant.animationDuration,
       animations: {
-        self.hostingController.view.frame.origin.y = -self.hostingController.view.frame.height
+        self.hostingController.view.frame = CGRect(
+          x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: LayoutConstant.bannerHeight)
       }
     ) { _ in
       self.hostingController.willMove(toParent: self.parent)
