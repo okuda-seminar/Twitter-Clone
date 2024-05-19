@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `tweets create-tweet
+	return `tweets (create-tweet|like-tweet)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` tweets create-tweet --body '{
-      "text": "Est distinctio iste.",
-      "user_id": "Ab quod dolor et nam et aut."
+      "text": "A vel debitis.",
+      "user_id": "Qui suscipit quasi autem est."
    }'` + "\n" +
 		""
 }
@@ -49,9 +49,13 @@ func ParseEndpoint(
 
 		tweetsCreateTweetFlags    = flag.NewFlagSet("create-tweet", flag.ExitOnError)
 		tweetsCreateTweetBodyFlag = tweetsCreateTweetFlags.String("body", "REQUIRED", "")
+
+		tweetsLikeTweetFlags    = flag.NewFlagSet("like-tweet", flag.ExitOnError)
+		tweetsLikeTweetBodyFlag = tweetsLikeTweetFlags.String("body", "REQUIRED", "")
 	)
 	tweetsFlags.Usage = tweetsUsage
 	tweetsCreateTweetFlags.Usage = tweetsCreateTweetUsage
+	tweetsLikeTweetFlags.Usage = tweetsLikeTweetUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -90,6 +94,9 @@ func ParseEndpoint(
 			case "create-tweet":
 				epf = tweetsCreateTweetFlags
 
+			case "like-tweet":
+				epf = tweetsLikeTweetFlags
+
 			}
 
 		}
@@ -118,6 +125,9 @@ func ParseEndpoint(
 			case "create-tweet":
 				endpoint = c.CreateTweet()
 				data, err = tweetsc.BuildCreateTweetPayload(*tweetsCreateTweetBodyFlag)
+			case "like-tweet":
+				endpoint = c.LikeTweet()
+				data, err = tweetsc.BuildLikeTweetPayload(*tweetsLikeTweetBodyFlag)
 			}
 		}
 	}
@@ -136,6 +146,7 @@ Usage:
 
 COMMAND:
     create-tweet: CreateTweet implements CreateTweet.
+    like-tweet: LikeTweet implements LikeTweet.
 
 Additional help:
     %[1]s tweets COMMAND --help
@@ -149,8 +160,22 @@ CreateTweet implements CreateTweet.
 
 Example:
     %[1]s tweets create-tweet --body '{
-      "text": "Est distinctio iste.",
-      "user_id": "Ab quod dolor et nam et aut."
+      "text": "A vel debitis.",
+      "user_id": "Qui suscipit quasi autem est."
+   }'
+`, os.Args[0])
+}
+
+func tweetsLikeTweetUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets like-tweet -body JSON
+
+LikeTweet implements LikeTweet.
+    -body JSON: 
+
+Example:
+    %[1]s tweets like-tweet --body '{
+      "tweet_id": "Assumenda sed et dolorem similique qui perferendis.",
+      "user_id": "Omnis consequatur ea cupiditate aut nostrum labore."
    }'
 `, os.Args[0])
 }

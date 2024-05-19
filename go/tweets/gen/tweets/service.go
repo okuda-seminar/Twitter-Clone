@@ -17,6 +17,8 @@ import (
 type Service interface {
 	// CreateTweet implements CreateTweet.
 	CreateTweet(context.Context, *CreateTweetPayload) (res *Tweet, err error)
+	// LikeTweet implements LikeTweet.
+	LikeTweet(context.Context, *LikeTweetPayload) (err error)
 }
 
 // APIName is the name of the API as defined in the design.
@@ -33,13 +35,19 @@ const ServiceName = "tweets"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"CreateTweet"}
+var MethodNames = [2]string{"CreateTweet", "LikeTweet"}
 
 // CreateTweetPayload is the payload type of the tweets service CreateTweet
 // method.
 type CreateTweetPayload struct {
 	UserID string
 	Text   string
+}
+
+// LikeTweetPayload is the payload type of the tweets service LikeTweet method.
+type LikeTweetPayload struct {
+	TweetID string
+	UserID  string
 }
 
 // Tweet is the result type of the tweets service CreateTweet method.

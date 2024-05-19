@@ -19,18 +19,20 @@ const (
 
 // tweetsSvc implements tweets/gen/tweets.Service.
 type tweetsSvc struct {
-	repository repository.TweetsRepo
+	tweetsRepo repository.TweetsRepo
+	likesRepo  repository.LikesRepo
 	logger     *log.Logger
 }
 
 // NewTweetsSvc returns the tweets service implementation.
 func NewTweetsSvc(db *sql.DB, logger *log.Logger) tweets.Service {
-	repository := repository.NewTweetsRepoImpl(db)
-	return &tweetsSvc{repository, logger}
+	tweetsRepo := repository.NewTweetsRepoImpl(db)
+	likesRepo := repository.NewLikesRepoImpl(db)
+	return &tweetsSvc{tweetsRepo, likesRepo, logger}
 }
 
 // CreateTweet creates a tweet posted by a user with the specified ID.
-// returns the created tweet with 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
+// Returns the created tweet with 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
 func (s *tweetsSvc) CreateTweet(
 	ctx context.Context,
 	p *tweets.CreateTweetPayload,
@@ -50,7 +52,7 @@ func (s *tweetsSvc) CreateTweet(
 		return nil, err
 	}
 
-	tweet, err := s.repository.CreateTweet(ctx, userId, p.Text)
+	tweet, err := s.tweetsRepo.CreateTweet(ctx, userId, p.Text)
 	if err != nil {
 		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
 		return nil, tweets.MakeBadRequest(err)
@@ -60,6 +62,14 @@ func (s *tweetsSvc) CreateTweet(
 
 	s.logger.Print("tweets.CreateTweet")
 	return
+}
+
+// LikeTweet handles the action of a user liking a twee.
+// Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
+func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/175
+	// - Implement LikeTweet API logic.
+	return nil
 }
 
 // Check whether the length of tweet text is between min and max inclusive.
