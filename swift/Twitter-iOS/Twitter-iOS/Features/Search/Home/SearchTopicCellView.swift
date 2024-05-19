@@ -39,6 +39,6 @@ protocol SearchTopicCellViewDelegate: AnyObject {
   func didSelectSearchTopicCellView(_ view: SearchTopicCellView)
 }
 
-#Preview{
+#Preview {
   SearchTopicCellView(topic: createFakeTopicModel())
 }

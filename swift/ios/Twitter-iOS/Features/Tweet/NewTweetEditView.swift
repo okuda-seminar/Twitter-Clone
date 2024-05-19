@@ -44,6 +44,6 @@ struct NewTweetEditView: View {
   }
 }
 
-#Preview{
+#Preview {
   NewTweetEditView()
 }

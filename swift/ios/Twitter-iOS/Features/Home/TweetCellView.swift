@@ -35,7 +35,7 @@ struct TweetCellView: View {
   }
 }
 
-#Preview{
+#Preview {
   TweetCellView(
     userIcon: fakeTweet.userIcon, userName: fakeTweet.userName, bodyText: fakeTweet.bodyText)
 }

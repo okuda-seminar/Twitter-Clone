@@ -57,7 +57,7 @@ struct CircleNewMessageEntrypointButton: View {
   }
 }
 
-#Preview{
+#Preview {
   VStack {
     CapsuleNewMessageEntrypointButton()
     CircleNewMessageEntrypointButton()

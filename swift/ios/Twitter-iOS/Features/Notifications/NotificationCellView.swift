@@ -19,6 +19,6 @@ struct NotificationCellView: View {
   }
 }
 
-#Preview{
+#Preview {
   NotificationCellView(notification: createFakeNotification())
 }

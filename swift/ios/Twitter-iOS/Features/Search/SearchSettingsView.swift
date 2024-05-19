@@ -59,6 +59,6 @@ struct SearchSettingsView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchSettingsView()
 }

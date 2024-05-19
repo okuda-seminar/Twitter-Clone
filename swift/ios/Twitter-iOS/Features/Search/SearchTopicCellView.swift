@@ -35,6 +35,6 @@ struct SearchTopicCellView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchTopicCellView(topic: createFakeTopicModel())
 }

@@ -34,6 +34,6 @@ struct SearchInputView: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchInputView(showSearchHome: .constant(false))
 }

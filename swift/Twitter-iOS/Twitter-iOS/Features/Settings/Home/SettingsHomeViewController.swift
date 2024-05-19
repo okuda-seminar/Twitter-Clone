@@ -117,6 +117,6 @@ struct SettingsHomeStackItem: View {
   }
 }
 
-#Preview{
+#Preview {
   SettingsHomeView()
 }
