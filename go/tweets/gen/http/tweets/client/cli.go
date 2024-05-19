@@ -21,12 +21,31 @@ func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Est distinctio iste.\",\n      \"user_id\": \"Ab quod dolor et nam et aut.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"A vel debitis.\",\n      \"user_id\": \"Qui suscipit quasi autem est.\"\n   }'")
 		}
 	}
 	v := &tweets.CreateTweetPayload{
 		UserID: body.UserID,
 		Text:   body.Text,
+	}
+
+	return v, nil
+}
+
+// BuildLikeTweetPayload builds the payload for the tweets LikeTweet endpoint
+// from CLI flags.
+func BuildLikeTweetPayload(tweetsLikeTweetBody string) (*tweets.LikeTweetPayload, error) {
+	var err error
+	var body LikeTweetRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsLikeTweetBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Assumenda sed et dolorem similique qui perferendis.\",\n      \"user_id\": \"Omnis consequatur ea cupiditate aut nostrum labore.\"\n   }'")
+		}
+	}
+	v := &tweets.LikeTweetPayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
 	}
 
 	return v, nil

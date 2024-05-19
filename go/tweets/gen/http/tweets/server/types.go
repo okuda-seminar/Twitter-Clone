@@ -20,6 +20,13 @@ type CreateTweetRequestBody struct {
 	Text   *string `form:"text,omitempty" json:"text,omitempty" xml:"text,omitempty"`
 }
 
+// LikeTweetRequestBody is the type of the "tweets" service "LikeTweet"
+// endpoint HTTP request body.
+type LikeTweetRequestBody struct {
+	TweetID *string `form:"tweet_id,omitempty" json:"tweet_id,omitempty" xml:"tweet_id,omitempty"`
+	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+}
+
 // CreateTweetResponseBody is the type of the "tweets" service "CreateTweet"
 // endpoint HTTP response body.
 type CreateTweetResponseBody struct {
@@ -50,6 +57,24 @@ type CreateTweetNotFoundResponseBody struct {
 // CreateTweetBadRequestResponseBody is the type of the "tweets" service
 // "CreateTweet" endpoint HTTP response body for the "BadRequest" error.
 type CreateTweetBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// LikeTweetBadRequestResponseBody is the type of the "tweets" service
+// "LikeTweet" endpoint HTTP response body for the "BadRequest" error.
+type LikeTweetBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -105,11 +130,35 @@ func NewCreateTweetBadRequestResponseBody(res *goa.ServiceError) *CreateTweetBad
 	return body
 }
 
+// NewLikeTweetBadRequestResponseBody builds the HTTP response body from the
+// result of the "LikeTweet" endpoint of the "tweets" service.
+func NewLikeTweetBadRequestResponseBody(res *goa.ServiceError) *LikeTweetBadRequestResponseBody {
+	body := &LikeTweetBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateTweetPayload builds a tweets service CreateTweet endpoint payload.
 func NewCreateTweetPayload(body *CreateTweetRequestBody) *tweets.CreateTweetPayload {
 	v := &tweets.CreateTweetPayload{
 		UserID: *body.UserID,
 		Text:   *body.Text,
+	}
+
+	return v
+}
+
+// NewLikeTweetPayload builds a tweets service LikeTweet endpoint payload.
+func NewLikeTweetPayload(body *LikeTweetRequestBody) *tweets.LikeTweetPayload {
+	v := &tweets.LikeTweetPayload{
+		TweetID: *body.TweetID,
+		UserID:  *body.UserID,
 	}
 
 	return v
@@ -123,6 +172,18 @@ func ValidateCreateTweetRequestBody(body *CreateTweetRequestBody) (err error) {
 	}
 	if body.Text == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("text", "body"))
+	}
+	return
+}
+
+// ValidateLikeTweetRequestBody runs the validations defined on
+// LikeTweetRequestBody
+func ValidateLikeTweetRequestBody(body *LikeTweetRequestBody) (err error) {
+	if body.TweetID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
 	}
 	return
 }

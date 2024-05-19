@@ -45,5 +45,20 @@ var _ = Service("tweets", func() {
 		})
 	})
 
+	Method("LikeTweet", func() {
+		Payload(func() {
+			Field(1, "tweet_id", String)
+			Field(2, "user_id", String)
+			Required("tweet_id", "user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/tweets/like")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })

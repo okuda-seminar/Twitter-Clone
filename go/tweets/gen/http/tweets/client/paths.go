@@ -11,3 +11,8 @@ package client
 func CreateTweetTweetsPath() string {
 	return "/api/tweets"
 }
+
+// LikeTweetTweetsPath returns the URL path to the tweets service LikeTweet HTTP endpoint.
+func LikeTweetTweetsPath() string {
+	return "/api/tweets/like"
+}
