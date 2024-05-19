@@ -65,6 +65,6 @@ public final class BannerViewDataSource: ObservableObject {
   }
 }
 
-#Preview{
+#Preview {
   BannerView(dataSource: BannerViewDataSource(), headlineText: "koube_neko has been muted")
 }

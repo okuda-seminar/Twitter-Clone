@@ -85,6 +85,6 @@ struct CommunitySearchBar: View {
   }
 }
 
-#Preview{
+#Preview {
   CommunitiesSearchView()
 }

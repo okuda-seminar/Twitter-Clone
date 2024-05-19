@@ -29,6 +29,6 @@ struct NewTweetButton: View {
   }
 }
 
-#Preview{
+#Preview {
   NewTweetButton()
 }

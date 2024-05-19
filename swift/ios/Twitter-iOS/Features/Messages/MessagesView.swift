@@ -37,6 +37,6 @@ struct MessagesView: View {
   }
 }
 
-#Preview{
+#Preview {
   MessagesView(enableSideMenu: .constant(true))
 }

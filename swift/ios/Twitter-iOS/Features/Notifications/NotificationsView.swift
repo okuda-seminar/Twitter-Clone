@@ -116,6 +116,6 @@ struct NotificationsHeaderButton: View {
   }
 }
 
-#Preview{
+#Preview {
   NotificationsView(enableSideMenu: .constant(true))
 }

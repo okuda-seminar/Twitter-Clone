@@ -61,6 +61,6 @@ struct CommunitiesHomeView: View {
   }
 }
 
-#Preview{
+#Preview {
   CommunitiesHomeView(enableSideMenu: .constant(true))
 }

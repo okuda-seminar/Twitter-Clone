@@ -153,7 +153,7 @@ protocol SideMenuViewDelegate: AnyObject {
 }
 
 private let fakeUser = createFakeUser()
-#Preview{
+#Preview {
   SideMenuView(
     userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowing,
     numOfFollowers: fakeUser.numOfFollowers)

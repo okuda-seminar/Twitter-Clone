@@ -151,6 +151,6 @@ struct SearchHeaderButton: View {
   }
 }
 
-#Preview{
+#Preview {
   SearchHomeView(enableSideMenu: .constant(true), showSearchHome: .constant(true))
 }

@@ -121,6 +121,6 @@ struct MessagesSettingsView: View {
   }
 }
 
-#Preview{
+#Preview {
   MessagesSettingsView()
 }

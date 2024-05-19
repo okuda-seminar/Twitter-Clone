@@ -30,6 +30,6 @@ struct CommunityCellView: View {
   }
 }
 
-#Preview{
+#Preview {
   CommunityCellView(community: createFakeCommunityModel())
 }

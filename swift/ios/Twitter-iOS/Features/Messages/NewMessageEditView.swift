@@ -66,6 +66,6 @@ struct NewMessageEditView: View {
   }
 }
 
-#Preview{
+#Preview {
   NewMessageEditView()
 }
