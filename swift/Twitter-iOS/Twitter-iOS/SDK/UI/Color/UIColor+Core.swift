@@ -16,6 +16,7 @@ extension UIColor {
   // MARK: - General
   static let brandedBlue = createCustomUIColor(red: 28, green: 134, blue: 237)
   static let branededLightBlue = createCustomUIColor(red: 124, green: 184, blue: 225)
+  static let branededLightBlue2 = createCustomUIColor(red: 227, green: 242, blue: 252)
 
   // MARK: - Text
   static let brandedLightGrayText = createCustomUIColor(red: 62, green: 72, blue: 80)

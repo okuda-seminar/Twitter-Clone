@@ -2,6 +2,8 @@ import UIKit
 
 class MainRootViewController: UITabBarController {
 
+  public static var sharedInstance = MainRootViewController()
+
   private enum TabBarItemTag: Int {
     case home
     case search

@@ -84,7 +84,13 @@ extension HomeTabViewController: UIContextMenuInteractionDelegate {
           title: LocalizedLongTapActionString.unfollow,
           image: UIImage(systemName: "person.fill.xmark")
         ) { action in
-          UserService.sharedInstance.unfollowUser("@mockUserName")
+          let userName = "@mockUserName"
+          UserService.sharedInstance.unfollowUser(userName) { success in
+            if success {
+              let bannerController = BannerController(message: "\(userName) has been unfollowed")
+              bannerController.show(on: MainRootViewController.sharedInstance)
+            }
+          }
         }
 
         let addOrRemoveFromListsAction = UIAction(
@@ -97,14 +103,27 @@ extension HomeTabViewController: UIContextMenuInteractionDelegate {
           title: LocalizedLongTapActionString.mute,
           image: UIImage(systemName: "speaker.slash")
         ) { action in
-          UserService.sharedInstance.muteUser("@mockUserName")
+          let userName = "@mockUserName"
+          UserService.sharedInstance.muteUser(userName) { success in
+            if success {
+              let bannerController = BannerController(message: "\(userName) has been muted")
+              bannerController.show(on: MainRootViewController.sharedInstance)
+            }
+          }
         }
 
         let blockAction = UIAction(
           title: LocalizedLongTapActionString.block,
           image: UIImage(systemName: "xmark.circle")
         ) { action in
-          UserService.sharedInstance.blockUser("@mockUserName")
+          let userName = "@mockUserName"
+          UserService.sharedInstance.blockUser(userName) { success in
+            if success {
+              let userName = "@mockUserName"
+              let bannerController = BannerController(message: "\(userName) has been blocked")
+              bannerController.show(on: MainRootViewController.sharedInstance)
+            }
+          }
         }
 
         let reportAction = UIAction(

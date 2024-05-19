@@ -4,7 +4,7 @@ import UIKit
 class AppRootViewController: UIViewController {
 
   private lazy var mainRootViewController: MainRootViewController = {
-    let viewController = MainRootViewController()
+    let viewController = MainRootViewController.sharedInstance
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(viewController)
     viewController.didMove(toParent: self)
