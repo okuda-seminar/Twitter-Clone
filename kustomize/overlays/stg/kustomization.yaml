@@ -9,9 +9,4 @@ bases:
 patchesStrategicMerge:
   - canary-patch.yaml
   - deployment-patch.yaml
-  # - delete-bluegreen.yaml
-  # - delete-canary.yaml
-configMapGenerator:
-  - name: blue-greeen-sample-config
-    envs:
-      - files/config.env
+
