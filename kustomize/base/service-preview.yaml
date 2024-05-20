@@ -4,7 +4,7 @@ metadata:
   name: rollout-blue-green-svc-preview
 spec:
   selector:
-    app: rollout-blue-green
+    app: rollouts-deployment
   type: NodePort
   ports:
     - protocol: TCP

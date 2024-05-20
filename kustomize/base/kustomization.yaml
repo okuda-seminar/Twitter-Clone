@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 commonLabels:
-  app: rollout-blue-green
+  app: rollouts-deployment
 kind: Kustomization
 namespace: sample
 resources:

@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollout-blue-green
+  name: rollouts-deployment
 spec:
   replicas: 4
   revisionHistoryLimit: 4
   selector:
     matchLabels:
-      app: rollout-blue-green
+      app: rollouts-deployment
   template:
     metadata:
       labels:
-        app: rollout-blue-green
+        app: rollouts-deployment
     spec:
       containers:
         - name: app-container

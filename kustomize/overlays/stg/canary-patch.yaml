@@ -1,47 +1,24 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: rollouts-canary
-spec:
-  strategy:
-    canary:
-      steps:
-      - setWeight: 20
-      - pause: {}
-      - setWeight: 40
-      - pause: {duration: 10}
-      - setWeight: 60
-      - pause: {duration: 10}
-      - setWeight: 80
-      - pause: {duration: 10}
-  replicas: 4
-  revisionHistoryLimit: 4
-  selector:
-    matchLabels:
-      app: rollouts-canary
-  template:
-    metadata:
-      labels:
-        app: rollouts-canary
-    spec:
-      containers:
-        - name: app-container
-          image: golang:latest
-          command: ["tail", "-f", "/dev/null"]
-        - name: postgres-container
-          image: postgres:latest
-          command: ["tail", "-f", "/dev/null"]
+# apiVersion: argoproj.io/v1alpha1
+# kind: Rollout
+# metadata:
+#   name: rollouts-deployment
+# spec:
+#   strategy:
+#     blueGreen:
+#       $patch: delete
+#     canary:
+#       steps:
+#       - setWeight: 20
+#       - pause: {}
+#       - setWeight: 40
+#       - pause: {duration: 10}
+#       - setWeight: 60
+#       - pause: {duration: 10}
+#       - setWeight: 80
+#       - pause: {duration: 10}
+#   replicas: 4
+#   revisionHistoryLimit: 4
+#   selector:
+#     matchLabels:
+#       app: rollouts-deployment
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rollouts-canary
-spec:
-  ports:
-  - port: 80
-    targetPort: http
-    protocol: TCP
-    name: http
-  selector:
-    app: rollouts-canary
