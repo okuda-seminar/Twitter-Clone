@@ -70,7 +70,7 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
 
     // set up the navigation header
     navigationController?.navigationBar.tintColor = .black
-    title = ""
+    navigationItem.backButtonDisplayMode = .minimal
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [exploreSettingsEntryPointButton]
@@ -83,9 +83,21 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
 
   @objc
   private func presentExploreSettings() {
-    let notificationsSettingsViewController = NotificationsSettingsViewController()
-    notificationsSettingsViewController.modalPresentationStyle = .fullScreen
-    present(notificationsSettingsViewController, animated: true)
+    let settingsHomeViewController = SettingsHomeViewController()
+    let presentingViewController = UINavigationController(
+      rootViewController: settingsHomeViewController)
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    presentingViewController.navigationBar.backIndicatorImage = backButtonImage
+    presentingViewController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    presentingViewController.navigationBar.tintColor = .black
+
+    settingsHomeViewController.navigationItem.backButtonDisplayMode = .minimal
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/177
+    // - Remove direct initialization of NotificationsSettingsViewController
+    presentingViewController.pushViewController(
+      NotificationsSettingsViewController(), animated: false)
+    presentingViewController.modalPresentationStyle = .overFullScreen
+    present(presentingViewController, animated: true)
   }
 }
 

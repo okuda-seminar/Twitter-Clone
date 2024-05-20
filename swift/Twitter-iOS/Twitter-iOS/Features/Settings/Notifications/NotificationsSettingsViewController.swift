@@ -1,12 +1,13 @@
 import SwiftUI
 import UIKit
 
-class NotificationsSettingsViewController: UIViewController {
+class NotificationsSettingsViewController: SettingsViewController {
   private enum LocalizedString {
     static let title = String(localized: "Notifications")
   }
 
   override func viewDidLoad() {
+    super.viewDidLoad()
     setSubviews()
   }
 
@@ -29,6 +30,7 @@ class NotificationsSettingsViewController: UIViewController {
     // set up navigation
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = []
+    navigationController?.navigationBar.backgroundColor = .systemBackground
   }
 }
 

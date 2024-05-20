@@ -165,5 +165,10 @@ class ViewControllerWithUserIconButton: UIViewController {
 
     guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
     rootViewController.hideSideMenu(animated: false)
+
+    // Navigation
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    navigationController?.navigationBar.backIndicatorImage = backButtonImage
+    navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
   }
 }

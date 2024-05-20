@@ -128,9 +128,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
     // set up the navigation header
     navigationController?.navigationBar.tintColor = .black
     navigationItem.backButtonDisplayMode = .minimal
-    let backButtonImage = UIImage(systemName: "arrow.left")
-    navigationController?.navigationBar.backIndicatorImage = backButtonImage
-    navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
     navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))

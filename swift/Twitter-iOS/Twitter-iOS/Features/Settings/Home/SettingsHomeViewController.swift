@@ -1,13 +1,14 @@
 import SwiftUI
 import UIKit
 
-class SettingsHomeViewController: UIViewController {
+class SettingsHomeViewController: SettingsViewController {
 
   private enum LocalizedString {
     static let title = String(localized: "Settings")
   }
 
   override func viewDidLoad() {
+    super.viewDidLoad()
     setSubviews()
   }
 
@@ -31,12 +32,14 @@ class SettingsHomeViewController: UIViewController {
     navigationItem.backButtonDisplayMode = .minimal
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = []
+    navigationController?.navigationBar.backgroundColor = .systemBackground
   }
 }
 
 extension SettingsHomeViewController: SettingsHomeViewDelegate {
-  func pushNotificationsSettings() {
-    navigationController?.pushViewController(NotificationsSettingsViewController(), animated: true)
+  public func pushNotificationsSettings(animated: Bool = true) {
+    navigationController?.pushViewController(
+      NotificationsSettingsViewController(), animated: animated)
   }
 }
 
@@ -75,7 +78,7 @@ struct SettingsHomeView: View {
           caption: LocalizedString.notificationsCaption
         )
         .onTapGesture {
-          delegate?.pushNotificationsSettings()
+          delegate?.pushNotificationsSettings(animated: true)
         }
       }
     }
@@ -83,7 +86,7 @@ struct SettingsHomeView: View {
 }
 
 protocol SettingsHomeViewDelegate: AnyObject {
-  func pushNotificationsSettings()
+  func pushNotificationsSettings(animated: Bool)
 }
 
 struct SettingsHomeStackItem: View {
