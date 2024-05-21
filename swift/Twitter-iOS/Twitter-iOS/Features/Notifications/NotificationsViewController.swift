@@ -11,13 +11,6 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     static let title = String(localized: "Notifications")
   }
 
-  private let headerTabSelectionView: NotificationsTabSelectionView = {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/138 - Replace custom home header view with Apple's navigation bar items.
-    let view = NotificationsTabSelectionView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
-
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
@@ -36,21 +29,22 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     return button
   }()
 
-  private lazy var selectedButton: UIButton = headerTabSelectionView.tabButtons[0] {
-    didSet {
-      guard selectedButton != oldValue else { return }
-      oldValue.isSelected = false
-      selectedButton.isSelected = true
-    }
-  }
-
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
+
+  private lazy var tabViewController: UIHostingController = {
+    let controller = UIHostingController(rootView: NotificationsTabView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
+  }()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = .systemBackground
-    view.addSubview(headerTabSelectionView)
+
+    view.addSubview(tabViewController.view)
     view.addSubview(newTweetEntryPointButtonController.view)
 
     addChild(newTweetEntryPointButtonController)
@@ -58,9 +52,10 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headerTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      headerTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      tabViewController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      tabViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tabViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      tabViewController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
@@ -74,8 +69,6 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [exploreSettingsEntryPointButton]
-
-    headerTabSelectionView.delegate = self
   }
 
   @objc
@@ -98,11 +91,5 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
       NotificationsSettingsViewController(), animated: false)
     presentingViewController.modalPresentationStyle = .overFullScreen
     present(presentingViewController, animated: true)
-  }
-}
-
-extension NotificationsViewController: NotificationsTabSelectionViewDelegate {
-  func didTapTabButton(_ button: UIButton) {
-    selectedButton = button
   }
 }

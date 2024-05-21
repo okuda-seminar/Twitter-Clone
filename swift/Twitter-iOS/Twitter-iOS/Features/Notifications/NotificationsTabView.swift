@@ -1,5 +1,3 @@
-//
-
 import SwiftUI
 
 struct NotificationsTabModel: Identifiable {
@@ -14,7 +12,7 @@ struct NotificationsTabModel: Identifiable {
   }
 }
 
-struct NotificationsView: View {
+struct NotificationsTabView: View {
   @State private var tabs: [NotificationsTabModel] = [
     .init(id: .all),
     .init(id: .verified),
@@ -22,9 +20,10 @@ struct NotificationsView: View {
   ]
   @State private var activeTab: NotificationsTabModel.Tab = .all
   @State private var tabScrollState: NotificationsTabModel.Tab?
+  @State private var progress: CGFloat = .zero
 
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       TabBar()
 
       GeometryReader { reader in
@@ -38,6 +37,9 @@ struct NotificationsView: View {
             }
           }
           .scrollTargetLayout()
+          .rect { rect in
+            progress = -rect.minX / size.width
+          }
         }
         .scrollPosition(id: $tabScrollState)
         .scrollIndicators(.hidden)
@@ -59,7 +61,7 @@ struct NotificationsView: View {
     ScrollView(.horizontal) {
       HStack(spacing: 40) {
         Spacer()
-        ForEach(tabs) { tab in
+        ForEach($tabs) { $tab in
           Button(
             action: {
               withAnimation(.snappy) {
@@ -75,6 +77,10 @@ struct NotificationsView: View {
             }
           )
           .buttonStyle(.plain)
+          .rect { rect in
+            tab.size = rect.size
+            tab.minX = rect.minX
+          }
 
           Spacer()
         }
@@ -86,6 +92,17 @@ struct NotificationsView: View {
         Rectangle()
           .fill(.gray.opacity(0.3))
           .frame(height: 1)
+        let inputRange = tabs.indices.compactMap { return CGFloat($0) }
+        let outputRange = tabs.compactMap { return $0.size.width }
+        let outputPositionRange = tabs.compactMap { return $0.minX }
+
+        let indicatorWidth = progress.interpolate(inputRange: inputRange, outputRange: outputRange)
+        let indicatorPosition = progress.interpolate(
+          inputRange: inputRange, outputRange: outputPositionRange)
+        Rectangle()
+          .fill(Color(uiColor: .brandedBlue))
+          .frame(width: indicatorWidth, height: 1.5)
+          .offset(x: indicatorPosition)
       }
     }
     .scrollIndicators(.hidden)
@@ -93,5 +110,5 @@ struct NotificationsView: View {
 }
 
 #Preview {
-  NotificationsView()
+  NotificationsTabView()
 }
