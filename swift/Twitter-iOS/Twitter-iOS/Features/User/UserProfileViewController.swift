@@ -133,14 +133,14 @@ extension UserProfileViewController: UINavigationControllerDelegate {
 
 /// Currently only tab bar is implemented. but tab views will be added.
 struct UserProfileTabView: View {
-  @State private var tabs: [UserProfileDetailTabModel] = [
+  @State private var tabs: [UserProfileTabModel] = [
     .init(id: .posts),
     .init(id: .replies),
     .init(id: .highlights),
     .init(id: .media),
     .init(id: .likes),
   ]
-  @State private var activeTab: UserProfileDetailTabModel.Tab = .posts
+  @State private var activeTab: UserProfileTabModel.Tab = .posts
 
   var body: some View {
     VStack {

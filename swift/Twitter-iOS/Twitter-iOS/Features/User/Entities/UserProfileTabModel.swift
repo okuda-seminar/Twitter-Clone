@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct UserProfileDetailTabModel: Identifiable {
+struct UserProfileTabModel: Identifiable {
   private(set) var id: Tab
 
   enum Tab: String, CaseIterable {
