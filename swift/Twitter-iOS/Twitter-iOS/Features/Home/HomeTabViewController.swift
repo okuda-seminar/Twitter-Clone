@@ -157,6 +157,10 @@ extension HomeTabViewController: UICollectionViewDataSource {
         withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
       as! HomeTweetCollectionViewCell
     cell.tweet = tweets?[indexPath.row]
+    cell.userIconButton.addAction(
+      .init { _ in
+        self.delegate?.didTapUserIconInCell(cell)
+      }, for: .touchUpInside)
     let interaction = UIContextMenuInteraction(delegate: self)
     cell.addInteraction(interaction)
 
@@ -179,4 +183,5 @@ extension HomeTabViewController: UICollectionViewDelegateFlowLayout {
 protocol HomeTabViewControllerDelegate: AnyObject {
   func didScrollVertically(xDelta: CGFloat)
   func didTapTweetCell(_ cell: HomeTweetCollectionViewCell)
+  func didTapUserIconInCell(_ cell: HomeTweetCollectionViewCell)
 }

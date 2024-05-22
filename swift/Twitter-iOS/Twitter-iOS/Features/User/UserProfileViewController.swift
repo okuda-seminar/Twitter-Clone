@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 class UserProfileViewController: UIViewController {
@@ -45,6 +46,14 @@ class UserProfileViewController: UIViewController {
     return button
   }()
 
+  private lazy var tabViewHostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: UserProfileTabView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -54,8 +63,8 @@ class UserProfileViewController: UIViewController {
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(backButton)
-    view.addSubview(userNameLabel)
     view.addSubview(profileIconView)
+    view.addSubview(tabViewHostingController.view)
 
     backButton.addAction(
       .init { _ in
@@ -63,9 +72,6 @@ class UserProfileViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
       }, for: .touchUpInside)
-
-    userNameLabel.text = userName
-    userNameLabel.sizeToFit()
 
     let tapGestureRecognizer = UITapGestureRecognizer(
       target: self, action: #selector(presentUserProfileIconDetailViewController))
@@ -86,8 +92,9 @@ class UserProfileViewController: UIViewController {
       profileIconView.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
       profileIconView.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
 
-      userNameLabel.centerYAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
-      userNameLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor),
+      tabViewHostingController.view.topAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
+      tabViewHostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      tabViewHostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
     ])
 
     // Hide navigation bar
@@ -122,4 +129,53 @@ extension UserProfileViewController: UINavigationControllerDelegate {
       return nil
     }
   }
+}
+
+/// Currently only tab bar is implemented. but tab views will be added.
+struct UserProfileTabView: View {
+  @State private var tabs: [UserProfileDetailTabModel] = [
+    .init(id: .posts),
+    .init(id: .replies),
+    .init(id: .highlights),
+    .init(id: .media),
+    .init(id: .likes),
+  ]
+  @State private var activeTab: UserProfileDetailTabModel.Tab = .posts
+
+  var body: some View {
+    VStack {
+      TabBar()
+    }
+  }
+
+  @ViewBuilder
+  private func TabBar() -> some View {
+    // Need to make spacing compatible with iPad.
+    HStack {
+      ForEach(tabs) { tab in
+        Spacer()
+        Button(
+          action: {
+            activeTab = tab.id
+          },
+          label: {
+            // Need to associate tab id with localized strings and use them here.
+            Text(tab.id.rawValue)
+              .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
+          })
+        Spacer()
+      }
+    }
+    .overlay(alignment: .bottom) {
+      ZStack(alignment: .leading) {
+        Rectangle()
+          .fill(.gray.opacity(0.3))
+          .frame(height: 1)
+      }
+    }
+  }
+}
+
+#Preview {
+  UserProfileTabView()
 }

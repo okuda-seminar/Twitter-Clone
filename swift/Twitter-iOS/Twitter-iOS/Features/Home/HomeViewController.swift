@@ -212,20 +212,6 @@ extension HomeViewController: HomeTabSelectionButtonDelegate {
   }
 }
 
-//extension HomeViewController: HomeTweetCellViewDelegate {
-//  func didTapUserIconButton(userName: String, profileIcon: UIImage?) {
-//    let userProfileViewController = UserProfileViewController()
-//    userProfileViewController.userName = userName
-//    userProfileViewController.profileIcon = profileIcon
-//    navigationController?.pushViewController(userProfileViewController, animated: true)
-//  }
-//
-//  func didTapTweet() {
-//    let tweetDetailViewController = TweetDetailViewController()
-//    navigationController?.pushViewController(tweetDetailViewController, animated: true)
-//  }
-//}
-
 extension HomeViewController: HomeTabViewControllerDelegate {
   func didScrollVertically(xDelta: CGFloat) {
     UIView.animate(withDuration: 0.3) {
@@ -236,5 +222,13 @@ extension HomeViewController: HomeTabViewControllerDelegate {
   func didTapTweetCell(_ cell: HomeTweetCollectionViewCell) {
     let tweetDetailViewController = TweetDetailViewController()
     navigationController?.pushViewController(tweetDetailViewController, animated: true)
+  }
+
+  func didTapUserIconInCell(_ cell: HomeTweetCollectionViewCell) {
+    let userProfileViewController = UserProfileViewController()
+    guard let tweet = cell.tweet else { return }
+    userProfileViewController.userName = tweet.userName
+    userProfileViewController.profileIcon = tweet.userIcon
+    navigationController?.pushViewController(userProfileViewController, animated: true)
   }
 }
