@@ -64,11 +64,19 @@ func (s *tweetsSvc) CreateTweet(
 	return
 }
 
-// LikeTweet handles the action of a user liking a twee.
+// LikeTweet handles the action of a user liking a tweet.
 // Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
 func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/175
 	// - Implement LikeTweet API logic.
+	return nil
+}
+
+// DeleteTweetLile handles the action of a user deleting a tweet like.
+// Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
+func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLikePayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/193
+	// - Implement DeleteTweetLike API logic.
 	return nil
 }
 

@@ -195,3 +195,78 @@ func DecodeLikeTweetResponse(decoder func(*http.Response) goahttp.Decoder, resto
 		}
 	}
 }
+
+// BuildDeleteTweetLikeRequest instantiates a HTTP request object with method
+// and path set to call the "tweets" service "DeleteTweetLike" endpoint
+func (c *Client) BuildDeleteTweetLikeRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteTweetLikeTweetsPath()}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("tweets", "DeleteTweetLike", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeDeleteTweetLikeRequest returns an encoder for requests sent to the
+// tweets DeleteTweetLike server.
+func EncodeDeleteTweetLikeRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*tweets.DeleteTweetLikePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("tweets", "DeleteTweetLike", "*tweets.DeleteTweetLikePayload", v)
+		}
+		body := NewDeleteTweetLikeRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("tweets", "DeleteTweetLike", err)
+		}
+		return nil
+	}
+}
+
+// DecodeDeleteTweetLikeResponse returns a decoder for responses returned by
+// the tweets DeleteTweetLike endpoint. restoreBody controls whether the
+// response body should be restored after having been read.
+// DecodeDeleteTweetLikeResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeDeleteTweetLikeResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body DeleteTweetLikeBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("tweets", "DeleteTweetLike", err)
+			}
+			err = ValidateDeleteTweetLikeBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("tweets", "DeleteTweetLike", err)
+			}
+			return nil, NewDeleteTweetLikeBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("tweets", "DeleteTweetLike", resp.StatusCode, string(body))
+		}
+	}
+}

@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `tweets (create-tweet|like-tweet)
+	return `tweets (create-tweet|like-tweet|delete-tweet-like)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` tweets create-tweet --body '{
-      "text": "A vel debitis.",
-      "user_id": "Qui suscipit quasi autem est."
+      "text": "Voluptas omnis nesciunt incidunt et totam eos.",
+      "user_id": "Mollitia similique corporis."
    }'` + "\n" +
 		""
 }
@@ -52,10 +52,14 @@ func ParseEndpoint(
 
 		tweetsLikeTweetFlags    = flag.NewFlagSet("like-tweet", flag.ExitOnError)
 		tweetsLikeTweetBodyFlag = tweetsLikeTweetFlags.String("body", "REQUIRED", "")
+
+		tweetsDeleteTweetLikeFlags    = flag.NewFlagSet("delete-tweet-like", flag.ExitOnError)
+		tweetsDeleteTweetLikeBodyFlag = tweetsDeleteTweetLikeFlags.String("body", "REQUIRED", "")
 	)
 	tweetsFlags.Usage = tweetsUsage
 	tweetsCreateTweetFlags.Usage = tweetsCreateTweetUsage
 	tweetsLikeTweetFlags.Usage = tweetsLikeTweetUsage
+	tweetsDeleteTweetLikeFlags.Usage = tweetsDeleteTweetLikeUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -97,6 +101,9 @@ func ParseEndpoint(
 			case "like-tweet":
 				epf = tweetsLikeTweetFlags
 
+			case "delete-tweet-like":
+				epf = tweetsDeleteTweetLikeFlags
+
 			}
 
 		}
@@ -128,6 +135,9 @@ func ParseEndpoint(
 			case "like-tweet":
 				endpoint = c.LikeTweet()
 				data, err = tweetsc.BuildLikeTweetPayload(*tweetsLikeTweetBodyFlag)
+			case "delete-tweet-like":
+				endpoint = c.DeleteTweetLike()
+				data, err = tweetsc.BuildDeleteTweetLikePayload(*tweetsDeleteTweetLikeBodyFlag)
 			}
 		}
 	}
@@ -147,6 +157,7 @@ Usage:
 COMMAND:
     create-tweet: CreateTweet implements CreateTweet.
     like-tweet: LikeTweet implements LikeTweet.
+    delete-tweet-like: DeleteTweetLike implements DeleteTweetLike.
 
 Additional help:
     %[1]s tweets COMMAND --help
@@ -160,8 +171,8 @@ CreateTweet implements CreateTweet.
 
 Example:
     %[1]s tweets create-tweet --body '{
-      "text": "A vel debitis.",
-      "user_id": "Qui suscipit quasi autem est."
+      "text": "Voluptas omnis nesciunt incidunt et totam eos.",
+      "user_id": "Mollitia similique corporis."
    }'
 `, os.Args[0])
 }
@@ -174,8 +185,22 @@ LikeTweet implements LikeTweet.
 
 Example:
     %[1]s tweets like-tweet --body '{
-      "tweet_id": "Assumenda sed et dolorem similique qui perferendis.",
-      "user_id": "Omnis consequatur ea cupiditate aut nostrum labore."
+      "tweet_id": "Nostrum labore tempore officiis explicabo id.",
+      "user_id": "Dolores et."
+   }'
+`, os.Args[0])
+}
+
+func tweetsDeleteTweetLikeUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets delete-tweet-like -body JSON
+
+DeleteTweetLike implements DeleteTweetLike.
+    -body JSON: 
+
+Example:
+    %[1]s tweets delete-tweet-like --body '{
+      "tweet_id": "Ducimus nobis tenetur illo iste quo.",
+      "user_id": "Assumenda enim."
    }'
 `, os.Args[0])
 }
