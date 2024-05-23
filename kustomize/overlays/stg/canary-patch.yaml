@@ -16,5 +16,3 @@ spec:
       - pause: {duration: 10}
       - setWeight: 80
       - pause: {duration: 10}
-  replicas: 4
-
