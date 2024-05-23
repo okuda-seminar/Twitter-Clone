@@ -21,3 +21,10 @@ func (r *likesRepoImpl) CreateLike(ctx context.Context, tweet_id, user_id string
 	// - Implement LikeTweet API logic.
 	return nil
 }
+
+// DeleteLike deletes a like entry from 'likes' table.
+func (r *likesRepoImpl) DeleteLike(ctx context.Context, tweet_id, user_id string) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/193
+	// - Implement DeleteTweetLike API logic.
+	return nil
+}

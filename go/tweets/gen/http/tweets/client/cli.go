@@ -21,7 +21,7 @@ func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"A vel debitis.\",\n      \"user_id\": \"Qui suscipit quasi autem est.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Voluptas omnis nesciunt incidunt et totam eos.\",\n      \"user_id\": \"Mollitia similique corporis.\"\n   }'")
 		}
 	}
 	v := &tweets.CreateTweetPayload{
@@ -40,10 +40,29 @@ func BuildLikeTweetPayload(tweetsLikeTweetBody string) (*tweets.LikeTweetPayload
 	{
 		err = json.Unmarshal([]byte(tweetsLikeTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Assumenda sed et dolorem similique qui perferendis.\",\n      \"user_id\": \"Omnis consequatur ea cupiditate aut nostrum labore.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Nostrum labore tempore officiis explicabo id.\",\n      \"user_id\": \"Dolores et.\"\n   }'")
 		}
 	}
 	v := &tweets.LikeTweetPayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
+	}
+
+	return v, nil
+}
+
+// BuildDeleteTweetLikePayload builds the payload for the tweets
+// DeleteTweetLike endpoint from CLI flags.
+func BuildDeleteTweetLikePayload(tweetsDeleteTweetLikeBody string) (*tweets.DeleteTweetLikePayload, error) {
+	var err error
+	var body DeleteTweetLikeRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsDeleteTweetLikeBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Ducimus nobis tenetur illo iste quo.\",\n      \"user_id\": \"Assumenda enim.\"\n   }'")
+		}
+	}
+	v := &tweets.DeleteTweetLikePayload{
 		TweetID: body.TweetID,
 		UserID:  body.UserID,
 	}

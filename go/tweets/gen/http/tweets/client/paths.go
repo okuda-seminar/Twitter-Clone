@@ -16,3 +16,8 @@ func CreateTweetTweetsPath() string {
 func LikeTweetTweetsPath() string {
 	return "/api/tweets/like"
 }
+
+// DeleteTweetLikeTweetsPath returns the URL path to the tweets service DeleteTweetLike HTTP endpoint.
+func DeleteTweetLikeTweetsPath() string {
+	return "/api/tweets/like"
+}
