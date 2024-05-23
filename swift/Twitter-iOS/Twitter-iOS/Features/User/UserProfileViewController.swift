@@ -94,6 +94,7 @@ class UserProfileViewController: UIViewController {
 
       tabViewHostingController.view.topAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
       tabViewHostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      tabViewHostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
       tabViewHostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
     ])
 
@@ -182,23 +183,30 @@ struct UserProfileTabView: View {
 
   @ViewBuilder
   private func Tabs() -> some View {
-    ScrollView(.horizontal) {
-      LazyHStack(spacing: 0) {
-        ForEach(tabs) { tab in
-          Text("dummy tab")
-            .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
+    GeometryReader { geoProxy in
+      ScrollView(.horizontal) {
+        LazyHStack(spacing: 0) {
+          ForEach(tabs) { tab in
+            if tab.id == .posts {
+              UserPostsTabView()
+                .frame(width: geoProxy.size.width, height: geoProxy.size.height)
+            } else {
+              Text("dummy tab")
+                .frame(width: geoProxy.size.width, height: geoProxy.size.height, alignment: .center)
+            }
+          }
         }
+        .scrollTargetLayout()
       }
-      .scrollTargetLayout()
-    }
-    .scrollIndicators(.hidden)
-    .scrollTargetBehavior(.paging)
-    .scrollPosition(id: $tabToScroll)
-    .onChange(of: tabToScroll) { _, newValue in
-      if let newValue {
-        withAnimation {
-          tabToScroll = newValue
-          activeTab = newValue
+      .scrollIndicators(.hidden)
+      .scrollTargetBehavior(.paging)
+      .scrollPosition(id: $tabToScroll)
+      .onChange(of: tabToScroll) { _, newValue in
+        if let newValue {
+          withAnimation {
+            tabToScroll = newValue
+            activeTab = newValue
+          }
         }
       }
     }
