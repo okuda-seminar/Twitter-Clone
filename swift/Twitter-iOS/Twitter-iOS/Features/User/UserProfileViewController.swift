@@ -141,10 +141,12 @@ struct UserProfileTabView: View {
     .init(id: .likes),
   ]
   @State private var activeTab: UserProfileTabModel.Tab = .posts
+  @State private var tabToScroll: UserProfileTabModel.Tab?
 
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       TabBar()
+      Tabs()
     }
   }
 
@@ -156,7 +158,10 @@ struct UserProfileTabView: View {
         Spacer()
         Button(
           action: {
-            activeTab = tab.id
+            withAnimation(.snappy) {
+              activeTab = tab.id
+              tabToScroll = tab.id
+            }
           },
           label: {
             // Need to associate tab id with localized strings and use them here.
@@ -171,6 +176,30 @@ struct UserProfileTabView: View {
         Rectangle()
           .fill(.gray.opacity(0.3))
           .frame(height: 1)
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func Tabs() -> some View {
+    ScrollView(.horizontal) {
+      LazyHStack(spacing: 0) {
+        ForEach(tabs) { tab in
+          Text("dummy tab")
+            .frame(width: UIScreen.main.bounds.width, height: 100, alignment: .center)
+        }
+      }
+      .scrollTargetLayout()
+    }
+    .scrollIndicators(.hidden)
+    .scrollTargetBehavior(.paging)
+    .scrollPosition(id: $tabToScroll)
+    .onChange(of: tabToScroll) { _, newValue in
+      if let newValue {
+        withAnimation {
+          tabToScroll = newValue
+          activeTab = newValue
+        }
       }
     }
   }
