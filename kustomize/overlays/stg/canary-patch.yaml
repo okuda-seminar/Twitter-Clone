@@ -17,8 +17,4 @@ spec:
       - setWeight: 80
       - pause: {duration: 10}
   replicas: 4
-  revisionHistoryLimit: 4
-  selector:
-    matchLabels:
-      app: rollouts-deployment
 

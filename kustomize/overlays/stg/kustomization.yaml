@@ -7,6 +7,6 @@ bases:
 # resources:
 #   - canary-svc.yaml
 patchesStrategicMerge:
-  - canary-patch.yaml
+  # - canary-patch.yaml
   - deployment-patch.yaml
 
