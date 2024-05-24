@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -41,4 +42,25 @@ func (r *tweetsRepoImpl) CreateTweet(
 	}
 
 	return &tweet, nil
+}
+
+// DeleteTweet deletes a tweet with the specified tweet ID.
+func (r *tweetsRepoImpl) DeleteTweet(
+	ctx context.Context,
+	id string,
+) error {
+	query := "DELETE FROM tweets WHERE id = $1"
+	res, err := r.db.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count != 1 {
+		return errors.New("no row found to delete")
+	}
+
+	return nil
 }
