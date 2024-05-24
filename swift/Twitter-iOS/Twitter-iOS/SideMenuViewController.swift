@@ -69,8 +69,23 @@ struct SideMenuView: View {
       Text("@\(userName)")
 
       HStack {
-        Text("\(numOfFollowing) \(LocalizedString.following)")
-        Text("\(numOfFollowers) \(LocalizedString.followers)")
+        Button(
+          action: {
+            delegate?.didTapUserFollowRelationsButton(userName: userName)
+          },
+          label: {
+            Text("\(numOfFollowing) \(LocalizedString.following)")
+              .foregroundStyle(.black)
+          })
+
+        Button(
+          action: {
+            delegate?.didTapUserFollowRelationsButton(userName: userName)
+          },
+          label: {
+            Text("\(numOfFollowers) \(LocalizedString.followers)")
+              .foregroundStyle(.black)
+          })
       }
 
       Divider()
@@ -150,6 +165,7 @@ struct SideMenuView: View {
 protocol SideMenuViewDelegate: AnyObject {
   func didTapUserProfile()
   func didTapSettingsAndPrivacy()
+  func didTapUserFollowRelationsButton(userName: String)
 }
 
 private let fakeUser = createFakeUser()

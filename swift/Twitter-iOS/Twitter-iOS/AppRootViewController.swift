@@ -142,6 +142,17 @@ extension AppRootViewController: SideMenuViewDelegate {
     let settingsViewController = SettingsHomeViewController()
     selectedViewController.pushViewController(settingsViewController, animated: true)
   }
+
+  func didTapUserFollowRelationsButton(userName: String) {
+    hideSideMenu()
+    guard
+      let selectedViewController = mainRootViewController.selectedViewController
+        as? UINavigationController
+    else { return }
+    let userFollowRelationsViewController = UserFollowRelationsViewController()
+    userFollowRelationsViewController.userName = userName
+    selectedViewController.pushViewController(userFollowRelationsViewController, animated: true)
+  }
 }
 
 class ViewControllerWithUserIconButton: UIViewController {
