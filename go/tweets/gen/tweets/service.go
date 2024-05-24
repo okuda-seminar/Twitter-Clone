@@ -17,6 +17,8 @@ import (
 type Service interface {
 	// CreateTweet implements CreateTweet.
 	CreateTweet(context.Context, *CreateTweetPayload) (res *Tweet, err error)
+	// DeleteTweet implements DeleteTweet.
+	DeleteTweet(context.Context, *DeleteTweetPayload) (err error)
 	// LikeTweet implements LikeTweet.
 	LikeTweet(context.Context, *LikeTweetPayload) (err error)
 	// DeleteTweetLike implements DeleteTweetLike.
@@ -37,7 +39,7 @@ const ServiceName = "tweets"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [3]string{"CreateTweet", "LikeTweet", "DeleteTweetLike"}
+var MethodNames = [4]string{"CreateTweet", "DeleteTweet", "LikeTweet", "DeleteTweetLike"}
 
 // CreateTweetPayload is the payload type of the tweets service CreateTweet
 // method.
@@ -51,6 +53,12 @@ type CreateTweetPayload struct {
 type DeleteTweetLikePayload struct {
 	TweetID string
 	UserID  string
+}
+
+// DeleteTweetPayload is the payload type of the tweets service DeleteTweet
+// method.
+type DeleteTweetPayload struct {
+	ID string
 }
 
 // LikeTweetPayload is the payload type of the tweets service LikeTweet method.

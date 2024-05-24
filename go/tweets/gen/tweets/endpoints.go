@@ -16,6 +16,7 @@ import (
 // Endpoints wraps the "tweets" service endpoints.
 type Endpoints struct {
 	CreateTweet     goa.Endpoint
+	DeleteTweet     goa.Endpoint
 	LikeTweet       goa.Endpoint
 	DeleteTweetLike goa.Endpoint
 }
@@ -24,6 +25,7 @@ type Endpoints struct {
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
 		CreateTweet:     NewCreateTweetEndpoint(s),
+		DeleteTweet:     NewDeleteTweetEndpoint(s),
 		LikeTweet:       NewLikeTweetEndpoint(s),
 		DeleteTweetLike: NewDeleteTweetLikeEndpoint(s),
 	}
@@ -32,6 +34,7 @@ func NewEndpoints(s Service) *Endpoints {
 // Use applies the given middleware to all the "tweets" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CreateTweet = m(e.CreateTweet)
+	e.DeleteTweet = m(e.DeleteTweet)
 	e.LikeTweet = m(e.LikeTweet)
 	e.DeleteTweetLike = m(e.DeleteTweetLike)
 }
@@ -42,6 +45,15 @@ func NewCreateTweetEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
 		p := req.(*CreateTweetPayload)
 		return s.CreateTweet(ctx, p)
+	}
+}
+
+// NewDeleteTweetEndpoint returns an endpoint function that calls the method
+// "DeleteTweet" of service "tweets".
+func NewDeleteTweetEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*DeleteTweetPayload)
+		return nil, s.DeleteTweet(ctx, p)
 	}
 }
 

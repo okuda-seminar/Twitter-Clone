@@ -12,6 +12,11 @@ func CreateTweetTweetsPath() string {
 	return "/api/tweets"
 }
 
+// DeleteTweetTweetsPath returns the URL path to the tweets service DeleteTweet HTTP endpoint.
+func DeleteTweetTweetsPath() string {
+	return "/api/tweets"
+}
+
 // LikeTweetTweetsPath returns the URL path to the tweets service LikeTweet HTTP endpoint.
 func LikeTweetTweetsPath() string {
 	return "/api/tweets/like"
