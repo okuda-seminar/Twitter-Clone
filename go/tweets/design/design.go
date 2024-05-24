@@ -45,6 +45,21 @@ var _ = Service("tweets", func() {
 		})
 	})
 
+	Method("DeleteTweet", func() {
+		Payload(func() {
+			Field(1, "id", String)
+			Required("id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			DELETE("/api/tweets")
+			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Method("LikeTweet", func() {
 		Payload(func() {
 			Field(1, "tweet_id", String)
