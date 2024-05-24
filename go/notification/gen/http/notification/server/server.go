@@ -13,12 +13,14 @@ import (
 	notification "notification/gen/notification"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // Server lists the notification service endpoint HTTP handlers.
 type Server struct {
-	Mounts             []*MountPoint
-	GenHTTPOpenapiJSON http.Handler
+	Mounts                  []*MountPoint
+	CreateTweetNotification http.Handler
+	GenHTTPOpenapiJSON      http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -52,9 +54,11 @@ func New(
 	}
 	return &Server{
 		Mounts: []*MountPoint{
+			{"CreateTweetNotification", "DELETE", "/api/notification"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
-		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
+		CreateTweetNotification: NewCreateTweetNotificationHandler(e.CreateTweetNotification, mux, decoder, encoder, errhandler, formatter),
+		GenHTTPOpenapiJSON:      http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
 
@@ -63,6 +67,7 @@ func (s *Server) Service() string { return "notification" }
 
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
+	s.CreateTweetNotification = m(s.CreateTweetNotification)
 }
 
 // MethodNames returns the methods served.
@@ -70,12 +75,65 @@ func (s *Server) MethodNames() []string { return notification.MethodNames[:] }
 
 // Mount configures the mux to serve the notification endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
+	MountCreateTweetNotificationHandler(mux, h.CreateTweetNotification)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
 // Mount configures the mux to serve the notification endpoints.
 func (s *Server) Mount(mux goahttp.Muxer) {
 	Mount(mux, s)
+}
+
+// MountCreateTweetNotificationHandler configures the mux to serve the
+// "notification" service "CreateTweetNotification" endpoint.
+func MountCreateTweetNotificationHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("DELETE", "/api/notification", f)
+}
+
+// NewCreateTweetNotificationHandler creates a HTTP handler which loads the
+// HTTP request and calls the "notification" service "CreateTweetNotification"
+// endpoint.
+func NewCreateTweetNotificationHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeCreateTweetNotificationRequest(mux, decoder)
+		encodeResponse = EncodeCreateTweetNotificationResponse(encoder)
+		encodeError    = EncodeCreateTweetNotificationError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "CreateTweetNotification")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "notification")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
 }
 
 // MountGenHTTPOpenapiJSON configures the mux to serve GET request made to
