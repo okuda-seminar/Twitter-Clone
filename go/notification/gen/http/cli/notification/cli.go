@@ -11,6 +11,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	notificationc "notification/gen/http/notification/client"
 	"os"
 
 	goahttp "goa.design/goa/v3/http"
@@ -21,12 +22,17 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return ``
+	return `notification create-tweet-notification
+`
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return ""
+	return os.Args[0] + ` notification create-tweet-notification --body '{
+      "text": "Sint id soluta quos animi architecto libero.",
+      "tweet_id": "Itaque et magni accusantium fugit voluptatem."
+   }'` + "\n" +
+		""
 }
 
 // ParseEndpoint returns the endpoint and payload as specified on the command
@@ -38,7 +44,14 @@ func ParseEndpoint(
 	dec func(*http.Response) goahttp.Decoder,
 	restore bool,
 ) (goa.Endpoint, any, error) {
-	var ()
+	var (
+		notificationFlags = flag.NewFlagSet("notification", flag.ContinueOnError)
+
+		notificationCreateTweetNotificationFlags    = flag.NewFlagSet("create-tweet-notification", flag.ExitOnError)
+		notificationCreateTweetNotificationBodyFlag = notificationCreateTweetNotificationFlags.String("body", "REQUIRED", "")
+	)
+	notificationFlags.Usage = notificationUsage
+	notificationCreateTweetNotificationFlags.Usage = notificationCreateTweetNotificationUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -55,6 +68,8 @@ func ParseEndpoint(
 	{
 		svcn = flag.Arg(0)
 		switch svcn {
+		case "notification":
+			svcf = notificationFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -70,6 +85,13 @@ func ParseEndpoint(
 	{
 		epn = svcf.Arg(0)
 		switch svcn {
+		case "notification":
+			switch epn {
+			case "create-tweet-notification":
+				epf = notificationCreateTweetNotificationFlags
+
+			}
+
 		}
 	}
 	if epf == nil {
@@ -90,6 +112,13 @@ func ParseEndpoint(
 	)
 	{
 		switch svcn {
+		case "notification":
+			c := notificationc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "create-tweet-notification":
+				endpoint = c.CreateTweetNotification()
+				data, err = notificationc.BuildCreateTweetNotificationPayload(*notificationCreateTweetNotificationBodyFlag)
+			}
 		}
 	}
 	if err != nil {
@@ -97,4 +126,32 @@ func ParseEndpoint(
 	}
 
 	return endpoint, data, nil
+}
+
+// notificationUsage displays the usage of the notification command and its
+// subcommands.
+func notificationUsage() {
+	fmt.Fprintf(os.Stderr, `The notification service performs operations on notification information.
+Usage:
+    %[1]s [globalflags] notification COMMAND [flags]
+
+COMMAND:
+    create-tweet-notification: CreateTweetNotification implements CreateTweetNotification.
+
+Additional help:
+    %[1]s notification COMMAND --help
+`, os.Args[0])
+}
+func notificationCreateTweetNotificationUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] notification create-tweet-notification -body JSON
+
+CreateTweetNotification implements CreateTweetNotification.
+    -body JSON: 
+
+Example:
+    %[1]s notification create-tweet-notification --body '{
+      "text": "Sint id soluta quos animi architecto libero.",
+      "tweet_id": "Itaque et magni accusantium fugit voluptatem."
+   }'
+`, os.Args[0])
 }
