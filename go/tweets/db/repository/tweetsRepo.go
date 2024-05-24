@@ -9,6 +9,7 @@ import (
 
 type TweetsRepo interface {
 	CreateTweet(ctx context.Context, user_id uuid.UUID, text string) (*Tweet, error)
+	DeleteTweet(ctx context.Context, id string) error
 }
 
 // Tweet represents an entry of 'tweets' table.
