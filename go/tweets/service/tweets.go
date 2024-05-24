@@ -68,9 +68,11 @@ func (s *tweetsSvc) DeleteTweet(
 	ctx context.Context,
 	p *tweets.DeleteTweetPayload,
 ) (err error) {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
+	// - Discuss how we implement the test for DeleteTweet method.
 	err = s.tweetsRepo.DeleteTweet(ctx, p.ID)
 	if err != nil {
-		s.logger.Printf("users.DeleteTweet: failed (%s)", err)
+		s.logger.Printf("tweets.DeleteTweet: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
 	}
 
