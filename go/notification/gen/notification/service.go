@@ -7,8 +7,16 @@
 
 package notification
 
+import (
+	"context"
+
+	goa "goa.design/goa/v3/pkg"
+)
+
 // The notification service performs operations on notification information.
 type Service interface {
+	// CreateTweetNotification implements CreateTweetNotification.
+	CreateTweetNotification(context.Context, *CreateTweetNotificationPayload) (err error)
 }
 
 // APIName is the name of the API as defined in the design.
@@ -25,4 +33,16 @@ const ServiceName = "notification"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [0]string{}
+var MethodNames = [1]string{"CreateTweetNotification"}
+
+// CreateTweetNotificationPayload is the payload type of the notification
+// service CreateTweetNotification method.
+type CreateTweetNotificationPayload struct {
+	TweetID string
+	Text    string
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
+}

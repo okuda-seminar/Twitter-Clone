@@ -6,3 +6,8 @@
 // $ goa gen notification/design
 
 package server
+
+// CreateTweetNotificationNotificationPath returns the URL path to the notification service CreateTweetNotification HTTP endpoint.
+func CreateTweetNotificationNotificationPath() string {
+	return "/api/notification"
+}
