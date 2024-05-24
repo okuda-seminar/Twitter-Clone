@@ -64,6 +64,20 @@ func (s *tweetsSvc) CreateTweet(
 	return
 }
 
+func (s *tweetsSvc) DeleteTweet(
+	ctx context.Context,
+	p *tweets.DeleteTweetPayload,
+) (err error) {
+	err = s.tweetsRepo.DeleteTweet(ctx, p.ID)
+	if err != nil {
+		s.logger.Printf("users.DeleteTweet: failed (%s)", err)
+		return tweets.MakeBadRequest(err)
+	}
+
+	s.logger.Printf("tweets.DeleteTweet")
+	return
+}
+
 // LikeTweet handles the action of a user liking a tweet.
 // Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
 func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) error {
@@ -72,7 +86,7 @@ func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) e
 	return nil
 }
 
-// DeleteTweetLile handles the action of a user deleting a tweet like.
+// DeleteTweetLike handles the action of a user deleting a tweet like.
 // Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
 func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLikePayload) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/193
