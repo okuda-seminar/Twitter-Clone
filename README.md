@@ -13,6 +13,7 @@ This README lists up things to note for our efficient development.
 
 ## PR / Review
 - Use useful tools like ChatGPT, Gemini, or Grammaly to correct / improve your comments. Especially, correcting your grammar should not take reviewer's time.
+- Check if both your issue and PR are properly labeled.
 - Confirm reviewer's avilable time before sending PR.
 - Everyone in this project needs to merge at least 1 PR per week to continue to join.
 - Align your commit title with your PR title. This means you should create only 1 commit for each PR.
