@@ -6,9 +6,9 @@ This README lists up things to note for our efficient development.
 - Tasks by the next week should be determined by the end of each offline activity day.
 
 ## Development
-- Add prefix like [iOS] for each commit / issue / PR.
+- Add prefix like `[iOS]` for each commit / issue / PR.
 - Add TODO for showing your understanding. This can save reviewer's time.
-- TODO should be like: // TODO: GITHUB_ISSUE_LIKE - GITHUB_ISSUE_TITLE. [examples](https://github.com/search?q=repo%3Aokuda-seminar%2FTwitter-Clone%20TODO&type=code)
+- TODO should be like: `// TODO: GITHUB_ISSUE_LIKE - GITHUB_ISSUE_TITLE`. [examples](https://github.com/search?q=repo%3Aokuda-seminar%2FTwitter-Clone%20TODO&type=code)
 - Push development branch for your reference if needed (but only 1 development branch should be pushed. Otherwise, a lot of development branches will be listed on GitHub and things can be easily messed up). If you have difficulty in resolving rebase conflicts, you can create a new feature branch and check your development branch on GitHub. This will help you copy and paste your code in the new feature branch. After that, you can update your remote feature branch with your new local one. Please do not forget adding your username as a prefix of your development branch like: `ryuji0123_development`
 
 ## PR / Review
