@@ -16,14 +16,16 @@ import (
 // Client is the "tweets" service client.
 type Client struct {
 	CreateTweetEndpoint     goa.Endpoint
+	DeleteTweetEndpoint     goa.Endpoint
 	LikeTweetEndpoint       goa.Endpoint
 	DeleteTweetLikeEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "tweets" service client given the endpoints.
-func NewClient(createTweet, likeTweet, deleteTweetLike goa.Endpoint) *Client {
+func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike goa.Endpoint) *Client {
 	return &Client{
 		CreateTweetEndpoint:     createTweet,
+		DeleteTweetEndpoint:     deleteTweet,
 		LikeTweetEndpoint:       likeTweet,
 		DeleteTweetLikeEndpoint: deleteTweetLike,
 	}
@@ -41,6 +43,16 @@ func (c *Client) CreateTweet(ctx context.Context, p *CreateTweetPayload) (res *T
 		return
 	}
 	return ires.(*Tweet), nil
+}
+
+// DeleteTweet calls the "DeleteTweet" endpoint of the "tweets" service.
+// DeleteTweet may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) DeleteTweet(ctx context.Context, p *DeleteTweetPayload) (err error) {
+	_, err = c.DeleteTweetEndpoint(ctx, p)
+	return
 }
 
 // LikeTweet calls the "LikeTweet" endpoint of the "tweets" service.

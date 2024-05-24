@@ -21,6 +21,10 @@ type Client struct {
 	// endpoint.
 	CreateTweetDoer goahttp.Doer
 
+	// DeleteTweet Doer is the HTTP client used to make requests to the DeleteTweet
+	// endpoint.
+	DeleteTweetDoer goahttp.Doer
+
 	// LikeTweet Doer is the HTTP client used to make requests to the LikeTweet
 	// endpoint.
 	LikeTweetDoer goahttp.Doer
@@ -50,6 +54,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		CreateTweetDoer:     doer,
+		DeleteTweetDoer:     doer,
 		LikeTweetDoer:       doer,
 		DeleteTweetLikeDoer: doer,
 		RestoreResponseBody: restoreBody,
@@ -79,6 +84,30 @@ func (c *Client) CreateTweet() goa.Endpoint {
 		resp, err := c.CreateTweetDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("tweets", "CreateTweet", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// DeleteTweet returns an endpoint that makes HTTP requests to the tweets
+// service DeleteTweet server.
+func (c *Client) DeleteTweet() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeDeleteTweetRequest(c.encoder)
+		decodeResponse = DecodeDeleteTweetResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildDeleteTweetRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.DeleteTweetDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("tweets", "DeleteTweet", err)
 		}
 		return decodeResponse(resp)
 	}
