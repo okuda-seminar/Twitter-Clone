@@ -52,6 +52,20 @@ type UnfollowRequestBody struct {
 	FolloweeID string `form:"followee_id" json:"followee_id" xml:"followee_id"`
 }
 
+// MuteRequestBody is the type of the "users" service "Mute" endpoint HTTP
+// request body.
+type MuteRequestBody struct {
+	MutedUserID  string `form:"muted_user_id" json:"muted_user_id" xml:"muted_user_id"`
+	MutingUserID string `form:"muting_user_id" json:"muting_user_id" xml:"muting_user_id"`
+}
+
+// UnmuteRequestBody is the type of the "users" service "Unmute" endpoint HTTP
+// request body.
+type UnmuteRequestBody struct {
+	MutedUserID  string `form:"muted_user_id" json:"muted_user_id" xml:"muted_user_id"`
+	MutingUserID string `form:"muting_user_id" json:"muting_user_id" xml:"muting_user_id"`
+}
+
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
@@ -298,6 +312,42 @@ type GetFollowingsBadRequestResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// MuteBadRequestResponseBody is the type of the "users" service "Mute"
+// endpoint HTTP response body for the "BadRequest" error.
+type MuteBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UnmuteBadRequestResponseBody is the type of the "users" service "Unmute"
+// endpoint HTTP response body for the "BadRequest" error.
+type UnmuteBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	ID          *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
@@ -361,6 +411,26 @@ func NewUnfollowRequestBody(p *users.UnfollowPayload) *UnfollowRequestBody {
 	body := &UnfollowRequestBody{
 		FollowerID: p.FollowerID,
 		FolloweeID: p.FolloweeID,
+	}
+	return body
+}
+
+// NewMuteRequestBody builds the HTTP request body from the payload of the
+// "Mute" endpoint of the "users" service.
+func NewMuteRequestBody(p *users.MutePayload) *MuteRequestBody {
+	body := &MuteRequestBody{
+		MutedUserID:  p.MutedUserID,
+		MutingUserID: p.MutingUserID,
+	}
+	return body
+}
+
+// NewUnmuteRequestBody builds the HTTP request body from the payload of the
+// "Unmute" endpoint of the "users" service.
+func NewUnmuteRequestBody(p *users.UnmutePayload) *UnmuteRequestBody {
+	body := &UnmuteRequestBody{
+		MutedUserID:  p.MutedUserID,
+		MutingUserID: p.MutingUserID,
 	}
 	return body
 }
@@ -584,6 +654,34 @@ func NewGetFollowingsUserOK(body []*UserResponse) []*users.User {
 // NewGetFollowingsBadRequest builds a users service GetFollowings endpoint
 // BadRequest error.
 func NewGetFollowingsBadRequest(body *GetFollowingsBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewMuteBadRequest builds a users service Mute endpoint BadRequest error.
+func NewMuteBadRequest(body *MuteBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewUnmuteBadRequest builds a users service Unmute endpoint BadRequest error.
+func NewUnmuteBadRequest(body *UnmuteBadRequestResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -929,6 +1027,54 @@ func ValidateGetFollowersBadRequestResponseBody(body *GetFollowersBadRequestResp
 // ValidateGetFollowingsBadRequestResponseBody runs the validations defined on
 // GetFollowings_BadRequest_Response_Body
 func ValidateGetFollowingsBadRequestResponseBody(body *GetFollowingsBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateMuteBadRequestResponseBody runs the validations defined on
+// Mute_BadRequest_Response_Body
+func ValidateMuteBadRequestResponseBody(body *MuteBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUnmuteBadRequestResponseBody runs the validations defined on
+// Unmute_BadRequest_Response_Body
+func ValidateUnmuteBadRequestResponseBody(body *UnmuteBadRequestResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

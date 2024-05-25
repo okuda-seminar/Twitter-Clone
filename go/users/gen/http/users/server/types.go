@@ -52,6 +52,20 @@ type UnfollowRequestBody struct {
 	FolloweeID *string `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
 }
 
+// MuteRequestBody is the type of the "users" service "Mute" endpoint HTTP
+// request body.
+type MuteRequestBody struct {
+	MutedUserID  *string `form:"muted_user_id,omitempty" json:"muted_user_id,omitempty" xml:"muted_user_id,omitempty"`
+	MutingUserID *string `form:"muting_user_id,omitempty" json:"muting_user_id,omitempty" xml:"muting_user_id,omitempty"`
+}
+
+// UnmuteRequestBody is the type of the "users" service "Unmute" endpoint HTTP
+// request body.
+type UnmuteRequestBody struct {
+	MutedUserID  *string `form:"muted_user_id,omitempty" json:"muted_user_id,omitempty" xml:"muted_user_id,omitempty"`
+	MutingUserID *string `form:"muting_user_id,omitempty" json:"muting_user_id,omitempty" xml:"muting_user_id,omitempty"`
+}
+
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
@@ -298,6 +312,42 @@ type GetFollowingsBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// MuteBadRequestResponseBody is the type of the "users" service "Mute"
+// endpoint HTTP response body for the "BadRequest" error.
+type MuteBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UnmuteBadRequestResponseBody is the type of the "users" service "Unmute"
+// endpoint HTTP response body for the "BadRequest" error.
+type UnmuteBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	ID          string `form:"id" json:"id" xml:"id"`
@@ -524,6 +574,34 @@ func NewGetFollowingsBadRequestResponseBody(res *goa.ServiceError) *GetFollowing
 	return body
 }
 
+// NewMuteBadRequestResponseBody builds the HTTP response body from the result
+// of the "Mute" endpoint of the "users" service.
+func NewMuteBadRequestResponseBody(res *goa.ServiceError) *MuteBadRequestResponseBody {
+	body := &MuteBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUnmuteBadRequestResponseBody builds the HTTP response body from the
+// result of the "Unmute" endpoint of the "users" service.
+func NewUnmuteBadRequestResponseBody(res *goa.ServiceError) *UnmuteBadRequestResponseBody {
+	body := &UnmuteBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateUserPayload builds a users service CreateUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload {
 	v := &users.CreateUserPayload{
@@ -609,6 +687,26 @@ func NewGetFollowingsPayload(id string) *users.GetFollowingsPayload {
 	return v
 }
 
+// NewMutePayload builds a users service Mute endpoint payload.
+func NewMutePayload(body *MuteRequestBody) *users.MutePayload {
+	v := &users.MutePayload{
+		MutedUserID:  *body.MutedUserID,
+		MutingUserID: *body.MutingUserID,
+	}
+
+	return v
+}
+
+// NewUnmutePayload builds a users service Unmute endpoint payload.
+func NewUnmutePayload(body *UnmuteRequestBody) *users.UnmutePayload {
+	v := &users.UnmutePayload{
+		MutedUserID:  *body.MutedUserID,
+		MutingUserID: *body.MutingUserID,
+	}
+
+	return v
+}
+
 // ValidateCreateUserRequestBody runs the validations defined on
 // CreateUserRequestBody
 func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
@@ -667,6 +765,28 @@ func ValidateUnfollowRequestBody(body *UnfollowRequestBody) (err error) {
 	}
 	if body.FolloweeID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
+	}
+	return
+}
+
+// ValidateMuteRequestBody runs the validations defined on MuteRequestBody
+func ValidateMuteRequestBody(body *MuteRequestBody) (err error) {
+	if body.MutedUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("muted_user_id", "body"))
+	}
+	if body.MutingUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
+	}
+	return
+}
+
+// ValidateUnmuteRequestBody runs the validations defined on UnmuteRequestBody
+func ValidateUnmuteRequestBody(body *UnmuteRequestBody) (err error) {
+	if body.MutedUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("muted_user_id", "body"))
+	}
+	if body.MutingUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
 	}
 	return
 }

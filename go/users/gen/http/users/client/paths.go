@@ -55,3 +55,13 @@ func GetFollowersUsersPath(id string) string {
 func GetFollowingsUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v/followings", id)
 }
+
+// MuteUsersPath returns the URL path to the users service Mute HTTP endpoint.
+func MuteUsersPath() string {
+	return "/api/users/mute"
+}
+
+// UnmuteUsersPath returns the URL path to the users service Unmute HTTP endpoint.
+func UnmuteUsersPath() string {
+	return "/api/users/mute"
+}

@@ -28,6 +28,8 @@ type Server struct {
 	Unfollow           http.Handler
 	GetFollowers       http.Handler
 	GetFollowings      http.Handler
+	Mute               http.Handler
+	Unmute             http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -71,6 +73,8 @@ func New(
 			{"Unfollow", "DELETE", "/api/users/follow"},
 			{"GetFollowers", "GET", "/api/users/{id}/followers"},
 			{"GetFollowings", "GET", "/api/users/{id}/followings"},
+			{"Mute", "POST", "/api/users/mute"},
+			{"Unmute", "DELETE", "/api/users/mute"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
@@ -82,6 +86,8 @@ func New(
 		Unfollow:           NewUnfollowHandler(e.Unfollow, mux, decoder, encoder, errhandler, formatter),
 		GetFollowers:       NewGetFollowersHandler(e.GetFollowers, mux, decoder, encoder, errhandler, formatter),
 		GetFollowings:      NewGetFollowingsHandler(e.GetFollowings, mux, decoder, encoder, errhandler, formatter),
+		Mute:               NewMuteHandler(e.Mute, mux, decoder, encoder, errhandler, formatter),
+		Unmute:             NewUnmuteHandler(e.Unmute, mux, decoder, encoder, errhandler, formatter),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -100,6 +106,8 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Unfollow = m(s.Unfollow)
 	s.GetFollowers = m(s.GetFollowers)
 	s.GetFollowings = m(s.GetFollowings)
+	s.Mute = m(s.Mute)
+	s.Unmute = m(s.Unmute)
 }
 
 // MethodNames returns the methods served.
@@ -116,6 +124,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountUnfollowHandler(mux, h.Unfollow)
 	MountGetFollowersHandler(mux, h.GetFollowers)
 	MountGetFollowingsHandler(mux, h.GetFollowings)
+	MountMuteHandler(mux, h.Mute)
+	MountUnmuteHandler(mux, h.Unmute)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -562,6 +572,108 @@ func NewGetFollowingsHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "GetFollowings")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountMuteHandler configures the mux to serve the "users" service "Mute"
+// endpoint.
+func MountMuteHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/users/mute", f)
+}
+
+// NewMuteHandler creates a HTTP handler which loads the HTTP request and calls
+// the "users" service "Mute" endpoint.
+func NewMuteHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeMuteRequest(mux, decoder)
+		encodeResponse = EncodeMuteResponse(encoder)
+		encodeError    = EncodeMuteError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Mute")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountUnmuteHandler configures the mux to serve the "users" service "Unmute"
+// endpoint.
+func MountUnmuteHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("DELETE", "/api/users/mute", f)
+}
+
+// NewUnmuteHandler creates a HTTP handler which loads the HTTP request and
+// calls the "users" service "Unmute" endpoint.
+func NewUnmuteHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeUnmuteRequest(mux, decoder)
+		encodeResponse = EncodeUnmuteResponse(encoder)
+		encodeError    = EncodeUnmuteError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Unmute")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {

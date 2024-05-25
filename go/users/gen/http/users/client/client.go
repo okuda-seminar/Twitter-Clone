@@ -52,6 +52,12 @@ type Client struct {
 	// GetFollowings endpoint.
 	GetFollowingsDoer goahttp.Doer
 
+	// Mute Doer is the HTTP client used to make requests to the Mute endpoint.
+	MuteDoer goahttp.Doer
+
+	// Unmute Doer is the HTTP client used to make requests to the Unmute endpoint.
+	UnmuteDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -81,6 +87,8 @@ func NewClient(
 		UnfollowDoer:        doer,
 		GetFollowersDoer:    doer,
 		GetFollowingsDoer:   doer,
+		MuteDoer:            doer,
+		UnmuteDoer:          doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -285,6 +293,54 @@ func (c *Client) GetFollowings() goa.Endpoint {
 		resp, err := c.GetFollowingsDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("users", "GetFollowings", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Mute returns an endpoint that makes HTTP requests to the users service Mute
+// server.
+func (c *Client) Mute() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeMuteRequest(c.encoder)
+		decodeResponse = DecodeMuteResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildMuteRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.MuteDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Mute", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Unmute returns an endpoint that makes HTTP requests to the users service
+// Unmute server.
+func (c *Client) Unmute() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUnmuteRequest(c.encoder)
+		decodeResponse = DecodeUnmuteResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUnmuteRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UnmuteDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Unmute", err)
 		}
 		return decodeResponse(resp)
 	}
