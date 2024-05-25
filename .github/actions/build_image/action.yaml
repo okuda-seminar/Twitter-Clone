@@ -46,6 +46,6 @@ runs:
       uses: docker/build-push-action@v2
       with:
         context: ${{ inputs.context }}
-        file: ${{ inputs.context }}/docker/sample.Dockerfile
+        file: ${{ inputs.context }}/docker/Dockerfile
         push: true
         tags: kawa1/twitter-clone:${{ env.IMAGE_TAG }}
