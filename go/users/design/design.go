@@ -156,5 +156,35 @@ var _ = Service("users", func() {
 		})
 	})
 
+	Method("Mute", func() {
+		Payload(func() {
+			Field(1, "muted_user_id", String)
+			Field(2, "muting_user_id", String)
+			Required("muted_user_id", "muting_user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/users/mute")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("Unmute", func() {
+		Payload(func() {
+			Field(1, "muted_user_id", String)
+			Field(2, "muting_user_id", String)
+			Required("muted_user_id", "muting_user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			DELETE("/api/users/mute")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })

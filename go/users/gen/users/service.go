@@ -33,6 +33,10 @@ type Service interface {
 	GetFollowers(context.Context, *GetFollowersPayload) (res []*User, err error)
 	// GetFollowings implements GetFollowings.
 	GetFollowings(context.Context, *GetFollowingsPayload) (res []*User, err error)
+	// Mute implements Mute.
+	Mute(context.Context, *MutePayload) (err error)
+	// Unmute implements Unmute.
+	Unmute(context.Context, *UnmutePayload) (err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -43,7 +47,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [9]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings"}
+var MethodNames = [11]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings", "Mute", "Unmute"}
 
 // CreateUserPayload is the payload type of the users service CreateUser method.
 type CreateUserPayload struct {
@@ -80,10 +84,22 @@ type GetFollowingsPayload struct {
 	ID string
 }
 
+// MutePayload is the payload type of the users service Mute method.
+type MutePayload struct {
+	MutedUserID  string
+	MutingUserID string
+}
+
 // UnfollowPayload is the payload type of the users service Unfollow method.
 type UnfollowPayload struct {
 	FollowerID string
 	FolloweeID string
+}
+
+// UnmutePayload is the payload type of the users service Unmute method.
+type UnmutePayload struct {
+	MutedUserID  string
+	MutingUserID string
 }
 
 // UpdateBioPayload is the payload type of the users service UpdateBio method.

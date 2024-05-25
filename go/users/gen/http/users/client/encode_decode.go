@@ -805,6 +805,156 @@ func DecodeGetFollowingsResponse(decoder func(*http.Response) goahttp.Decoder, r
 	}
 }
 
+// BuildMuteRequest instantiates a HTTP request object with method and path set
+// to call the "users" service "Mute" endpoint
+func (c *Client) BuildMuteRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: MuteUsersPath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "Mute", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeMuteRequest returns an encoder for requests sent to the users Mute
+// server.
+func EncodeMuteRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.MutePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "Mute", "*users.MutePayload", v)
+		}
+		body := NewMuteRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("users", "Mute", err)
+		}
+		return nil
+	}
+}
+
+// DecodeMuteResponse returns a decoder for responses returned by the users
+// Mute endpoint. restoreBody controls whether the response body should be
+// restored after having been read.
+// DecodeMuteResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeMuteResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body MuteBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "Mute", err)
+			}
+			err = ValidateMuteBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "Mute", err)
+			}
+			return nil, NewMuteBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "Mute", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildUnmuteRequest instantiates a HTTP request object with method and path
+// set to call the "users" service "Unmute" endpoint
+func (c *Client) BuildUnmuteRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnmuteUsersPath()}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("users", "Unmute", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeUnmuteRequest returns an encoder for requests sent to the users Unmute
+// server.
+func EncodeUnmuteRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*users.UnmutePayload)
+		if !ok {
+			return goahttp.ErrInvalidType("users", "Unmute", "*users.UnmutePayload", v)
+		}
+		body := NewUnmuteRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("users", "Unmute", err)
+		}
+		return nil
+	}
+}
+
+// DecodeUnmuteResponse returns a decoder for responses returned by the users
+// Unmute endpoint. restoreBody controls whether the response body should be
+// restored after having been read.
+// DecodeUnmuteResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeUnmuteResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body UnmuteBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("users", "Unmute", err)
+			}
+			err = ValidateUnmuteBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("users", "Unmute", err)
+			}
+			return nil, NewUnmuteBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("users", "Unmute", resp.StatusCode, string(body))
+		}
+	}
+}
+
 // unmarshalUserResponseToUsersUser builds a value of type *users.User from a
 // value of type *UserResponse.
 func unmarshalUserResponseToUsersUser(v *UserResponse) *users.User {

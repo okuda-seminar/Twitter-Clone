@@ -258,6 +258,53 @@ paths:
                         $ref: '#/definitions/UsersUnfollowBadRequestResponseBody'
             schemes:
                 - http
+    /api/users/mute:
+        post:
+            tags:
+                - users
+            summary: Mute users
+            operationId: users#Mute
+            parameters:
+                - name: MuteRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/UsersMuteRequestBody'
+                    required:
+                        - muted_user_id
+                        - muting_user_id
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/UsersMuteBadRequestResponseBody'
+            schemes:
+                - http
+        delete:
+            tags:
+                - users
+            summary: Unmute users
+            operationId: users#Unmute
+            parameters:
+                - name: UnmuteRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/UsersUnmuteRequestBody'
+                    required:
+                        - muted_user_id
+                        - muting_user_id
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/UsersUnmuteBadRequestResponseBody'
+            schemes:
+                - http
     /swagger.json:
         get:
             tags:
@@ -278,32 +325,32 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Quasi dolorem enim magni voluptatem.
+                example: Et quia fugit.
             created_at:
                 type: string
-                example: "1982-04-20T16:08:09Z"
+                example: "1979-01-29T21:38:47Z"
                 format: date-time
             display_name:
                 type: string
-                example: Aspernatur qui.
+                example: Beatae aut occaecati necessitatibus et sunt.
             id:
                 type: string
-                example: 8b514d19-0c6f-11ef-b1fe-0242ac120003
+                example: 86cd51d8-1b66-11ef-ad04-eed4b658b2e4
                 format: uuid
             updated_at:
                 type: string
-                example: "1984-02-04T06:21:18Z"
+                example: "1980-03-16T18:04:20Z"
                 format: date-time
             username:
                 type: string
-                example: Ratione doloribus voluptatibus autem natus.
+                example: Laborum ea est sint.
         example:
-            bio: Pariatur esse et officia dignissimos ipsum perferendis.
-            created_at: "2006-11-30T08:24:44Z"
-            display_name: Unde quas veniam quod dolor enim ullam.
-            id: 8b514fb3-0c6f-11ef-b1fe-0242ac120003
-            updated_at: "1974-12-18T20:14:58Z"
-            username: Delectus quia perferendis ut cupiditate.
+            bio: Aperiam quo assumenda animi non ut.
+            created_at: "2007-07-30T20:22:06Z"
+            display_name: Sit doloribus ut eius et id distinctio.
+            id: 86cd5688-1b66-11ef-ad04-eed4b658b2e4
+            updated_at: "1974-07-08T20:59:30Z"
+            username: Dolorem voluptatem ut id tempora odit est.
         required:
             - id
             - username
@@ -318,7 +365,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -334,19 +381,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: CreateUser_BadRequest_Response_Body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -360,13 +407,13 @@ definitions:
         properties:
             display_name:
                 type: string
-                example: Est doloremque fugit nisi beatae assumenda vel.
+                example: Quia enim consequatur saepe adipisci qui itaque.
             username:
                 type: string
-                example: Consequuntur vero esse esse cupiditate qui ipsam.
+                example: Enim est.
         example:
-            display_name: Eum est aut magni porro eveniet.
-            username: Architecto ducimus.
+            display_name: Ut numquam.
+            username: Eligendi inventore.
         required:
             - username
             - display_name
@@ -376,32 +423,32 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Commodi ullam in quibusdam dignissimos.
+                example: Omnis iusto.
             created_at:
                 type: string
-                example: "2004-09-28T08:56:04Z"
+                example: "1989-06-12T02:57:48Z"
                 format: date-time
             display_name:
                 type: string
-                example: Aut ut eum odio fuga.
+                example: Et odio dolores laborum architecto.
             id:
                 type: string
-                example: 8b513a85-0c6f-11ef-b1fe-0242ac120003
+                example: 86cd3158-1b66-11ef-ad04-eed4b658b2e4
                 format: uuid
             updated_at:
                 type: string
-                example: "1988-12-24T20:27:22Z"
+                example: "1990-03-08T15:36:40Z"
                 format: date-time
             username:
                 type: string
-                example: Quo earum odit expedita.
+                example: Aut blanditiis quos voluptas qui.
         example:
-            bio: Omnis voluptates nulla earum dolor in ducimus.
-            created_at: "2001-12-14T01:19:27Z"
-            display_name: Ut et explicabo pariatur et magni ea.
-            id: 8b513d6c-0c6f-11ef-b1fe-0242ac120003
-            updated_at: "1985-01-03T18:06:08Z"
-            username: Voluptas et.
+            bio: At corporis est aut repellendus ullam.
+            created_at: "2007-06-22T00:32:40Z"
+            display_name: Sapiente ad sapiente magni perspiciatis distinctio neque.
+            id: 86cd36a8-1b66-11ef-ad04-eed4b658b2e4
+            updated_at: "1982-06-28T09:41:12Z"
+            username: Veritatis ratione explicabo mollitia modi harum qui.
         required:
             - id
             - username
@@ -416,7 +463,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -436,7 +483,7 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: DeleteUser_BadRequest_Response_Body result type (default view)
         example:
             fault: false
@@ -475,7 +522,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -486,8 +533,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -501,9 +548,9 @@ definitions:
         properties:
             id:
                 type: string
-                example: Expedita temporibus quis in explicabo.
+                example: Odit repellendus.
         example:
-            id: Distinctio vel harum omnis necessitatibus temporibus.
+            id: Laborum a aut rem est.
         required:
             - id
     UsersFindUserByIDNotFoundResponseBody:
@@ -513,7 +560,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -540,8 +587,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -555,32 +602,32 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Aut rem est voluptatem tempora sed.
+                example: Commodi nam et autem illo eum distinctio.
             created_at:
                 type: string
-                example: "2015-03-01T00:06:59Z"
+                example: "1984-05-06T12:54:36Z"
                 format: date-time
             display_name:
                 type: string
-                example: Et architecto odit repellendus deserunt laborum.
+                example: Ipsa nihil quae earum molestiae.
             id:
                 type: string
-                example: 8b5142b8-0c6f-11ef-b1fe-0242ac120003
+                example: 86cd4134-1b66-11ef-ad04-eed4b658b2e4
                 format: uuid
             updated_at:
                 type: string
-                example: "2015-02-05T08:44:04Z"
+                example: "2015-11-12T05:29:57Z"
                 format: date-time
             username:
                 type: string
-                example: Quod aut.
+                example: Quia dolore quia.
         example:
-            bio: Aut repellat voluptatibus et.
-            created_at: "1980-03-17T18:49:27Z"
-            display_name: Explicabo molestias molestias.
-            id: 8b514567-0c6f-11ef-b1fe-0242ac120003
-            updated_at: "1970-03-09T06:20:25Z"
-            username: Culpa repellendus.
+            bio: Suscipit molestiae enim in ut.
+            created_at: "1987-03-23T08:24:25Z"
+            display_name: Deserunt beatae qui iure vel placeat.
+            id: 86cd4580-1b66-11ef-ad04-eed4b658b2e4
+            updated_at: "1991-10-04T18:19:05Z"
+            username: Soluta voluptatum.
         required:
             - id
             - username
@@ -615,7 +662,7 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: Follow_BadRequest_Response_Body result type (default view)
         example:
             fault: true
@@ -637,13 +684,13 @@ definitions:
         properties:
             followee_id:
                 type: string
-                example: Consequatur est.
+                example: Ea sit quam aut eveniet temporibus consequatur.
             follower_id:
                 type: string
-                example: Qui occaecati.
+                example: Reprehenderit impedit autem ut nulla.
         example:
-            followee_id: Nesciunt dolores in voluptas perferendis iusto.
-            follower_id: In tempore iste labore.
+            followee_id: Deleniti ab sit laudantium laborum qui delectus.
+            follower_id: Qui impedit expedita dolor.
         required:
             - follower_id
             - followee_id
@@ -654,7 +701,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -670,19 +717,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: false
         description: GetFollowers_BadRequest_Response_Body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -713,11 +760,11 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: GetFollowings_BadRequest_Response_Body result type (default view)
         example:
             fault: false
@@ -725,7 +772,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -733,6 +780,65 @@ definitions:
             - temporary
             - timeout
             - fault
+    UsersMuteBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Mute_BadRequest_Response_Body result type (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    UsersMuteRequestBody:
+        title: UsersMuteRequestBody
+        type: object
+        properties:
+            muted_user_id:
+                type: string
+                example: Repudiandae corrupti ut molestiae.
+            muting_user_id:
+                type: string
+                example: Ipsam voluptatum at sequi voluptatem.
+        example:
+            muted_user_id: Enim dolorum eveniet nobis animi.
+            muting_user_id: Assumenda harum aut officia est beatae.
+        required:
+            - muted_user_id
+            - muting_user_id
     UsersUnfollowBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -756,7 +862,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -767,8 +873,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -782,24 +888,24 @@ definitions:
         properties:
             followee_id:
                 type: string
-                example: Accusamus et repudiandae modi.
+                example: Magni voluptatem et.
             follower_id:
                 type: string
-                example: Sit beatae cum iusto voluptatibus.
+                example: Autem aspernatur qui velit quasi dolorem.
         example:
-            followee_id: Quo animi itaque dicta.
-            follower_id: Ad molestias fugit quod nemo illo officia.
+            followee_id: Omnis quibusdam et.
+            follower_id: Officiis et sunt officiis aut quia dolorem.
         required:
             - follower_id
             - followee_id
-    UsersUpdateBioBadRequestResponseBody:
+    UsersUnmuteBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -820,14 +926,73 @@ definitions:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
+        description: Unmute_BadRequest_Response_Body result type (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    UsersUnmuteRequestBody:
+        title: UsersUnmuteRequestBody
+        type: object
+        properties:
+            muted_user_id:
+                type: string
+                example: Illum assumenda blanditiis quaerat sunt impedit.
+            muting_user_id:
+                type: string
+                example: Esse quis et.
+        example:
+            muted_user_id: Saepe voluptatem id.
+            muting_user_id: Aspernatur eos.
+        required:
+            - muted_user_id
+            - muting_user_id
+    UsersUpdateBioBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
         description: UpdateBio_BadRequest_Response_Body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: false
+            temporary: false
+            timeout: true
         required:
             - name
             - id
@@ -858,14 +1023,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: UpdateBio_NotFound_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -884,9 +1049,9 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Ullam animi et vitae autem similique.
+                example: Itaque dicta sint et consectetur voluptas ex.
         example:
-            bio: Veniam quos debitis et.
+            bio: Maxime nulla doloremque.
         required:
             - bio
     UsersUpdateUsernameBadRequestResponseBody:
@@ -916,14 +1081,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: UpdateUsername_BadRequest_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: true
         required:
             - name
@@ -959,7 +1124,7 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: UpdateUsername_NotFound_Response_Body result type (default view)
         example:
             fault: false
@@ -981,8 +1146,8 @@ definitions:
         properties:
             username:
                 type: string
-                example: Ea laboriosam non sapiente incidunt.
+                example: Deserunt maxime aut voluptatem est architecto sit.
         example:
-            username: Praesentium sed vel occaecati laudantium modi aliquam.
+            username: Cum iusto voluptatibus sequi accusamus et.
         required:
             - username

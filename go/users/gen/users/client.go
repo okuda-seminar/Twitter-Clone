@@ -24,10 +24,12 @@ type Client struct {
 	UnfollowEndpoint       goa.Endpoint
 	GetFollowersEndpoint   goa.Endpoint
 	GetFollowingsEndpoint  goa.Endpoint
+	MuteEndpoint           goa.Endpoint
+	UnmuteEndpoint         goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings, mute, unmute goa.Endpoint) *Client {
 	return &Client{
 		CreateUserEndpoint:     createUser,
 		DeleteUserEndpoint:     deleteUser,
@@ -38,6 +40,8 @@ func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, 
 		UnfollowEndpoint:       unfollow,
 		GetFollowersEndpoint:   getFollowers,
 		GetFollowingsEndpoint:  getFollowings,
+		MuteEndpoint:           mute,
+		UnmuteEndpoint:         unmute,
 	}
 }
 
@@ -145,4 +149,24 @@ func (c *Client) GetFollowings(ctx context.Context, p *GetFollowingsPayload) (re
 		return
 	}
 	return ires.([]*User), nil
+}
+
+// Mute calls the "Mute" endpoint of the "users" service.
+// Mute may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Mute(ctx context.Context, p *MutePayload) (err error) {
+	_, err = c.MuteEndpoint(ctx, p)
+	return
+}
+
+// Unmute calls the "Unmute" endpoint of the "users" service.
+// Unmute may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Unmute(ctx context.Context, p *UnmutePayload) (err error) {
+	_, err = c.UnmuteEndpoint(ctx, p)
+	return
 }

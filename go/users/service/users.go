@@ -14,6 +14,7 @@ import (
 type usersSvc struct {
 	usersRepo       repository.UsersRepo
 	followshipsRepo repository.FollowshipsRepo
+	mutesRepo       repository.MutesRepo
 	logger          *log.Logger
 }
 
@@ -21,7 +22,8 @@ type usersSvc struct {
 func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
 	usersRepo := repository.NewUsersRepoImpl(db)
 	followshipsRepo := repository.NewFollowshipsRepoImpl(db)
-	return &usersSvc{usersRepo, followshipsRepo, logger}
+	mutesRepo := repository.NewMutesRepoImpl(db)
+	return &usersSvc{usersRepo, followshipsRepo, mutesRepo, logger}
 }
 
 func (s *usersSvc) CreateUser(
@@ -183,6 +185,18 @@ func (s *usersSvc) GetFollowings(
 
 	s.logger.Print("users.GetFollowings")
 	return res, nil
+}
+
+func (s *usersSvc) Mute(ctx context.Context, p *users.MutePayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
+	// - Implement Mute and Unmute API logic.
+	return nil
+}
+
+func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
+	// - Implement Mute and Unmute API logic.
+	return nil
 }
 
 const (

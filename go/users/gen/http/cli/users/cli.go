@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings)
+	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings|mute|unmute)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Iure sapiente ut doloremque nostrum culpa cupiditate.",
-      "username": "Non et voluptatem autem totam praesentium soluta."
+      "display_name": "Ut possimus.",
+      "username": "Sapiente consequuntur modi nisi."
    }'` + "\n" +
 		""
 }
@@ -75,6 +75,12 @@ func ParseEndpoint(
 
 		usersGetFollowingsFlags  = flag.NewFlagSet("get-followings", flag.ExitOnError)
 		usersGetFollowingsIDFlag = usersGetFollowingsFlags.String("id", "REQUIRED", "")
+
+		usersMuteFlags    = flag.NewFlagSet("mute", flag.ExitOnError)
+		usersMuteBodyFlag = usersMuteFlags.String("body", "REQUIRED", "")
+
+		usersUnmuteFlags    = flag.NewFlagSet("unmute", flag.ExitOnError)
+		usersUnmuteBodyFlag = usersUnmuteFlags.String("body", "REQUIRED", "")
 	)
 	usersFlags.Usage = usersUsage
 	usersCreateUserFlags.Usage = usersCreateUserUsage
@@ -86,6 +92,8 @@ func ParseEndpoint(
 	usersUnfollowFlags.Usage = usersUnfollowUsage
 	usersGetFollowersFlags.Usage = usersGetFollowersUsage
 	usersGetFollowingsFlags.Usage = usersGetFollowingsUsage
+	usersMuteFlags.Usage = usersMuteUsage
+	usersUnmuteFlags.Usage = usersUnmuteUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -148,6 +156,12 @@ func ParseEndpoint(
 			case "get-followings":
 				epf = usersGetFollowingsFlags
 
+			case "mute":
+				epf = usersMuteFlags
+
+			case "unmute":
+				epf = usersUnmuteFlags
+
 			}
 
 		}
@@ -200,6 +214,12 @@ func ParseEndpoint(
 			case "get-followings":
 				endpoint = c.GetFollowings()
 				data, err = usersc.BuildGetFollowingsPayload(*usersGetFollowingsIDFlag)
+			case "mute":
+				endpoint = c.Mute()
+				data, err = usersc.BuildMutePayload(*usersMuteBodyFlag)
+			case "unmute":
+				endpoint = c.Unmute()
+				data, err = usersc.BuildUnmutePayload(*usersUnmuteBodyFlag)
 			}
 		}
 	}
@@ -226,6 +246,8 @@ COMMAND:
     unfollow: Unfollow implements Unfollow.
     get-followers: GetFollowers implements GetFollowers.
     get-followings: GetFollowings implements GetFollowings.
+    mute: Mute implements Mute.
+    unmute: Unmute implements Unmute.
 
 Additional help:
     %[1]s users COMMAND --help
@@ -239,8 +261,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Iure sapiente ut doloremque nostrum culpa cupiditate.",
-      "username": "Non et voluptatem autem totam praesentium soluta."
+      "display_name": "Ut possimus.",
+      "username": "Sapiente consequuntur modi nisi."
    }'
 `, os.Args[0])
 }
@@ -253,7 +275,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": "Nihil eius."
+      "id": "Unde veritatis nihil nulla et quia sunt."
    }'
 `, os.Args[0])
 }
@@ -265,7 +287,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "Veritatis nihil nulla et quia sunt."
+    %[1]s users find-user-by-id --id "Debitis ut iure minima quis incidunt."
 `, os.Args[0])
 }
 
@@ -278,8 +300,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Quos maiores."
-   }' --id "In aliquid et."
+      "username": "Quas iusto omnis aspernatur nostrum ad eos."
+   }' --id "Itaque labore molestiae excepturi odit minima qui."
 `, os.Args[0])
 }
 
@@ -292,8 +314,8 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Debitis necessitatibus fuga."
-   }' --id "Labore error."
+      "bio": "Minus illo repudiandae tempore."
+   }' --id "Dolorem est veniam iste."
 `, os.Args[0])
 }
 
@@ -305,8 +327,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followee_id": "Qui qui.",
-      "follower_id": "Eos et itaque labore molestiae excepturi odit."
+      "followee_id": "Id odit fugit.",
+      "follower_id": "Non facilis et fugit."
    }'
 `, os.Args[0])
 }
@@ -319,8 +341,8 @@ Unfollow implements Unfollow.
 
 Example:
     %[1]s users unfollow --body '{
-      "followee_id": "Minus illo repudiandae tempore.",
-      "follower_id": "Soluta itaque eaque voluptatum est consequatur."
+      "followee_id": "Aut inventore ut est et.",
+      "follower_id": "Beatae aspernatur labore distinctio dolores aut fugit."
    }'
 `, os.Args[0])
 }
@@ -332,7 +354,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "Illum non facilis."
+    %[1]s users get-followers --id "Aut dignissimos."
 `, os.Args[0])
 }
 
@@ -343,6 +365,34 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "Aliquam molestiae."
+    %[1]s users get-followings --id "Aperiam iste deleniti voluptatem autem cum."
+`, os.Args[0])
+}
+
+func usersMuteUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users mute -body JSON
+
+Mute implements Mute.
+    -body JSON: 
+
+Example:
+    %[1]s users mute --body '{
+      "muted_user_id": "Provident sed quis et blanditiis debitis quo.",
+      "muting_user_id": "Odit expedita iure aut ut."
+   }'
+`, os.Args[0])
+}
+
+func usersUnmuteUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unmute -body JSON
+
+Unmute implements Unmute.
+    -body JSON: 
+
+Example:
+    %[1]s users unmute --body '{
+      "muted_user_id": "Commodi ullam in quibusdam dignissimos.",
+      "muting_user_id": "Assumenda ad ut voluptas."
+   }'
 `, os.Args[0])
 }

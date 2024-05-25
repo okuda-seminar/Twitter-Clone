@@ -24,6 +24,8 @@ type Endpoints struct {
 	Unfollow       goa.Endpoint
 	GetFollowers   goa.Endpoint
 	GetFollowings  goa.Endpoint
+	Mute           goa.Endpoint
+	Unmute         goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "users" service with endpoints.
@@ -38,6 +40,8 @@ func NewEndpoints(s Service) *Endpoints {
 		Unfollow:       NewUnfollowEndpoint(s),
 		GetFollowers:   NewGetFollowersEndpoint(s),
 		GetFollowings:  NewGetFollowingsEndpoint(s),
+		Mute:           NewMuteEndpoint(s),
+		Unmute:         NewUnmuteEndpoint(s),
 	}
 }
 
@@ -52,6 +56,8 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.Unfollow = m(e.Unfollow)
 	e.GetFollowers = m(e.GetFollowers)
 	e.GetFollowings = m(e.GetFollowings)
+	e.Mute = m(e.Mute)
+	e.Unmute = m(e.Unmute)
 }
 
 // NewCreateUserEndpoint returns an endpoint function that calls the method
@@ -132,5 +138,23 @@ func NewGetFollowingsEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
 		p := req.(*GetFollowingsPayload)
 		return s.GetFollowings(ctx, p)
+	}
+}
+
+// NewMuteEndpoint returns an endpoint function that calls the method "Mute" of
+// service "users".
+func NewMuteEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*MutePayload)
+		return nil, s.Mute(ctx, p)
+	}
+}
+
+// NewUnmuteEndpoint returns an endpoint function that calls the method
+// "Unmute" of service "users".
+func NewUnmuteEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*UnmutePayload)
+		return nil, s.Unmute(ctx, p)
 	}
 }
