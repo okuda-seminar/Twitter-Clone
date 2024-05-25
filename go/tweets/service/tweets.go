@@ -83,8 +83,15 @@ func (s *tweetsSvc) DeleteTweet(
 // LikeTweet handles the action of a user liking a tweet.
 // Returns 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
 func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/175
-	// - Implement LikeTweet API logic.
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
+	// - Discuss how we implement the test for LikeTweet method.
+	err := s.likesRepo.CreateLike(ctx, p.TweetID, p.UserID)
+	if err != nil {
+		s.logger.Printf("tweets.LikeTweet: failed (%s)", err)
+		return tweets.MakeBadRequest(err)
+	}
+
+	s.logger.Print("tweets.LikeTweet")
 	return nil
 }
 
