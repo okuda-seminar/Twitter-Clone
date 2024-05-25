@@ -1,5 +1,6 @@
 POSTGRES_SERVICE_NAME=users_postgres
 APP_SERVICE_NAME=users_app
+SERVICE_NAME=users_service
 
 build:
 	make down
@@ -19,3 +20,9 @@ down:
 
 stop:
 	docker-compose stop
+
+build_service:
+	docker build -f ./docker/Dockerfile -t ${SERVICE_NAME} .
+
+run_service:
+	docker run --name=${SERVICE_NAME} ${SERVICE_NAME}
