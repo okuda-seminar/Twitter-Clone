@@ -5,7 +5,7 @@ import (
 	"database/sql"
 )
 
-// likesRepoImpl implements tweets/repository/lieksRepo.
+// likesRepoImpl implements tweets/repository/likesRepo.
 type likesRepoImpl struct {
 	db *sql.DB
 }
@@ -17,8 +17,11 @@ func NewLikesRepoImpl(db *sql.DB) LikesRepo {
 
 // CreateLike creates a new like entry and inserts it into 'likes' table.
 func (r *likesRepoImpl) CreateLike(ctx context.Context, tweet_id, user_id string) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/175
-	// - Implement LikeTweet API logic.
+	query := "INSERT INTO likes (tweet_id, user_id) VALUES ($1, $2)"
+	_, err := r.db.ExecContext(ctx, query, tweet_id, user_id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -26,5 +29,6 @@ func (r *likesRepoImpl) CreateLike(ctx context.Context, tweet_id, user_id string
 func (r *likesRepoImpl) DeleteLike(ctx context.Context, tweet_id, user_id string) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/193
 	// - Implement DeleteTweetLike API logic.
+
 	return nil
 }
