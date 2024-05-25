@@ -1,17 +1,5 @@
 import SwiftUI
 
-struct NotificationsTabModel: Identifiable {
-  private(set) var id: Tab
-  var size: CGSize = .zero
-  var minX: CGFloat = .zero
-
-  enum Tab: String, CaseIterable {
-    case all = "All"
-    case verified = "Verified"
-    case mentions = "Mentions"
-  }
-}
-
 struct NotificationsTabView: View {
   @State private var tabs: [NotificationsTabModel] = [
     .init(id: .all),
@@ -22,37 +10,14 @@ struct NotificationsTabView: View {
   @State private var tabScrollState: NotificationsTabModel.Tab?
   @State private var progress: CGFloat = .zero
 
+  private enum LayoutConstant {
+    static let minTabWidth: CGFloat = 60.0
+  }
+
   var body: some View {
     VStack(spacing: 0) {
       TabBar()
-
-      GeometryReader { reader in
-        let size = reader.size
-
-        ScrollView(.horizontal) {
-          LazyHStack(spacing: 0) {
-            ForEach(tabs) { tab in
-              Text(tab.id.rawValue)
-                .frame(width: size.width, height: 100, alignment: .center)
-            }
-          }
-          .scrollTargetLayout()
-          .rect { rect in
-            progress = -rect.minX / size.width
-          }
-        }
-        .scrollPosition(id: $tabScrollState)
-        .scrollIndicators(.hidden)
-        .scrollTargetBehavior(.paging)
-        .onChange(of: tabScrollState) { oldValue, newValue in
-          if let newValue {
-            withAnimation {
-              tabScrollState = newValue
-              activeTab = newValue
-            }
-          }
-        }
-      }
+      Tabs()
     }
   }
 
@@ -78,10 +43,10 @@ struct NotificationsTabView: View {
           )
           .buttonStyle(.plain)
           .rect { rect in
-            tab.size = rect.size
-            tab.minX = rect.minX
+            let modifiedTabWidth = max(LayoutConstant.minTabWidth, rect.size.width)
+            tab.size = CGSizeMake(modifiedTabWidth, rect.size.height)
+            tab.minX = (rect.minX + rect.maxX - modifiedTabWidth) / 2
           }
-
           Spacer()
         }
       }
@@ -89,9 +54,8 @@ struct NotificationsTabView: View {
     }
     .overlay(alignment: .bottom) {
       ZStack(alignment: .leading) {
-        Rectangle()
-          .fill(.gray.opacity(0.3))
-          .frame(height: 1)
+        Divider()
+
         let inputRange = tabs.indices.compactMap { return CGFloat($0) }
         let outputRange = tabs.compactMap { return $0.size.width }
         let outputPositionRange = tabs.compactMap { return $0.minX }
@@ -106,6 +70,37 @@ struct NotificationsTabView: View {
       }
     }
     .scrollIndicators(.hidden)
+  }
+
+  @ViewBuilder
+  private func Tabs() -> some View {
+    GeometryReader { geoProxy in
+      let size = geoProxy.size
+
+      ScrollView(.horizontal) {
+        LazyHStack(spacing: 0) {
+          ForEach(tabs) { tab in
+            Text(tab.id.rawValue)
+              .frame(width: size.width, height: 100, alignment: .center)
+          }
+        }
+        .scrollTargetLayout()
+        .rect { rect in
+          progress = -rect.minX / size.width
+        }
+      }
+      .scrollPosition(id: $tabScrollState)
+      .scrollIndicators(.hidden)
+      .scrollTargetBehavior(.paging)
+      .onChange(of: tabScrollState) { oldValue, newValue in
+        if let newValue {
+          withAnimation {
+            tabScrollState = newValue
+            activeTab = newValue
+          }
+        }
+      }
+    }
   }
 }
 
