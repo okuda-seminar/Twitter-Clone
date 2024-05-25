@@ -172,11 +172,11 @@ struct UserProfileTabView: View {
         Spacer()
       }
     }
+    .padding(.top)
+    .padding(.bottom)
     .overlay(alignment: .bottom) {
       ZStack(alignment: .leading) {
-        Rectangle()
-          .fill(.gray.opacity(0.3))
-          .frame(height: 1)
+        Divider()
       }
     }
   }

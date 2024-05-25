@@ -396,12 +396,9 @@
 		6567CBCF2BD7DD8E00242716 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				656C1BA32C00C3ED00EEE575 /* UserFollowRelations */,
 				65C6CCA02BFE22CF00B0A052 /* Entities */,
-				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
-				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
-				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
-				65C6CCA72BFF60FB00B0A052 /* UserPostsTabView.swift */,
+				656C1BA32C00C3ED00EEE575 /* UserFollowRelations */,
+				656C1BA92C0209FA00EEE575 /* UserProfile */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -412,6 +409,17 @@
 				656C1BA42C00C41500EEE575 /* UserFollowRelationsViewController.swift */,
 			);
 			path = UserFollowRelations;
+			sourceTree = "<group>";
+		};
+		656C1BA92C0209FA00EEE575 /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				65C6CCA72BFF60FB00B0A052 /* UserPostsTabView.swift */,
+				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
+				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
+				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
+			);
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		658D08662BE63DFA006C6A9E /* Detail */ = {
