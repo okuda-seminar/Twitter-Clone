@@ -80,8 +80,13 @@ struct NotificationsTabView: View {
       ScrollView(.horizontal) {
         LazyHStack(spacing: 0) {
           ForEach(tabs) { tab in
-            Text(tab.id.rawValue)
-              .frame(width: size.width, height: 100, alignment: .center)
+            if tab.id == .all {
+              NotificationsAllTabView()
+                .frame(width: size.width)
+            } else {
+              Text(tab.id.rawValue)
+                .frame(width: size.width, height: 100, alignment: .center)
+            }
           }
         }
         .scrollTargetLayout()

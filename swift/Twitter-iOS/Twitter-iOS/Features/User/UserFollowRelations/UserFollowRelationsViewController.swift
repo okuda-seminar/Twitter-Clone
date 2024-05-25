@@ -79,15 +79,19 @@ struct UserFollowRelationsView: View {
     HStack {
       ForEach(tabs) { tab in
         Spacer()
-        // Button color can be unexpectedly changed to gray, so we're using Text here.
-        Text(tab.id.rawValue)
-          .onTapGesture {
+        Button(
+          action: {
             withAnimation(.snappy) {
               activeTab = tab.id
               tabToScroll = tab.id
             }
+          },
+          label: {
+            Text(tab.id.rawValue)
+              .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
           }
-          .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
+        )
+        .buttonStyle(.plain)
         Spacer()
       }
     }
