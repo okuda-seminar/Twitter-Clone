@@ -136,7 +136,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   private func loadTweetData(viewController: HomeTabViewController) {
     var tweets: [TweetModel] = []
     for _ in 0..<30 {
-      tweets.append(createFakeTweet())
+      tweets.append(createFakeTweetModel())
     }
     viewController.tweets = tweets
   }
@@ -220,13 +220,14 @@ extension HomeViewController: HomeTabViewControllerDelegate {
   }
 
   func didTapTweetCell(_ cell: HomeTweetCollectionViewCell) {
-    let tweetDetailViewController = TweetDetailViewController()
+    guard let tweetModel = cell.tweetModel else { return }
+    let tweetDetailViewController = TweetDetailViewController(tweetModel: tweetModel)
     navigationController?.pushViewController(tweetDetailViewController, animated: true)
   }
 
   func didTapUserIconInCell(_ cell: HomeTweetCollectionViewCell) {
     let userProfileViewController = UserProfileViewController()
-    guard let tweet = cell.tweet else { return }
+    guard let tweet = cell.tweetModel else { return }
     userProfileViewController.userName = tweet.userName
     userProfileViewController.profileIcon = tweet.userIcon
     navigationController?.pushViewController(userProfileViewController, animated: true)

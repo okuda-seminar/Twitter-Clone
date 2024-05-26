@@ -56,9 +56,7 @@ final class HomeTabViewController: UIViewController {
 extension HomeTabViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let cell =
-      collectionView.dequeueReusableCell(
-        withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
-      as! HomeTweetCollectionViewCell
+      collectionView.cellForItem(at: indexPath) as! HomeTweetCollectionViewCell
     delegate?.didTapTweetCell(cell)
   }
 }
@@ -156,7 +154,7 @@ extension HomeTabViewController: UICollectionViewDataSource {
       collectionView.dequeueReusableCell(
         withReuseIdentifier: "HomeTweetCollectionViewCell", for: indexPath)
       as! HomeTweetCollectionViewCell
-    cell.tweet = tweets?[indexPath.row]
+    cell.tweetModel = tweets?[indexPath.row]
     cell.userIconButton.addAction(
       .init { _ in
         self.delegate?.didTapUserIconInCell(cell)

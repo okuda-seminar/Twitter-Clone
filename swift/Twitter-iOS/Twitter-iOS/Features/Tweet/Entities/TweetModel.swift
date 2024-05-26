@@ -7,7 +7,7 @@ struct TweetModel: Identifiable {
   let userName: String
 }
 
-func createFakeTweet() -> TweetModel {
+func createFakeTweetModel() -> TweetModel {
   return TweetModel(
     id: UUID(),
     bodyText:

@@ -1,14 +1,14 @@
 import UIKit
 
 class HomeTweetCollectionViewCell: UICollectionViewCell {
-  public var tweet: TweetModel? {
+  public var tweetModel: TweetModel? {
     didSet {
-      guard let tweet else { return }
-      userNameLabel.text = tweet.userName
+      guard let tweetModel else { return }
+      userNameLabel.text = tweetModel.userName
       userNameLabel.sizeToFit()
-      bodyTextLabel.text = tweet.bodyText
+      bodyTextLabel.text = tweetModel.bodyText
       bodyTextLabel.sizeToFit()
-      userIconButton.setImage(tweet.userIcon, for: .normal)
+      userIconButton.setImage(tweetModel.userIcon, for: .normal)
     }
   }
 
