@@ -188,13 +188,18 @@ class ViewControllerWithUserIconButton: UIViewController {
 
     guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
     rootViewController.hideSideMenu(animated: false)
-    rootViewController.isSideMenuScrollable = true
 
     // Navigation
     let backButtonImage = UIImage(systemName: "arrow.left")
     navigationController?.navigationBar.backIndicatorImage = backButtonImage
     navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     navigationController?.setNavigationBarHidden(false, animated: true)
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
+    rootViewController.isSideMenuScrollable = true
   }
 
   override func viewDidDisappear(_ animated: Bool) {
