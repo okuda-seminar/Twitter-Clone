@@ -1,6 +1,6 @@
 import UIKit
 
-class CommunitiesViewController: UIViewController {
+class CommunitiesViewController: ViewControllerWithUserIconButton {
   private enum LayoutConstant {
     static let edgePadding = 16.0
     static let collectionViewVerticalPadding = 16.0
@@ -18,7 +18,7 @@ class CommunitiesViewController: UIViewController {
 
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
-      title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
+      title: "", style: .plain, target: self, action: #selector(showSideMenu))
     button.tintColor = .black
     button.image = UIImage(systemName: "person.circle.fill")
     return button
@@ -132,9 +132,6 @@ class CommunitiesViewController: UIViewController {
         self.pushCommunitiesSearchViewController()
       }, for: .touchUpInside)
   }
-
-  @objc
-  private func slideInSideMenu() {}
 
   @objc
   private func showNewCommunityCreationSheet() {

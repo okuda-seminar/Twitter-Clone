@@ -43,7 +43,6 @@ struct SideMenuView: View {
     static let following = String(localized: "Following")
     static let followers = String(localized: "Followers")
     static let profile = String(localized: "Profile")
-    static let communities = String(localized: "Communities")
     static let bookmarks = String(localized: "Bookmarks")
     static let lists = String(localized: "Lists")
     static let spaces = String(localized: "Spaces")
@@ -66,7 +65,15 @@ struct SideMenuView: View {
             .foregroundStyle(.black)
         })
 
-      Text("@\(userName)")
+      Button(
+        action: {
+          delegate?.didTapUserProfile()
+        },
+        label: {
+          Text("@\(userName)")
+        }
+      )
+      .foregroundStyle(.primary)
 
       HStack {
         Button(
@@ -94,6 +101,7 @@ struct SideMenuView: View {
       HStack {
         Image(systemName: "person")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.profile)
       }
@@ -103,15 +111,9 @@ struct SideMenuView: View {
 
       HStack {
         // We need to align image aspects in prod.
-        Image(systemName: "person.2")
-          .resizable()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.communities)
-      }
-      HStack {
-        // We need to align image aspects in prod.
         Image(systemName: "bookmark")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.bookmarks)
       }
@@ -119,6 +121,7 @@ struct SideMenuView: View {
         // We need to align image aspects in prod.
         Image(systemName: "list.clipboard")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.lists)
       }
@@ -126,6 +129,7 @@ struct SideMenuView: View {
         // We need to align image aspects in prod.
         Image(systemName: "mic")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.spaces)
       }
@@ -133,6 +137,7 @@ struct SideMenuView: View {
         // We need to align image aspects in prod.
         Image(systemName: "person.badge.plus")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.followerRequests)
       }
@@ -140,6 +145,7 @@ struct SideMenuView: View {
         // We need to align image aspects in prod.
         Image(systemName: "bitcoinsign.circle")
           .resizable()
+          .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.monetization)
       }

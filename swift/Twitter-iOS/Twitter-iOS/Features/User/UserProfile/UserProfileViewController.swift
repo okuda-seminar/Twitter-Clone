@@ -54,28 +54,29 @@ class UserProfileViewController: UIViewController {
     return controller
   }()
 
+  // MARK: - Overridden API
+
   override func viewDidLoad() {
     super.viewDidLoad()
-
     setUpSubviews()
   }
+
+  // MARK: Private API
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(backButton)
-    view.addSubview(profileIconView)
+    //    view.addSubview(profileIconView)
     view.addSubview(tabViewHostingController.view)
 
     backButton.addAction(
       .init { _ in
-        self.navigationController?.delegate = nil
-        self.navigationController?.popViewController(animated: true)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.clearNavigationControllerSettings()
       }, for: .touchUpInside)
 
-    let tapGestureRecognizer = UITapGestureRecognizer(
-      target: self, action: #selector(presentUserProfileIconDetailViewController))
-    profileIconView.addGestureRecognizer(tapGestureRecognizer)
+    //    let tapGestureRecognizer = UITapGestureRecognizer(
+    //      target: self, action: #selector(presentUserProfileIconDetailViewController))
+    //    profileIconView.addGestureRecognizer(tapGestureRecognizer)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
@@ -86,11 +87,11 @@ class UserProfileViewController: UIViewController {
       backButton.widthAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
       backButton.heightAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
 
-      profileIconView.leadingAnchor.constraint(equalTo: backButton.leadingAnchor),
-      profileIconView.topAnchor.constraint(
-        equalTo: backButton.bottomAnchor, constant: LayoutConstant.profileIconViewTopPadding),
-      profileIconView.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
-      profileIconView.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
+      //      profileIconView.leadingAnchor.constraint(equalTo: backButton.leadingAnchor),
+      //      profileIconView.topAnchor.constraint(
+      //        equalTo: backButton.bottomAnchor, constant: LayoutConstant.profileIconViewTopPadding),
+      //      profileIconView.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
+      //      profileIconView.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
 
       tabViewHostingController.view.topAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
       tabViewHostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
@@ -111,8 +112,16 @@ class UserProfileViewController: UIViewController {
     navigationController?.pushViewController(
       userProfileIconDetailViewController, animated: true)
   }
+
+  private func clearNavigationControllerSettings() {
+    self.navigationController?.delegate = nil
+    self.navigationController?.popViewController(animated: true)
+    self.navigationController?.setNavigationBarHidden(false, animated: false)
+  }
 }
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/219
+// - Replace custom push transition with custom present one when tapping user icon.
 extension UserProfileViewController: UINavigationControllerDelegate {
   func navigationController(
     _ navigationController: UINavigationController,
@@ -168,7 +177,8 @@ struct UserProfileTabView: View {
             // Need to associate tab id with localized strings and use them here.
             Text(tab.id.rawValue)
               .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
-          })
+          }
+        )
         .buttonStyle(.plain)
         Spacer()
       }

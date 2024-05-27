@@ -3,6 +3,16 @@ import UIKit
 
 class AppRootViewController: UIViewController {
 
+  // MARK: - Public properties
+
+  public var isSideMenuScrollable: Bool = true {
+    didSet {
+      scrollView.isScrollEnabled = isSideMenuScrollable
+    }
+  }
+
+  // MARK: - Private properties
+
   private lazy var mainRootViewController: MainRootViewController = {
     let viewController = MainRootViewController.sharedInstance
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -112,7 +122,8 @@ class AppRootViewController: UIViewController {
     overlayView.alpha = 0.0
   }
 
-  // Private API
+  // MARK: - Private API
+
   @objc
   private func didTapOverlayView() {
     // Without this wrap, animated becomes false when tapping overlay view.
@@ -130,6 +141,7 @@ extension AppRootViewController: SideMenuViewDelegate {
     else { return }
     let userProfileViewController = UserProfileViewController()
     userProfileViewController.userName = "Default user name"
+    userProfileViewController.profileIcon = UIImage(systemName: "apple.logo")
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 
@@ -176,10 +188,18 @@ class ViewControllerWithUserIconButton: UIViewController {
 
     guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
     rootViewController.hideSideMenu(animated: false)
+    rootViewController.isSideMenuScrollable = true
 
     // Navigation
     let backButtonImage = UIImage(systemName: "arrow.left")
     navigationController?.navigationBar.backIndicatorImage = backButtonImage
     navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    navigationController?.setNavigationBarHidden(false, animated: true)
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
+    rootViewController.isSideMenuScrollable = false
   }
 }
