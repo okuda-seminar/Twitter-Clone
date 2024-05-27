@@ -169,6 +169,7 @@ struct UserProfileTabView: View {
             Text(tab.id.rawValue)
               .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
           })
+        .buttonStyle(.plain)
         Spacer()
       }
     }

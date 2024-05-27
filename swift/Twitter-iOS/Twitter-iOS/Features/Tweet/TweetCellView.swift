@@ -34,6 +34,7 @@ struct TweetCellView: View {
               }
             )
             .foregroundStyle(.primary)
+            .buttonStyle(.plain)
           }
 
           Text(tweetBody)
@@ -50,6 +51,7 @@ struct TweetCellView: View {
               }
             )
             .foregroundStyle(.primary)
+            .buttonStyle(.plain)
 
             Button(
               action: {
@@ -60,6 +62,7 @@ struct TweetCellView: View {
               }
             )
             .foregroundStyle(.primary)
+            .buttonStyle(.plain)
           }
         }
       }

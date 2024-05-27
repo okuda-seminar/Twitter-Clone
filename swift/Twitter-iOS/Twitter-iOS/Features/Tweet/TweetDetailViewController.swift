@@ -76,6 +76,7 @@ struct TweetDetailView: View {
           }
         )
         .foregroundStyle(.primary)
+        .buttonStyle(.plain)
       }
       Text(tweetModel.bodyText)
         .padding(.bottom)
@@ -88,6 +89,7 @@ struct TweetDetailView: View {
         }
       )
       .foregroundStyle(Color(uiColor: .brandedBlue))
+      .buttonStyle(.plain)
     }
     .padding()
   }
