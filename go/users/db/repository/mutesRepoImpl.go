@@ -14,13 +14,25 @@ func NewMutesRepoImpl(db *sql.DB) MutesRepo {
 }
 
 func (r *mutesRepoImpl) CreateMute(ctx context.Context, muted_user_id, muting_user_id string) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
-	// - Implement Mute and Unmute API logic.
+	query := `
+		INSERT INTO mutes (muted_user_id, muting_user_id)
+		VALUES ($1, $2)
+	`
+	_, err := r.db.ExecContext(ctx, query, muted_user_id, muting_user_id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (r *mutesRepoImpl) DeleteMute(ctx context.Context, muted_user_id, muting_user_id string) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
-	// - Implement Mute and Unmute API logic.
+	query := `
+		DELETE FROM mutes
+		WHERE muted_user_id = $1 AND muting_user_id = $2
+	`
+	_, err := r.db.ExecContext(ctx, query, muted_user_id, muting_user_id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
