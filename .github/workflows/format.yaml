@@ -1,0 +1,45 @@
+name: "Go formatter"
+on:
+  pull_request
+
+jobs:
+  formatter:
+    name: formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Set up go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ">=1.17"
+      - name: Format code
+        id: format
+        run: |
+          FORMATTED_FILES=$(gofmt -l .)
+          if [ -n "$FORMATTED_FILES" ]; then
+            echo "The following files need to be formatted:"
+            echo "$FORMATTED_FILES"
+            echo 'FORMATTED_FILES='${FORMATTED_FILES} >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "All files are properly formatted."
+          fi
+        shell: bash
+        continue-on-error: true
+      - name: Comment on PR if needed
+        if: steps.format.outcome == 'failure'
+        uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          script: |
+            const output = "## Format failed\n<summary>Files that need to be formatted: ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
