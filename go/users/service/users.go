@@ -188,14 +188,24 @@ func (s *usersSvc) GetFollowings(
 }
 
 func (s *usersSvc) Mute(ctx context.Context, p *users.MutePayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
-	// - Implement Mute and Unmute API logic.
+	err := s.mutesRepo.CreateMute(ctx, p.MutedUserID, p.MutingUserID)
+	if err != nil {
+		s.logger.Printf("users.Mute: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Mute")
 	return nil
 }
 
 func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/204
-	// - Implement Mute and Unmute API logic.
+	err := s.mutesRepo.DeleteMute(ctx, p.MutedUserID, p.MutingUserID)
+	if err != nil {
+		s.logger.Printf("users.Unmute: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Unmute")
 	return nil
 }
 
