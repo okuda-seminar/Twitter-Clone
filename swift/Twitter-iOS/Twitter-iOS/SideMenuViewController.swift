@@ -116,6 +116,8 @@ struct SideMenuView: View {
           .scaledToFit()
           .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
         Text(LocalizedString.bookmarks)
+      }.onTapGesture {
+        delegate?.didTapBookmarks()
       }
       HStack {
         // We need to align image aspects in prod.
@@ -170,6 +172,7 @@ struct SideMenuView: View {
 
 protocol SideMenuViewDelegate: AnyObject {
   func didTapUserProfile()
+  func didTapBookmarks()
   func didTapSettingsAndPrivacy()
   func didTapUserFollowRelationsButton(userName: String)
 }
