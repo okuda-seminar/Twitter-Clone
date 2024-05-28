@@ -24,22 +24,12 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
     return button
   }()
 
-  private let headerTabSelectionView: SearchTabSelectionView = {
-    let view = SearchTabSelectionView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
-
-  private let tabsView: SearchTabsView = {
-    let view = SearchTabsView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
-
-  private let tabView: SearchTabView = {
-    let view = SearchTabView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: SearchHomeView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
 
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
@@ -51,33 +41,18 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
-
-    view.addSubview(headerTabSelectionView)
-    view.addSubview(tabsView)
+    view.addSubview(hostingController.view)
     view.addSubview(newTweetEntryPointButtonController.view)
-
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94 - Fetch Search tab data from server.
-    for button in headerTabSelectionView.categoryTabButtons {
-      button.delegate = self
-    }
-    tabsView.loadTabsData(
-      headerTabSelectionView.categoryTabButtons.count, searchTopicCellViewDelegate: self)
 
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
-
     NSLayoutConstraint.activate([
-      headerTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      headerTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      headerTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      headerTabSelectionView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerHeight),
-
-      tabsView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      tabsView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-      tabsView.topAnchor.constraint(equalTo: headerTabSelectionView.bottomAnchor),
-      tabsView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
@@ -105,32 +80,114 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
   }
 }
 
-extension SearchHomeViewController: SearchCategoryTabButtonDelegate {
-  func didTapSearchCategoryButton(selectedButton: SearchCategoryTabButton) {
-    for (tabIdx, button) in zip(
-      headerTabSelectionView.categoryTabButtons.indices, headerTabSelectionView.categoryTabButtons)
-    {
-      if button.tabID == selectedButton.tabID {
-        button.isSelected = true
-        tabsView.scroll(to: tabIdx)
-      } else {
-        button.isSelected = false
-      }
-    }
-  }
-}
-
-extension SearchHomeViewController: SearchTopicCellViewDelegate {
-  func didSelectSearchTopicCellView(_ view: SearchTopicCellView) {
-    let topicDetailViewController = TopicDetailViewController()
-    topicDetailViewController.topicName = view.topic.name
-    navigationController?.pushViewController(topicDetailViewController, animated: true)
-  }
-}
-
 extension SearchHomeViewController: TapOnlySearchBarDelegate {
   func didTapSearchBar() {
     navigationItem.backButtonDisplayMode = .minimal
     navigationController?.pushViewController(SearchInputViewController(), animated: true)
   }
+}
+
+struct SearchHomeView: View {
+  @State private var activeTab: SearchTabModel.Tab = .forYou
+  @State private var tabBarToScroll: SearchTabModel.Tab?
+  @State private var tabToScroll: SearchTabModel.Tab?
+
+  private var tabs: [SearchTabModel] = [
+    .init(id: .forYou),
+    .init(id: .trending),
+    .init(id: .news),
+    .init(id: .sports),
+    .init(id: .entertainment),
+  ]
+  var body: some View {
+    VStack {
+      TabBar()
+      Tabs()
+    }
+  }
+
+  @ViewBuilder
+  private func TabBar() -> some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: 40) {
+        ForEach(tabs) { tab in
+          Button(
+            action: {
+              withAnimation(.snappy) {
+                activeTab = tab.id
+                tabBarToScroll = tab.id
+                tabToScroll = tab.id
+              }
+            },
+            label: {
+              Text(tab.id.rawValue)
+                .foregroundStyle(activeTab == tab.id ? Color.primary : .gray)
+            }
+          )
+          .buttonStyle(.plain)
+        }
+      }
+      .scrollTargetLayout()
+      .padding(.top)
+      .padding(.bottom)
+      .overlay(alignment: .bottom) {
+        ZStack {
+          Divider()
+        }
+      }
+    }
+    .scrollPosition(
+      id: .init(
+        get: {
+          return tabBarToScroll
+        }, set: { _ in }), anchor: .center
+    )
+    .safeAreaPadding(15)
+  }
+
+  @ViewBuilder
+  private func Tabs() -> some View {
+    GeometryReader { geoProxy in
+      ScrollView(.horizontal) {
+        LazyHStack {
+          ForEach(tabs) { tab in
+            switch tab.id {
+            case .forYou:
+              SearchTabView()
+                .frame(width: geoProxy.size.width)
+            case .trending:
+              SearchTabView()
+                .frame(width: geoProxy.size.width)
+            case .news:
+              SearchTabView()
+                .frame(width: geoProxy.size.width)
+            case .sports:
+              SearchTabView()
+                .frame(width: geoProxy.size.width)
+            case .entertainment:
+              SearchTabView()
+                .frame(width: geoProxy.size.width)
+            }
+          }
+        }
+        .scrollTargetLayout()
+      }
+      .scrollIndicators(.hidden)
+      .scrollTargetBehavior(.paging)
+      .scrollPosition(id: $tabToScroll)
+      .onChange(of: tabToScroll) { _, newValue in
+        if let newValue {
+          withAnimation {
+            activeTab = newValue
+            tabBarToScroll = newValue
+            tabToScroll = newValue
+          }
+        }
+      }
+    }
+  }
+}
+
+#Preview {
+  SearchHomeView()
 }

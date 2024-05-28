@@ -50,7 +50,6 @@ struct NotificationsTabView: View {
           Spacer()
         }
       }
-      .scrollTargetLayout()
     }
     .overlay(alignment: .bottom) {
       ZStack(alignment: .leading) {
