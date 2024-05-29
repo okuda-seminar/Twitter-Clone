@@ -47,6 +47,7 @@
 		656C1BB12C0218D700EEE575 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BB02C0218D700EEE575 /* NotificationModel.swift */; };
 		656C1BB42C05EEE600EEE575 /* SearchTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BB32C05EEE600EEE575 /* SearchTabModel.swift */; };
 		656C1BB82C0749EA00EEE575 /* CommunityFilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BB72C0749EA00EEE575 /* CommunityFilterModel.swift */; };
+		656C1BF82C07619700EEE575 /* UserProfileBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BF72C07619700EEE575 /* UserProfileBannerView.swift */; };
 		658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */; };
 		658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */; };
 		658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */; };
@@ -145,6 +146,7 @@
 		656C1BB02C0218D700EEE575 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		656C1BB32C05EEE600EEE575 /* SearchTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabModel.swift; sourceTree = "<group>"; };
 		656C1BB72C0749EA00EEE575 /* CommunityFilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityFilterModel.swift; sourceTree = "<group>"; };
+		656C1BF72C07619700EEE575 /* UserProfileBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileBannerView.swift; sourceTree = "<group>"; };
 		658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetailViewController.swift; sourceTree = "<group>"; };
 		658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesSearchViewController.swift; sourceTree = "<group>"; };
 		658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapOnlySearchBar.swift; sourceTree = "<group>"; };
@@ -417,11 +419,12 @@
 		656C1BA92C0209FA00EEE575 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */,
 				65C6CCA72BFF60FB00B0A052 /* UserPostsTabView.swift */,
+				656C1BF72C07619700EEE575 /* UserProfileBannerView.swift */,
 				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
 				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
-				3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
 				658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */,
 				6540F8852BB44D430029BA46 /* AppRootViewController.swift in Sources */,
+				656C1BF82C07619700EEE575 /* UserProfileBannerView.swift in Sources */,
 				658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
 				656C1BAE2C0216F600EEE575 /* NotificationsAllTabView.swift in Sources */,

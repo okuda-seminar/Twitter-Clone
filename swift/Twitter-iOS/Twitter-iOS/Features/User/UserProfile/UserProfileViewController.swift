@@ -46,8 +46,8 @@ class UserProfileViewController: UIViewController {
     return button
   }()
 
-  private lazy var tabViewHostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: UserProfileTabView())
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: UserProfileView())
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -65,38 +65,14 @@ class UserProfileViewController: UIViewController {
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
-    view.addSubview(backButton)
-    //    view.addSubview(profileIconView)
-    view.addSubview(tabViewHostingController.view)
-
-    backButton.addAction(
-      .init { _ in
-        self.clearNavigationControllerSettings()
-      }, for: .touchUpInside)
-
-    //    let tapGestureRecognizer = UITapGestureRecognizer(
-    //      target: self, action: #selector(presentUserProfileIconDetailViewController))
-    //    profileIconView.addGestureRecognizer(tapGestureRecognizer)
+    view.addSubview(hostingController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      backButton.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.backButtonTopPadding),
-      backButton.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      backButton.widthAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
-      backButton.heightAnchor.constraint(equalToConstant: LayoutConstant.backButtonSize),
-
-      //      profileIconView.leadingAnchor.constraint(equalTo: backButton.leadingAnchor),
-      //      profileIconView.topAnchor.constraint(
-      //        equalTo: backButton.bottomAnchor, constant: LayoutConstant.profileIconViewTopPadding),
-      //      profileIconView.widthAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
-      //      profileIconView.heightAnchor.constraint(equalToConstant: LayoutConstant.profileIconViewSize),
-
-      tabViewHostingController.view.topAnchor.constraint(equalTo: layoutGuide.centerYAnchor),
-      tabViewHostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      tabViewHostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
-      tabViewHostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
     ])
 
     // Hide navigation bar
@@ -142,7 +118,7 @@ extension UserProfileViewController: UINavigationControllerDelegate {
 }
 
 /// Currently only tab bar is implemented. but tab views will be added.
-struct UserProfileTabView: View {
+struct UserProfileView: View {
   @State private var tabs: [UserProfileTabModel] = [
     .init(id: .posts),
     .init(id: .replies),
@@ -150,13 +126,59 @@ struct UserProfileTabView: View {
     .init(id: .media),
     .init(id: .likes),
   ]
+  @State private var scrollOffset: CGFloat = 0.0
+  @State private var titleOffset: CGFloat = 0.0
   @State private var activeTab: UserProfileTabModel.Tab = .posts
   @State private var tabToScroll: UserProfileTabModel.Tab?
 
+  private enum LayoutConstant {
+    static let borderOffsetToSwitch: CGFloat = 80.0
+    static let bannerViewHeight = 140.0
+  }
+
+  private enum ZIndex {
+    static let banner = 1.0
+  }
+
+  private var currentProfileIconScale: CGFloat {
+    let progress = -scrollOffset / LayoutConstant.borderOffsetToSwitch
+    let scale = 1.8 - min(progress, 1.0)
+    return min(scale, 1)
+  }
+
   var body: some View {
-    VStack(spacing: 0) {
-      TabBar()
-      Tabs()
+    ScrollView(.vertical) {
+      VStack(spacing: 0) {
+        UserProfileBannerView(
+          scrollOffset: $scrollOffset,
+          titleOffset: $titleOffset,
+          borderOffsetToSwitch: LayoutConstant.borderOffsetToSwitch
+        )
+        .frame(height: LayoutConstant.bannerViewHeight)
+        .zIndex(ZIndex.banner)
+        Header()
+          .zIndex(-scrollOffset > LayoutConstant.borderOffsetToSwitch ? 0 : 1)
+        TabBar()
+        Tabs()
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func Header() -> some View {
+    VStack {
+      HStack {
+        Image(systemName: "apple.logo")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 75, height: 75)
+          .background(.white)
+          .clipShape(Circle())
+          .padding(.leading)
+          .scaleEffect(currentProfileIconScale)
+
+        Spacer()
+      }
     }
   }
 
@@ -194,30 +216,23 @@ struct UserProfileTabView: View {
 
   @ViewBuilder
   private func Tabs() -> some View {
-    GeometryReader { geoProxy in
-      ScrollView(.horizontal) {
-        LazyHStack(spacing: 0) {
-          ForEach(tabs) { tab in
-            if tab.id == .posts {
-              UserPostsTabView()
-                .frame(width: geoProxy.size.width, height: geoProxy.size.height)
-            } else {
-              Text("dummy tab")
-                .frame(width: geoProxy.size.width, height: geoProxy.size.height, alignment: .center)
-            }
-          }
+    ScrollView(.horizontal) {
+      LazyHStack(spacing: 0) {
+        ForEach(tabs) { tab in
+          UserPostsTabView()
+            .frame(width: UIScreen.main.bounds.width)
         }
-        .scrollTargetLayout()
       }
-      .scrollIndicators(.hidden)
-      .scrollTargetBehavior(.paging)
-      .scrollPosition(id: $tabToScroll)
-      .onChange(of: tabToScroll) { _, newValue in
-        if let newValue {
-          withAnimation {
-            tabToScroll = newValue
-            activeTab = newValue
-          }
+      .scrollTargetLayout()
+    }
+    .scrollIndicators(.hidden)
+    .scrollTargetBehavior(.paging)
+    .scrollPosition(id: $tabToScroll)
+    .onChange(of: tabToScroll) { _, newValue in
+      if let newValue {
+        withAnimation {
+          tabToScroll = newValue
+          activeTab = newValue
         }
       }
     }
@@ -225,5 +240,5 @@ struct UserProfileTabView: View {
 }
 
 #Preview {
-  UserProfileTabView()
+  UserProfileView()
 }
