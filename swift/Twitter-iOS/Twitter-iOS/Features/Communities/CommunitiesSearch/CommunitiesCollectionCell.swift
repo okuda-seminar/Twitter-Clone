@@ -26,7 +26,9 @@ struct CommunityCellView: View {
           }
         }
       }
+      Spacer()
     }
+    .padding()
   }
 }
 

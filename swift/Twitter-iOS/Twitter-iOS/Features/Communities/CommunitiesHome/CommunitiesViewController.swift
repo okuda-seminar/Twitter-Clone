@@ -1,6 +1,6 @@
 import UIKit
 
-class CommunitiesViewController: ViewControllerWithUserIconButton {
+class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
   private enum LayoutConstant {
     static let edgePadding = 16.0
     static let collectionViewVerticalPadding = 16.0
@@ -154,9 +154,9 @@ class CommunitiesViewController: ViewControllerWithUserIconButton {
   }
 }
 
-extension CommunitiesViewController: UICollectionViewDelegate {}
+extension CommunitiesHomeViewController: UICollectionViewDelegate {}
 
-extension CommunitiesViewController: UICollectionViewDataSource {
+extension CommunitiesHomeViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
     -> Int
   {
@@ -177,7 +177,7 @@ extension CommunitiesViewController: UICollectionViewDataSource {
   }
 }
 
-extension CommunitiesViewController: UICollectionViewDelegateFlowLayout {
+extension CommunitiesHomeViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
