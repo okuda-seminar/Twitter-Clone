@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tweets-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tweets-app
+  template:
+    metadata:
+      labels:
+        app: tweets-app
+    spec:
+      containers:
+      - name: app
+        image: rwatana/tweets_app:latest
+        ports:
+        - containerPort: 80
+        command: ["tail", "-f", "/dev/null"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tweets-app
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: tweets-app
