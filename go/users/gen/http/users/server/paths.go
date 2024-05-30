@@ -65,3 +65,13 @@ func MuteUsersPath() string {
 func UnmuteUsersPath() string {
 	return "/api/users/mute"
 }
+
+// BlockUsersPath returns the URL path to the users service Block HTTP endpoint.
+func BlockUsersPath() string {
+	return "/api/users/block"
+}
+
+// UnblockUsersPath returns the URL path to the users service Unblock HTTP endpoint.
+func UnblockUsersPath() string {
+	return "/api/users/block"
+}

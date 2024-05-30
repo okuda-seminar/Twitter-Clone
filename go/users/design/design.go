@@ -186,5 +186,35 @@ var _ = Service("users", func() {
 		})
 	})
 
+	Method("Block", func() {
+		Payload(func() {
+			Field(1, "blocked_user_id", String)
+			Field(2, "blocking_user_id", String)
+			Required("blocked_user_id", "blocking_user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/users/block")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("Unblock", func() {
+		Payload(func() {
+			Field(1, "blocked_user_id", String)
+			Field(2, "blocking_user_id", String)
+			Required("blocked_user_id", "blocking_user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			DELETE("/api/users/block")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })

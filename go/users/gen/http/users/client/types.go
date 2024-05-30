@@ -66,6 +66,20 @@ type UnmuteRequestBody struct {
 	MutingUserID string `form:"muting_user_id" json:"muting_user_id" xml:"muting_user_id"`
 }
 
+// BlockRequestBody is the type of the "users" service "Block" endpoint HTTP
+// request body.
+type BlockRequestBody struct {
+	BlockedUserID  string `form:"blocked_user_id" json:"blocked_user_id" xml:"blocked_user_id"`
+	BlockingUserID string `form:"blocking_user_id" json:"blocking_user_id" xml:"blocking_user_id"`
+}
+
+// UnblockRequestBody is the type of the "users" service "Unblock" endpoint
+// HTTP request body.
+type UnblockRequestBody struct {
+	BlockedUserID  string `form:"blocked_user_id" json:"blocked_user_id" xml:"blocked_user_id"`
+	BlockingUserID string `form:"blocking_user_id" json:"blocking_user_id" xml:"blocking_user_id"`
+}
+
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
@@ -348,6 +362,42 @@ type UnmuteBadRequestResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// BlockBadRequestResponseBody is the type of the "users" service "Block"
+// endpoint HTTP response body for the "BadRequest" error.
+type BlockBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UnblockBadRequestResponseBody is the type of the "users" service "Unblock"
+// endpoint HTTP response body for the "BadRequest" error.
+type UnblockBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	ID          *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
@@ -431,6 +481,26 @@ func NewUnmuteRequestBody(p *users.UnmutePayload) *UnmuteRequestBody {
 	body := &UnmuteRequestBody{
 		MutedUserID:  p.MutedUserID,
 		MutingUserID: p.MutingUserID,
+	}
+	return body
+}
+
+// NewBlockRequestBody builds the HTTP request body from the payload of the
+// "Block" endpoint of the "users" service.
+func NewBlockRequestBody(p *users.BlockPayload) *BlockRequestBody {
+	body := &BlockRequestBody{
+		BlockedUserID:  p.BlockedUserID,
+		BlockingUserID: p.BlockingUserID,
+	}
+	return body
+}
+
+// NewUnblockRequestBody builds the HTTP request body from the payload of the
+// "Unblock" endpoint of the "users" service.
+func NewUnblockRequestBody(p *users.UnblockPayload) *UnblockRequestBody {
+	body := &UnblockRequestBody{
+		BlockedUserID:  p.BlockedUserID,
+		BlockingUserID: p.BlockingUserID,
 	}
 	return body
 }
@@ -682,6 +752,35 @@ func NewMuteBadRequest(body *MuteBadRequestResponseBody) *goa.ServiceError {
 
 // NewUnmuteBadRequest builds a users service Unmute endpoint BadRequest error.
 func NewUnmuteBadRequest(body *UnmuteBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewBlockBadRequest builds a users service Block endpoint BadRequest error.
+func NewBlockBadRequest(body *BlockBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewUnblockBadRequest builds a users service Unblock endpoint BadRequest
+// error.
+func NewUnblockBadRequest(body *UnblockBadRequestResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -1075,6 +1174,54 @@ func ValidateMuteBadRequestResponseBody(body *MuteBadRequestResponseBody) (err e
 // ValidateUnmuteBadRequestResponseBody runs the validations defined on
 // Unmute_BadRequest_Response_Body
 func ValidateUnmuteBadRequestResponseBody(body *UnmuteBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateBlockBadRequestResponseBody runs the validations defined on
+// Block_BadRequest_Response_Body
+func ValidateBlockBadRequestResponseBody(body *BlockBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUnblockBadRequestResponseBody runs the validations defined on
+// Unblock_BadRequest_Response_Body
+func ValidateUnblockBadRequestResponseBody(body *UnblockBadRequestResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

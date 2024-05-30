@@ -58,6 +58,13 @@ type Client struct {
 	// Unmute Doer is the HTTP client used to make requests to the Unmute endpoint.
 	UnmuteDoer goahttp.Doer
 
+	// Block Doer is the HTTP client used to make requests to the Block endpoint.
+	BlockDoer goahttp.Doer
+
+	// Unblock Doer is the HTTP client used to make requests to the Unblock
+	// endpoint.
+	UnblockDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -89,6 +96,8 @@ func NewClient(
 		GetFollowingsDoer:   doer,
 		MuteDoer:            doer,
 		UnmuteDoer:          doer,
+		BlockDoer:           doer,
+		UnblockDoer:         doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -341,6 +350,54 @@ func (c *Client) Unmute() goa.Endpoint {
 		resp, err := c.UnmuteDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("users", "Unmute", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Block returns an endpoint that makes HTTP requests to the users service
+// Block server.
+func (c *Client) Block() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeBlockRequest(c.encoder)
+		decodeResponse = DecodeBlockResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildBlockRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.BlockDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Block", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Unblock returns an endpoint that makes HTTP requests to the users service
+// Unblock server.
+func (c *Client) Unblock() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeUnblockRequest(c.encoder)
+		decodeResponse = DecodeUnblockResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildUnblockRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.UnblockDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("users", "Unblock", err)
 		}
 		return decodeResponse(resp)
 	}

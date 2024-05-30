@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteUserRequestBody'
                         example:
-                            id: Unde veritatis nihil nulla et quia sunt.
+                            id: Minima quis incidunt saepe est.
             responses:
                 "200":
                     description: OK response.
@@ -47,8 +47,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            display_name: Ut possimus.
-                            username: Sapiente consequuntur modi nisi.
+                            display_name: Officia expedita consequuntur.
+                            username: Minus eaque tempora in laborum.
             responses:
                 "200":
                     description: OK response.
@@ -57,12 +57,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Dolores ut rerum.
-                                created_at: "1987-01-11T09:06:07Z"
-                                display_name: Qui id repellat.
-                                id: 86cbf0c2-1b66-11ef-ad04-eed4b658b2e4
-                                updated_at: "1977-04-29T13:43:55Z"
-                                username: Et eos totam autem enim quibusdam.
+                                bio: Dignissimos blanditiis nihil ipsum error nostrum.
+                                created_at: "1977-02-10T22:09:42Z"
+                                display_name: Quo nihil ut veniam mollitia numquam quo.
+                                id: 5c57e54c-1e65-11ef-8ef1-0242ac120003
+                                updated_at: "2008-12-06T15:49:22Z"
+                                username: Ab recusandae.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -81,8 +81,8 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: Ut optio.
-                  example: Ut earum sint et tempore.
+                    example: Consequatur ut optio nisi.
+                  example: Vel nobis.
             responses:
                 "200":
                     description: OK response.
@@ -91,12 +91,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Est sed repellendus est.
-                                created_at: "2003-09-26T16:33:14Z"
-                                display_name: Omnis at distinctio voluptas atque fugit natus.
-                                id: 86cc2970-1b66-11ef-ad04-eed4b658b2e4
-                                updated_at: "2000-11-15T15:05:32Z"
-                                username: Dolores tenetur quam laborum totam.
+                                bio: Illum aut id.
+                                created_at: "1992-08-31T01:16:09Z"
+                                display_name: Repellendus dolores vel doloribus nihil et.
+                                id: 5c580575-1e65-11ef-8ef1-0242ac120003
+                                updated_at: "1984-03-14T07:00:57Z"
+                                username: Possimus tempore dicta aut dicta eum dolorum.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -115,8 +115,8 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: Dolorum tenetur qui vel.
-                  example: Explicabo possimus quia.
+                    example: Quo quia ipsa nostrum.
+                  example: Dicta quisquam eos voluptate ducimus.
             requestBody:
                 required: true
                 content:
@@ -124,7 +124,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateBioRequestBody'
                         example:
-                            bio: Minus illo repudiandae tempore.
+                            bio: Non facilis et fugit.
             responses:
                 "200":
                     description: OK response.
@@ -152,8 +152,8 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: Quis possimus dolores quas commodi sit.
-                  example: Quam aut.
+                    example: Quia sapiente ipsa.
+                  example: Officiis rerum similique veritatis culpa.
             responses:
                 "200":
                     description: OK response.
@@ -164,55 +164,37 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
                             example:
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
+                                - bio: Magni nobis repellendus ut suscipit suscipit.
+                                  created_at: "1989-12-28T14:47:07Z"
+                                  display_name: Rerum ducimus sed quia optio eligendi quo.
+                                  id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                  updated_at: "1999-10-21T07:37:18Z"
+                                  username: Inventore in.
+                                - bio: Magni nobis repellendus ut suscipit suscipit.
+                                  created_at: "1989-12-28T14:47:07Z"
+                                  display_name: Rerum ducimus sed quia optio eligendi quo.
+                                  id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                  updated_at: "1999-10-21T07:37:18Z"
+                                  username: Inventore in.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -231,8 +213,8 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: Dicta veritatis illum.
-                  example: Est quae cupiditate voluptatem et.
+                    example: Molestiae magni natus et architecto possimus soluta.
+                  example: Ut cum facere sed ea.
             responses:
                 "200":
                     description: OK response.
@@ -243,31 +225,49 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
-                                    - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                      created_at: "2006-02-27T19:39:15Z"
-                                      display_name: Qui vel.
-                                      id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                      updated_at: "1990-05-26T00:31:48Z"
-                                      username: Accusantium rem labore deserunt cum.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
+                                    - bio: Magni nobis repellendus ut suscipit suscipit.
+                                      created_at: "1989-12-28T14:47:07Z"
+                                      display_name: Rerum ducimus sed quia optio eligendi quo.
+                                      id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                      updated_at: "1999-10-21T07:37:18Z"
+                                      username: Inventore in.
                             example:
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
-                                - bio: Dolorem quibusdam inventore in aperiam rerum ducimus.
-                                  created_at: "2006-02-27T19:39:15Z"
-                                  display_name: Qui vel.
-                                  id: 86ccc8c6-1b66-11ef-ad04-eed4b658b2e4
-                                  updated_at: "1990-05-26T00:31:48Z"
-                                  username: Accusantium rem labore deserunt cum.
+                                - bio: Magni nobis repellendus ut suscipit suscipit.
+                                  created_at: "1989-12-28T14:47:07Z"
+                                  display_name: Rerum ducimus sed quia optio eligendi quo.
+                                  id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                  updated_at: "1999-10-21T07:37:18Z"
+                                  username: Inventore in.
+                                - bio: Magni nobis repellendus ut suscipit suscipit.
+                                  created_at: "1989-12-28T14:47:07Z"
+                                  display_name: Rerum ducimus sed quia optio eligendi quo.
+                                  id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                  updated_at: "1999-10-21T07:37:18Z"
+                                  username: Inventore in.
+                                - bio: Magni nobis repellendus ut suscipit suscipit.
+                                  created_at: "1989-12-28T14:47:07Z"
+                                  display_name: Rerum ducimus sed quia optio eligendi quo.
+                                  id: 5c58709e-1e65-11ef-8ef1-0242ac120003
+                                  updated_at: "1999-10-21T07:37:18Z"
+                                  username: Inventore in.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -286,8 +286,8 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: Enim atque.
-                  example: Maiores quas occaecati vitae quisquam.
+                    example: Temporibus itaque.
+                  example: Cum enim eum molestiae.
             requestBody:
                 required: true
                 content:
@@ -295,7 +295,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateUsernameRequestBody'
                         example:
-                            username: Quas iusto omnis aspernatur nostrum ad eos.
+                            username: Soluta itaque eaque voluptatum est consequatur.
             responses:
                 "200":
                     description: OK response.
@@ -307,6 +307,53 @@ paths:
                                 $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/block:
+        delete:
+            tags:
+                - users
+            summary: Unblock users
+            operationId: users#Unblock
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BlockRequestBody'
+                        example:
+                            blocked_user_id: Est quis qui.
+                            blocking_user_id: Sapiente corporis a esse et.
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        post:
+            tags:
+                - users
+            summary: Block users
+            operationId: users#Block
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BlockRequestBody'
+                        example:
+                            blocked_user_id: Voluptatum quo enim eos ex laborum.
+                            blocking_user_id: Sit perferendis et.
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -324,8 +371,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/FollowRequestBody'
                         example:
-                            followee_id: Aut inventore ut est et.
-                            follower_id: Beatae aspernatur labore distinctio dolores aut fugit.
+                            followee_id: Aut dignissimos.
+                            follower_id: Voluptas enim dolor dolore dicta.
             responses:
                 "200":
                     description: OK response.
@@ -347,8 +394,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/FollowRequestBody'
                         example:
-                            followee_id: Id odit fugit.
-                            follower_id: Non facilis et fugit.
+                            followee_id: Aut inventore ut est et.
+                            follower_id: Distinctio dolores aut fugit.
             responses:
                 "200":
                     description: OK response.
@@ -371,8 +418,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/MuteRequestBody'
                         example:
-                            muted_user_id: Commodi ullam in quibusdam dignissimos.
-                            muting_user_id: Assumenda ad ut voluptas.
+                            muted_user_id: Voluptatem porro tempora quis laborum impedit iusto.
+                            muting_user_id: Vero sit explicabo.
             responses:
                 "200":
                     description: OK response.
@@ -394,8 +441,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/MuteRequestBody'
                         example:
-                            muted_user_id: Provident sed quis et blanditiis debitis quo.
-                            muting_user_id: Odit expedita iure aut ut.
+                            muted_user_id: Odio fuga corporis commodi.
+                            muting_user_id: In quibusdam dignissimos ullam.
             responses:
                 "200":
                     description: OK response.
@@ -416,18 +463,33 @@ paths:
                     description: File downloaded
 components:
     schemas:
+        BlockRequestBody:
+            type: object
+            properties:
+                blocked_user_id:
+                    type: string
+                    example: Praesentium autem dolore quisquam velit.
+                blocking_user_id:
+                    type: string
+                    example: Consequuntur aut et.
+            example:
+                blocked_user_id: Illum exercitationem maxime dolores.
+                blocking_user_id: Quasi laborum laboriosam harum et voluptatem voluptas.
+            required:
+                - blocked_user_id
+                - blocking_user_id
         CreateUserRequestBody:
             type: object
             properties:
                 display_name:
                     type: string
-                    example: Consequatur facere optio unde ex iste.
+                    example: Debitis similique rerum ea voluptates.
                 username:
                     type: string
-                    example: Labore vero quaerat omnis similique molestias libero.
+                    example: Distinctio nihil dolor dolor inventore dolorum.
             example:
-                display_name: Autem voluptas est commodi.
-                username: Aspernatur debitis qui.
+                display_name: Est delectus aut maxime placeat id numquam.
+                username: Veniam magni voluptas aut error.
             required:
                 - username
                 - display_name
@@ -436,9 +498,9 @@ components:
             properties:
                 id:
                     type: string
-                    example: Repellat reiciendis magni.
+                    example: Explicabo possimus quia.
             example:
-                id: Neque est eos quos officiis est eum.
+                id: Quis possimus dolores quas commodi sit.
             required:
                 - id
         Error:
@@ -467,14 +529,14 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
-                timeout: false
+                temporary: true
+                timeout: true
             required:
                 - name
                 - id
@@ -487,13 +549,13 @@ components:
             properties:
                 followee_id:
                     type: string
-                    example: Cum accusantium ea quasi.
+                    example: Assumenda vel sit ducimus.
                 follower_id:
                     type: string
-                    example: In quas aliquid quos dicta.
+                    example: Et nobis et eos iure vel.
             example:
-                followee_id: Est laboriosam pariatur dolores voluptas.
-                follower_id: Est ducimus et incidunt enim placeat.
+                followee_id: Dolorum distinctio.
+                follower_id: Dolorem est rerum nam voluptatem similique omnis.
             required:
                 - follower_id
                 - followee_id
@@ -502,13 +564,13 @@ components:
             properties:
                 muted_user_id:
                     type: string
-                    example: Similique qui ducimus aut consequatur nihil.
+                    example: Consectetur quidem occaecati reiciendis repellendus.
                 muting_user_id:
                     type: string
-                    example: Nihil fugit ab.
+                    example: Sit sed sit deserunt rerum.
             example:
-                muted_user_id: Quisquam eligendi aliquam.
-                muting_user_id: Aut qui quia qui.
+                muted_user_id: Exercitationem cupiditate dolorem pariatur similique nostrum vel.
+                muting_user_id: Molestiae voluptas.
             required:
                 - muted_user_id
                 - muting_user_id
@@ -517,9 +579,9 @@ components:
             properties:
                 bio:
                     type: string
-                    example: At rem eligendi blanditiis molestiae alias id.
+                    example: Illum praesentium.
             example:
-                bio: Odit blanditiis nobis esse.
+                bio: Quae cupiditate.
             required:
                 - bio
         UpdateUsernameRequestBody:
@@ -527,9 +589,9 @@ components:
             properties:
                 username:
                     type: string
-                    example: Quo repudiandae laudantium voluptatem nihil autem.
+                    example: Quam aut.
             example:
-                username: Blanditiis voluptates nisi.
+                username: Harum dicta.
             required:
                 - username
         User:
@@ -537,32 +599,32 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Quas voluptatem veritatis qui similique impedit quia.
+                    example: Non consequuntur sed explicabo aut ad natus.
                 created_at:
                     type: string
-                    example: "1979-07-05T16:31:11Z"
+                    example: "2014-11-14T07:14:09Z"
                     format: date-time
                 display_name:
                     type: string
-                    example: Sed nulla.
+                    example: Quis sint maxime ratione voluptatum.
                 id:
                     type: string
-                    example: 86cd61fa-1b66-11ef-ad04-eed4b658b2e4
+                    example: 5c5903a8-1e65-11ef-8ef1-0242ac120003
                     format: uuid
                 updated_at:
                     type: string
-                    example: "2005-06-24T05:54:34Z"
+                    example: "1992-07-22T12:16:41Z"
                     format: date-time
                 username:
                     type: string
-                    example: Nobis at ab impedit.
+                    example: Est eius fugit voluptatem.
             example:
-                bio: Fugiat perspiciatis ab illum et qui earum.
-                created_at: "1992-07-22T12:16:41Z"
-                display_name: Non voluptatem doloremque aspernatur quisquam.
-                id: 86cd65c4-1b66-11ef-ad04-eed4b658b2e4
-                updated_at: "1993-11-27T20:36:54Z"
-                username: Omnis molestiae enim similique nesciunt sed.
+                bio: Neque est eos quos officiis est eum.
+                created_at: "2008-11-11T06:49:33Z"
+                display_name: Et est consequatur repellat reiciendis magni.
+                id: 5c5905f7-1e65-11ef-8ef1-0242ac120003
+                updated_at: "1980-02-21T16:28:08Z"
+                username: Similique incidunt.
             required:
                 - id
                 - username
