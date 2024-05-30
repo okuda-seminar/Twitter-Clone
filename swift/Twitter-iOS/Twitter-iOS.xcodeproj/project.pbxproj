@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
+		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
 		6540F8852BB44D430029BA46 /* AppRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8842BB44D430029BA46 /* AppRootViewController.swift */; };
@@ -101,6 +102,7 @@
 
 /* Begin PBXFileReference section */
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
+		3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowerRequestsPageViewController.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6540F8822BB44D430029BA46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
 				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
+				3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -790,6 +793,7 @@
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,
 				658D088C2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift in Sources */,
 				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
+				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				65C6CCAD2C00134B00B0A052 /* NewMessageEditViewController.swift in Sources */,
