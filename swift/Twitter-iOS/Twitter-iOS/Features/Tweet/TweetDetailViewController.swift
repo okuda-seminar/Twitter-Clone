@@ -59,12 +59,10 @@ struct TweetDetailView: View {
   var body: some View {
     VStack(alignment: .leading) {
       HStack {
-        if let userIcon = tweetModel.userIcon {
-          Image(uiImage: userIcon)
-            .resizable()
-            .scaledToFit()
-            .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
-        }
+        tweetModel.userIcon
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
         Text(tweetModel.userName)
         Spacer()
         Button(

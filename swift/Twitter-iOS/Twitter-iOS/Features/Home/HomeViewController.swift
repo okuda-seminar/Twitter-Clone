@@ -8,33 +8,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
     static let edgePadding = 16.0
   }
 
-  private enum homeTabId: String {
-    case forYou
-    case following
-  }
-
-  private let homeTabScrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.bounces = false
-    return scrollView
-  }()
-
-  private let homeTabStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .horizontal
-    return stackView
-  }()
-
-  private let homeTabSelectionView: HomeTabSelectionView = {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/138 - Replace custom home header view with Apple's navigation bar items.
-    let view = HomeTabSelectionView(frame: .zero)
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
-
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(showSideMenu))
@@ -59,6 +32,14 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return viewController
   }()
 
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: HomeView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -66,33 +47,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
-    view.addSubview(homeTabSelectionView)
-    view.addSubview(homeTabScrollView)
+    view.addSubview(hostingController.view)
     view.addSubview(newTweetEntryPointButtonController.view)
-    homeTabScrollView.addSubview(homeTabStackView)
-
-    homeTabSelectionView.forYouButton.tabID = homeTabId.forYou.rawValue
-    homeTabSelectionView.forYouButton.delegate = self
-    homeTabSelectionView.followingButton.tabID = homeTabId.following.rawValue
-    homeTabSelectionView.followingButton.delegate = self
-
-    let forYouTabViewController = HomeTabViewController()
-    forYouTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    loadTweetData(viewController: forYouTabViewController)
-    addChild(forYouTabViewController)
-    forYouTabViewController.didMove(toParent: self)
-    forYouTabViewController.delegate = self
-    homeTabStackView.addArrangedSubview(forYouTabViewController.view)
-
-    let followingTabViewController = HomeTabViewController()
-    followingTabViewController.view.translatesAutoresizingMaskIntoConstraints = false
-    loadTweetData(viewController: followingTabViewController)
-    addChild(followingTabViewController)
-    followingTabViewController.didMove(toParent: self)
-    followingTabViewController.delegate = self
-    homeTabStackView.addArrangedSubview(followingTabViewController.view)
-
-    homeTabScrollView.delegate = self
 
     addChild(newTweetEntryPointButtonController)
     newTweetEntryPointButtonController.didMove(toParent: self)
@@ -100,24 +56,10 @@ class HomeViewController: ViewControllerWithUserIconButton {
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      homeTabSelectionView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      homeTabSelectionView.heightAnchor.constraint(
-        equalToConstant: LayoutConstant.homeTabSelectionHeight),
-      homeTabSelectionView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      homeTabSelectionView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-
-      homeTabScrollView.topAnchor.constraint(equalTo: homeTabSelectionView.bottomAnchor),
-      homeTabScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      homeTabScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      homeTabScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-      homeTabStackView.topAnchor.constraint(equalTo: homeTabScrollView.topAnchor),
-      homeTabStackView.leadingAnchor.constraint(equalTo: homeTabScrollView.leadingAnchor),
-      homeTabStackView.trailingAnchor.constraint(equalTo: homeTabScrollView.trailingAnchor),
-      homeTabStackView.heightAnchor.constraint(equalTo: homeTabScrollView.heightAnchor),
-
-      forYouTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
-      followingTabViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
 
       newTweetEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
@@ -131,14 +73,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
     navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))
-  }
-
-  private func loadTweetData(viewController: HomeTabViewController) {
-    var tweets: [TweetModel] = []
-    for _ in 0..<30 {
-      tweets.append(createFakeTweetModel())
-    }
-    viewController.tweets = tweets
   }
 
   private func showTimelineSettings() {
@@ -155,81 +89,77 @@ class HomeViewController: ViewControllerWithUserIconButton {
   }
 }
 
-extension HomeViewController: UIScrollViewDelegate {
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    let curXOffset = scrollView.contentOffset.x
-    var selectedButtonIdx = 0
+struct HomeView: View {
+  @State private var activeTabModel: HomeTabModel.Tab = .forYou
+  @State private var tabToScroll: HomeTabModel.Tab?
+  private var tabModels: [HomeTabModel] = [
+    .init(id: .forYou),
+    .init(id: .following),
+  ]
 
-    for left in 0...homeTabSelectionView.allButtons.count - 1 {
-      let leftXOffset = homeTabStackView.arrangedSubviews[left].frame.origin.x
-      let rightXOffset = homeTabStackView.arrangedSubviews[left + 1].frame.origin.x
-      guard leftXOffset <= curXOffset && curXOffset <= curXOffset else { continue }
-
-      if curXOffset <= (leftXOffset + rightXOffset) / 2 {
-        selectedButtonIdx = left
-        scrollView.setContentOffset(CGPoint(x: leftXOffset, y: 0), animated: true)
-      } else {
-        selectedButtonIdx = left + 1
-        scrollView.setContentOffset(CGPoint(x: rightXOffset, y: 0), animated: true)
-      }
-      break
+  var body: some View {
+    VStack(spacing: 0) {
+      TabBar()
+      Tabs()
+      Spacer()
     }
+  }
 
-    for (idx, button) in zip(
-      homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons)
-    {
-      if idx == selectedButtonIdx {
-        updateSelectedButtonUI(button)
-      } else {
-        updateUnselectedButtonUI(button)
+  @ViewBuilder
+  private func TabBar() -> some View {
+    HStack {
+      ForEach(tabModels) { tabModel in
+        Spacer()
+        Button(
+          action: {
+            withAnimation {
+              activeTabModel = tabModel.id
+              tabToScroll = tabModel.id
+            }
+          },
+          label: {
+            Text(tabModel.id.rawValue)
+              .foregroundStyle(activeTabModel == tabModel.id ? Color.primary : .gray)
+          }
+        )
+        .buttonStyle(.plain)
+        Spacer()
+      }
+    }
+    .padding(.top)
+    .padding(.bottom)
+    .overlay(alignment: .bottom) {
+      ZStack {
+        Divider()
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func Tabs() -> some View {
+    ScrollView(.horizontal) {
+      LazyHStack(spacing: 0) {
+        ForEach(tabModels) { tabModel in
+          HomeTabView()
+            .frame(width: UIScreen.main.bounds.width)
+        }
+      }
+      .scrollTargetLayout()
+    }
+    .scrollIndicators(.hidden)
+    .scrollTargetBehavior(.paging)
+    .scrollPosition(id: $tabToScroll)
+    .onChange(of: tabToScroll) { _, newValue in
+      if let newValue {
+        withAnimation {
+          tabToScroll = newValue
+          activeTabModel = newValue
+        }
       }
     }
   }
 }
 
-extension HomeViewController: HomeTabSelectionButtonDelegate {
-  func didTapHomeTabSelectionButton(selectedButton: HomeTabSelectionButton) {
-    for (idx, button) in zip(
-      homeTabSelectionView.allButtons.indices, homeTabSelectionView.allButtons)
-    {
-      if button.tabID == selectedButton.tabID {
-        updateSelectedButtonUI(button)
-
-        let xOffset = homeTabStackView.arrangedSubviews[idx].frame.origin.x
-        homeTabScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
-      } else {
-        updateUnselectedButtonUI(button)
-      }
-    }
-  }
-
-  private func updateSelectedButtonUI(_ button: HomeTabSelectionButton) {
-    button.isSelected = true
-  }
-
-  private func updateUnselectedButtonUI(_ button: HomeTabSelectionButton) {
-    button.isSelected = false
-  }
-}
-
-extension HomeViewController: HomeTabViewControllerDelegate {
-  func didScrollVertically(xDelta: CGFloat) {
-    UIView.animate(withDuration: 0.3) {
-      self.homeTabSelectionView.layer.opacity = xDelta > 0 ? 0.0 : 1.0
-    }
-  }
-
-  func didTapTweetCell(_ cell: HomeTweetCollectionViewCell) {
-    guard let tweetModel = cell.tweetModel else { return }
-    let tweetDetailViewController = TweetDetailViewController(tweetModel: tweetModel)
-    navigationController?.pushViewController(tweetDetailViewController, animated: true)
-  }
-
-  func didTapUserIconInCell(_ cell: HomeTweetCollectionViewCell) {
-    let userProfileViewController = UserProfileViewController()
-    guard let tweet = cell.tweetModel else { return }
-    userProfileViewController.userName = tweet.userName
-    userProfileViewController.profileIcon = tweet.userIcon
-    navigationController?.pushViewController(userProfileViewController, animated: true)
-  }
+#Preview {
+  HomeView()
 }
