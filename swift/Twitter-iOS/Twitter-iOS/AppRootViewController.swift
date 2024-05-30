@@ -155,6 +155,17 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(userBookmarksPageViewController, animated: true)
   }
 
+  func didTapFollowerRequests() {
+    hideSideMenu()
+    guard
+      let selectedViewController = mainRootViewController.selectedViewController
+        as? UINavigationController
+    else { return }
+    let userFollowerRequestsPageViewController = UserFollowerRequestsPageViewController()
+    selectedViewController.pushViewController(
+      userFollowerRequestsPageViewController, animated: true)
+  }
+
   func didTapSettingsAndPrivacy() {
     hideSideMenu()
     guard
