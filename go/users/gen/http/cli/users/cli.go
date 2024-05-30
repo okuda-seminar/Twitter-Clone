@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings|mute|unmute)
+	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings|mute|unmute|block|unblock)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Ut possimus.",
-      "username": "Sapiente consequuntur modi nisi."
+      "display_name": "Officia expedita consequuntur.",
+      "username": "Minus eaque tempora in laborum."
    }'` + "\n" +
 		""
 }
@@ -81,6 +81,12 @@ func ParseEndpoint(
 
 		usersUnmuteFlags    = flag.NewFlagSet("unmute", flag.ExitOnError)
 		usersUnmuteBodyFlag = usersUnmuteFlags.String("body", "REQUIRED", "")
+
+		usersBlockFlags    = flag.NewFlagSet("block", flag.ExitOnError)
+		usersBlockBodyFlag = usersBlockFlags.String("body", "REQUIRED", "")
+
+		usersUnblockFlags    = flag.NewFlagSet("unblock", flag.ExitOnError)
+		usersUnblockBodyFlag = usersUnblockFlags.String("body", "REQUIRED", "")
 	)
 	usersFlags.Usage = usersUsage
 	usersCreateUserFlags.Usage = usersCreateUserUsage
@@ -94,6 +100,8 @@ func ParseEndpoint(
 	usersGetFollowingsFlags.Usage = usersGetFollowingsUsage
 	usersMuteFlags.Usage = usersMuteUsage
 	usersUnmuteFlags.Usage = usersUnmuteUsage
+	usersBlockFlags.Usage = usersBlockUsage
+	usersUnblockFlags.Usage = usersUnblockUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -162,6 +170,12 @@ func ParseEndpoint(
 			case "unmute":
 				epf = usersUnmuteFlags
 
+			case "block":
+				epf = usersBlockFlags
+
+			case "unblock":
+				epf = usersUnblockFlags
+
 			}
 
 		}
@@ -220,6 +234,12 @@ func ParseEndpoint(
 			case "unmute":
 				endpoint = c.Unmute()
 				data, err = usersc.BuildUnmutePayload(*usersUnmuteBodyFlag)
+			case "block":
+				endpoint = c.Block()
+				data, err = usersc.BuildBlockPayload(*usersBlockBodyFlag)
+			case "unblock":
+				endpoint = c.Unblock()
+				data, err = usersc.BuildUnblockPayload(*usersUnblockBodyFlag)
 			}
 		}
 	}
@@ -248,6 +268,8 @@ COMMAND:
     get-followings: GetFollowings implements GetFollowings.
     mute: Mute implements Mute.
     unmute: Unmute implements Unmute.
+    block: Block implements Block.
+    unblock: Unblock implements Unblock.
 
 Additional help:
     %[1]s users COMMAND --help
@@ -261,8 +283,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Ut possimus.",
-      "username": "Sapiente consequuntur modi nisi."
+      "display_name": "Officia expedita consequuntur.",
+      "username": "Minus eaque tempora in laborum."
    }'
 `, os.Args[0])
 }
@@ -275,7 +297,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": "Unde veritatis nihil nulla et quia sunt."
+      "id": "Minima quis incidunt saepe est."
    }'
 `, os.Args[0])
 }
@@ -287,7 +309,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "Debitis ut iure minima quis incidunt."
+    %[1]s users find-user-by-id --id "Error maxime at magnam."
 `, os.Args[0])
 }
 
@@ -300,8 +322,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Quas iusto omnis aspernatur nostrum ad eos."
-   }' --id "Itaque labore molestiae excepturi odit minima qui."
+      "username": "Soluta itaque eaque voluptatum est consequatur."
+   }' --id "Minus illo repudiandae tempore."
 `, os.Args[0])
 }
 
@@ -314,8 +336,8 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Minus illo repudiandae tempore."
-   }' --id "Dolorem est veniam iste."
+      "bio": "Non facilis et fugit."
+   }' --id "Id odit fugit."
 `, os.Args[0])
 }
 
@@ -327,8 +349,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followee_id": "Id odit fugit.",
-      "follower_id": "Non facilis et fugit."
+      "followee_id": "Aut inventore ut est et.",
+      "follower_id": "Distinctio dolores aut fugit."
    }'
 `, os.Args[0])
 }
@@ -341,8 +363,8 @@ Unfollow implements Unfollow.
 
 Example:
     %[1]s users unfollow --body '{
-      "followee_id": "Aut inventore ut est et.",
-      "follower_id": "Beatae aspernatur labore distinctio dolores aut fugit."
+      "followee_id": "Aut dignissimos.",
+      "follower_id": "Voluptas enim dolor dolore dicta."
    }'
 `, os.Args[0])
 }
@@ -354,7 +376,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "Aut dignissimos."
+    %[1]s users get-followers --id "Eum ad quam delectus doloremque."
 `, os.Args[0])
 }
 
@@ -365,7 +387,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "Aperiam iste deleniti voluptatem autem cum."
+    %[1]s users get-followings --id "Provident sed quis et blanditiis debitis quo."
 `, os.Args[0])
 }
 
@@ -377,8 +399,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "Provident sed quis et blanditiis debitis quo.",
-      "muting_user_id": "Odit expedita iure aut ut."
+      "muted_user_id": "Odio fuga corporis commodi.",
+      "muting_user_id": "In quibusdam dignissimos ullam."
    }'
 `, os.Args[0])
 }
@@ -391,8 +413,36 @@ Unmute implements Unmute.
 
 Example:
     %[1]s users unmute --body '{
-      "muted_user_id": "Commodi ullam in quibusdam dignissimos.",
-      "muting_user_id": "Assumenda ad ut voluptas."
+      "muted_user_id": "Voluptatem porro tempora quis laborum impedit iusto.",
+      "muting_user_id": "Vero sit explicabo."
+   }'
+`, os.Args[0])
+}
+
+func usersBlockUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users block -body JSON
+
+Block implements Block.
+    -body JSON: 
+
+Example:
+    %[1]s users block --body '{
+      "blocked_user_id": "Voluptatum quo enim eos ex laborum.",
+      "blocking_user_id": "Sit perferendis et."
+   }'
+`, os.Args[0])
+}
+
+func usersUnblockUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unblock -body JSON
+
+Unblock implements Unblock.
+    -body JSON: 
+
+Example:
+    %[1]s users unblock --body '{
+      "blocked_user_id": "Est quis qui.",
+      "blocking_user_id": "Sapiente corporis a esse et."
    }'
 `, os.Args[0])
 }

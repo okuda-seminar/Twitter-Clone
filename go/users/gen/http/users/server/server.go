@@ -30,6 +30,8 @@ type Server struct {
 	GetFollowings      http.Handler
 	Mute               http.Handler
 	Unmute             http.Handler
+	Block              http.Handler
+	Unblock            http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -75,6 +77,8 @@ func New(
 			{"GetFollowings", "GET", "/api/users/{id}/followings"},
 			{"Mute", "POST", "/api/users/mute"},
 			{"Unmute", "DELETE", "/api/users/mute"},
+			{"Block", "POST", "/api/users/block"},
+			{"Unblock", "DELETE", "/api/users/block"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
@@ -88,6 +92,8 @@ func New(
 		GetFollowings:      NewGetFollowingsHandler(e.GetFollowings, mux, decoder, encoder, errhandler, formatter),
 		Mute:               NewMuteHandler(e.Mute, mux, decoder, encoder, errhandler, formatter),
 		Unmute:             NewUnmuteHandler(e.Unmute, mux, decoder, encoder, errhandler, formatter),
+		Block:              NewBlockHandler(e.Block, mux, decoder, encoder, errhandler, formatter),
+		Unblock:            NewUnblockHandler(e.Unblock, mux, decoder, encoder, errhandler, formatter),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -108,6 +114,8 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.GetFollowings = m(s.GetFollowings)
 	s.Mute = m(s.Mute)
 	s.Unmute = m(s.Unmute)
+	s.Block = m(s.Block)
+	s.Unblock = m(s.Unblock)
 }
 
 // MethodNames returns the methods served.
@@ -126,6 +134,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountGetFollowingsHandler(mux, h.GetFollowings)
 	MountMuteHandler(mux, h.Mute)
 	MountUnmuteHandler(mux, h.Unmute)
+	MountBlockHandler(mux, h.Block)
+	MountUnblockHandler(mux, h.Unblock)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -674,6 +684,108 @@ func NewUnmuteHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "Unmute")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountBlockHandler configures the mux to serve the "users" service "Block"
+// endpoint.
+func MountBlockHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/users/block", f)
+}
+
+// NewBlockHandler creates a HTTP handler which loads the HTTP request and
+// calls the "users" service "Block" endpoint.
+func NewBlockHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeBlockRequest(mux, decoder)
+		encodeResponse = EncodeBlockResponse(encoder)
+		encodeError    = EncodeBlockError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Block")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountUnblockHandler configures the mux to serve the "users" service
+// "Unblock" endpoint.
+func MountUnblockHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("DELETE", "/api/users/block", f)
+}
+
+// NewUnblockHandler creates a HTTP handler which loads the HTTP request and
+// calls the "users" service "Unblock" endpoint.
+func NewUnblockHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeUnblockRequest(mux, decoder)
+		encodeResponse = EncodeUnblockResponse(encoder)
+		encodeError    = EncodeUnblockError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Unblock")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {

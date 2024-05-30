@@ -66,6 +66,20 @@ type UnmuteRequestBody struct {
 	MutingUserID *string `form:"muting_user_id,omitempty" json:"muting_user_id,omitempty" xml:"muting_user_id,omitempty"`
 }
 
+// BlockRequestBody is the type of the "users" service "Block" endpoint HTTP
+// request body.
+type BlockRequestBody struct {
+	BlockedUserID  *string `form:"blocked_user_id,omitempty" json:"blocked_user_id,omitempty" xml:"blocked_user_id,omitempty"`
+	BlockingUserID *string `form:"blocking_user_id,omitempty" json:"blocking_user_id,omitempty" xml:"blocking_user_id,omitempty"`
+}
+
+// UnblockRequestBody is the type of the "users" service "Unblock" endpoint
+// HTTP request body.
+type UnblockRequestBody struct {
+	BlockedUserID  *string `form:"blocked_user_id,omitempty" json:"blocked_user_id,omitempty" xml:"blocked_user_id,omitempty"`
+	BlockingUserID *string `form:"blocking_user_id,omitempty" json:"blocking_user_id,omitempty" xml:"blocking_user_id,omitempty"`
+}
+
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
@@ -348,6 +362,42 @@ type UnmuteBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// BlockBadRequestResponseBody is the type of the "users" service "Block"
+// endpoint HTTP response body for the "BadRequest" error.
+type BlockBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UnblockBadRequestResponseBody is the type of the "users" service "Unblock"
+// endpoint HTTP response body for the "BadRequest" error.
+type UnblockBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	ID          string `form:"id" json:"id" xml:"id"`
@@ -602,6 +652,34 @@ func NewUnmuteBadRequestResponseBody(res *goa.ServiceError) *UnmuteBadRequestRes
 	return body
 }
 
+// NewBlockBadRequestResponseBody builds the HTTP response body from the result
+// of the "Block" endpoint of the "users" service.
+func NewBlockBadRequestResponseBody(res *goa.ServiceError) *BlockBadRequestResponseBody {
+	body := &BlockBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUnblockBadRequestResponseBody builds the HTTP response body from the
+// result of the "Unblock" endpoint of the "users" service.
+func NewUnblockBadRequestResponseBody(res *goa.ServiceError) *UnblockBadRequestResponseBody {
+	body := &UnblockBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateUserPayload builds a users service CreateUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload {
 	v := &users.CreateUserPayload{
@@ -707,6 +785,26 @@ func NewUnmutePayload(body *UnmuteRequestBody) *users.UnmutePayload {
 	return v
 }
 
+// NewBlockPayload builds a users service Block endpoint payload.
+func NewBlockPayload(body *BlockRequestBody) *users.BlockPayload {
+	v := &users.BlockPayload{
+		BlockedUserID:  *body.BlockedUserID,
+		BlockingUserID: *body.BlockingUserID,
+	}
+
+	return v
+}
+
+// NewUnblockPayload builds a users service Unblock endpoint payload.
+func NewUnblockPayload(body *UnblockRequestBody) *users.UnblockPayload {
+	v := &users.UnblockPayload{
+		BlockedUserID:  *body.BlockedUserID,
+		BlockingUserID: *body.BlockingUserID,
+	}
+
+	return v
+}
+
 // ValidateCreateUserRequestBody runs the validations defined on
 // CreateUserRequestBody
 func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
@@ -787,6 +885,28 @@ func ValidateUnmuteRequestBody(body *UnmuteRequestBody) (err error) {
 	}
 	if body.MutingUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
+	}
+	return
+}
+
+// ValidateBlockRequestBody runs the validations defined on BlockRequestBody
+func ValidateBlockRequestBody(body *BlockRequestBody) (err error) {
+	if body.BlockedUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("blocked_user_id", "body"))
+	}
+	if body.BlockingUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
+	}
+	return
+}
+
+// ValidateUnblockRequestBody runs the validations defined on UnblockRequestBody
+func ValidateUnblockRequestBody(body *UnblockRequestBody) (err error) {
+	if body.BlockedUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("blocked_user_id", "body"))
+	}
+	if body.BlockingUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
 	}
 	return
 }

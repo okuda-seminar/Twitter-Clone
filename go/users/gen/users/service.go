@@ -37,6 +37,10 @@ type Service interface {
 	Mute(context.Context, *MutePayload) (err error)
 	// Unmute implements Unmute.
 	Unmute(context.Context, *UnmutePayload) (err error)
+	// Block implements Block.
+	Block(context.Context, *BlockPayload) (err error)
+	// Unblock implements Unblock.
+	Unblock(context.Context, *UnblockPayload) (err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -47,7 +51,13 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [11]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings", "Mute", "Unmute"}
+var MethodNames = [13]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings", "Mute", "Unmute", "Block", "Unblock"}
+
+// BlockPayload is the payload type of the users service Block method.
+type BlockPayload struct {
+	BlockedUserID  string
+	BlockingUserID string
+}
 
 // CreateUserPayload is the payload type of the users service CreateUser method.
 type CreateUserPayload struct {
@@ -88,6 +98,12 @@ type GetFollowingsPayload struct {
 type MutePayload struct {
 	MutedUserID  string
 	MutingUserID string
+}
+
+// UnblockPayload is the payload type of the users service Unblock method.
+type UnblockPayload struct {
+	BlockedUserID  string
+	BlockingUserID string
 }
 
 // UnfollowPayload is the payload type of the users service Unfollow method.

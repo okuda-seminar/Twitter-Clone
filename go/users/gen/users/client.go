@@ -26,10 +26,12 @@ type Client struct {
 	GetFollowingsEndpoint  goa.Endpoint
 	MuteEndpoint           goa.Endpoint
 	UnmuteEndpoint         goa.Endpoint
+	BlockEndpoint          goa.Endpoint
+	UnblockEndpoint        goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings, mute, unmute goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings, mute, unmute, block, unblock goa.Endpoint) *Client {
 	return &Client{
 		CreateUserEndpoint:     createUser,
 		DeleteUserEndpoint:     deleteUser,
@@ -42,6 +44,8 @@ func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, 
 		GetFollowingsEndpoint:  getFollowings,
 		MuteEndpoint:           mute,
 		UnmuteEndpoint:         unmute,
+		BlockEndpoint:          block,
+		UnblockEndpoint:        unblock,
 	}
 }
 
@@ -168,5 +172,25 @@ func (c *Client) Mute(ctx context.Context, p *MutePayload) (err error) {
 //   - error: internal error
 func (c *Client) Unmute(ctx context.Context, p *UnmutePayload) (err error) {
 	_, err = c.UnmuteEndpoint(ctx, p)
+	return
+}
+
+// Block calls the "Block" endpoint of the "users" service.
+// Block may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Block(ctx context.Context, p *BlockPayload) (err error) {
+	_, err = c.BlockEndpoint(ctx, p)
+	return
+}
+
+// Unblock calls the "Unblock" endpoint of the "users" service.
+// Unblock may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Unblock(ctx context.Context, p *UnblockPayload) (err error) {
+	_, err = c.UnblockEndpoint(ctx, p)
 	return
 }

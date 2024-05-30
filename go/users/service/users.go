@@ -209,6 +209,18 @@ func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
 	return nil
 }
 
+func (s *usersSvc) Block(ctx context.Context, p *users.BlockPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/223
+	// - Implement Block and Unblock API logic.
+	return nil
+}
+
+func (s *usersSvc) Unblock(ctx context.Context, p *users.UnblockPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/223
+	// - Implement Block and Unblock API logic.
+	return nil
+}
+
 const (
 	usernameLenMin = 4
 	usernameLenMax = 14
