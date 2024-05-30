@@ -110,6 +110,18 @@ func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLi
 	return nil
 }
 
+func (s *tweetsSvc) Retweet(ctx context.Context, p *tweets.RetweetPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/227
+	// - [go/tweets] Implement Retweet and DeleteRetweet API logic.
+	return nil
+}
+
+func (s *tweetsSvc) DeleteRetweet(ctx context.Context, p *tweets.DeleteRetweetPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/227
+	// - [go/tweets] Implement Retweet and DeleteRetweet API logic.
+	return nil
+}
+
 // Check whether the length of tweet text is between min and max inclusive.
 func validateTweet(text string) bool {
 	if len(text) < textLenMin || len(text) > textLenMax {

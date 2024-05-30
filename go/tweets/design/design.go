@@ -90,5 +90,35 @@ var _ = Service("tweets", func() {
 		})
 	})
 
+	Method("Retweet", func() {
+		Payload(func() {
+			Field(1, "tweet_id", String)
+			Field(2, "user_id", String)
+			Required("tweet_id", "user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			POST("/api/tweets/retweet")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
+	Method("DeleteRetweet", func() {
+		Payload(func() {
+			Field(1, "tweet_id", String)
+			Field(2, "user_id", String)
+			Required("tweet_id", "user_id")
+		})
+		Result(Empty)
+
+		HTTP(func() {
+			DELETE("/api/tweets/retweet")
+			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+		})
+	})
+
 	Files("/swagger.json", "./gen/http/openapi.json")
 })

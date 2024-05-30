@@ -19,15 +19,19 @@ type Client struct {
 	DeleteTweetEndpoint     goa.Endpoint
 	LikeTweetEndpoint       goa.Endpoint
 	DeleteTweetLikeEndpoint goa.Endpoint
+	RetweetEndpoint         goa.Endpoint
+	DeleteRetweetEndpoint   goa.Endpoint
 }
 
 // NewClient initializes a "tweets" service client given the endpoints.
-func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike goa.Endpoint) *Client {
+func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike, retweet, deleteRetweet goa.Endpoint) *Client {
 	return &Client{
 		CreateTweetEndpoint:     createTweet,
 		DeleteTweetEndpoint:     deleteTweet,
 		LikeTweetEndpoint:       likeTweet,
 		DeleteTweetLikeEndpoint: deleteTweetLike,
+		RetweetEndpoint:         retweet,
+		DeleteRetweetEndpoint:   deleteRetweet,
 	}
 }
 
@@ -72,5 +76,25 @@ func (c *Client) LikeTweet(ctx context.Context, p *LikeTweetPayload) (err error)
 //   - error: internal error
 func (c *Client) DeleteTweetLike(ctx context.Context, p *DeleteTweetLikePayload) (err error) {
 	_, err = c.DeleteTweetLikeEndpoint(ctx, p)
+	return
+}
+
+// Retweet calls the "Retweet" endpoint of the "tweets" service.
+// Retweet may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) Retweet(ctx context.Context, p *RetweetPayload) (err error) {
+	_, err = c.RetweetEndpoint(ctx, p)
+	return
+}
+
+// DeleteRetweet calls the "DeleteRetweet" endpoint of the "tweets" service.
+// DeleteRetweet may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
+//   - error: internal error
+func (c *Client) DeleteRetweet(ctx context.Context, p *DeleteRetweetPayload) (err error) {
+	_, err = c.DeleteRetweetEndpoint(ctx, p)
 	return
 }
