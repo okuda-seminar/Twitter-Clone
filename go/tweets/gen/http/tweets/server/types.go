@@ -40,6 +40,20 @@ type DeleteTweetLikeRequestBody struct {
 	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
+// RetweetRequestBody is the type of the "tweets" service "Retweet" endpoint
+// HTTP request body.
+type RetweetRequestBody struct {
+	TweetID *string `form:"tweet_id,omitempty" json:"tweet_id,omitempty" xml:"tweet_id,omitempty"`
+	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+}
+
+// DeleteRetweetRequestBody is the type of the "tweets" service "DeleteRetweet"
+// endpoint HTTP request body.
+type DeleteRetweetRequestBody struct {
+	TweetID *string `form:"tweet_id,omitempty" json:"tweet_id,omitempty" xml:"tweet_id,omitempty"`
+	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+}
+
 // CreateTweetResponseBody is the type of the "tweets" service "CreateTweet"
 // endpoint HTTP response body.
 type CreateTweetResponseBody struct {
@@ -157,6 +171,42 @@ type DeleteTweetLikeBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// RetweetBadRequestResponseBody is the type of the "tweets" service "Retweet"
+// endpoint HTTP response body for the "BadRequest" error.
+type RetweetBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteRetweetBadRequestResponseBody is the type of the "tweets" service
+// "DeleteRetweet" endpoint HTTP response body for the "BadRequest" error.
+type DeleteRetweetBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // NewCreateTweetResponseBody builds the HTTP response body from the result of
 // the "CreateTweet" endpoint of the "tweets" service.
 func NewCreateTweetResponseBody(res *tweets.Tweet) *CreateTweetResponseBody {
@@ -253,6 +303,34 @@ func NewDeleteTweetLikeBadRequestResponseBody(res *goa.ServiceError) *DeleteTwee
 	return body
 }
 
+// NewRetweetBadRequestResponseBody builds the HTTP response body from the
+// result of the "Retweet" endpoint of the "tweets" service.
+func NewRetweetBadRequestResponseBody(res *goa.ServiceError) *RetweetBadRequestResponseBody {
+	body := &RetweetBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteRetweetBadRequestResponseBody builds the HTTP response body from
+// the result of the "DeleteRetweet" endpoint of the "tweets" service.
+func NewDeleteRetweetBadRequestResponseBody(res *goa.ServiceError) *DeleteRetweetBadRequestResponseBody {
+	body := &DeleteRetweetBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateTweetPayload builds a tweets service CreateTweet endpoint payload.
 func NewCreateTweetPayload(body *CreateTweetRequestBody) *tweets.CreateTweetPayload {
 	v := &tweets.CreateTweetPayload{
@@ -286,6 +364,27 @@ func NewLikeTweetPayload(body *LikeTweetRequestBody) *tweets.LikeTweetPayload {
 // payload.
 func NewDeleteTweetLikePayload(body *DeleteTweetLikeRequestBody) *tweets.DeleteTweetLikePayload {
 	v := &tweets.DeleteTweetLikePayload{
+		TweetID: *body.TweetID,
+		UserID:  *body.UserID,
+	}
+
+	return v
+}
+
+// NewRetweetPayload builds a tweets service Retweet endpoint payload.
+func NewRetweetPayload(body *RetweetRequestBody) *tweets.RetweetPayload {
+	v := &tweets.RetweetPayload{
+		TweetID: *body.TweetID,
+		UserID:  *body.UserID,
+	}
+
+	return v
+}
+
+// NewDeleteRetweetPayload builds a tweets service DeleteRetweet endpoint
+// payload.
+func NewDeleteRetweetPayload(body *DeleteRetweetRequestBody) *tweets.DeleteRetweetPayload {
+	v := &tweets.DeleteRetweetPayload{
 		TweetID: *body.TweetID,
 		UserID:  *body.UserID,
 	}
@@ -329,6 +428,29 @@ func ValidateLikeTweetRequestBody(body *LikeTweetRequestBody) (err error) {
 // ValidateDeleteTweetLikeRequestBody runs the validations defined on
 // DeleteTweetLikeRequestBody
 func ValidateDeleteTweetLikeRequestBody(body *DeleteTweetLikeRequestBody) (err error) {
+	if body.TweetID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
+	return
+}
+
+// ValidateRetweetRequestBody runs the validations defined on RetweetRequestBody
+func ValidateRetweetRequestBody(body *RetweetRequestBody) (err error) {
+	if body.TweetID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
+	}
+	if body.UserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
+	return
+}
+
+// ValidateDeleteRetweetRequestBody runs the validations defined on
+// DeleteRetweetRequestBody
+func ValidateDeleteRetweetRequestBody(body *DeleteRetweetRequestBody) (err error) {
 	if body.TweetID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
 	}

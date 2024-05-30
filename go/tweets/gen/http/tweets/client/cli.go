@@ -21,7 +21,7 @@ func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Sunt sed quisquam ad corrupti labore consequatur.\",\n      \"user_id\": \"Voluptas omnis nesciunt incidunt et totam eos.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Ex id provident ut voluptates.\",\n      \"user_id\": \"Voluptatem et amet.\"\n   }'")
 		}
 	}
 	v := &tweets.CreateTweetPayload{
@@ -40,7 +40,7 @@ func BuildDeleteTweetPayload(tweetsDeleteTweetBody string) (*tweets.DeleteTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"Officiis explicabo id omnis dolores et ipsa.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"Perspiciatis laborum perspiciatis qui dolor nemo rerum.\"\n   }'")
 		}
 	}
 	v := &tweets.DeleteTweetPayload{
@@ -58,7 +58,7 @@ func BuildLikeTweetPayload(tweetsLikeTweetBody string) (*tweets.LikeTweetPayload
 	{
 		err = json.Unmarshal([]byte(tweetsLikeTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Iste quo et assumenda enim ut.\",\n      \"user_id\": \"Voluptatem ab nihil dolor perspiciatis.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Cumque iusto deleniti.\",\n      \"user_id\": \"Doloremque enim dolores nisi ipsam officiis.\"\n   }'")
 		}
 	}
 	v := &tweets.LikeTweetPayload{
@@ -77,10 +77,48 @@ func BuildDeleteTweetLikePayload(tweetsDeleteTweetLikeBody string) (*tweets.Dele
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetLikeBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Nemo rerum fugit voluptate harum facilis cum.\",\n      \"user_id\": \"Quod cumque iusto deleniti doloremque.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Dolorem rerum libero consequuntur perferendis et.\",\n      \"user_id\": \"Sed quia consequuntur quidem sunt.\"\n   }'")
 		}
 	}
 	v := &tweets.DeleteTweetLikePayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
+	}
+
+	return v, nil
+}
+
+// BuildRetweetPayload builds the payload for the tweets Retweet endpoint from
+// CLI flags.
+func BuildRetweetPayload(tweetsRetweetBody string) (*tweets.RetweetPayload, error) {
+	var err error
+	var body RetweetRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsRetweetBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Sint qui voluptates excepturi sit quasi laboriosam.\",\n      \"user_id\": \"Ipsa esse dolor.\"\n   }'")
+		}
+	}
+	v := &tweets.RetweetPayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
+	}
+
+	return v, nil
+}
+
+// BuildDeleteRetweetPayload builds the payload for the tweets DeleteRetweet
+// endpoint from CLI flags.
+func BuildDeleteRetweetPayload(tweetsDeleteRetweetBody string) (*tweets.DeleteRetweetPayload, error) {
+	var err error
+	var body DeleteRetweetRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsDeleteRetweetBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Modi doloremque explicabo.\",\n      \"user_id\": \"Consequatur laudantium veritatis unde.\"\n   }'")
+		}
+	}
+	v := &tweets.DeleteRetweetPayload{
 		TweetID: body.TweetID,
 		UserID:  body.UserID,
 	}

@@ -121,6 +121,53 @@ paths:
                         $ref: '#/definitions/TweetsDeleteTweetLikeBadRequestResponseBody'
             schemes:
                 - http
+    /api/tweets/retweet:
+        post:
+            tags:
+                - tweets
+            summary: Retweet tweets
+            operationId: tweets#Retweet
+            parameters:
+                - name: RetweetRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/TweetsRetweetRequestBody'
+                    required:
+                        - tweet_id
+                        - user_id
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/TweetsRetweetBadRequestResponseBody'
+            schemes:
+                - http
+        delete:
+            tags:
+                - tweets
+            summary: DeleteRetweet tweets
+            operationId: tweets#DeleteRetweet
+            parameters:
+                - name: DeleteRetweetRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/TweetsDeleteRetweetRequestBody'
+                    required:
+                        - tweet_id
+                        - user_id
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/TweetsDeleteRetweetBadRequestResponseBody'
+            schemes:
+                - http
     /swagger.json:
         get:
             tags:
@@ -142,7 +189,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -158,18 +205,18 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: CreateTweet_BadRequest_Response_Body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: false
         required:
             - name
@@ -201,19 +248,19 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: CreateTweet_NotFound_Response_Body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: false
+            temporary: true
+            timeout: true
         required:
             - name
             - id
@@ -227,13 +274,13 @@ definitions:
         properties:
             text:
                 type: string
-                example: Minus ea dolorum inventore distinctio.
+                example: Et velit minus.
             user_id:
                 type: string
-                example: Vitae illum est perferendis odio sequi.
+                example: Et corrupti id.
         example:
-            text: Perspiciatis facilis et est occaecati.
-            user_id: Minus in suscipit illum non sed qui.
+            text: Laboriosam sit quibusdam autem et non.
+            user_id: Aut qui.
         required:
             - user_id
             - text
@@ -243,35 +290,35 @@ definitions:
         properties:
             created_at:
                 type: string
-                example: "2008-08-13T02:25:22Z"
+                example: "1988-07-07T18:51:01Z"
                 format: date-time
             id:
                 type: string
-                example: Ipsam officiis ab.
+                example: Laborum temporibus dolore quibusdam ipsam sapiente ut.
             text:
                 type: string
-                example: Consequuntur perferendis et.
+                example: Tempora qui et tempora dolor amet.
             user_id:
                 type: string
-                example: Reiciendis sit dolorem rerum.
+                example: Dolorum vel.
         example:
-            created_at: "2009-04-07T01:21:23Z"
-            id: Dolorum vel.
-            text: Neque vel rem ab repudiandae qui.
-            user_id: Tempora qui et tempora dolor amet.
+            created_at: "2013-03-29T06:55:02Z"
+            id: Et veritatis aut est.
+            text: Sed vitae.
+            user_id: Sed et qui dignissimos harum optio repellendus.
         required:
             - id
             - user_id
             - text
             - created_at
-    TweetsDeleteTweetBadRequestResponseBody:
+    TweetsDeleteRetweetBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -287,14 +334,73 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
+        description: DeleteRetweet_BadRequest_Response_Body result type (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    TweetsDeleteRetweetRequestBody:
+        title: TweetsDeleteRetweetRequestBody
+        type: object
+        properties:
+            tweet_id:
+                type: string
+                example: Id quae iure corporis earum reprehenderit consequatur.
+            user_id:
+                type: string
+                example: Velit eum velit.
+        example:
+            tweet_id: Sequi ducimus est autem.
+            user_id: Et mollitia.
+        required:
+            - tweet_id
+            - user_id
+    TweetsDeleteTweetBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
         description: DeleteTweet_BadRequest_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -314,7 +420,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -330,14 +436,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: false
         description: DeleteTweetLike_BadRequest_Response_Body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -356,13 +462,13 @@ definitions:
         properties:
             tweet_id:
                 type: string
-                example: Dignissimos placeat similique.
+                example: Architecto repellendus.
             user_id:
                 type: string
-                example: Blanditiis adipisci illo et facere.
+                example: Expedita quis enim.
         example:
-            tweet_id: Expedita iusto.
-            user_id: Non ipsum dolorem.
+            tweet_id: Quia autem pariatur voluptatem.
+            user_id: Vero commodi illo praesentium sunt.
         required:
             - tweet_id
             - user_id
@@ -373,7 +479,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -400,7 +506,7 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: false
         required:
             - name
@@ -415,9 +521,9 @@ definitions:
         properties:
             id:
                 type: string
-                example: Inventore vitae eaque voluptatibus debitis.
+                example: Et porro vitae.
         example:
-            id: Eius illo qui.
+            id: Dignissimos placeat similique.
         required:
             - id
     TweetsLikeTweetBadRequestResponseBody:
@@ -447,14 +553,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: LikeTweet_BadRequest_Response_Body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -469,13 +575,72 @@ definitions:
         properties:
             tweet_id:
                 type: string
-                example: Id dolorum et velit minus delectus.
+                example: Expedita iusto.
             user_id:
                 type: string
-                example: Qui expedita laboriosam sit quibusdam.
+                example: Non ipsum dolorem.
         example:
-            tweet_id: Et non delectus similique porro ullam commodi.
-            user_id: Deserunt doloremque alias eos.
+            tweet_id: Ipsa iusto quasi dolor est unde.
+            user_id: Commodi possimus qui eligendi.
+        required:
+            - tweet_id
+            - user_id
+    TweetsRetweetBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: Retweet_BadRequest_Response_Body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    TweetsRetweetRequestBody:
+        title: TweetsRetweetRequestBody
+        type: object
+        properties:
+            tweet_id:
+                type: string
+                example: Numquam dignissimos laborum quis ut ipsum voluptas.
+            user_id:
+                type: string
+                example: Facilis alias voluptatum officia.
+        example:
+            tweet_id: Consequuntur eius sed in dolor.
+            user_id: Beatae dolorem possimus tempore ut.
         required:
             - tweet_id
             - user_id
