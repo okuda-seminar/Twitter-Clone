@@ -84,6 +84,9 @@ struct NotificationsTabView: View {
             if tab.id == .all {
               NotificationsAllTabView()
                 .frame(width: size.width)
+            } else if tab.id == .mentions {
+              NotificationsMentionsTabView()
+                .frame(width: size.width)
             } else {
               Text(tab.id.rawValue)
                 .frame(width: size.width, height: 100, alignment: .center)
