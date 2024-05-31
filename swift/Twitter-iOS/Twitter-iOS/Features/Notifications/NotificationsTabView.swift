@@ -11,7 +11,8 @@ struct NotificationsTabView: View {
   @State private var progress: CGFloat = .zero
 
   private enum LayoutConstant {
-    static let minTabWidth: CGFloat = 60.0
+    static let minTabLength: CGFloat = 40.0
+    static let additionalTabLength: CGFloat = 20.0
   }
 
   var body: some View {
@@ -43,7 +44,8 @@ struct NotificationsTabView: View {
           )
           .buttonStyle(.plain)
           .rect { rect in
-            let modifiedTabWidth = max(LayoutConstant.minTabWidth, rect.size.width)
+            let modifiedTabWidth =
+              max(LayoutConstant.minTabLength, rect.size.width) + LayoutConstant.additionalTabLength
             tab.size = CGSizeMake(modifiedTabWidth, rect.size.height)
             tab.minX = (rect.minX + rect.maxX - modifiedTabWidth) / 2
           }

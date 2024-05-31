@@ -40,8 +40,8 @@ struct NotificationsAllTabCellView: View {
       HStack {
         userIcon
           .resizable()
-          .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
           .scaledToFit()
+          .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
         Spacer()
         Menu {
           Button(

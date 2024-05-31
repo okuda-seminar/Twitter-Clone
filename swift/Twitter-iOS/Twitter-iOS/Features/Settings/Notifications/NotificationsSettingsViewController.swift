@@ -98,7 +98,9 @@ struct NotificationsStackItem: View {
             .foregroundStyle(Color(uiColor: .lightGray))
         }
         .padding()
-      })
+      }
+    )
+    .buttonStyle(.plain)
   }
 }
 
