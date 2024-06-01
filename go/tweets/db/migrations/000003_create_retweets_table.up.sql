@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS likes (
+CREATE TABLE IF NOT EXISTS retweets (
     tweet_id UUID NOT NULL,
     user_id UUID NOT NULL,
     PRIMARY KEY (tweet_id, user_id),
