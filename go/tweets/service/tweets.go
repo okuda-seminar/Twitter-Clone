@@ -19,16 +19,18 @@ const (
 
 // tweetsSvc implements tweets/gen/tweets.Service.
 type tweetsSvc struct {
-	tweetsRepo repository.TweetsRepo
-	likesRepo  repository.LikesRepo
-	logger     *log.Logger
+	tweetsRepo   repository.TweetsRepo
+	likesRepo    repository.LikesRepo
+	retweetsRepo repository.RetweetsRepo
+	logger       *log.Logger
 }
 
 // NewTweetsSvc returns the tweets service implementation.
 func NewTweetsSvc(db *sql.DB, logger *log.Logger) tweets.Service {
 	tweetsRepo := repository.NewTweetsRepoImpl(db)
 	likesRepo := repository.NewLikesRepoImpl(db)
-	return &tweetsSvc{tweetsRepo, likesRepo, logger}
+	retweetsRepo := repository.NewRetweetsRepoImpl(db)
+	return &tweetsSvc{tweetsRepo, likesRepo, retweetsRepo, logger}
 }
 
 // CreateTweet creates a tweet posted by a user with the specified ID.
@@ -111,14 +113,24 @@ func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLi
 }
 
 func (s *tweetsSvc) Retweet(ctx context.Context, p *tweets.RetweetPayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/227
-	// - [go/tweets] Implement Retweet and DeleteRetweet API logic.
+	err := s.retweetsRepo.CreateRetweet(ctx, p.TweetID, p.UserID)
+	if err != nil {
+		s.logger.Printf("tweets.CreateRetweet: failed (%s)", err)
+		return tweets.MakeBadRequest(err)
+	}
+
+	s.logger.Print("tweets.Retweet")
 	return nil
 }
 
 func (s *tweetsSvc) DeleteRetweet(ctx context.Context, p *tweets.DeleteRetweetPayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/227
-	// - [go/tweets] Implement Retweet and DeleteRetweet API logic.
+	err := s.retweetsRepo.DeleteRetweet(ctx, p.TweetID, p.UserID)
+	if err != nil {
+		s.logger.Printf("tweets.DeleteRetweet: failed (%s)", err)
+		return tweets.MakeBadRequest(err)
+	}
+
+	s.logger.Print("tweets.DeleteRetweet")
 	return nil
 }
 
