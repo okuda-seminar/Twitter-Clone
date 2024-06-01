@@ -1,0 +1,17 @@
+TABLE users {
+  id SERIAL [pk, increment]
+  username VARCHAR(14) [unique, not null]
+  display_name VARCHAR(20)
+  bio VARCHAR(160) [default: '']
+  created_at TIMESTAMP [default: `now()`]
+  updated_at TIMESTAMP [default: 'now()']
+}
+
+TABLE followships {
+  follower_id INT [not null, ref: > users.id]
+  followee_id INT [not null, ref: > users.id]
+
+  indexes {
+    (follower_id, followee_id) [pk]
+  }
+}
