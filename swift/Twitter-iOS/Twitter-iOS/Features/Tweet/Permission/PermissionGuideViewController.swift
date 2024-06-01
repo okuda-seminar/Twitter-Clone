@@ -9,16 +9,7 @@ class PermissionGuideViewController: UIViewController {
   }
 
   public func popUp(in parent: UIViewController) {
-    parent.addChild(self)
-    didMove(toParent: parent)
-    parent.view.addSubview(view)
-
-    NSLayoutConstraint.activate([
-      view.leadingAnchor.constraint(equalTo: parent.view.leadingAnchor),
-      view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor),
-      view.topAnchor.constraint(equalTo: parent.view.topAnchor),
-      view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor),
-    ])
+    parent.present(self, animated: true)
   }
 
   private func setUpSubviews() {
@@ -46,9 +37,7 @@ class PermissionGuideViewController: UIViewController {
 
 extension PermissionGuideViewController: PermissionGuideSheetDelegate {
   func didTapDismissArea() {
-    willMove(toParent: parent)
-    view.removeFromSuperview()
-    removeFromParent()
+    self.dismiss(animated: true)
   }
 }
 

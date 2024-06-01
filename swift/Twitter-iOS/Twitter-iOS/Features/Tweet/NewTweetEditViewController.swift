@@ -68,6 +68,11 @@ final class NewTweetEditViewController: UIViewController {
     setUpSubviews()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    tweetTextView.becomeFirstResponder()
+  }
+
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(cancelButton)
@@ -80,7 +85,6 @@ final class NewTweetEditViewController: UIViewController {
         self.dismiss(animated: true)
       }, for: .touchUpInside)
 
-    tweetTextView.becomeFirstResponder()
     tweetTextView.delegate = self
 
     photoLibraryPermissionRequestButton.addAction(
