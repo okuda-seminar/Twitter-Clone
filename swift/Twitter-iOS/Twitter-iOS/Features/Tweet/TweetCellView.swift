@@ -6,6 +6,8 @@ struct TweetCellView: View {
   public var userName: String
   public var tweetBody: String
 
+  @State private var isBottomSheetPresented = false
+
   private enum LayoutConstant {
     static let userIconSize = 32.0
   }
@@ -55,7 +57,7 @@ struct TweetCellView: View {
 
             Button(
               action: {
-                print("Need to show custom share sheet.")
+                isBottomSheetPresented.toggle()
               },
               label: {
                 Image(systemName: "square.and.arrow.up")
@@ -63,6 +65,12 @@ struct TweetCellView: View {
             )
             .foregroundStyle(.primary)
             .buttonStyle(.plain)
+            .fullScreenCover(
+              isPresented: $isBottomSheetPresented,
+              content: {
+                TweetShareBottomSheet()
+                  .presentationBackground(.clear)
+              })
           }
         }
       }
