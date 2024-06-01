@@ -4,13 +4,15 @@ import UIKit
 class MessagesViewController: ViewControllerWithUserIconButton {
 
   private enum LayoutConstant {
-    static let profileIconButtonSize: CGFloat = 28.0
     static let edgePadding: CGFloat = 16.0
-    static let headlineViewVerticalEdgePadding: CGFloat = 34
-    static let headlineViewSpacing: CGFloat = 10
-    static let writeMessageButtonVerticalEdgePadding: CGFloat = 25
-    static let headlineFontSize: CGFloat = 29
-    static let subHeadlineFontSize: CGFloat = 15
+
+    static let profileIconButtonSize: CGFloat = 28.0
+    static let writeMessageButtonVerticalEdgePadding: CGFloat = 25.0
+
+    static let headlineViewVerticalEdgePadding: CGFloat = 34.0
+    static let headlineViewSpacing: CGFloat = 10.0
+    static let headlineFontSize: CGFloat = 29.0
+    static let subHeadlineFontSize: CGFloat = 15.0
   }
 
   private enum LocalizedString {
@@ -122,8 +124,18 @@ class MessagesViewController: ViewControllerWithUserIconButton {
 
   @objc
   private func showMessagesSettings() {
-    let messagesSettingsViewController = UIHostingController(rootView: MessagesSettingsView())
-    messagesSettingsViewController.modalPresentationStyle = .fullScreen
-    present(messagesSettingsViewController, animated: true)
+    let settingsHomeViewController = SettingsHomeViewController()
+    let presentingViewController = UINavigationController(
+      rootViewController: settingsHomeViewController)
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    presentingViewController.navigationBar.backIndicatorImage = backButtonImage
+    presentingViewController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    presentingViewController.navigationBar.tintColor = .black
+
+    settingsHomeViewController.navigationItem.backButtonDisplayMode = .minimal
+    presentingViewController.pushViewController(
+      MessagesSettingsViewController(), animated: false)
+    presentingViewController.modalPresentationStyle = .overFullScreen
+    present(presentingViewController, animated: true)
   }
 }
