@@ -15,6 +15,7 @@ type usersSvc struct {
 	usersRepo       repository.UsersRepo
 	followshipsRepo repository.FollowshipsRepo
 	mutesRepo       repository.MutesRepo
+	blocksRepo      repository.BlocksRepo
 	logger          *log.Logger
 }
 
@@ -23,7 +24,8 @@ func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
 	usersRepo := repository.NewUsersRepoImpl(db)
 	followshipsRepo := repository.NewFollowshipsRepoImpl(db)
 	mutesRepo := repository.NewMutesRepoImpl(db)
-	return &usersSvc{usersRepo, followshipsRepo, mutesRepo, logger}
+	blocksRepo := repository.NewBlocksRepoImpl(db)
+	return &usersSvc{usersRepo, followshipsRepo, mutesRepo, blocksRepo, logger}
 }
 
 func (s *usersSvc) CreateUser(
@@ -210,14 +212,42 @@ func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
 }
 
 func (s *usersSvc) Block(ctx context.Context, p *users.BlockPayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/223
-	// - Implement Block and Unblock API logic.
+	err := s.followshipsRepo.DeleteFollowship(ctx, p.BlockedUserID, p.BlockingUserID)
+	if err != nil {
+		s.logger.Printf("users.Block: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	err = s.followshipsRepo.DeleteFollowship(ctx, p.BlockingUserID, p.BlockedUserID)
+	if err != nil {
+		s.logger.Printf("users.Block: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	err = s.mutesRepo.DeleteMute(ctx, p.BlockedUserID, p.BlockingUserID)
+	if err != nil {
+		s.logger.Printf("users.Block: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	err = s.blocksRepo.CreateBlock(ctx, p.BlockedUserID, p.BlockingUserID)
+	if err != nil {
+		s.logger.Printf("users.Block: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Block")
 	return nil
 }
 
 func (s *usersSvc) Unblock(ctx context.Context, p *users.UnblockPayload) error {
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/223
-	// - Implement Block and Unblock API logic.
+	err := s.blocksRepo.DeleteBlock(ctx, p.BlockedUserID, p.BlockingUserID)
+	if err != nil {
+		s.logger.Printf("users.Unblock: failed (%s)", err)
+		return users.MakeBadRequest(err)
+	}
+
+	s.logger.Print("users.Unblock")
 	return nil
 }
 
