@@ -1,12 +1,44 @@
 import SwiftUI
+import UIKit
+
+class MessagesSettingsViewController: SettingsViewController {
+  private enum LocalizedString {
+    static let title = String(localized: "Messages settings")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setUpSubviews()
+  }
+
+  private func setUpSubviews() {
+    let hostingController = UIHostingController(rootView: MessagesSettingsView())
+    addChild(hostingController)
+    hostingController.didMove(toParent: self)
+    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+    view.addSubview(hostingController.view)
+
+    let layoutGuide = view.safeAreaLayoutGuide
+    NSLayoutConstraint.activate([
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+    ])
+
+    // set up navigation
+    navigationItem.title = LocalizedString.title
+    navigationItem.leftBarButtonItems = []
+    navigationController?.navigationBar.backgroundColor = .systemBackground
+  }
+
+}
 
 struct MessagesSettingsView: View {
   @Environment(\.dismiss) private var dismiss
 
   private enum LocalizedString {
-    static let headerTitle = String(localized: "Messages settings")
-    static let dismissButtonTitle = String(localized: "Done")
-
     static let headlineText = String(localized: "Allow message requests from:")
     static let headlineCaption = String(
       localized: "People you follow will always be able to message you.")
@@ -32,28 +64,6 @@ struct MessagesSettingsView: View {
 
   var body: some View {
     VStack {
-      HStack {
-        Button(
-          action: {
-          },
-          label: {
-            Image(systemName: "arrow.left")
-              .foregroundStyle(.black)
-          })
-        Spacer()
-        Text(LocalizedString.headerTitle)
-        Spacer()
-        Button(
-          action: {
-            dismiss()
-          },
-          label: {
-            Text(LocalizedString.dismissButtonTitle)
-              .foregroundStyle(.black)
-              .underline()
-          })
-      }
-
       ScrollView {
         HStack {
           Text(LocalizedString.headlineText)
