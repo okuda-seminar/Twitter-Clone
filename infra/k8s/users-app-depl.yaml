@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-app
+  template:
+    metadata:
+      labels:
+        app: users-app
+    spec:
+      initContainers:
+      - name: migrate-db
+        image: users_app:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c"]
+        env:
+        - name: USERS_POSTGRES_URL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-params
+              key: USERS_POSTGRES_URL
+        args:
+          - |
+            migrate -database ${USERS_POSTGRES_URL} -path ./db/migrations up
+      containers:
+      - name: users-app
+        image: users_app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        command: ["tail", "-f", "/dev/null"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-app
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: users-app
