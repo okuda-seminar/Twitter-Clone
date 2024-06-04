@@ -3,6 +3,7 @@ import SwiftUI
 struct TweetShareBottomSheet: View {
   @Environment(\.dismiss) private var dismiss
   @State private var isPresented = false
+  @Binding public var showShareSheet: Bool
 
   private enum LocalizedString {
     static let title = String(localized: "Share post")
@@ -51,18 +52,28 @@ struct TweetShareBottomSheet: View {
           Text(LocalizedString.headline)
           Spacer()
         }
-        HStack {
+        .padding(.bottom)
+
+        HStack(alignment: .bottom) {
           VStack {
             Image(systemName: "link")
             Text(LocalizedString.copyLink)
           }
-          VStack {
-            Image(systemName: "square.and.arrow.up")
-            Text(LocalizedString.shareVia)
-          }
-          Spacer()
-        }
-        HStack {
+
+          Button(
+            action: {
+              dismiss()
+              showShareSheet = true
+            },
+            label: {
+              VStack {
+                Image(systemName: "square.and.arrow.up")
+                Text(LocalizedString.shareVia)
+              }
+            }
+          )
+          .foregroundStyle(.primary)
+
           VStack {
             Image(systemName: "message")
             Text(LocalizedString.copyLink)
@@ -73,6 +84,7 @@ struct TweetShareBottomSheet: View {
           }
           Spacer()
         }
+
         Button(
           action: {
             dismiss()
@@ -89,10 +101,13 @@ struct TweetShareBottomSheet: View {
       }
       .padding(.leading)
     }
+    .onAppear {
+      showShareSheet = false
+    }
     .background(Color(uiColor: .systemBackground))
   }
 }
 
 #Preview {
-  TweetShareBottomSheet()
+  TweetShareBottomSheet(showShareSheet: .constant(false))
 }

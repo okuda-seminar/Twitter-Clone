@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TweetCellView: View {
+  @Binding public var showShareSheet: Bool
 
   public var userIcon: Image
   public var userName: String
@@ -68,7 +69,7 @@ struct TweetCellView: View {
             .fullScreenCover(
               isPresented: $isBottomSheetPresented,
               content: {
-                TweetShareBottomSheet()
+                TweetShareBottomSheet(showShareSheet: $showShareSheet)
                   .presentationBackground(.clear)
               })
           }
@@ -83,7 +84,7 @@ struct TweetCellView: View {
 
 func createFakeTweetCellView() -> TweetCellView {
   return TweetCellView(
-    userIcon: Image(systemName: "apple.logo"), userName: "Apple",
+    showShareSheet: .constant(false), userIcon: Image(systemName: "apple.logo"), userName: "Apple",
     tweetBody:
       "If you’re looking to make your app more responsive or simply want to give your users access to certain features through various methods like a long press or hidden button, then you absolutely have to read this post!"
   )

@@ -33,7 +33,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   }()
 
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: HomeView())
+    let controller = UIHostingController(rootView: HomeView(delegate: self))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -89,19 +89,42 @@ class HomeViewController: ViewControllerWithUserIconButton {
   }
 }
 
+extension HomeViewController: HomeViewDelegate {
+  func showShareSheet() {
+    let activityViewController = UIActivityViewController(
+      activityItems: ["Deeplink"], applicationActivities: nil)
+    Task { @MainActor in
+      self.present(activityViewController, animated: true)
+    }
+  }
+}
+
 struct HomeView: View {
+  public weak var delegate: HomeViewDelegate?
+
   @State private var activeTabModel: HomeTabModel.Tab = .forYou
   @State private var tabToScroll: HomeTabModel.Tab?
+  @State private var showShareSheet = false
   private var tabModels: [HomeTabModel] = [
     .init(id: .forYou),
     .init(id: .following),
   ]
+
+  // Need to define init to avoid a compile error.
+  init(delegate: HomeViewDelegate? = nil) {
+    self.delegate = delegate
+  }
 
   var body: some View {
     VStack(spacing: 0) {
       TabBar()
       Tabs()
       Spacer()
+    }
+    .onChange(of: showShareSheet) { oldValue, newValue in
+      if newValue {
+        delegate?.showShareSheet()
+      }
     }
   }
 
@@ -140,7 +163,7 @@ struct HomeView: View {
     ScrollView(.horizontal) {
       LazyHStack(spacing: 0) {
         ForEach(tabModels) { tabModel in
-          HomeTabView()
+          HomeTabView(showShareSheet: $showShareSheet)
             .frame(width: UIScreen.main.bounds.width)
         }
       }
@@ -158,6 +181,10 @@ struct HomeView: View {
       }
     }
   }
+}
+
+protocol HomeViewDelegate: AnyObject {
+  func showShareSheet()
 }
 
 #Preview {

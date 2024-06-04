@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HomeTabView: View {
+  @Binding public var showShareSheet: Bool
+
   @State private var tweetModels: [TweetModel] = {
     var models: [TweetModel] = []
     for _ in 0..<20 {
@@ -38,6 +40,7 @@ struct HomeTabView: View {
       LazyVStack(spacing: 0) {
         ForEach(tweetModels) { tweetModel in
           TweetCellView(
+            showShareSheet: $showShareSheet,
             userIcon: tweetModel.userIcon, userName: tweetModel.userName,
             tweetBody: tweetModel.bodyText
           )
@@ -116,5 +119,5 @@ struct HomeTabView: View {
 }
 
 #Preview {
-  HomeTabView()
+  HomeTabView(showShareSheet: .constant(false))
 }
