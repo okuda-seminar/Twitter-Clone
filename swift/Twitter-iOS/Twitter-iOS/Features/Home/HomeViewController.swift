@@ -93,9 +93,7 @@ extension HomeViewController: HomeViewDelegate {
   func showShareSheet() {
     let activityViewController = UIActivityViewController(
       activityItems: ["Deeplink"], applicationActivities: nil)
-    Task { @MainActor in
-      self.present(activityViewController, animated: true)
-    }
+    self.present(activityViewController, animated: true)
   }
 }
 
@@ -124,6 +122,7 @@ struct HomeView: View {
     .onChange(of: showShareSheet) { oldValue, newValue in
       if newValue {
         delegate?.showShareSheet()
+        showShareSheet = false
       }
     }
   }

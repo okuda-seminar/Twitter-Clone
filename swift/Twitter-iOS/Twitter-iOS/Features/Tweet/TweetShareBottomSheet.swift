@@ -16,24 +16,11 @@ struct TweetShareBottomSheet: View {
   }
 
   var body: some View {
-    ZStack {
-      Background()
-
-      VStack {
-        Spacer()
-        Sheet()
-      }
+    VStack {
+      Spacer()
+      Sheet()
+      Spacer()
     }
-  }
-
-  @ViewBuilder
-  private func Background() -> some View {
-    Color.black
-      .opacity(0.1)
-      .ignoresSafeArea()
-      .onTapGesture {
-        dismiss()
-      }
   }
 
   @ViewBuilder
@@ -72,6 +59,7 @@ struct TweetShareBottomSheet: View {
               }
             }
           )
+          .buttonStyle(.plain)
           .foregroundStyle(.primary)
 
           VStack {

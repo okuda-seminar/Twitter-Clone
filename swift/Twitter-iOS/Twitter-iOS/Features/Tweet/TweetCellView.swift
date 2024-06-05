@@ -2,6 +2,11 @@ import SwiftUI
 
 struct TweetCellView: View {
   @Binding public var showShareSheet: Bool
+  // We need to wait for dismissal completion. pendingShowShareSheet
+  // will be propageted to showShareSheet after the completion.
+  @State private var pendingShowShareSheet: Bool = false
+
+  @State var showSheet: Bool = false
 
   public var userIcon: Image
   public var userName: String
@@ -10,7 +15,8 @@ struct TweetCellView: View {
   @State private var isBottomSheetPresented = false
 
   private enum LayoutConstant {
-    static let userIconSize = 32.0
+    static let userIconSize: CGFloat = 32.0
+    static let initialBottomSheetHeight: CGFloat = 250.0
   }
 
   var body: some View {
@@ -66,11 +72,16 @@ struct TweetCellView: View {
             )
             .foregroundStyle(.primary)
             .buttonStyle(.plain)
-            .fullScreenCover(
+            .sheet(
               isPresented: $isBottomSheetPresented,
+              onDismiss: {
+                Task { @MainActor in
+                  showShareSheet = pendingShowShareSheet
+                }
+              },
               content: {
-                TweetShareBottomSheet(showShareSheet: $showShareSheet)
-                  .presentationBackground(.clear)
+                TweetShareBottomSheet(showShareSheet: $pendingShowShareSheet)
+                  .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
               })
           }
         }
