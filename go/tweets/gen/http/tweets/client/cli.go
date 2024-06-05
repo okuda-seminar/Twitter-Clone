@@ -21,7 +21,7 @@ func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Ex id provident ut voluptates.\",\n      \"user_id\": \"Voluptatem et amet.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Aut molestiae.\",\n      \"user_id\": \"Deleniti accusantium qui iure.\"\n   }'")
 		}
 	}
 	v := &tweets.CreateTweetPayload{
@@ -40,7 +40,7 @@ func BuildDeleteTweetPayload(tweetsDeleteTweetBody string) (*tweets.DeleteTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"Perspiciatis laborum perspiciatis qui dolor nemo rerum.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"Doloremque doloremque enim dolores.\"\n   }'")
 		}
 	}
 	v := &tweets.DeleteTweetPayload{
@@ -58,7 +58,7 @@ func BuildLikeTweetPayload(tweetsLikeTweetBody string) (*tweets.LikeTweetPayload
 	{
 		err = json.Unmarshal([]byte(tweetsLikeTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Cumque iusto deleniti.\",\n      \"user_id\": \"Doloremque enim dolores nisi ipsam officiis.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Dolorem rerum libero consequuntur perferendis et.\",\n      \"user_id\": \"Sed quia consequuntur quidem sunt.\"\n   }'")
 		}
 	}
 	v := &tweets.LikeTweetPayload{
@@ -77,7 +77,7 @@ func BuildDeleteTweetLikePayload(tweetsDeleteTweetLikeBody string) (*tweets.Dele
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetLikeBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Dolorem rerum libero consequuntur perferendis et.\",\n      \"user_id\": \"Sed quia consequuntur quidem sunt.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Sint qui voluptates excepturi sit quasi laboriosam.\",\n      \"user_id\": \"Ipsa esse dolor.\"\n   }'")
 		}
 	}
 	v := &tweets.DeleteTweetLikePayload{
@@ -96,7 +96,7 @@ func BuildRetweetPayload(tweetsRetweetBody string) (*tweets.RetweetPayload, erro
 	{
 		err = json.Unmarshal([]byte(tweetsRetweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Sint qui voluptates excepturi sit quasi laboriosam.\",\n      \"user_id\": \"Ipsa esse dolor.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Modi doloremque explicabo.\",\n      \"user_id\": \"Consequatur laudantium veritatis unde.\"\n   }'")
 		}
 	}
 	v := &tweets.RetweetPayload{
@@ -115,10 +115,48 @@ func BuildDeleteRetweetPayload(tweetsDeleteRetweetBody string) (*tweets.DeleteRe
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteRetweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Modi doloremque explicabo.\",\n      \"user_id\": \"Consequatur laudantium veritatis unde.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Laborum temporibus dolore quibusdam ipsam sapiente ut.\",\n      \"user_id\": \"Dolorum vel.\"\n   }'")
 		}
 	}
 	v := &tweets.DeleteRetweetPayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
+	}
+
+	return v, nil
+}
+
+// BuildReplyPayload builds the payload for the tweets Reply endpoint from CLI
+// flags.
+func BuildReplyPayload(tweetsReplyBody string) (*tweets.ReplyPayload, error) {
+	var err error
+	var body ReplyRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsReplyBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Tempora dolor amet amet.\",\n      \"user_id\": \"Vel rem ab repudiandae qui sunt.\"\n   }'")
+		}
+	}
+	v := &tweets.ReplyPayload{
+		TweetID: body.TweetID,
+		UserID:  body.UserID,
+	}
+
+	return v, nil
+}
+
+// BuildDeleteReplyPayload builds the payload for the tweets DeleteReply
+// endpoint from CLI flags.
+func BuildDeleteReplyPayload(tweetsDeleteReplyBody string) (*tweets.DeleteReplyPayload, error) {
+	var err error
+	var body DeleteReplyRequestBody
+	{
+		err = json.Unmarshal([]byte(tweetsDeleteReplyBody), &body)
+		if err != nil {
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"Totam quia dignissimos dolor rerum.\",\n      \"user_id\": \"Qui nulla tempora.\"\n   }'")
+		}
+	}
+	v := &tweets.DeleteReplyPayload{
 		TweetID: body.TweetID,
 		UserID:  body.UserID,
 	}

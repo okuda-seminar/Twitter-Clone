@@ -25,6 +25,8 @@ type Server struct {
 	DeleteTweetLike    http.Handler
 	Retweet            http.Handler
 	DeleteRetweet      http.Handler
+	Reply              http.Handler
+	DeleteReply        http.Handler
 	GenHTTPOpenapiJSON http.Handler
 }
 
@@ -65,6 +67,8 @@ func New(
 			{"DeleteTweetLike", "DELETE", "/api/tweets/like"},
 			{"Retweet", "POST", "/api/tweets/retweet"},
 			{"DeleteRetweet", "DELETE", "/api/tweets/retweet"},
+			{"Reply", "POST", "/api/tweets/reply"},
+			{"DeleteReply", "DELETE", "/api/tweets/reply"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateTweet:        NewCreateTweetHandler(e.CreateTweet, mux, decoder, encoder, errhandler, formatter),
@@ -73,6 +77,8 @@ func New(
 		DeleteTweetLike:    NewDeleteTweetLikeHandler(e.DeleteTweetLike, mux, decoder, encoder, errhandler, formatter),
 		Retweet:            NewRetweetHandler(e.Retweet, mux, decoder, encoder, errhandler, formatter),
 		DeleteRetweet:      NewDeleteRetweetHandler(e.DeleteRetweet, mux, decoder, encoder, errhandler, formatter),
+		Reply:              NewReplyHandler(e.Reply, mux, decoder, encoder, errhandler, formatter),
+		DeleteReply:        NewDeleteReplyHandler(e.DeleteReply, mux, decoder, encoder, errhandler, formatter),
 		GenHTTPOpenapiJSON: http.FileServer(fileSystemGenHTTPOpenapiJSON),
 	}
 }
@@ -88,6 +94,8 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.DeleteTweetLike = m(s.DeleteTweetLike)
 	s.Retweet = m(s.Retweet)
 	s.DeleteRetweet = m(s.DeleteRetweet)
+	s.Reply = m(s.Reply)
+	s.DeleteReply = m(s.DeleteReply)
 }
 
 // MethodNames returns the methods served.
@@ -101,6 +109,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountDeleteTweetLikeHandler(mux, h.DeleteTweetLike)
 	MountRetweetHandler(mux, h.Retweet)
 	MountDeleteRetweetHandler(mux, h.DeleteRetweet)
+	MountReplyHandler(mux, h.Reply)
+	MountDeleteReplyHandler(mux, h.DeleteReply)
 	MountGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./gen/http/openapi.json", h.GenHTTPOpenapiJSON))
 }
 
@@ -394,6 +404,108 @@ func NewDeleteRetweetHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "DeleteRetweet")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "tweets")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountReplyHandler configures the mux to serve the "tweets" service "Reply"
+// endpoint.
+func MountReplyHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("POST", "/api/tweets/reply", f)
+}
+
+// NewReplyHandler creates a HTTP handler which loads the HTTP request and
+// calls the "tweets" service "Reply" endpoint.
+func NewReplyHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeReplyRequest(mux, decoder)
+		encodeResponse = EncodeReplyResponse(encoder)
+		encodeError    = EncodeReplyError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "Reply")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "tweets")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		res, err := endpoint(ctx, payload)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				errhandler(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			errhandler(ctx, w, err)
+		}
+	})
+}
+
+// MountDeleteReplyHandler configures the mux to serve the "tweets" service
+// "DeleteReply" endpoint.
+func MountDeleteReplyHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("DELETE", "/api/tweets/reply", f)
+}
+
+// NewDeleteReplyHandler creates a HTTP handler which loads the HTTP request
+// and calls the "tweets" service "DeleteReply" endpoint.
+func NewDeleteReplyHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	decoder func(*http.Request) goahttp.Decoder,
+	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	errhandler func(context.Context, http.ResponseWriter, error),
+	formatter func(ctx context.Context, err error) goahttp.Statuser,
+) http.Handler {
+	var (
+		decodeRequest  = DecodeDeleteReplyRequest(mux, decoder)
+		encodeResponse = EncodeDeleteReplyResponse(encoder)
+		encodeError    = EncodeDeleteReplyError(encoder, formatter)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "DeleteReply")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "tweets")
 		payload, err := decodeRequest(r)
 		if err != nil {

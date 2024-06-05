@@ -510,3 +510,153 @@ func DecodeDeleteRetweetResponse(decoder func(*http.Response) goahttp.Decoder, r
 		}
 	}
 }
+
+// BuildReplyRequest instantiates a HTTP request object with method and path
+// set to call the "tweets" service "Reply" endpoint
+func (c *Client) BuildReplyRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: ReplyTweetsPath()}
+	req, err := http.NewRequest("POST", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("tweets", "Reply", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeReplyRequest returns an encoder for requests sent to the tweets Reply
+// server.
+func EncodeReplyRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*tweets.ReplyPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("tweets", "Reply", "*tweets.ReplyPayload", v)
+		}
+		body := NewReplyRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("tweets", "Reply", err)
+		}
+		return nil
+	}
+}
+
+// DecodeReplyResponse returns a decoder for responses returned by the tweets
+// Reply endpoint. restoreBody controls whether the response body should be
+// restored after having been read.
+// DecodeReplyResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeReplyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body ReplyBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("tweets", "Reply", err)
+			}
+			err = ValidateReplyBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("tweets", "Reply", err)
+			}
+			return nil, NewReplyBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("tweets", "Reply", resp.StatusCode, string(body))
+		}
+	}
+}
+
+// BuildDeleteReplyRequest instantiates a HTTP request object with method and
+// path set to call the "tweets" service "DeleteReply" endpoint
+func (c *Client) BuildDeleteReplyRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteReplyTweetsPath()}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("tweets", "DeleteReply", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// EncodeDeleteReplyRequest returns an encoder for requests sent to the tweets
+// DeleteReply server.
+func EncodeDeleteReplyRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+	return func(req *http.Request, v any) error {
+		p, ok := v.(*tweets.DeleteReplyPayload)
+		if !ok {
+			return goahttp.ErrInvalidType("tweets", "DeleteReply", "*tweets.DeleteReplyPayload", v)
+		}
+		body := NewDeleteReplyRequestBody(p)
+		if err := encoder(req).Encode(&body); err != nil {
+			return goahttp.ErrEncodingError("tweets", "DeleteReply", err)
+		}
+		return nil
+	}
+}
+
+// DecodeDeleteReplyResponse returns a decoder for responses returned by the
+// tweets DeleteReply endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeDeleteReplyResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
+func DecodeDeleteReplyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+	return func(resp *http.Response) (any, error) {
+		if restoreBody {
+			b, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = io.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body DeleteReplyBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("tweets", "DeleteReply", err)
+			}
+			err = ValidateDeleteReplyBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("tweets", "DeleteReply", err)
+			}
+			return nil, NewDeleteReplyBadRequest(&body)
+		default:
+			body, _ := io.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("tweets", "DeleteReply", resp.StatusCode, string(body))
+		}
+	}
+}

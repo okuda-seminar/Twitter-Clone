@@ -134,6 +134,18 @@ func (s *tweetsSvc) DeleteRetweet(ctx context.Context, p *tweets.DeleteRetweetPa
 	return nil
 }
 
+func (s *tweetsSvc) Reply(ctx context.Context, p *tweets.ReplyPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/246
+	// - Implement Reply and DeleteReply API logic.
+	return nil
+}
+
+func (s *tweetsSvc) DeleteReply(ctx context.Context, p *tweets.DeleteReplyPayload) error {
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/246
+	// - Implement Reply and DeleteReply API logic.
+	return nil
+}
+
 // Check whether the length of tweet text is between min and max inclusive.
 func validateTweet(text string) bool {
 	if len(text) < textLenMin || len(text) > textLenMax {

@@ -41,6 +41,13 @@ type Client struct {
 	// DeleteRetweet endpoint.
 	DeleteRetweetDoer goahttp.Doer
 
+	// Reply Doer is the HTTP client used to make requests to the Reply endpoint.
+	ReplyDoer goahttp.Doer
+
+	// DeleteReply Doer is the HTTP client used to make requests to the DeleteReply
+	// endpoint.
+	DeleteReplyDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -67,6 +74,8 @@ func NewClient(
 		DeleteTweetLikeDoer: doer,
 		RetweetDoer:         doer,
 		DeleteRetweetDoer:   doer,
+		ReplyDoer:           doer,
+		DeleteReplyDoer:     doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
 		host:                host,
@@ -214,6 +223,54 @@ func (c *Client) DeleteRetweet() goa.Endpoint {
 		resp, err := c.DeleteRetweetDoer.Do(req)
 		if err != nil {
 			return nil, goahttp.ErrRequestError("tweets", "DeleteRetweet", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// Reply returns an endpoint that makes HTTP requests to the tweets service
+// Reply server.
+func (c *Client) Reply() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeReplyRequest(c.encoder)
+		decodeResponse = DecodeReplyResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildReplyRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.ReplyDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("tweets", "Reply", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// DeleteReply returns an endpoint that makes HTTP requests to the tweets
+// service DeleteReply server.
+func (c *Client) DeleteReply() goa.Endpoint {
+	var (
+		encodeRequest  = EncodeDeleteReplyRequest(c.encoder)
+		decodeResponse = DecodeDeleteReplyResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v any) (any, error) {
+		req, err := c.BuildDeleteReplyRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		err = encodeRequest(req, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.DeleteReplyDoer.Do(req)
+		if err != nil {
+			return nil, goahttp.ErrRequestError("tweets", "DeleteReply", err)
 		}
 		return decodeResponse(resp)
 	}
