@@ -21,6 +21,8 @@ type Endpoints struct {
 	DeleteTweetLike goa.Endpoint
 	Retweet         goa.Endpoint
 	DeleteRetweet   goa.Endpoint
+	Reply           goa.Endpoint
+	DeleteReply     goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "tweets" service with endpoints.
@@ -32,6 +34,8 @@ func NewEndpoints(s Service) *Endpoints {
 		DeleteTweetLike: NewDeleteTweetLikeEndpoint(s),
 		Retweet:         NewRetweetEndpoint(s),
 		DeleteRetweet:   NewDeleteRetweetEndpoint(s),
+		Reply:           NewReplyEndpoint(s),
+		DeleteReply:     NewDeleteReplyEndpoint(s),
 	}
 }
 
@@ -43,6 +47,8 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.DeleteTweetLike = m(e.DeleteTweetLike)
 	e.Retweet = m(e.Retweet)
 	e.DeleteRetweet = m(e.DeleteRetweet)
+	e.Reply = m(e.Reply)
+	e.DeleteReply = m(e.DeleteReply)
 }
 
 // NewCreateTweetEndpoint returns an endpoint function that calls the method
@@ -96,5 +102,23 @@ func NewDeleteRetweetEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
 		p := req.(*DeleteRetweetPayload)
 		return nil, s.DeleteRetweet(ctx, p)
+	}
+}
+
+// NewReplyEndpoint returns an endpoint function that calls the method "Reply"
+// of service "tweets".
+func NewReplyEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*ReplyPayload)
+		return nil, s.Reply(ctx, p)
+	}
+}
+
+// NewDeleteReplyEndpoint returns an endpoint function that calls the method
+// "DeleteReply" of service "tweets".
+func NewDeleteReplyEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req any) (any, error) {
+		p := req.(*DeleteReplyPayload)
+		return nil, s.DeleteReply(ctx, p)
 	}
 }

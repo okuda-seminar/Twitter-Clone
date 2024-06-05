@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `tweets (create-tweet|delete-tweet|like-tweet|delete-tweet-like|retweet|delete-retweet)
+	return `tweets (create-tweet|delete-tweet|like-tweet|delete-tweet-like|retweet|delete-retweet|reply|delete-reply)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` tweets create-tweet --body '{
-      "text": "Ex id provident ut voluptates.",
-      "user_id": "Voluptatem et amet."
+      "text": "Aut molestiae.",
+      "user_id": "Deleniti accusantium qui iure."
    }'` + "\n" +
 		""
 }
@@ -64,6 +64,12 @@ func ParseEndpoint(
 
 		tweetsDeleteRetweetFlags    = flag.NewFlagSet("delete-retweet", flag.ExitOnError)
 		tweetsDeleteRetweetBodyFlag = tweetsDeleteRetweetFlags.String("body", "REQUIRED", "")
+
+		tweetsReplyFlags    = flag.NewFlagSet("reply", flag.ExitOnError)
+		tweetsReplyBodyFlag = tweetsReplyFlags.String("body", "REQUIRED", "")
+
+		tweetsDeleteReplyFlags    = flag.NewFlagSet("delete-reply", flag.ExitOnError)
+		tweetsDeleteReplyBodyFlag = tweetsDeleteReplyFlags.String("body", "REQUIRED", "")
 	)
 	tweetsFlags.Usage = tweetsUsage
 	tweetsCreateTweetFlags.Usage = tweetsCreateTweetUsage
@@ -72,6 +78,8 @@ func ParseEndpoint(
 	tweetsDeleteTweetLikeFlags.Usage = tweetsDeleteTweetLikeUsage
 	tweetsRetweetFlags.Usage = tweetsRetweetUsage
 	tweetsDeleteRetweetFlags.Usage = tweetsDeleteRetweetUsage
+	tweetsReplyFlags.Usage = tweetsReplyUsage
+	tweetsDeleteReplyFlags.Usage = tweetsDeleteReplyUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -125,6 +133,12 @@ func ParseEndpoint(
 			case "delete-retweet":
 				epf = tweetsDeleteRetweetFlags
 
+			case "reply":
+				epf = tweetsReplyFlags
+
+			case "delete-reply":
+				epf = tweetsDeleteReplyFlags
+
 			}
 
 		}
@@ -168,6 +182,12 @@ func ParseEndpoint(
 			case "delete-retweet":
 				endpoint = c.DeleteRetweet()
 				data, err = tweetsc.BuildDeleteRetweetPayload(*tweetsDeleteRetweetBodyFlag)
+			case "reply":
+				endpoint = c.Reply()
+				data, err = tweetsc.BuildReplyPayload(*tweetsReplyBodyFlag)
+			case "delete-reply":
+				endpoint = c.DeleteReply()
+				data, err = tweetsc.BuildDeleteReplyPayload(*tweetsDeleteReplyBodyFlag)
 			}
 		}
 	}
@@ -191,6 +211,8 @@ COMMAND:
     delete-tweet-like: DeleteTweetLike implements DeleteTweetLike.
     retweet: Retweet implements Retweet.
     delete-retweet: DeleteRetweet implements DeleteRetweet.
+    reply: Reply implements Reply.
+    delete-reply: DeleteReply implements DeleteReply.
 
 Additional help:
     %[1]s tweets COMMAND --help
@@ -204,8 +226,8 @@ CreateTweet implements CreateTweet.
 
 Example:
     %[1]s tweets create-tweet --body '{
-      "text": "Ex id provident ut voluptates.",
-      "user_id": "Voluptatem et amet."
+      "text": "Aut molestiae.",
+      "user_id": "Deleniti accusantium qui iure."
    }'
 `, os.Args[0])
 }
@@ -218,7 +240,7 @@ DeleteTweet implements DeleteTweet.
 
 Example:
     %[1]s tweets delete-tweet --body '{
-      "id": "Perspiciatis laborum perspiciatis qui dolor nemo rerum."
+      "id": "Doloremque doloremque enim dolores."
    }'
 `, os.Args[0])
 }
@@ -231,8 +253,8 @@ LikeTweet implements LikeTweet.
 
 Example:
     %[1]s tweets like-tweet --body '{
-      "tweet_id": "Cumque iusto deleniti.",
-      "user_id": "Doloremque enim dolores nisi ipsam officiis."
+      "tweet_id": "Dolorem rerum libero consequuntur perferendis et.",
+      "user_id": "Sed quia consequuntur quidem sunt."
    }'
 `, os.Args[0])
 }
@@ -245,8 +267,8 @@ DeleteTweetLike implements DeleteTweetLike.
 
 Example:
     %[1]s tweets delete-tweet-like --body '{
-      "tweet_id": "Dolorem rerum libero consequuntur perferendis et.",
-      "user_id": "Sed quia consequuntur quidem sunt."
+      "tweet_id": "Sint qui voluptates excepturi sit quasi laboriosam.",
+      "user_id": "Ipsa esse dolor."
    }'
 `, os.Args[0])
 }
@@ -259,8 +281,8 @@ Retweet implements Retweet.
 
 Example:
     %[1]s tweets retweet --body '{
-      "tweet_id": "Sint qui voluptates excepturi sit quasi laboriosam.",
-      "user_id": "Ipsa esse dolor."
+      "tweet_id": "Modi doloremque explicabo.",
+      "user_id": "Consequatur laudantium veritatis unde."
    }'
 `, os.Args[0])
 }
@@ -273,8 +295,36 @@ DeleteRetweet implements DeleteRetweet.
 
 Example:
     %[1]s tweets delete-retweet --body '{
-      "tweet_id": "Modi doloremque explicabo.",
-      "user_id": "Consequatur laudantium veritatis unde."
+      "tweet_id": "Laborum temporibus dolore quibusdam ipsam sapiente ut.",
+      "user_id": "Dolorum vel."
+   }'
+`, os.Args[0])
+}
+
+func tweetsReplyUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets reply -body JSON
+
+Reply implements Reply.
+    -body JSON: 
+
+Example:
+    %[1]s tweets reply --body '{
+      "tweet_id": "Tempora dolor amet amet.",
+      "user_id": "Vel rem ab repudiandae qui sunt."
+   }'
+`, os.Args[0])
+}
+
+func tweetsDeleteReplyUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets delete-reply -body JSON
+
+DeleteReply implements DeleteReply.
+    -body JSON: 
+
+Example:
+    %[1]s tweets delete-reply --body '{
+      "tweet_id": "Totam quia dignissimos dolor rerum.",
+      "user_id": "Qui nulla tempora."
    }'
 `, os.Args[0])
 }
