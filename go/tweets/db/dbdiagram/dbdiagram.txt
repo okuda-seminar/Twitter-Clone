@@ -6,8 +6,8 @@ TABLE tweets {
 }
 
 TABLE likes {
-  tweet_id INT [not null, ref: > tweets.id]
-  user_id INT [not null]
+  tweet_id UUID [not null, ref: > tweets.id]
+  user_id UUID [not null]
 
   indexes {
     (tweet_id, user_id) [pk]
@@ -15,8 +15,8 @@ TABLE likes {
 }
 
 TABLE retweets {
-  tweet_id INT [not null, ref: > tweets.id]
-  user_id INT [not null]
+  tweet_id UUID [not null, ref: > tweets.id]
+  user_id UUID [not null]
 
   indexes {
     (tweet_id, user_id) [pk]
