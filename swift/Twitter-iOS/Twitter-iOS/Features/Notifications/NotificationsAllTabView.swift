@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct NotificationsAllTabView: View {
+  @Binding var selectedNotificationModel: NotificationModel?
+
   var notificationModels: [NotificationModel] = {
     var models: [NotificationModel] = []
     for _ in 0..<5 {
@@ -14,8 +16,8 @@ struct NotificationsAllTabView: View {
       LazyVStack {
         ForEach(notificationModels) { notificationModel in
           NotificationsAllTabCellView(
-            userIcon: notificationModel.userIcon, userName: notificationModel.userName,
-            caption: notificationModel.caption)
+            selectedNotificationModel: $selectedNotificationModel,
+            notificationModel: notificationModel)
         }
       }
     }
@@ -23,9 +25,9 @@ struct NotificationsAllTabView: View {
 }
 
 struct NotificationsAllTabCellView: View {
-  public var userIcon: Image
-  public var userName: String
-  public var caption: String
+  @Binding var selectedNotificationModel: NotificationModel?
+
+  public var notificationModel: NotificationModel
 
   private enum LayoutConstant {
     static let userIconSize: CGFloat = 28.0
@@ -38,7 +40,7 @@ struct NotificationsAllTabCellView: View {
   var body: some View {
     VStack(alignment: .leading) {
       HStack {
-        userIcon
+        notificationModel.userIcon
           .resizable()
           .scaledToFit()
           .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
@@ -63,15 +65,18 @@ struct NotificationsAllTabCellView: View {
         }
         .foregroundStyle(.primary)
       }
-      Text(userName)
-      Text(caption)
+      Text(notificationModel.userName)
+      Text(notificationModel.caption)
         .font(.caption)
         .foregroundStyle(.gray)
     }
     .padding()
+    .onTapGesture {
+      selectedNotificationModel = notificationModel
+    }
   }
 }
 
 #Preview {
-  NotificationsAllTabView()
+  NotificationsAllTabView(selectedNotificationModel: .constant(nil))
 }

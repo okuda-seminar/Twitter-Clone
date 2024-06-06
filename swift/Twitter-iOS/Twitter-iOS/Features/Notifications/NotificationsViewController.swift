@@ -13,11 +13,9 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
 
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
-      title: "", style: .plain, target: self, action: #selector(slideInSideMenu))
+      title: "", style: .plain, target: self, action: #selector(showSideMenu))
     button.tintColor = .black
     button.image = UIImage(systemName: "person.circle.fill")
-    button.action = #selector(showSideMenu)
-    button.target = self
     return button
   }()
 
@@ -32,7 +30,7 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
   private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
 
   private lazy var tabViewController: UIHostingController = {
-    let controller = UIHostingController(rootView: NotificationsTabView())
+    let controller = UIHostingController(rootView: NotificationsTabView(delegate: self))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -72,9 +70,6 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
   }
 
   @objc
-  private func slideInSideMenu() {}
-
-  @objc
   private func presentExploreSettings() {
     let settingsHomeViewController = SettingsHomeViewController()
     let presentingViewController = UINavigationController(
@@ -91,5 +86,15 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
       NotificationsSettingsViewController(), animated: false)
     presentingViewController.modalPresentationStyle = .overFullScreen
     present(presentingViewController, animated: true)
+  }
+}
+
+extension NotificationsViewController: NotificationsTabViewDelegate {
+  func didSelectNotification(_ notificationModel: NotificationModel) {
+    guard let navigationController else { return }
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/249 - Replace fake tweet models.
+    let tweetModel = createFakeTweetModel()
+    navigationController.pushViewController(
+      TweetDetailViewController(tweetModel: tweetModel), animated: true)
   }
 }

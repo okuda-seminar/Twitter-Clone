@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct NotificationsTabView: View {
+  public weak var delegate: NotificationsTabViewDelegate?
+
   @State private var tabs: [NotificationsTabModel] = [
     .init(id: .all),
     .init(id: .verified),
@@ -9,6 +11,7 @@ struct NotificationsTabView: View {
   @State private var activeTab: NotificationsTabModel.Tab = .all
   @State private var tabScrollState: NotificationsTabModel.Tab?
   @State private var progress: CGFloat = .zero
+  @State private var selectedNotificationModel: NotificationModel?
 
   private enum LayoutConstant {
     static let minTabLength: CGFloat = 40.0
@@ -54,23 +57,28 @@ struct NotificationsTabView: View {
       }
     }
     .overlay(alignment: .bottom) {
-      ZStack(alignment: .leading) {
-        Divider()
-
-        let inputRange = tabs.indices.compactMap { return CGFloat($0) }
-        let outputRange = tabs.compactMap { return $0.size.width }
-        let outputPositionRange = tabs.compactMap { return $0.minX }
-
-        let indicatorWidth = progress.interpolate(inputRange: inputRange, outputRange: outputRange)
-        let indicatorPosition = progress.interpolate(
-          inputRange: inputRange, outputRange: outputPositionRange)
-        Rectangle()
-          .fill(Color(uiColor: .brandedBlue))
-          .frame(width: indicatorWidth, height: 1.5)
-          .offset(x: indicatorPosition)
-      }
+      TabBarProgressLine()
     }
     .scrollIndicators(.hidden)
+  }
+
+  @ViewBuilder
+  private func TabBarProgressLine() -> some View {
+    ZStack(alignment: .leading) {
+      Divider()
+
+      let inputRange = tabs.indices.compactMap { return CGFloat($0) }
+      let outputRange = tabs.compactMap { return $0.size.width }
+      let outputPositionRange = tabs.compactMap { return $0.minX }
+
+      let indicatorWidth = progress.interpolate(inputRange: inputRange, outputRange: outputRange)
+      let indicatorPosition = progress.interpolate(
+        inputRange: inputRange, outputRange: outputPositionRange)
+      Rectangle()
+        .fill(Color(uiColor: .brandedBlue))
+        .frame(width: indicatorWidth, height: 1.5)
+        .offset(x: indicatorPosition)
+    }
   }
 
   @ViewBuilder
@@ -82,8 +90,12 @@ struct NotificationsTabView: View {
         LazyHStack(spacing: 0) {
           ForEach(tabs) { tab in
             if tab.id == .all {
-              NotificationsAllTabView()
+              NotificationsAllTabView(selectedNotificationModel: $selectedNotificationModel)
                 .frame(width: size.width)
+                .onChange(of: selectedNotificationModel) { _, selectedNotificationModel in
+                  guard let selectedNotificationModel else { return }
+                  delegate?.didSelectNotification(selectedNotificationModel)
+                }
             } else if tab.id == .mentions {
               NotificationsMentionsTabView()
                 .frame(width: size.width)
@@ -111,6 +123,10 @@ struct NotificationsTabView: View {
       }
     }
   }
+}
+
+protocol NotificationsTabViewDelegate: AnyObject {
+  func didSelectNotification(_ notificationModel: NotificationModel)
 }
 
 #Preview {

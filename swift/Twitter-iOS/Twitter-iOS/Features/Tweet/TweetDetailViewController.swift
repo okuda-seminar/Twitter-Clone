@@ -88,6 +88,8 @@ struct TweetDetailView: View {
       )
       .foregroundStyle(Color(uiColor: .brandedBlue))
       .buttonStyle(.plain)
+
+      Spacer()
     }
     .padding()
   }

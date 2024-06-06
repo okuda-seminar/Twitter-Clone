@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NotificationModel: Identifiable {
+struct NotificationModel: Identifiable, Equatable {
   let id: UUID
   let userIcon: Image
   let userName: String
