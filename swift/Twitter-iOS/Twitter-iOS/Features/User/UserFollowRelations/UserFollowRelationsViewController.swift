@@ -110,8 +110,14 @@ struct UserFollowRelationsView: View {
       ScrollView(.horizontal) {
         LazyHStack(spacing: 0) {
           ForEach(tabs) { tab in
-            Text("dummy tab")
-              .frame(width: geoProxy.size.width, height: geoProxy.size.height, alignment: .center)
+            switch tab.id {
+            case .following:
+              UserFollowingTabView()
+                .frame(width: geoProxy.size.width, height: geoProxy.size.height, alignment: .center)
+            default:
+              Text("dummy tab")
+                .frame(width: geoProxy.size.width, height: geoProxy.size.height, alignment: .center)
+            }
           }
         }
         .scrollTargetLayout()
