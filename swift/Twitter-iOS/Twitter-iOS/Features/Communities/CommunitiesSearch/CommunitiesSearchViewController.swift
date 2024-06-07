@@ -71,16 +71,18 @@ struct CommunitiesSearchView: View {
             label: {
               Text(communityFilter.name)
                 .underline()
+                .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             }
           )
+          .buttonStyle(.plain)
           .foregroundStyle(.primary)
-          .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
           .overlay(
             RoundedRectangle(cornerRadius: 24)
-              .stroke(Color(uiColor: .lightGray), lineWidth: 1.0)
+              .stroke(Color(uiColor: .brandedLightGrayBackground), lineWidth: 2)
           )
         }
       }
+      .padding()
     }
   }
 
