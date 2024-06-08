@@ -153,7 +153,7 @@ struct SearchHomeView: View {
           ForEach(tabs) { tab in
             switch tab.id {
             case .forYou:
-              SearchTabView()
+              SearchTabView(showGIF: true)
                 .frame(width: geoProxy.size.width)
             case .trending:
               SearchTabView()

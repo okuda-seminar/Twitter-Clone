@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SearchTabView: View {
+  public var showGIF: Bool = false
 
   @State private var topicModels: [TopicModel] = {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/94
@@ -15,6 +16,10 @@ struct SearchTabView: View {
 
   var body: some View {
     ScrollView(.vertical) {
+      if showGIF {
+        GIFImagePlayer(resourceName: "cute_bard")
+          .frame(width: UIScreen.main.bounds.width)
+      }
       ForEach(topicModels) { topicModel in
         SearchTopicCellView(topic: topicModel)
       }
@@ -23,5 +28,5 @@ struct SearchTabView: View {
 }
 
 #Preview {
-  SearchTabView()
+  SearchTabView(showGIF: true)
 }
