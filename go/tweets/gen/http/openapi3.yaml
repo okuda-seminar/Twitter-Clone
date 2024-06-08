@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            id: Doloremque doloremque enim dolores.
+                            id: Qui et tempora dolor.
             responses:
                 "200":
                     description: OK response.
@@ -47,8 +47,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateTweetRequestBody'
                         example:
-                            text: Aut molestiae.
-                            user_id: Deleniti accusantium qui iure.
+                            text: Fugit voluptate harum facilis cum.
+                            user_id: Perspiciatis qui dolor nemo.
             responses:
                 "200":
                     description: Created tweet
@@ -57,10 +57,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Tweet'
                             example:
-                                created_at: "1997-02-12T01:42:52Z"
-                                id: Vitae minus quia.
-                                text: Eos quia aut assumenda sed et dolorem.
-                                user_id: Corporis sed et.
+                                created_at: "1987-09-13T10:42:31Z"
+                                id: Quod cumque iusto deleniti doloremque.
+                                text: Reiciendis sit dolorem rerum.
+                                user_id: Enim dolores nisi ipsam officiis ab.
                 "400":
                     description: 'BadRequest: Failed to create tweet'
                     content:
@@ -86,8 +86,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: Sint qui voluptates excepturi sit quasi laboriosam.
-                            user_id: Ipsa esse dolor.
+                            tweet_id: Dicta sit quaerat et est eos repudiandae.
+                            user_id: Dolore est consequatur.
             responses:
                 "200":
                     description: OK response.
@@ -109,8 +109,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: Dolorem rerum libero consequuntur perferendis et.
-                            user_id: Sed quia consequuntur quidem sunt.
+                            tweet_id: Qui sunt suscipit in eaque ratione totam.
+                            user_id: Dignissimos dolor rerum.
             responses:
                 "200":
                     description: OK response.
@@ -131,10 +131,9 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/LikeTweetRequestBody'
+                            $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            tweet_id: Totam quia dignissimos dolor rerum.
-                            user_id: Qui nulla tempora.
+                            id: Corrupti quibusdam facere.
             responses:
                 "200":
                     description: OK response.
@@ -147,20 +146,31 @@ paths:
         post:
             tags:
                 - tweets
-            summary: Reply tweets
-            operationId: tweets#Reply
+            summary: CreateReply tweets
+            operationId: tweets#CreateReply
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/LikeTweetRequestBody'
+                            $ref: '#/components/schemas/CreateReplyRequestBody'
                         example:
-                            tweet_id: Tempora dolor amet amet.
-                            user_id: Vel rem ab repudiandae qui sunt.
+                            text: Minus ea dolorum inventore distinctio.
+                            tweet_id: Sint totam perspiciatis porro vitae illum.
+                            user_id: Perferendis odio sequi.
             responses:
                 "200":
                     description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Reply'
+                            example:
+                                created_at: "2009-03-10T02:50:52Z"
+                                id: Minus in suscipit illum non sed qui.
+                                text: Nemo occaecati.
+                                tweet_id: Perspiciatis facilis et est occaecati.
+                                user_id: Ipsum ex saepe.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -180,8 +190,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: Laborum temporibus dolore quibusdam ipsam sapiente ut.
-                            user_id: Dolorum vel.
+                            tweet_id: Aut est.
+                            user_id: Sed et qui dignissimos harum optio repellendus.
             responses:
                 "200":
                     description: OK response.
@@ -203,8 +213,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: Modi doloremque explicabo.
-                            user_id: Consequatur laudantium veritatis unde.
+                            tweet_id: Odit eos.
+                            user_id: Animi porro accusantium deleniti.
             responses:
                 "200":
                     description: OK response.
@@ -225,18 +235,38 @@ paths:
                     description: File downloaded
 components:
     schemas:
+        CreateReplyRequestBody:
+            type: object
+            properties:
+                text:
+                    type: string
+                    example: Excepturi eius.
+                tweet_id:
+                    type: string
+                    example: Reiciendis explicabo et accusantium.
+                user_id:
+                    type: string
+                    example: Quae enim beatae voluptas repellat porro.
+            example:
+                text: Occaecati accusamus aliquam et consequuntur impedit tempora.
+                tweet_id: Nesciunt a sequi iure.
+                user_id: Repudiandae libero.
+            required:
+                - tweet_id
+                - user_id
+                - text
         CreateTweetRequestBody:
             type: object
             properties:
                 text:
                     type: string
-                    example: Molestiae repellat odio excepturi eum quam tenetur.
+                    example: Et ab omnis minima expedita.
                 user_id:
                     type: string
-                    example: Necessitatibus qui numquam qui.
+                    example: Tempora numquam ad sequi odit.
             example:
-                text: Ratione qui exercitationem.
-                user_id: Consequatur corporis excepturi autem.
+                text: Iusto qui reiciendis est.
+                user_id: Laborum repudiandae ut ab iusto provident.
             required:
                 - user_id
                 - text
@@ -245,9 +275,9 @@ components:
             properties:
                 id:
                     type: string
-                    example: Tempora enim vel consequatur.
+                    example: Dicta fuga et alias.
             example:
-                id: Est error possimus.
+                id: Earum dolor dolor nesciunt.
             required:
                 - id
         Error:
@@ -276,14 +306,14 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: true
+                    example: false
             example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: false
+                timeout: true
             required:
                 - name
                 - id
@@ -296,37 +326,68 @@ components:
             properties:
                 tweet_id:
                     type: string
-                    example: Voluptatem quisquam reprehenderit aut quia.
+                    example: Cum id voluptas totam non rerum.
                 user_id:
                     type: string
-                    example: Sit impedit quae asperiores veritatis ab.
+                    example: Qui officiis aut.
             example:
-                tweet_id: Nesciunt deserunt expedita vel consectetur quo.
-                user_id: Illo porro rem quas nemo qui dolor.
+                tweet_id: Rem quis dicta consequatur.
+                user_id: Unde aut et possimus quis dolorem occaecati.
             required:
                 - tweet_id
                 - user_id
+        Reply:
+            type: object
+            properties:
+                created_at:
+                    type: string
+                    example: "2007-08-29T20:44:19Z"
+                    format: date-time
+                id:
+                    type: string
+                    example: In eum.
+                text:
+                    type: string
+                    example: Distinctio et.
+                tweet_id:
+                    type: string
+                    example: Aut assumenda iure sit nulla.
+                user_id:
+                    type: string
+                    example: Minima unde.
+            example:
+                created_at: "2002-01-17T17:17:59Z"
+                id: Minima aliquam.
+                text: Corporis cupiditate repudiandae.
+                tweet_id: Ut molestiae.
+                user_id: Modi voluptatibus vero recusandae corrupti.
+            required:
+                - id
+                - tweet_id
+                - user_id
+                - text
+                - created_at
         Tweet:
             type: object
             properties:
                 created_at:
                     type: string
-                    example: "1980-08-06T07:53:29Z"
+                    example: "2000-05-29T20:26:34Z"
                     format: date-time
                 id:
                     type: string
-                    example: Nemo magni et necessitatibus.
+                    example: Ad dolorem voluptates reiciendis voluptas id.
                 text:
                     type: string
-                    example: Exercitationem dolorem aliquid ut beatae dolores enim.
+                    example: Quo eius nemo magni.
                 user_id:
                     type: string
-                    example: Dolor quisquam ut placeat quo qui officiis.
+                    example: Ut temporibus possimus.
             example:
-                created_at: "2001-07-29T06:45:05Z"
-                id: Vitae quas.
-                text: Deleniti optio quaerat vitae quia ipsum corrupti.
-                user_id: Placeat et animi dolores omnis ut rerum.
+                created_at: "1997-07-21T01:32:29Z"
+                id: Totam assumenda voluptates.
+                text: Labore perspiciatis est dolor occaecati magnam.
+                user_id: Et autem.
             required:
                 - id
                 - user_id

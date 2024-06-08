@@ -120,13 +120,14 @@ var _ = Service("tweets", func() {
 		})
 	})
 
-	Method("Reply", func() {
+	Method("CreateReply", func() {
 		Payload(func() {
 			Field(1, "tweet_id", String)
 			Field(2, "user_id", String)
-			Required("tweet_id", "user_id")
+			Field(3, "text", String)
+			Required("tweet_id", "user_id", "text")
 		})
-		Result(Empty)
+		Result(types.Reply)
 
 		HTTP(func() {
 			POST("/api/tweets/reply")
@@ -137,9 +138,8 @@ var _ = Service("tweets", func() {
 
 	Method("DeleteReply", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
-			Required("tweet_id", "user_id")
+			Field(1, "id", String)
+			Required("id")
 		})
 		Result(Empty)
 

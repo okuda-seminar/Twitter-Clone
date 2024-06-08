@@ -47,7 +47,7 @@ func (r *tweetsRepoImpl) CreateTweet(
 // DeleteTweet deletes a tweet with the specified tweet ID.
 func (r *tweetsRepoImpl) DeleteTweet(
 	ctx context.Context,
-	id string,
+	id uuid.UUID,
 ) error {
 	query := "DELETE FROM tweets WHERE id = $1"
 	res, err := r.db.ExecContext(ctx, query, id)

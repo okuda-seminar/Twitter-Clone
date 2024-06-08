@@ -27,8 +27,8 @@ type Service interface {
 	Retweet(context.Context, *RetweetPayload) (err error)
 	// DeleteRetweet implements DeleteRetweet.
 	DeleteRetweet(context.Context, *DeleteRetweetPayload) (err error)
-	// Reply implements Reply.
-	Reply(context.Context, *ReplyPayload) (err error)
+	// CreateReply implements CreateReply.
+	CreateReply(context.Context, *CreateReplyPayload) (res *Reply, err error)
 	// DeleteReply implements DeleteReply.
 	DeleteReply(context.Context, *DeleteReplyPayload) (err error)
 }
@@ -47,7 +47,15 @@ const ServiceName = "tweets"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [8]string{"CreateTweet", "DeleteTweet", "LikeTweet", "DeleteTweetLike", "Retweet", "DeleteRetweet", "Reply", "DeleteReply"}
+var MethodNames = [8]string{"CreateTweet", "DeleteTweet", "LikeTweet", "DeleteTweetLike", "Retweet", "DeleteRetweet", "CreateReply", "DeleteReply"}
+
+// CreateReplyPayload is the payload type of the tweets service CreateReply
+// method.
+type CreateReplyPayload struct {
+	TweetID string
+	UserID  string
+	Text    string
+}
 
 // CreateTweetPayload is the payload type of the tweets service CreateTweet
 // method.
@@ -59,8 +67,7 @@ type CreateTweetPayload struct {
 // DeleteReplyPayload is the payload type of the tweets service DeleteReply
 // method.
 type DeleteReplyPayload struct {
-	TweetID string
-	UserID  string
+	ID string
 }
 
 // DeleteRetweetPayload is the payload type of the tweets service DeleteRetweet
@@ -89,10 +96,13 @@ type LikeTweetPayload struct {
 	UserID  string
 }
 
-// ReplyPayload is the payload type of the tweets service Reply method.
-type ReplyPayload struct {
-	TweetID string
-	UserID  string
+// Reply is the result type of the tweets service CreateReply method.
+type Reply struct {
+	ID        string
+	TweetID   string
+	UserID    string
+	Text      string
+	CreatedAt string
 }
 
 // RetweetPayload is the payload type of the tweets service Retweet method.

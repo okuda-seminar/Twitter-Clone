@@ -1,8 +1,12 @@
 package repository
 
-import "context"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type LikesRepo interface {
-	CreateLike(ctx context.Context, tweet_id string, user_id string) error
-	DeleteLike(ctx context.Context, tweet_id string, user_id string) error
+	CreateLike(ctx context.Context, tweet_id, user_id uuid.UUID) error
+	DeleteLike(ctx context.Context, tweet_id, user_id uuid.UUID) error
 }

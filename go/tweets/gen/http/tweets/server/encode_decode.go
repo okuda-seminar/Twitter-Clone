@@ -425,21 +425,24 @@ func EncodeDeleteRetweetError(encoder func(context.Context, http.ResponseWriter)
 	}
 }
 
-// EncodeReplyResponse returns an encoder for responses returned by the tweets
-// Reply endpoint.
-func EncodeReplyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+// EncodeCreateReplyResponse returns an encoder for responses returned by the
+// tweets CreateReply endpoint.
+func EncodeCreateReplyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
 	return func(ctx context.Context, w http.ResponseWriter, v any) error {
+		res, _ := v.(*tweets.Reply)
+		enc := encoder(ctx, w)
+		body := NewCreateReplyResponseBody(res)
 		w.WriteHeader(http.StatusOK)
-		return nil
+		return enc.Encode(body)
 	}
 }
 
-// DecodeReplyRequest returns a decoder for requests sent to the tweets Reply
-// endpoint.
-func DecodeReplyRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+// DecodeCreateReplyRequest returns a decoder for requests sent to the tweets
+// CreateReply endpoint.
+func DecodeCreateReplyRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body ReplyRequestBody
+			body CreateReplyRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -449,19 +452,19 @@ func DecodeReplyRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 			}
 			return nil, goa.DecodePayloadError(err.Error())
 		}
-		err = ValidateReplyRequestBody(&body)
+		err = ValidateCreateReplyRequestBody(&body)
 		if err != nil {
 			return nil, err
 		}
-		payload := NewReplyPayload(&body)
+		payload := NewCreateReplyPayload(&body)
 
 		return payload, nil
 	}
 }
 
-// EncodeReplyError returns an encoder for errors returned by the Reply tweets
-// endpoint.
-func EncodeReplyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+// EncodeCreateReplyError returns an encoder for errors returned by the
+// CreateReply tweets endpoint.
+func EncodeCreateReplyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
 	encodeError := goahttp.ErrorEncoder(encoder, formatter)
 	return func(ctx context.Context, w http.ResponseWriter, v error) error {
 		var en goa.GoaErrorNamer
@@ -477,7 +480,7 @@ func EncodeReplyError(encoder func(context.Context, http.ResponseWriter) goahttp
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewReplyBadRequestResponseBody(res)
+				body = NewCreateReplyBadRequestResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusBadRequest)

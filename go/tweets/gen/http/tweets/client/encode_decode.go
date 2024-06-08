@@ -511,13 +511,13 @@ func DecodeDeleteRetweetResponse(decoder func(*http.Response) goahttp.Decoder, r
 	}
 }
 
-// BuildReplyRequest instantiates a HTTP request object with method and path
-// set to call the "tweets" service "Reply" endpoint
-func (c *Client) BuildReplyRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: ReplyTweetsPath()}
+// BuildCreateReplyRequest instantiates a HTTP request object with method and
+// path set to call the "tweets" service "CreateReply" endpoint
+func (c *Client) BuildCreateReplyRequest(ctx context.Context, v any) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: CreateReplyTweetsPath()}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
-		return nil, goahttp.ErrInvalidURL("tweets", "Reply", u.String(), err)
+		return nil, goahttp.ErrInvalidURL("tweets", "CreateReply", u.String(), err)
 	}
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -526,29 +526,29 @@ func (c *Client) BuildReplyRequest(ctx context.Context, v any) (*http.Request, e
 	return req, nil
 }
 
-// EncodeReplyRequest returns an encoder for requests sent to the tweets Reply
-// server.
-func EncodeReplyRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
+// EncodeCreateReplyRequest returns an encoder for requests sent to the tweets
+// CreateReply server.
+func EncodeCreateReplyRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
 	return func(req *http.Request, v any) error {
-		p, ok := v.(*tweets.ReplyPayload)
+		p, ok := v.(*tweets.CreateReplyPayload)
 		if !ok {
-			return goahttp.ErrInvalidType("tweets", "Reply", "*tweets.ReplyPayload", v)
+			return goahttp.ErrInvalidType("tweets", "CreateReply", "*tweets.CreateReplyPayload", v)
 		}
-		body := NewReplyRequestBody(p)
+		body := NewCreateReplyRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("tweets", "Reply", err)
+			return goahttp.ErrEncodingError("tweets", "CreateReply", err)
 		}
 		return nil
 	}
 }
 
-// DecodeReplyResponse returns a decoder for responses returned by the tweets
-// Reply endpoint. restoreBody controls whether the response body should be
-// restored after having been read.
-// DecodeReplyResponse may return the following errors:
+// DecodeCreateReplyResponse returns a decoder for responses returned by the
+// tweets CreateReply endpoint. restoreBody controls whether the response body
+// should be restored after having been read.
+// DecodeCreateReplyResponse may return the following errors:
 //   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
 //   - error: internal error
-func DecodeReplyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
+func DecodeCreateReplyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (any, error) {
 	return func(resp *http.Response) (any, error) {
 		if restoreBody {
 			b, err := io.ReadAll(resp.Body)
@@ -564,24 +564,37 @@ func DecodeReplyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 		}
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil, nil
-		case http.StatusBadRequest:
 			var (
-				body ReplyBadRequestResponseBody
+				body CreateReplyResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("tweets", "Reply", err)
+				return nil, goahttp.ErrDecodingError("tweets", "CreateReply", err)
 			}
-			err = ValidateReplyBadRequestResponseBody(&body)
+			err = ValidateCreateReplyResponseBody(&body)
 			if err != nil {
-				return nil, goahttp.ErrValidationError("tweets", "Reply", err)
+				return nil, goahttp.ErrValidationError("tweets", "CreateReply", err)
 			}
-			return nil, NewReplyBadRequest(&body)
+			res := NewCreateReplyReplyOK(&body)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body CreateReplyBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("tweets", "CreateReply", err)
+			}
+			err = ValidateCreateReplyBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("tweets", "CreateReply", err)
+			}
+			return nil, NewCreateReplyBadRequest(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("tweets", "Reply", resp.StatusCode, string(body))
+			return nil, goahttp.ErrInvalidResponse("tweets", "CreateReply", resp.StatusCode, string(body))
 		}
 	}
 }
