@@ -1,0 +1,44 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  tagPolicy:
+    sha256: {}
+  local:
+    push: false
+  artifacts:
+    - image: users_service
+      context: go/users
+      docker:
+        dockerfile: docker/Dockerfile
+      sync:
+        manual:
+          - src: "**/*.go"
+            dest: .
+    - image: users_app
+      context: go/users
+      docker:
+        dockerfile: docker/app.Dockerfile
+    - image: users_postgres
+      context: go/users
+      docker:
+        dockerfile: docker/postgres.Dockerfile
+    - image: tweets_service
+      context: go/users
+      docker:
+        dockerfile: docker/Dockerfile
+      sync:
+        manual:
+          - src: "**/*.go"
+            dest: .
+    - image: tweets_app
+      context: go/tweets
+      docker:
+        dockerfile: docker/app.Dockerfile
+    - image: tweets_postgres
+      context: go/tweets
+      docker:
+        dockerfile: docker/postgres.Dockerfile
+
