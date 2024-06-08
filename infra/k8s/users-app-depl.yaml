@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
       - name: migrate-db
-        image: users_app:latest
+        image: users_app
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "-c"]
         env:
@@ -29,11 +29,16 @@ spec:
             migrate -database ${USERS_POSTGRES_URL} -path ./db/migrations up
       containers:
       - name: users-app
-        image: users_app:latest
+        image: users_service
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-        command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: PGURL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-params
+              key: USERS_POSTGRES_URL
 ---
 apiVersion: v1
 kind: Service
