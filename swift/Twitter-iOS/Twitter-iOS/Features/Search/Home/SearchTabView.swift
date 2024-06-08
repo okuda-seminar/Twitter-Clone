@@ -18,7 +18,6 @@ struct SearchTabView: View {
     ScrollView(.vertical) {
       if showGIF {
         GIFImagePlayer(resourceName: "cute_bard")
-          .frame(width: UIScreen.main.bounds.width)
       }
       ForEach(topicModels) { topicModel in
         SearchTopicCellView(topic: topicModel)

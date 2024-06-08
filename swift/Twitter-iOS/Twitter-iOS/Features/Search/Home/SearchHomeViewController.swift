@@ -149,7 +149,7 @@ struct SearchHomeView: View {
   private func Tabs() -> some View {
     GeometryReader { geoProxy in
       ScrollView(.horizontal) {
-        LazyHStack {
+        LazyHStack(spacing: 0) {
           ForEach(tabs) { tab in
             switch tab.id {
             case .forYou:
