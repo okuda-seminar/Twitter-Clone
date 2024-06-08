@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
       - name: migrate-db
-        image: tweets_app:latest
+        image: tweets_app
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "-c"]
         env:
@@ -29,11 +29,16 @@ spec:
             migrate -database ${TWEETS_POSTGRES_URL} -path ./db/migrations up
       containers:
       - name: tweets-app
-        image: tweets_app:latest
+        image: tweets_service
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-        command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: PGURL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-params
+              key: TWEETS_POSTGRES_URL
 ---
 apiVersion: v1
 kind: Service

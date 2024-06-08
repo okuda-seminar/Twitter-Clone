@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: users-postgres
-        image: users_postgres:latest
+        image: users_postgres
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
