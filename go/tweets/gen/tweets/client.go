@@ -21,12 +21,12 @@ type Client struct {
 	DeleteTweetLikeEndpoint goa.Endpoint
 	RetweetEndpoint         goa.Endpoint
 	DeleteRetweetEndpoint   goa.Endpoint
-	ReplyEndpoint           goa.Endpoint
+	CreateReplyEndpoint     goa.Endpoint
 	DeleteReplyEndpoint     goa.Endpoint
 }
 
 // NewClient initializes a "tweets" service client given the endpoints.
-func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike, retweet, deleteRetweet, reply, deleteReply goa.Endpoint) *Client {
+func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike, retweet, deleteRetweet, createReply, deleteReply goa.Endpoint) *Client {
 	return &Client{
 		CreateTweetEndpoint:     createTweet,
 		DeleteTweetEndpoint:     deleteTweet,
@@ -34,7 +34,7 @@ func NewClient(createTweet, deleteTweet, likeTweet, deleteTweetLike, retweet, de
 		DeleteTweetLikeEndpoint: deleteTweetLike,
 		RetweetEndpoint:         retweet,
 		DeleteRetweetEndpoint:   deleteRetweet,
-		ReplyEndpoint:           reply,
+		CreateReplyEndpoint:     createReply,
 		DeleteReplyEndpoint:     deleteReply,
 	}
 }
@@ -103,14 +103,18 @@ func (c *Client) DeleteRetweet(ctx context.Context, p *DeleteRetweetPayload) (er
 	return
 }
 
-// Reply calls the "Reply" endpoint of the "tweets" service.
-// Reply may return the following errors:
+// CreateReply calls the "CreateReply" endpoint of the "tweets" service.
+// CreateReply may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) Reply(ctx context.Context, p *ReplyPayload) (err error) {
-	_, err = c.ReplyEndpoint(ctx, p)
-	return
+func (c *Client) CreateReply(ctx context.Context, p *CreateReplyPayload) (res *Reply, err error) {
+	var ires any
+	ires, err = c.CreateReplyEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*Reply), nil
 }
 
 // DeleteReply calls the "DeleteReply" endpoint of the "tweets" service.

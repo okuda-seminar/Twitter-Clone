@@ -41,8 +41,9 @@ type Client struct {
 	// DeleteRetweet endpoint.
 	DeleteRetweetDoer goahttp.Doer
 
-	// Reply Doer is the HTTP client used to make requests to the Reply endpoint.
-	ReplyDoer goahttp.Doer
+	// CreateReply Doer is the HTTP client used to make requests to the CreateReply
+	// endpoint.
+	CreateReplyDoer goahttp.Doer
 
 	// DeleteReply Doer is the HTTP client used to make requests to the DeleteReply
 	// endpoint.
@@ -74,7 +75,7 @@ func NewClient(
 		DeleteTweetLikeDoer: doer,
 		RetweetDoer:         doer,
 		DeleteRetweetDoer:   doer,
-		ReplyDoer:           doer,
+		CreateReplyDoer:     doer,
 		DeleteReplyDoer:     doer,
 		RestoreResponseBody: restoreBody,
 		scheme:              scheme,
@@ -228,15 +229,15 @@ func (c *Client) DeleteRetweet() goa.Endpoint {
 	}
 }
 
-// Reply returns an endpoint that makes HTTP requests to the tweets service
-// Reply server.
-func (c *Client) Reply() goa.Endpoint {
+// CreateReply returns an endpoint that makes HTTP requests to the tweets
+// service CreateReply server.
+func (c *Client) CreateReply() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeReplyRequest(c.encoder)
-		decodeResponse = DecodeReplyResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeCreateReplyRequest(c.encoder)
+		decodeResponse = DecodeCreateReplyResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildReplyRequest(ctx, v)
+		req, err := c.BuildCreateReplyRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -244,9 +245,9 @@ func (c *Client) Reply() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.ReplyDoer.Do(req)
+		resp, err := c.CreateReplyDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("tweets", "Reply", err)
+			return nil, goahttp.ErrRequestError("tweets", "CreateReply", err)
 		}
 		return decodeResponse(resp)
 	}

@@ -54,24 +54,34 @@ type DeleteRetweetRequestBody struct {
 	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
-// ReplyRequestBody is the type of the "tweets" service "Reply" endpoint HTTP
-// request body.
-type ReplyRequestBody struct {
+// CreateReplyRequestBody is the type of the "tweets" service "CreateReply"
+// endpoint HTTP request body.
+type CreateReplyRequestBody struct {
 	TweetID *string `form:"tweet_id,omitempty" json:"tweet_id,omitempty" xml:"tweet_id,omitempty"`
 	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	Text    *string `form:"text,omitempty" json:"text,omitempty" xml:"text,omitempty"`
 }
 
 // DeleteReplyRequestBody is the type of the "tweets" service "DeleteReply"
 // endpoint HTTP request body.
 type DeleteReplyRequestBody struct {
-	TweetID *string `form:"tweet_id,omitempty" json:"tweet_id,omitempty" xml:"tweet_id,omitempty"`
-	UserID  *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 }
 
 // CreateTweetResponseBody is the type of the "tweets" service "CreateTweet"
 // endpoint HTTP response body.
 type CreateTweetResponseBody struct {
 	ID        string `form:"id" json:"id" xml:"id"`
+	UserID    string `form:"user_id" json:"user_id" xml:"user_id"`
+	Text      string `form:"text" json:"text" xml:"text"`
+	CreatedAt string `form:"created_at" json:"created_at" xml:"created_at"`
+}
+
+// CreateReplyResponseBody is the type of the "tweets" service "CreateReply"
+// endpoint HTTP response body.
+type CreateReplyResponseBody struct {
+	ID        string `form:"id" json:"id" xml:"id"`
+	TweetID   string `form:"tweet_id" json:"tweet_id" xml:"tweet_id"`
 	UserID    string `form:"user_id" json:"user_id" xml:"user_id"`
 	Text      string `form:"text" json:"text" xml:"text"`
 	CreatedAt string `form:"created_at" json:"created_at" xml:"created_at"`
@@ -221,9 +231,9 @@ type DeleteRetweetBadRequestResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// ReplyBadRequestResponseBody is the type of the "tweets" service "Reply"
-// endpoint HTTP response body for the "BadRequest" error.
-type ReplyBadRequestResponseBody struct {
+// CreateReplyBadRequestResponseBody is the type of the "tweets" service
+// "CreateReply" endpoint HTTP response body for the "BadRequest" error.
+type CreateReplyBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -262,6 +272,19 @@ type DeleteReplyBadRequestResponseBody struct {
 func NewCreateTweetResponseBody(res *tweets.Tweet) *CreateTweetResponseBody {
 	body := &CreateTweetResponseBody{
 		ID:        res.ID,
+		UserID:    res.UserID,
+		Text:      res.Text,
+		CreatedAt: res.CreatedAt,
+	}
+	return body
+}
+
+// NewCreateReplyResponseBody builds the HTTP response body from the result of
+// the "CreateReply" endpoint of the "tweets" service.
+func NewCreateReplyResponseBody(res *tweets.Reply) *CreateReplyResponseBody {
+	body := &CreateReplyResponseBody{
+		ID:        res.ID,
+		TweetID:   res.TweetID,
 		UserID:    res.UserID,
 		Text:      res.Text,
 		CreatedAt: res.CreatedAt,
@@ -381,10 +404,10 @@ func NewDeleteRetweetBadRequestResponseBody(res *goa.ServiceError) *DeleteRetwee
 	return body
 }
 
-// NewReplyBadRequestResponseBody builds the HTTP response body from the result
-// of the "Reply" endpoint of the "tweets" service.
-func NewReplyBadRequestResponseBody(res *goa.ServiceError) *ReplyBadRequestResponseBody {
-	body := &ReplyBadRequestResponseBody{
+// NewCreateReplyBadRequestResponseBody builds the HTTP response body from the
+// result of the "CreateReply" endpoint of the "tweets" service.
+func NewCreateReplyBadRequestResponseBody(res *goa.ServiceError) *CreateReplyBadRequestResponseBody {
+	body := &CreateReplyBadRequestResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -470,11 +493,12 @@ func NewDeleteRetweetPayload(body *DeleteRetweetRequestBody) *tweets.DeleteRetwe
 	return v
 }
 
-// NewReplyPayload builds a tweets service Reply endpoint payload.
-func NewReplyPayload(body *ReplyRequestBody) *tweets.ReplyPayload {
-	v := &tweets.ReplyPayload{
+// NewCreateReplyPayload builds a tweets service CreateReply endpoint payload.
+func NewCreateReplyPayload(body *CreateReplyRequestBody) *tweets.CreateReplyPayload {
+	v := &tweets.CreateReplyPayload{
 		TweetID: *body.TweetID,
 		UserID:  *body.UserID,
+		Text:    *body.Text,
 	}
 
 	return v
@@ -483,8 +507,7 @@ func NewReplyPayload(body *ReplyRequestBody) *tweets.ReplyPayload {
 // NewDeleteReplyPayload builds a tweets service DeleteReply endpoint payload.
 func NewDeleteReplyPayload(body *DeleteReplyRequestBody) *tweets.DeleteReplyPayload {
 	v := &tweets.DeleteReplyPayload{
-		TweetID: *body.TweetID,
-		UserID:  *body.UserID,
+		ID: *body.ID,
 	}
 
 	return v
@@ -558,13 +581,17 @@ func ValidateDeleteRetweetRequestBody(body *DeleteRetweetRequestBody) (err error
 	return
 }
 
-// ValidateReplyRequestBody runs the validations defined on ReplyRequestBody
-func ValidateReplyRequestBody(body *ReplyRequestBody) (err error) {
+// ValidateCreateReplyRequestBody runs the validations defined on
+// CreateReplyRequestBody
+func ValidateCreateReplyRequestBody(body *CreateReplyRequestBody) (err error) {
 	if body.TweetID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
+	if body.Text == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("text", "body"))
 	}
 	return
 }
@@ -572,11 +599,8 @@ func ValidateReplyRequestBody(body *ReplyRequestBody) (err error) {
 // ValidateDeleteReplyRequestBody runs the validations defined on
 // DeleteReplyRequestBody
 func ValidateDeleteReplyRequestBody(body *DeleteReplyRequestBody) (err error) {
-	if body.TweetID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("tweet_id", "body"))
-	}
-	if body.UserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
 	}
 	return
 }

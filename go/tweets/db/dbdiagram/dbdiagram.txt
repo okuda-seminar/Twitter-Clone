@@ -22,3 +22,11 @@ TABLE retweets {
     (tweet_id, user_id) [pk]
   }
 }
+
+TABLE replies {
+  id UUID [pk]
+  tweet_id UUID [not null]
+  user_id UUID [not null]
+  text varchar[140] [not null]
+  created_at timestamp [default: 'now()']
+}

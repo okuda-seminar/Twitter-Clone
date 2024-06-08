@@ -1,8 +1,12 @@
 package repository
 
-import "context"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type RetweetsRepo interface {
-	CreateRetweet(ctx context.Context, tweet_id string, user_id string) error
-	DeleteRetweet(ctx context.Context, tweet_id string, user_id string) error
+	CreateRetweet(ctx context.Context, tweet_id uuid.UUID, user_id uuid.UUID) error
+	DeleteRetweet(ctx context.Context, tweet_id uuid.UUID, user_id uuid.UUID) error
 }

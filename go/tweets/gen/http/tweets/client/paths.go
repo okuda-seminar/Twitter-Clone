@@ -37,8 +37,8 @@ func DeleteRetweetTweetsPath() string {
 	return "/api/tweets/retweet"
 }
 
-// ReplyTweetsPath returns the URL path to the tweets service Reply HTTP endpoint.
-func ReplyTweetsPath() string {
+// CreateReplyTweetsPath returns the URL path to the tweets service CreateReply HTTP endpoint.
+func CreateReplyTweetsPath() string {
 	return "/api/tweets/reply"
 }
 
