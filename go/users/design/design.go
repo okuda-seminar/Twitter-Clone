@@ -39,7 +39,9 @@ var _ = Service("users", func() {
 
 	Method("DeleteUser", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(Empty)
@@ -54,7 +56,9 @@ var _ = Service("users", func() {
 
 	Method("FindUserByID", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(types.User)
@@ -68,7 +72,9 @@ var _ = Service("users", func() {
 
 	Method("UpdateUsername", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Field(2, "username", String)
 			Required("id", "username")
 		})
@@ -84,7 +90,9 @@ var _ = Service("users", func() {
 
 	Method("UpdateBio", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Field(2, "bio", String)
 			Required("id", "bio")
 		})
@@ -100,8 +108,12 @@ var _ = Service("users", func() {
 
 	Method("Follow", func() {
 		Payload(func() {
-			Field(1, "follower_id", String)
-			Field(2, "followee_id", String)
+			Field(1, "follower_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "followee_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("follower_id", "followee_id")
 		})
 		Result(Empty)
@@ -115,8 +127,12 @@ var _ = Service("users", func() {
 
 	Method("Unfollow", func() {
 		Payload(func() {
-			Field(1, "follower_id", String)
-			Field(2, "followee_id", String)
+			Field(1, "follower_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "followee_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("follower_id", "followee_id")
 		})
 		Result(Empty)
@@ -130,7 +146,9 @@ var _ = Service("users", func() {
 
 	Method("GetFollowers", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(ArrayOf(types.User))
@@ -144,7 +162,9 @@ var _ = Service("users", func() {
 
 	Method("GetFollowings", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(ArrayOf(types.User))
@@ -158,8 +178,12 @@ var _ = Service("users", func() {
 
 	Method("Mute", func() {
 		Payload(func() {
-			Field(1, "muted_user_id", String)
-			Field(2, "muting_user_id", String)
+			Field(1, "muted_user_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "muting_user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("muted_user_id", "muting_user_id")
 		})
 		Result(Empty)
@@ -173,8 +197,12 @@ var _ = Service("users", func() {
 
 	Method("Unmute", func() {
 		Payload(func() {
-			Field(1, "muted_user_id", String)
-			Field(2, "muting_user_id", String)
+			Field(1, "muted_user_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "muting_user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("muted_user_id", "muting_user_id")
 		})
 		Result(Empty)
@@ -188,8 +216,12 @@ var _ = Service("users", func() {
 
 	Method("Block", func() {
 		Payload(func() {
-			Field(1, "blocked_user_id", String)
-			Field(2, "blocking_user_id", String)
+			Field(1, "blocked_user_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "blocking_user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("blocked_user_id", "blocking_user_id")
 		})
 		Result(Empty)
@@ -203,8 +235,12 @@ var _ = Service("users", func() {
 
 	Method("Unblock", func() {
 		Payload(func() {
-			Field(1, "blocked_user_id", String)
-			Field(2, "blocking_user_id", String)
+			Field(1, "blocked_user_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "blocking_user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("blocked_user_id", "blocking_user_id")
 		})
 		Result(Empty)

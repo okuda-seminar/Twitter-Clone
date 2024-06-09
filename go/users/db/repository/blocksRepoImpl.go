@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+
+	"github.com/google/uuid"
 )
 
 type blocksRepoImpl struct {
@@ -13,7 +15,7 @@ func NewBlocksRepoImpl(db *sql.DB) BlocksRepo {
 	return &blocksRepoImpl{db}
 }
 
-func (r *blocksRepoImpl) CreateBlock(ctx context.Context, blocked_user_id, blocking_user_id string) error {
+func (r *blocksRepoImpl) CreateBlock(ctx context.Context, blocked_user_id, blocking_user_id uuid.UUID) error {
 	query := `
 		INSERT INTO blocks (blocked_user_id, blocking_user_id)
 		VALUES ($1, $2)
@@ -25,7 +27,7 @@ func (r *blocksRepoImpl) CreateBlock(ctx context.Context, blocked_user_id, block
 	return nil
 }
 
-func (r *blocksRepoImpl) DeleteBlock(ctx context.Context, blocked_user_id, blocking_user_id string) error {
+func (r *blocksRepoImpl) DeleteBlock(ctx context.Context, blocked_user_id, blocking_user_id uuid.UUID) error {
 	query := `
 		DELETE FROM blocks
 		WHERE blocked_user_id = $1 AND blocking_user_id = $2

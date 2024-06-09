@@ -177,11 +177,16 @@ func EncodeFindUserByIDResponse(encoder func(context.Context, http.ResponseWrite
 func DecodeFindUserByIDRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id string
+			id  string
+			err error
 
 			params = mux.Vars(r)
 		)
 		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 		payload := NewFindUserByIDPayload(id)
 
 		return payload, nil
@@ -252,6 +257,10 @@ func DecodeUpdateUsernameRequest(mux goahttp.Muxer, decoder func(*http.Request) 
 			params = mux.Vars(r)
 		)
 		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 		payload := NewUpdateUsernamePayload(&body, id)
 
 		return payload, nil
@@ -335,6 +344,10 @@ func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goaht
 			params = mux.Vars(r)
 		)
 		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 		payload := NewUpdateBioPayload(&body, id)
 
 		return payload, nil
@@ -526,11 +539,16 @@ func EncodeGetFollowersResponse(encoder func(context.Context, http.ResponseWrite
 func DecodeGetFollowersRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id string
+			id  string
+			err error
 
 			params = mux.Vars(r)
 		)
 		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 		payload := NewGetFollowersPayload(id)
 
 		return payload, nil
@@ -583,11 +601,16 @@ func EncodeGetFollowingsResponse(encoder func(context.Context, http.ResponseWrit
 func DecodeGetFollowingsRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			id string
+			id  string
+			err error
 
 			params = mux.Vars(r)
 		)
 		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 		payload := NewGetFollowingsPayload(id)
 
 		return payload, nil

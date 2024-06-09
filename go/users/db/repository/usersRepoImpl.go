@@ -49,7 +49,7 @@ RETURNING created_at, updated_at
 }
 
 // DeleteUser deletes a user with the specified user ID.
-func (r *usersRepoImpl) DeleteUser(ctx context.Context, id string) error {
+func (r *usersRepoImpl) DeleteUser(ctx context.Context, id uuid.UUID) error {
 	query := "DELETE FROM users WHERE id = $1"
 	res, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
@@ -67,7 +67,7 @@ func (r *usersRepoImpl) DeleteUser(ctx context.Context, id string) error {
 }
 
 // FindUserByID retrieves a user by user ID from the database.
-func (r *usersRepoImpl) FindUserByID(ctx context.Context, id string) (*User, error) {
+func (r *usersRepoImpl) FindUserByID(ctx context.Context, id uuid.UUID) (*User, error) {
 	query := "SELECT * FROM users WHERE id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
 
@@ -89,7 +89,7 @@ func (r *usersRepoImpl) FindUserByID(ctx context.Context, id string) (*User, err
 
 // UpdateUsername updates the username of a user with the specified ID.
 // If a user with the specified username already exists, the update fails.
-func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id string, username string) error {
+func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id uuid.UUID, username string) error {
 	query := "UPDATE users SET username = $1 where id = $2"
 	res, err := r.db.ExecContext(ctx, query, username, id)
 	if err != nil {
@@ -107,7 +107,7 @@ func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id string, username 
 }
 
 // UpdateBio updates the bio of a user with the specified ID.
-func (r *usersRepoImpl) UpdateBio(ctx context.Context, id string, bio string) error {
+func (r *usersRepoImpl) UpdateBio(ctx context.Context, id uuid.UUID, bio string) error {
 	query := "UPDATE users SET bio = $1 where id = $2"
 	res, err := r.db.ExecContext(ctx, query, bio, id)
 	if err != nil {
@@ -125,7 +125,7 @@ func (r *usersRepoImpl) UpdateBio(ctx context.Context, id string, bio string) er
 }
 
 // GetFollowers retrieves all the followers of a user with the specified ID.
-func (r *usersRepoImpl) GetFollowers(ctx context.Context, id string) ([]*User, error) {
+func (r *usersRepoImpl) GetFollowers(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users
 JOIN followships ON users.id = followships.follower_id
@@ -161,7 +161,7 @@ WHERE followships.followee_id = $1
 }
 
 // GetFollowees retrieves all the followees of a user with the specified ID.
-func (r *usersRepoImpl) GetFollowings(ctx context.Context, id string) ([]*User, error) {
+func (r *usersRepoImpl) GetFollowings(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users
 JOIN followships ON users.id = followships.followee_id

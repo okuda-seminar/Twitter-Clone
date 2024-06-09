@@ -29,8 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Officia expedita consequuntur.",
-      "username": "Minus eaque tempora in laborum."
+      "display_name": "Saepe sit.",
+      "username": "Non vitae."
    }'` + "\n" +
 		""
 }
@@ -283,8 +283,8 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Officia expedita consequuntur.",
-      "username": "Minus eaque tempora in laborum."
+      "display_name": "Saepe sit.",
+      "username": "Non vitae."
    }'
 `, os.Args[0])
 }
@@ -297,7 +297,7 @@ DeleteUser implements DeleteUser.
 
 Example:
     %[1]s users delete-user --body '{
-      "id": "Minima quis incidunt saepe est."
+      "id": "5387eca1-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -309,7 +309,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "Error maxime at magnam."
+    %[1]s users find-user-by-id --id "5387ffda-261a-11ef-b69d-0242ac120003"
 `, os.Args[0])
 }
 
@@ -322,8 +322,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Soluta itaque eaque voluptatum est consequatur."
-   }' --id "Minus illo repudiandae tempore."
+      "username": "Odio quis assumenda voluptate sit incidunt."
+   }' --id "5388148b-261a-11ef-b69d-0242ac120003"
 `, os.Args[0])
 }
 
@@ -336,8 +336,8 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Non facilis et fugit."
-   }' --id "Id odit fugit."
+      "bio": "Molestias fugit quod nemo."
+   }' --id "53882511-261a-11ef-b69d-0242ac120003"
 `, os.Args[0])
 }
 
@@ -349,8 +349,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followee_id": "Aut inventore ut est et.",
-      "follower_id": "Distinctio dolores aut fugit."
+      "followee_id": "53883465-261a-11ef-b69d-0242ac120003",
+      "follower_id": "5388338f-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -363,8 +363,8 @@ Unfollow implements Unfollow.
 
 Example:
     %[1]s users unfollow --body '{
-      "followee_id": "Aut dignissimos.",
-      "follower_id": "Voluptas enim dolor dolore dicta."
+      "followee_id": "53883fc2-261a-11ef-b69d-0242ac120003",
+      "follower_id": "53883ef9-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -376,7 +376,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "Eum ad quam delectus doloremque."
+    %[1]s users get-followers --id "53884bca-261a-11ef-b69d-0242ac120003"
 `, os.Args[0])
 }
 
@@ -387,7 +387,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "Provident sed quis et blanditiis debitis quo."
+    %[1]s users get-followings --id "53885c48-261a-11ef-b69d-0242ac120003"
 `, os.Args[0])
 }
 
@@ -399,8 +399,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "Odio fuga corporis commodi.",
-      "muting_user_id": "In quibusdam dignissimos ullam."
+      "muted_user_id": "538877e2-261a-11ef-b69d-0242ac120003",
+      "muting_user_id": "5388791e-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -413,8 +413,8 @@ Unmute implements Unmute.
 
 Example:
     %[1]s users unmute --body '{
-      "muted_user_id": "Voluptatem porro tempora quis laborum impedit iusto.",
-      "muting_user_id": "Vero sit explicabo."
+      "muted_user_id": "5388ae5c-261a-11ef-b69d-0242ac120003",
+      "muting_user_id": "5388af31-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -427,8 +427,8 @@ Block implements Block.
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "Voluptatum quo enim eos ex laborum.",
-      "blocking_user_id": "Sit perferendis et."
+      "blocked_user_id": "5388bac0-261a-11ef-b69d-0242ac120003",
+      "blocking_user_id": "5388bbb5-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }
@@ -441,8 +441,8 @@ Unblock implements Unblock.
 
 Example:
     %[1]s users unblock --body '{
-      "blocked_user_id": "Est quis qui.",
-      "blocking_user_id": "Sapiente corporis a esse et."
+      "blocked_user_id": "5388c713-261a-11ef-b69d-0242ac120003",
+      "blocking_user_id": "5388c7df-261a-11ef-b69d-0242ac120003"
    }'
 `, os.Args[0])
 }

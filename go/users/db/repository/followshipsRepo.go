@@ -1,10 +1,14 @@
 package repository
 
-import "context"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type FollowshipsRepo interface {
-	CreateFollowship(ctx context.Context, follower_id, followee_id string) error
-	DeleteFollowship(ctx context.Context, follower_id, followee_id string) error
+	CreateFollowship(ctx context.Context, follower_id, followee_id uuid.UUID) error
+	DeleteFollowship(ctx context.Context, follower_id, followee_id uuid.UUID) error
 }
 
 type Followship struct {

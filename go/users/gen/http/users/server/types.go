@@ -823,6 +823,9 @@ func ValidateDeleteUserRequestBody(body *DeleteUserRequestBody) (err error) {
 	if body.ID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
 	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -852,6 +855,12 @@ func ValidateFollowRequestBody(body *FollowRequestBody) (err error) {
 	if body.FolloweeID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
 	}
+	if body.FollowerID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", *body.FollowerID, goa.FormatUUID))
+	}
+	if body.FolloweeID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", *body.FolloweeID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -864,6 +873,12 @@ func ValidateUnfollowRequestBody(body *UnfollowRequestBody) (err error) {
 	if body.FolloweeID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
 	}
+	if body.FollowerID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", *body.FollowerID, goa.FormatUUID))
+	}
+	if body.FolloweeID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", *body.FolloweeID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -874,6 +889,12 @@ func ValidateMuteRequestBody(body *MuteRequestBody) (err error) {
 	}
 	if body.MutingUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
+	}
+	if body.MutedUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", *body.MutedUserID, goa.FormatUUID))
+	}
+	if body.MutingUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", *body.MutingUserID, goa.FormatUUID))
 	}
 	return
 }
@@ -886,6 +907,12 @@ func ValidateUnmuteRequestBody(body *UnmuteRequestBody) (err error) {
 	if body.MutingUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
 	}
+	if body.MutedUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", *body.MutedUserID, goa.FormatUUID))
+	}
+	if body.MutingUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", *body.MutingUserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -897,6 +924,12 @@ func ValidateBlockRequestBody(body *BlockRequestBody) (err error) {
 	if body.BlockingUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
 	}
+	if body.BlockedUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", *body.BlockedUserID, goa.FormatUUID))
+	}
+	if body.BlockingUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", *body.BlockingUserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -907,6 +940,12 @@ func ValidateUnblockRequestBody(body *UnblockRequestBody) (err error) {
 	}
 	if body.BlockingUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
+	}
+	if body.BlockedUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", *body.BlockedUserID, goa.FormatUUID))
+	}
+	if body.BlockingUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", *body.BlockingUserID, goa.FormatUUID))
 	}
 	return
 }
