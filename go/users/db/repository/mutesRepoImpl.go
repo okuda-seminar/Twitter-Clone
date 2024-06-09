@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+
+	"github.com/google/uuid"
 )
 
 type mutesRepoImpl struct {
@@ -13,7 +15,7 @@ func NewMutesRepoImpl(db *sql.DB) MutesRepo {
 	return &mutesRepoImpl{db}
 }
 
-func (r *mutesRepoImpl) CreateMute(ctx context.Context, muted_user_id, muting_user_id string) error {
+func (r *mutesRepoImpl) CreateMute(ctx context.Context, muted_user_id, muting_user_id uuid.UUID) error {
 	query := `
 		INSERT INTO mutes (muted_user_id, muting_user_id)
 		VALUES ($1, $2)
@@ -25,7 +27,7 @@ func (r *mutesRepoImpl) CreateMute(ctx context.Context, muted_user_id, muting_us
 	return nil
 }
 
-func (r *mutesRepoImpl) DeleteMute(ctx context.Context, muted_user_id, muting_user_id string) error {
+func (r *mutesRepoImpl) DeleteMute(ctx context.Context, muted_user_id, muting_user_id uuid.UUID) error {
 	query := `
 		DELETE FROM mutes
 		WHERE muted_user_id = $1 AND muting_user_id = $2

@@ -8,6 +8,8 @@ import (
 	"time"
 	"users/db/repository"
 	users "users/gen/users"
+
+	"github.com/google/uuid"
 )
 
 // usersSvc implements users/gen/users.Service.
@@ -28,12 +30,9 @@ func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
 	return &usersSvc{usersRepo, followshipsRepo, mutesRepo, blocksRepo, logger}
 }
 
-func (s *usersSvc) CreateUser(
-	ctx context.Context,
-	p *users.CreateUserPayload,
-) (res *users.User, err error) {
+func (s *usersSvc) CreateUser(ctx context.Context, p *users.CreateUserPayload) (*users.User, error) {
 	if !validateUsername(p.Username) {
-		err = users.MakeBadRequest(errors.New("username is invalid"))
+		err := users.MakeBadRequest(errors.New("username is invalid"))
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
 		return nil, err
 	}
@@ -44,17 +43,15 @@ func (s *usersSvc) CreateUser(
 		return nil, users.MakeBadRequest(err)
 	}
 
-	res = mapRepoUserToSvcUser(user)
+	res := mapRepoUserToSvcUser(user)
 
 	s.logger.Print("users.CreateUser")
-	return
+	return res, nil
 }
 
-func (s *usersSvc) DeleteUser(
-	ctx context.Context,
-	p *users.DeleteUserPayload,
-) (err error) {
-	err = s.usersRepo.DeleteUser(ctx, p.ID)
+func (s *usersSvc) DeleteUser(ctx context.Context, p *users.DeleteUserPayload) error {
+	userID, _ := uuid.Parse(p.ID)
+	err := s.usersRepo.DeleteUser(ctx, userID)
 	if err != nil {
 		// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/15
 		// - Discuss logging structure.
@@ -63,69 +60,63 @@ func (s *usersSvc) DeleteUser(
 	}
 
 	s.logger.Print("users.DeleteUser")
-	return
+	return nil
 }
 
-func (s *usersSvc) FindUserByID(
-	ctx context.Context,
-	p *users.FindUserByIDPayload,
-) (res *users.User, err error) {
-	user, err := s.usersRepo.FindUserByID(ctx, p.ID)
+func (s *usersSvc) FindUserByID(ctx context.Context, p *users.FindUserByIDPayload) (*users.User, error) {
+	userID, _ := uuid.Parse(p.ID)
+	user, err := s.usersRepo.FindUserByID(ctx, userID)
 	if err != nil {
 		s.logger.Printf("users.FindByID: failed (%s)", err)
 		return nil, users.MakeNotFound(err)
 	}
-	res = mapRepoUserToSvcUser(user)
+
+	res := mapRepoUserToSvcUser(user)
 
 	s.logger.Print("users.FindByID")
-	return
+	return res, nil
 }
 
-func (s *usersSvc) UpdateUsername(
-	ctx context.Context,
-	p *users.UpdateUsernamePayload,
-) (err error) {
+func (s *usersSvc) UpdateUsername(ctx context.Context, p *users.UpdateUsernamePayload) error {
 	if !validateUsername(p.Username) {
-		err = users.MakeBadRequest(errors.New("username is invalid"))
+		err := users.MakeBadRequest(errors.New("username is invalid"))
 		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
 		return err
 	}
 
-	err = s.usersRepo.UpdateUsername(ctx, p.ID, p.Username)
+	userID, _ := uuid.Parse(p.ID)
+	err := s.usersRepo.UpdateUsername(ctx, userID, p.Username)
 	if err != nil {
 		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
 	s.logger.Print("users.UpdateUsername")
-	return
+	return nil
 }
 
-func (s *usersSvc) UpdateBio(
-	ctx context.Context,
-	p *users.UpdateBioPayload,
-) (err error) {
+func (s *usersSvc) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) error {
 	if !validateBio(p.Bio) {
-		err = users.MakeBadRequest(errors.New("bio is invalid"))
+		err := users.MakeBadRequest(errors.New("bio is invalid"))
 		s.logger.Printf("users.UpdateBio: failed (%s)", err)
 		return err
 	}
 
-	err = s.usersRepo.UpdateBio(ctx, p.ID, p.Bio)
+	userID, _ := uuid.Parse(p.ID)
+	err := s.usersRepo.UpdateBio(ctx, userID, p.Bio)
 	if err != nil {
 		s.logger.Printf("users.UpdateBio: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
 	s.logger.Print("users.UpdateBio")
-	return
+	return nil
 }
 
-func (s *usersSvc) Follow(
-	ctx context.Context,
-	p *users.FollowPayload,
-) error {
-	err := s.followshipsRepo.CreateFollowship(ctx, p.FollowerID, p.FolloweeID)
+func (s *usersSvc) Follow(ctx context.Context, p *users.FollowPayload) error {
+	follower_id, _ := uuid.Parse(p.FollowerID)
+	followee_id, _ := uuid.Parse(p.FolloweeID)
+	err := s.followshipsRepo.CreateFollowship(ctx, follower_id, followee_id)
 	if err != nil {
 		s.logger.Printf("users.Follow: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -135,11 +126,10 @@ func (s *usersSvc) Follow(
 	return nil
 }
 
-func (s *usersSvc) Unfollow(
-	ctx context.Context,
-	p *users.UnfollowPayload,
-) error {
-	err := s.followshipsRepo.DeleteFollowship(ctx, p.FollowerID, p.FolloweeID)
+func (s *usersSvc) Unfollow(ctx context.Context, p *users.UnfollowPayload) error {
+	follower_id, _ := uuid.Parse(p.FollowerID)
+	followee_id, _ := uuid.Parse(p.FolloweeID)
+	err := s.followshipsRepo.DeleteFollowship(ctx, follower_id, followee_id)
 	if err != nil {
 		s.logger.Printf("users.Unfollow: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -149,13 +139,11 @@ func (s *usersSvc) Unfollow(
 	return nil
 }
 
-func (s *usersSvc) GetFollowers(
-	ctx context.Context,
-	p *users.GetFollowersPayload,
-) ([]*users.User, error) {
+func (s *usersSvc) GetFollowers(ctx context.Context, p *users.GetFollowersPayload) ([]*users.User, error) {
 	var res []*users.User
 
-	followers, err := s.usersRepo.GetFollowers(ctx, p.ID)
+	userID, _ := uuid.Parse(p.ID)
+	followers, err := s.usersRepo.GetFollowers(ctx, userID)
 	if err != nil {
 		return nil, users.MakeBadRequest(err)
 	}
@@ -169,13 +157,11 @@ func (s *usersSvc) GetFollowers(
 	return res, nil
 }
 
-func (s *usersSvc) GetFollowings(
-	ctx context.Context,
-	p *users.GetFollowingsPayload,
-) ([]*users.User, error) {
+func (s *usersSvc) GetFollowings(ctx context.Context, p *users.GetFollowingsPayload) ([]*users.User, error) {
 	var res []*users.User
 
-	followings, err := s.usersRepo.GetFollowings(ctx, p.ID)
+	userID, _ := uuid.Parse(p.ID)
+	followings, err := s.usersRepo.GetFollowings(ctx, userID)
 	if err != nil {
 		return nil, users.MakeBadRequest(err)
 	}
@@ -190,7 +176,9 @@ func (s *usersSvc) GetFollowings(
 }
 
 func (s *usersSvc) Mute(ctx context.Context, p *users.MutePayload) error {
-	err := s.mutesRepo.CreateMute(ctx, p.MutedUserID, p.MutingUserID)
+	muted_user_id, _ := uuid.Parse(p.MutedUserID)
+	muting_user_id, _ := uuid.Parse(p.MutingUserID)
+	err := s.mutesRepo.CreateMute(ctx, muted_user_id, muting_user_id)
 	if err != nil {
 		s.logger.Printf("users.Mute: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -201,7 +189,9 @@ func (s *usersSvc) Mute(ctx context.Context, p *users.MutePayload) error {
 }
 
 func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
-	err := s.mutesRepo.DeleteMute(ctx, p.MutedUserID, p.MutingUserID)
+	muted_user_id, _ := uuid.Parse(p.MutedUserID)
+	muting_user_id, _ := uuid.Parse(p.MutingUserID)
+	err := s.mutesRepo.DeleteMute(ctx, muted_user_id, muting_user_id)
 	if err != nil {
 		s.logger.Printf("users.Unmute: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -212,25 +202,27 @@ func (s *usersSvc) Unmute(ctx context.Context, p *users.UnmutePayload) error {
 }
 
 func (s *usersSvc) Block(ctx context.Context, p *users.BlockPayload) error {
-	err := s.followshipsRepo.DeleteFollowship(ctx, p.BlockedUserID, p.BlockingUserID)
+	blocked_user_id, _ := uuid.Parse(p.BlockedUserID)
+	blocking_user_id, _ := uuid.Parse(p.BlockingUserID)
+	err := s.followshipsRepo.DeleteFollowship(ctx, blocked_user_id, blocking_user_id)
 	if err != nil {
 		s.logger.Printf("users.Block: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
-	err = s.followshipsRepo.DeleteFollowship(ctx, p.BlockingUserID, p.BlockedUserID)
+	err = s.followshipsRepo.DeleteFollowship(ctx, blocked_user_id, blocking_user_id)
 	if err != nil {
 		s.logger.Printf("users.Block: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
-	err = s.mutesRepo.DeleteMute(ctx, p.BlockedUserID, p.BlockingUserID)
+	err = s.mutesRepo.DeleteMute(ctx, blocked_user_id, blocking_user_id)
 	if err != nil {
 		s.logger.Printf("users.Block: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
-	err = s.blocksRepo.CreateBlock(ctx, p.BlockedUserID, p.BlockingUserID)
+	err = s.blocksRepo.CreateBlock(ctx, blocked_user_id, blocking_user_id)
 	if err != nil {
 		s.logger.Printf("users.Block: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -241,7 +233,9 @@ func (s *usersSvc) Block(ctx context.Context, p *users.BlockPayload) error {
 }
 
 func (s *usersSvc) Unblock(ctx context.Context, p *users.UnblockPayload) error {
-	err := s.blocksRepo.DeleteBlock(ctx, p.BlockedUserID, p.BlockingUserID)
+	blocked_user_id, _ := uuid.Parse(p.BlockedUserID)
+	blocking_user_id, _ := uuid.Parse(p.BlockingUserID)
+	err := s.blocksRepo.DeleteBlock(ctx, blocked_user_id, blocking_user_id)
 	if err != nil {
 		s.logger.Printf("users.Unblock: failed (%s)", err)
 		return users.MakeBadRequest(err)

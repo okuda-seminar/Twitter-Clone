@@ -9,12 +9,12 @@ import (
 
 type UsersRepo interface {
 	CreateUser(ctx context.Context, username string, display_name string) (*User, error)
-	DeleteUser(ctx context.Context, id string) error
-	FindUserByID(ctx context.Context, id string) (*User, error)
-	UpdateUsername(ctx context.Context, id string, username string) error
-	UpdateBio(ctx context.Context, id string, bio string) error
-	GetFollowers(ctx context.Context, id string) ([]*User, error)
-	GetFollowings(ctx context.Context, id string) ([]*User, error)
+	DeleteUser(ctx context.Context, id uuid.UUID) error
+	FindUserByID(ctx context.Context, id uuid.UUID) (*User, error)
+	UpdateUsername(ctx context.Context, id uuid.UUID, username string) error
+	UpdateBio(ctx context.Context, id uuid.UUID, bio string) error
+	GetFollowers(ctx context.Context, id uuid.UUID) ([]*User, error)
+	GetFollowings(ctx context.Context, id uuid.UUID) ([]*User, error)
 }
 
 // User represents an entry of `users` table.
