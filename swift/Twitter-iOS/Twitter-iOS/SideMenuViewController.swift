@@ -2,20 +2,34 @@ import SwiftUI
 import UIKit
 
 class SideMenuViewController: UIViewController {
-  var user = createFakeUser()
 
+  public var currentUser: CurrentUser
   public weak var sideMenuViewDelegate: SideMenuViewDelegate?
+
+  // MARK: - Public API
+
+  public init(currentUser: CurrentUser, sideMenuViewDelegate: SideMenuViewDelegate? = nil) {
+    self.currentUser = currentUser
+    self.sideMenuViewDelegate = sideMenuViewDelegate
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
   }
 
+  // MARK: - Private API
+
   private func setUpSubviews() {
     let hostingController = UIHostingController(
       rootView: SideMenuView(
-        userName: user.userName, numOfFollowing: user.numOfFollowing,
-        numOfFollowers: user.numOfFollowers, delegate: sideMenuViewDelegate))
+        userName: currentUser.userName, numOfFollowing: currentUser.numOfFollowing,
+        numOfFollowers: currentUser.numOfFollowers, delegate: sideMenuViewDelegate))
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(hostingController)
     hostingController.didMove(toParent: self)
@@ -70,7 +84,7 @@ struct SideMenuView: View {
           delegate?.didTapUserProfile()
         },
         label: {
-          Text("@\(userName)")
+          Text(userName)
         }
       )
       .foregroundStyle(.primary)

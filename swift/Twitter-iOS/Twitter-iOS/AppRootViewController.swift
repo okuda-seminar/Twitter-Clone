@@ -46,7 +46,7 @@ class AppRootViewController: UIViewController {
   }()
 
   private lazy var sideMenuViewController: SideMenuViewController = {
-    var viewController = SideMenuViewController()
+    var viewController = SideMenuViewController(currentUser: injectCurrentUser())
     viewController.sideMenuViewDelegate = self
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(viewController)
@@ -139,9 +139,7 @@ extension AppRootViewController: SideMenuViewDelegate {
       let selectedViewController = mainRootViewController.selectedViewController
         as? UINavigationController
     else { return }
-    let userProfileViewController = UserProfileViewController()
-    userProfileViewController.userName = "Default user name"
-    userProfileViewController.profileIcon = UIImage(systemName: "apple.logo")
+    let userProfileViewController = UserProfileViewController(userModel: injectCurrentUser())
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 

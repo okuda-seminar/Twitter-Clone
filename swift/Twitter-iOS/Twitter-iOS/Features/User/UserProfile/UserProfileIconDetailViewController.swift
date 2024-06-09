@@ -1,14 +1,11 @@
 import UIKit
 
 class UserProfileIconDetailViewController: UIViewController {
-  public var profileIcon: UIImage? {
-    didSet {
-      profileIconView.image = profileIcon
-    }
-  }
 
-  public let profileIconView: UIImageView = {
-    let imageView = UIImageView()
+  public var currentUser: CurrentUser
+
+  public lazy var profileIconView: UIImageView = {
+    let imageView = UIImageView(image: currentUser.icon)
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.contentMode = .scaleAspectFit
     return imageView
@@ -31,6 +28,15 @@ class UserProfileIconDetailViewController: UIViewController {
     button.layer.cornerRadius = LayoutConstant.closeButtonSize / 2
     return button
   }()
+
+  public init(currentUser: CurrentUser) {
+    self.currentUser = currentUser
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()

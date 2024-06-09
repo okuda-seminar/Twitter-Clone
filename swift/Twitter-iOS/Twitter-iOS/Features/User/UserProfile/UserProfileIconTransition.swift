@@ -25,7 +25,7 @@ class UserProfileIconTransition: NSObject, UIViewControllerAnimatedTransitioning
       transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
       as! UserProfileIconDetailViewController
     let containerView = transitionContext.containerView
-    let animationView = UIImageView(image: fromViewController.profileIcon)
+    let animationView = UIImageView(image: fromViewController.userModel?.icon)
 
     fromViewController.view.isHidden = true
     animationView.frame = containerView.convert(

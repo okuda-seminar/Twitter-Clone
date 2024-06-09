@@ -34,7 +34,7 @@ struct FollowingUserCellView: View {
 
   var body: some View {
     HStack(alignment: .top) {
-      userModel.icon
+      Image(uiImage: userModel.icon)
         .resizable()
         .scaledToFit()
         .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
@@ -42,8 +42,8 @@ struct FollowingUserCellView: View {
       VStack(alignment: .leading) {
         HStack {
           VStack {
+            Text(userModel.name)
             Text(userModel.userName)
-            Text("@\(userModel.userName)")
           }
 
           Spacer()

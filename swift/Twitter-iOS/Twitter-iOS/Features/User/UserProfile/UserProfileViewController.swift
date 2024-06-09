@@ -3,10 +3,10 @@ import UIKit
 
 class UserProfileViewController: UIViewController {
 
-  public var userName: String = ""
-  public var profileIcon: UIImage? {
+  public var userModel: UserModel? {
     didSet {
-      profileIconView.image = profileIcon
+      guard let userModel else { return }
+      profileIconView.image = userModel.icon
     }
   }
 
@@ -54,6 +54,17 @@ class UserProfileViewController: UIViewController {
     return controller
   }()
 
+  // MARK: - Public API
+
+  public init(userModel: UserModel? = nil) {
+    self.userModel = userModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   // MARK: - Overridden API
 
   override func viewDidLoad() {
@@ -81,9 +92,9 @@ class UserProfileViewController: UIViewController {
 
   @objc
   private func presentUserProfileIconDetailViewController() {
-    let userProfileIconDetailViewController = UserProfileIconDetailViewController()
+    let userProfileIconDetailViewController = UserProfileIconDetailViewController(
+      currentUser: injectCurrentUser())
     userProfileIconDetailViewController.modalPresentationStyle = .fullScreen
-    userProfileIconDetailViewController.profileIcon = profileIcon
     navigationController?.delegate = self
     navigationController?.pushViewController(
       userProfileIconDetailViewController, animated: true)

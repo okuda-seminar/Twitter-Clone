@@ -7,7 +7,7 @@ struct UserOverviewCell: View {
 
   var body: some View {
     HStack(alignment: .top) {
-      userModel.icon
+      Image(uiImage: userModel.icon)
         .resizable()
         .scaledToFit()
         .frame(width: 48, height: 48)
@@ -15,8 +15,8 @@ struct UserOverviewCell: View {
       VStack(alignment: .leading) {
         HStack {
           VStack(alignment: .leading) {
+            Text(userModel.name)
             Text(userModel.userName)
-            Text("@\(userModel.userName)")
           }
 
           Spacer()

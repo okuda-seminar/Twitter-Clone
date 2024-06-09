@@ -89,6 +89,7 @@
 		65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F402C1557450020A02E /* UserConnectTabModel.swift */; };
 		65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F442C155D810020A02E /* UserOverviewCell.swift */; };
 		65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */; };
+		65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F482C15D8920020A02E /* DependencyInjection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		65FD4F402C1557450020A02E /* UserConnectTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectTabModel.swift; sourceTree = "<group>"; };
 		65FD4F442C155D810020A02E /* UserOverviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOverviewCell.swift; sourceTree = "<group>"; };
 		65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectWhoToFollowView.swift; sourceTree = "<group>"; };
+		65FD4F482C15D8920020A02E /* DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -548,6 +550,7 @@
 			isa = PBXGroup;
 			children = (
 				658D08852BEE5C39006C6A9E /* DispatchQueue+Once.swift */,
+				65FD4F482C15D8920020A02E /* DependencyInjection.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -830,6 +833,7 @@
 			files = (
 				656C1BFD2C08A16C00EEE575 /* HomeTabView.swift in Sources */,
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
+				65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */,
 				658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */,
 				6540F8852BB44D430029BA46 /* AppRootViewController.swift in Sources */,
 				656C1BF82C07619700EEE575 /* UserProfileBannerView.swift in Sources */,
