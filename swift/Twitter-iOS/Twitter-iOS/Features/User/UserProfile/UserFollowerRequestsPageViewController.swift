@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 class UserFollowerRequestsPageViewController: UIViewController {
@@ -16,31 +17,18 @@ class UserFollowerRequestsPageViewController: UIViewController {
   }
 
   private enum LocalizedString {
-    static let headlineText = String(localized: "You're up to date")
-    static let subHeadlineText = String(
-      localized:
-        "When someone requests to follow you, it'll show up here for you to accept or decline."
-    )
     static let title = String(localized: "Follower requests")
   }
 
-  private let headlineLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = LocalizedString.headlineText
-    label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.headlineFontSize, weight: .heavy)
-    return label
-  }()
-
-  private let subHeadlineLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = LocalizedString.subHeadlineText
-    label.textColor = .gray
-    label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.subHeadlineFontSize)
-    return label
+  private lazy var hostingController: UIHostingController = {
+    let followService = InjectFollowService()
+    let controller = UIHostingController(
+      rootView: UserFollowerRequestsView(
+        followerRequestingUsers: followService.followerRequestingUsers()))
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
 
   override func viewDidLoad() {
@@ -49,22 +37,15 @@ class UserFollowerRequestsPageViewController: UIViewController {
   }
 
   private func setUpSubviews() {
-    let headlineView = UIStackView(arrangedSubviews: [headlineLabel, subHeadlineLabel])
-    headlineView.axis = .vertical
-    headlineView.spacing = LayoutConstant.headlineViewSpacing
-    headlineView.translatesAutoresizingMaskIntoConstraints = false
-
-    view.addSubview(headlineView)
     view.backgroundColor = .systemBackground
+    view.addSubview(hostingController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headlineView.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.headlineViewVerticalPadding),
-      headlineView.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
-      headlineView.trailingAnchor.constraint(
-        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
     ])
 
     // set up navigation
@@ -72,4 +53,105 @@ class UserFollowerRequestsPageViewController: UIViewController {
     navigationItem.title = LocalizedString.title
     navigationController?.navigationBar.backgroundColor = .systemBackground
   }
+}
+
+struct UserFollowerRequestsView: View {
+  public let followerRequestingUsers: [UserModel]
+
+  private enum LayoutConstant {
+    static let userIconSize: CGFloat = 48.0
+
+    static let roundedButtonPadding: CGFloat = 12.0
+    static let roundedButtonIconSize: CGFloat = 16.0
+    static let roundedButtonLineWidth: CGFloat = 1.5
+  }
+
+  var body: some View {
+    if followerRequestingUsers.count > 0 {
+      ScrollView(.vertical) {
+        VStack {
+          ForEach(followerRequestingUsers) { userModel in
+            FollowerRequestingUserCell(userModel: userModel)
+          }
+        }
+        Spacer()
+      }
+    } else {
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/265
+      // - Refactor follower reuqests page without data using SwiftUI.
+    }
+  }
+
+  @ViewBuilder
+  private func FollowerRequestingUserCell(userModel: UserModel) -> some View {
+    HStack(alignment: .top) {
+      Image(uiImage: userModel.icon)
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
+
+      VStack(alignment: .leading) {
+        Text(userModel.name)
+        Text(userModel.userName)
+          .foregroundStyle(Color(uiColor: .brandedLightGrayText))
+      }
+
+      Spacer()
+
+      Button(
+        action: {
+
+        },
+        label: {
+          Image(systemName: "checkmark")
+            .resizable()
+            .scaledToFit()
+            .frame(
+              width: LayoutConstant.roundedButtonIconSize,
+              height: LayoutConstant.roundedButtonIconSize
+            )
+            .foregroundStyle(.primary)
+            .padding(LayoutConstant.roundedButtonPadding)
+            .clipShape(Circle())
+            .overlay {
+              Circle()
+                .stroke(
+                  Color(uiColor: .brandedLightGrayBackground),
+                  lineWidth: LayoutConstant.roundedButtonLineWidth)
+            }
+        }
+      )
+      .buttonStyle(.plain)
+
+      Button(
+        action: {
+
+        },
+        label: {
+          Image(systemName: "multiply")
+            .resizable()
+            .scaledToFit()
+            .frame(
+              width: LayoutConstant.roundedButtonIconSize,
+              height: LayoutConstant.roundedButtonIconSize
+            )
+            .foregroundStyle(Color(uiColor: .systemRed))
+            .padding(LayoutConstant.roundedButtonPadding)
+            .clipShape(Circle())
+            .overlay {
+              Circle()
+                .stroke(
+                  Color(uiColor: .systemRed),
+                  lineWidth: LayoutConstant.roundedButtonLineWidth)
+            }
+        }
+      )
+      .buttonStyle(.plain)
+    }
+    .padding()
+  }
+}
+
+#Preview {
+  UserFollowerRequestsView(followerRequestingUsers: [createFakeUser()])
 }
