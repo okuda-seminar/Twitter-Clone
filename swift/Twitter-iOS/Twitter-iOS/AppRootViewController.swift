@@ -182,8 +182,7 @@ extension AppRootViewController: SideMenuViewDelegate {
       let selectedViewController = mainRootViewController.selectedViewController
         as? UINavigationController
     else { return }
-    let userFollowRelationsViewController = UserFollowRelationsViewController()
-    userFollowRelationsViewController.userName = userName
+    let userFollowRelationsViewController = UserFollowRelationsViewController(userName: userName)
     selectedViewController.pushViewController(userFollowRelationsViewController, animated: true)
   }
 }

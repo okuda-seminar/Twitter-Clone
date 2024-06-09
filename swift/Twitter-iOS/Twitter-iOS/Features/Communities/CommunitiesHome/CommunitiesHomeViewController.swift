@@ -62,6 +62,7 @@ class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [newCommunityCreationEntryPointButton, searchButton]
+    navigationItem.backButtonDisplayMode = .minimal
   }
 
   @objc
@@ -80,7 +81,6 @@ class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
 
   @objc
   private func pushCommunitiesSearchViewController() {
-    navigationItem.backButtonDisplayMode = .minimal
     navigationController?.pushViewController(CommunitiesSearchViewController(), animated: true)
   }
 }

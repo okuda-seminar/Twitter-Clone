@@ -85,6 +85,10 @@
 		65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F362C11E10E0020A02E /* UserFollowingTabView.swift */; };
 		65FD4F3A2C141F1B0020A02E /* GIFImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F392C141F1B0020A02E /* GIFImageView.swift */; };
 		65FD4F3C2C1445DC0020A02E /* cute_bard.gif in Resources */ = {isa = PBXBuildFile; fileRef = 65FD4F3B2C1445DC0020A02E /* cute_bard.gif */; };
+		65FD4F3F2C1556EB0020A02E /* UserConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F3E2C1556EB0020A02E /* UserConnectViewController.swift */; };
+		65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F402C1557450020A02E /* UserConnectTabModel.swift */; };
+		65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F442C155D810020A02E /* UserOverviewCell.swift */; };
+		65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +191,10 @@
 		65FD4F362C11E10E0020A02E /* UserFollowingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowingTabView.swift; sourceTree = "<group>"; };
 		65FD4F392C141F1B0020A02E /* GIFImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFImageView.swift; sourceTree = "<group>"; };
 		65FD4F3B2C1445DC0020A02E /* cute_bard.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = cute_bard.gif; sourceTree = "<group>"; };
+		65FD4F3E2C1556EB0020A02E /* UserConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectViewController.swift; sourceTree = "<group>"; };
+		65FD4F402C1557450020A02E /* UserConnectTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectTabModel.swift; sourceTree = "<group>"; };
+		65FD4F442C155D810020A02E /* UserOverviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOverviewCell.swift; sourceTree = "<group>"; };
+		65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectWhoToFollowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,7 +418,9 @@
 			isa = PBXGroup;
 			children = (
 				65C6CCA02BFE22CF00B0A052 /* Entities */,
+				65FD4F422C155A6D0020A02E /* UserConnect */,
 				656C1BA32C00C3ED00EEE575 /* UserFollowRelations */,
+				65FD4F432C155D600020A02E /* UserOverview */,
 				656C1BA92C0209FA00EEE575 /* UserProfile */,
 			);
 			path = User;
@@ -611,6 +621,7 @@
 		65C6CCA02BFE22CF00B0A052 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				65FD4F402C1557450020A02E /* UserConnectTabModel.swift */,
 				658D087E2BEBA774006C6A9E /* UserModel.swift */,
 				65C6CCA12BFE22EA00B0A052 /* UserProfileTabModel.swift */,
 				656C1BA62C00C59900EEE575 /* UserFollowRelationsTabModel.swift */,
@@ -668,6 +679,23 @@
 				65FD4F392C141F1B0020A02E /* GIFImageView.swift */,
 			);
 			path = GIF;
+			sourceTree = "<group>";
+		};
+		65FD4F422C155A6D0020A02E /* UserConnect */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4F3E2C1556EB0020A02E /* UserConnectViewController.swift */,
+				65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */,
+			);
+			path = UserConnect;
+			sourceTree = "<group>";
+		};
+		65FD4F432C155D600020A02E /* UserOverview */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4F442C155D810020A02E /* UserOverviewCell.swift */,
+			);
+			path = UserOverview;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -815,6 +843,7 @@
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,
 				658D088C2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift in Sources */,
 				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
+				65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */,
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
@@ -847,6 +876,7 @@
 				6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */,
 				65C6CC242BF9836D00B0A052 /* NSNotification+Banner.swift in Sources */,
 				656C1BA52C00C41500EEE575 /* UserFollowRelationsViewController.swift in Sources */,
+				65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */,
 				656C1BB42C05EEE600EEE575 /* SearchTabModel.swift in Sources */,
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
@@ -862,9 +892,11 @@
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				65F908472BE11E2F00C6C8B3 /* PermissionGuideViewController.swift in Sources */,
+				65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */,
 				65C6CC2B2BFCC30C00B0A052 /* RectKey.swift in Sources */,
 				658D08972BF62B91006C6A9E /* SettingsHomeViewController.swift in Sources */,
 				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
+				65FD4F3F2C1556EB0020A02E /* UserConnectViewController.swift in Sources */,
 				6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,

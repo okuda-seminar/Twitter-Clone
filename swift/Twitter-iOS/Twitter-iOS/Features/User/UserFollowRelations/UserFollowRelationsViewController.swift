@@ -25,6 +25,17 @@ class UserFollowRelationsViewController: UIViewController {
     return controller
   }()
 
+  // MARK: - Public API
+
+  public init(userName: String) {
+    self.userName = userName
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -48,11 +59,13 @@ class UserFollowRelationsViewController: UIViewController {
     navigationController?.navigationBar.backIndicatorImage = backButtonImage
     navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     navigationItem.rightBarButtonItem = connectEntryButton
+    navigationItem.backButtonDisplayMode = .minimal
   }
 
   @objc
   private func showConnectPage() {
-    print("Tapped Connect")
+    guard let navigationController else { return }
+    navigationController.pushViewController(UserConnectViewController(), animated: true)
   }
 }
 
