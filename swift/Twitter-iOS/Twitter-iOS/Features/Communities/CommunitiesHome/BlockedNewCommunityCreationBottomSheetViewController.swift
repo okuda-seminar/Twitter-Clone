@@ -1,6 +1,8 @@
 import UIKit
 
 final class BlockedNewCommunityCreationBottomSheetViewController: UIViewController {
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/262
+  // - Refactor BlockedNewCommunityCreationBottomSheetViewController using SwiftUI and polish its UI.
   private enum LocalizedString {
     static let headlineText = String(localized: "Unblock creating a Community with X Premium")
     static let dismissButtonText = String(localized: "Maybe later")
