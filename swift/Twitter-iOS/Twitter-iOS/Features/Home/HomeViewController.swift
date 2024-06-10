@@ -95,6 +95,12 @@ extension HomeViewController: HomeViewDelegate {
       activityItems: ["Deeplink"], applicationActivities: nil)
     self.present(activityViewController, animated: true)
   }
+
+  func showReplyEditSheet() {
+    let replyEditViewController = ReplyEditViewController()
+    replyEditViewController.modalPresentationStyle = .fullScreen
+    self.present(replyEditViewController, animated: true)
+  }
 }
 
 struct HomeView: View {
@@ -103,6 +109,7 @@ struct HomeView: View {
   @State private var activeTabModel: HomeTabModel.Tab = .forYou
   @State private var tabToScroll: HomeTabModel.Tab?
   @State private var showShareSheet = false
+  @State private var showReplyEditSheet = false
   private var tabModels: [HomeTabModel] = [
     .init(id: .forYou),
     .init(id: .following),
@@ -119,10 +126,16 @@ struct HomeView: View {
       Tabs()
       Spacer()
     }
-    .onChange(of: showShareSheet) { oldValue, newValue in
+    .onChange(of: showShareSheet) { _, newValue in
       if newValue {
         delegate?.showShareSheet()
         showShareSheet = false
+      }
+    }
+    .onChange(of: showReplyEditSheet) { _, newValue in
+      if newValue {
+        delegate?.showReplyEditSheet()
+        showReplyEditSheet = false
       }
     }
   }
@@ -162,7 +175,7 @@ struct HomeView: View {
     ScrollView(.horizontal) {
       LazyHStack(spacing: 0) {
         ForEach(tabModels) { tabModel in
-          HomeTabView(showShareSheet: $showShareSheet)
+          HomeTabView(showReplyEditSheet: $showReplyEditSheet, showShareSheet: $showShareSheet)
             .frame(width: UIScreen.main.bounds.width)
         }
       }
@@ -184,6 +197,7 @@ struct HomeView: View {
 
 protocol HomeViewDelegate: AnyObject {
   func showShareSheet()
+  func showReplyEditSheet()
 }
 
 #Preview {

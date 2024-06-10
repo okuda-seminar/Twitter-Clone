@@ -91,6 +91,7 @@
 		65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */; };
 		65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F482C15D8920020A02E /* DependencyInjection.swift */; };
 		65FD4F4C2C15E1520020A02E /* FollowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4B2C15E1520020A02E /* FollowService.swift */; };
+		65FD4F4E2C1739F30020A02E /* ReplyEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +200,7 @@
 		65FD4F462C155F930020A02E /* UserConnectWhoToFollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectWhoToFollowView.swift; sourceTree = "<group>"; };
 		65FD4F482C15D8920020A02E /* DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		65FD4F4B2C15E1520020A02E /* FollowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowService.swift; sourceTree = "<group>"; };
+		65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +316,7 @@
 				65F908482BE1273700C6C8B3 /* Permission */,
 				6540F8BF2BB5768F0029BA46 /* NewTweetEditViewController.swift */,
 				6540F8BD2BB576740029BA46 /* NewTweetEntrypointButtonController.swift */,
+				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
 				65C6CCA52BFF5C9500B0A052 /* TweetCellView.swift */,
 				65F908412BE1130200C6C8B3 /* TweetDetailViewController.swift */,
 				656C1BFE2C0AE68500EEE575 /* TweetShareBottomSheet.swift */,
@@ -883,6 +886,7 @@
 				6540F8C02BB5768F0029BA46 /* NewTweetEditViewController.swift in Sources */,
 				658D08832BECF45F006C6A9E /* MainRootViewController.swift in Sources */,
 				3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */,
+				65FD4F4E2C1739F30020A02E /* ReplyEditViewController.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesHomeViewController.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewTweetEntrypointButtonController.swift in Sources */,
 				65F908422BE1130200C6C8B3 /* TweetDetailViewController.swift in Sources */,
