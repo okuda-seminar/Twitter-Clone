@@ -7,7 +7,7 @@ RUN apt-get update -qq && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /go/src/app
-COPY go.mod go.sum ./
+COPY . .
 RUN go mod download && go mod verify
 RUN go install -tags postgres github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN go install goa.design/goa/v3/cmd/goa@v3

@@ -15,36 +15,25 @@ spec:
     spec:
       initContainers:
       - name: migrate-db
-        image: rwatana/tweets_app:latest
+        image: tweets_app:latest
         imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "-c"]
         env:
-        - name: USERS_POSTGRES_URL
-          value: postgres://postgres:postgres@tweets-postgres:5432/postgres?sslmode=disable
-
+        - name: TWEETS_POSTGRES_URL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-params
+              key: TWEETS_POSTGRES_URL
         args:
           - |
-            migrate -database ${USERS_POSTGRES_URL} -path /app/db/migrations up
-        volumeMounts:
-        - name: migration-files
-          mountPath: /app/db/migrations
+            migrate -database ${TWEETS_POSTGRES_URL} -path ./db/migrations up
       containers:
-      - name: app
-        image: rwatana/tweets_app:latest
+      - name: tweets-app
+        image: tweets_app:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         command: ["tail", "-f", "/dev/null"]
-        volumeMounts:
-        - name: app-source
-          mountPath: /go/src/app
-      volumes:
-      - name: migration-files
-        configMap:
-          name: migration-files
-      - name: app-source
-        hostPath:
-          path: /path/to/your/local/app/source
 ---
 apiVersion: v1
 kind: Service
