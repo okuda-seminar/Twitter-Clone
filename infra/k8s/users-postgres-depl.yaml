@@ -35,6 +35,13 @@ spec:
             configMapKeyRef:
               name: postgres-params
               key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: users-volume
+          mountPath: /var/lib/postgresql/data/
+      volumes:
+      - name: users-volume
+        persistentVolumeClaim:
+          claimName: users-pv-claim
 ---
 apiVersion: v1
 kind: Service
