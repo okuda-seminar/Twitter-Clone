@@ -41,10 +41,14 @@ struct ReplyEditView: View {
     static let dismissalButtonText = String(localized: "Cancel")
     static let postButtonText = String(localized: "Post")
     static let inputPlaceholder = String(localized: "Post your reply")
+
+    static let deleteButtonText = String(localized: "Delete")
+    static let saveDraftButtonText = String(localized: "Save draft")
   }
 
   @Environment(\.dismiss) private var dismiss
   @State private var inputText = ""
+  @State private var showDismissalConfirmationSheet = false
   private let currentUser = injectCurrentUser()
 
   var body: some View {
@@ -54,6 +58,10 @@ struct ReplyEditView: View {
       Content()
     }
     .padding()
+    .sheet(isPresented: $showDismissalConfirmationSheet) {
+      DismissalConfirmationSheet()
+        .presentationDetents([.height(200), .medium])
+    }
   }
 
   @ViewBuilder
@@ -61,7 +69,11 @@ struct ReplyEditView: View {
     HStack {
       Button(
         action: {
-          dismiss()
+          if inputText.isEmpty {
+            dismiss()
+          } else {
+            showDismissalConfirmationSheet.toggle()
+          }
         },
         label: {
           Text(LocalizedString.dismissalButtonText)
@@ -142,6 +154,63 @@ struct ReplyEditView: View {
           }
         }
     }
+  }
+
+  @ViewBuilder
+  private func DismissalConfirmationSheet() -> some View {
+    VStack(alignment: .leading) {
+      Button(
+        role: .destructive,
+        action: {
+          dismiss()
+        },
+        label: {
+          HStack {
+            Image(systemName: "trash")
+            Text(LocalizedString.deleteButtonText)
+            Spacer()
+          }
+        }
+      )
+      .padding(.bottom)
+
+      Button(
+        action: {
+          // Need to save draft first.
+          dismiss()
+        },
+        label: {
+          HStack {
+            Image(systemName: "note.text")
+            Text(LocalizedString.saveDraftButtonText)
+            Spacer()
+          }
+        }
+      )
+      .foregroundStyle(Color(uiColor: .brandedLightGrayText))
+      .padding(.bottom)
+
+      Button(
+        action: {
+          showDismissalConfirmationSheet.toggle()
+        },
+        label: {
+          HStack {
+            Spacer()
+            Text(LocalizedString.dismissalButtonText)
+              .underline()
+            Spacer()
+          }
+          .padding()
+          .overlay {
+            RoundedRectangle(cornerRadius: 24)
+              .stroke(Color(uiColor: .brandedLightGrayBackground), lineWidth: 1.5)
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+    }
+    .padding()
   }
 }
 

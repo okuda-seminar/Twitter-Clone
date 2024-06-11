@@ -316,10 +316,10 @@
 				65F908482BE1273700C6C8B3 /* Permission */,
 				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
 				6540F8BD2BB576740029BA46 /* NewPostEntrypointButtonController.swift */,
-				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
 				65C6CCA52BFF5C9500B0A052 /* PostCellView.swift */,
 				65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */,
 				656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */,
+				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
