@@ -81,6 +81,7 @@ struct ReplyEditView: View {
         }
       )
       .foregroundStyle(.primary)
+      .buttonStyle(.plain)
 
       Spacer()
 
@@ -95,6 +96,7 @@ struct ReplyEditView: View {
             .background(Color(uiColor: .brandedBlue))
             .clipShape(Capsule())
         })
+        .buttonStyle(.plain)
     }
   }
 
@@ -172,6 +174,7 @@ struct ReplyEditView: View {
           }
         }
       )
+      .buttonStyle(.plain)
       .padding(.bottom)
 
       Button(
@@ -188,6 +191,7 @@ struct ReplyEditView: View {
         }
       )
       .foregroundStyle(Color(uiColor: .brandedLightGrayText))
+      .buttonStyle(.plain)
       .padding(.bottom)
 
       Button(
@@ -209,6 +213,7 @@ struct ReplyEditView: View {
         }
       )
       .foregroundStyle(.primary)
+      .buttonStyle(.plain)
     }
     .padding()
   }
