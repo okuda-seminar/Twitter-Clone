@@ -67,18 +67,18 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CreateUser", "POST", "/api/users"},
-			{"DeleteUser", "DELETE", "/api/users"},
+			{"DeleteUser", "DELETE", "/api/users/{id}"},
 			{"FindUserByID", "GET", "/api/users/{id}"},
 			{"UpdateUsername", "POST", "/api/users/{id}/username"},
 			{"UpdateBio", "POST", "/api/users/{id}/bio"},
-			{"Follow", "POST", "/api/users/follow"},
-			{"Unfollow", "DELETE", "/api/users/follow"},
+			{"Follow", "POST", "/api/users/{following_user_id}/follow"},
+			{"Unfollow", "DELETE", "/api/users/{following_user_id}/follow/{followed_user_id}"},
 			{"GetFollowers", "GET", "/api/users/{id}/followers"},
 			{"GetFollowings", "GET", "/api/users/{id}/followings"},
-			{"Mute", "POST", "/api/users/mute"},
-			{"Unmute", "DELETE", "/api/users/mute"},
-			{"Block", "POST", "/api/users/block"},
-			{"Unblock", "DELETE", "/api/users/block"},
+			{"Mute", "POST", "/api/users/{muting_user_id}/mute"},
+			{"Unmute", "DELETE", "/api/users/{muting_user_id}/mute/{muted_user_id}"},
+			{"Block", "POST", "/api/users/{blocking_user_id}/block"},
+			{"Unblock", "DELETE", "/api/users/{blocking_user_id}/block/{blocked_user_id}"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
@@ -204,7 +204,7 @@ func MountDeleteUserHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/users", f)
+	mux.Handle("DELETE", "/api/users/{id}", f)
 }
 
 // NewDeleteUserHandler creates a HTTP handler which loads the HTTP request and
@@ -408,7 +408,7 @@ func MountFollowHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/users/follow", f)
+	mux.Handle("POST", "/api/users/{following_user_id}/follow", f)
 }
 
 // NewFollowHandler creates a HTTP handler which loads the HTTP request and
@@ -459,7 +459,7 @@ func MountUnfollowHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/users/follow", f)
+	mux.Handle("DELETE", "/api/users/{following_user_id}/follow/{followed_user_id}", f)
 }
 
 // NewUnfollowHandler creates a HTTP handler which loads the HTTP request and
@@ -612,7 +612,7 @@ func MountMuteHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/users/mute", f)
+	mux.Handle("POST", "/api/users/{muting_user_id}/mute", f)
 }
 
 // NewMuteHandler creates a HTTP handler which loads the HTTP request and calls
@@ -663,7 +663,7 @@ func MountUnmuteHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/users/mute", f)
+	mux.Handle("DELETE", "/api/users/{muting_user_id}/mute/{muted_user_id}", f)
 }
 
 // NewUnmuteHandler creates a HTTP handler which loads the HTTP request and
@@ -714,7 +714,7 @@ func MountBlockHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/users/block", f)
+	mux.Handle("POST", "/api/users/{blocking_user_id}/block", f)
 }
 
 // NewBlockHandler creates a HTTP handler which loads the HTTP request and
@@ -765,7 +765,7 @@ func MountUnblockHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/users/block", f)
+	mux.Handle("DELETE", "/api/users/{blocking_user_id}/block/{blocked_user_id}", f)
 }
 
 // NewUnblockHandler creates a HTTP handler which loads the HTTP request and

@@ -114,9 +114,9 @@ func (s *usersSvc) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) err
 }
 
 func (s *usersSvc) Follow(ctx context.Context, p *users.FollowPayload) error {
-	follower_id, _ := uuid.Parse(p.FollowerID)
-	followee_id, _ := uuid.Parse(p.FolloweeID)
-	err := s.followshipsRepo.CreateFollowship(ctx, follower_id, followee_id)
+	followed_user_id, _ := uuid.Parse(p.FollowedUserID)
+	following_user_id, _ := uuid.Parse(p.FollowingUserID)
+	err := s.followshipsRepo.CreateFollowship(ctx, followed_user_id, following_user_id)
 	if err != nil {
 		s.logger.Printf("users.Follow: failed (%s)", err)
 		return users.MakeBadRequest(err)
@@ -127,9 +127,9 @@ func (s *usersSvc) Follow(ctx context.Context, p *users.FollowPayload) error {
 }
 
 func (s *usersSvc) Unfollow(ctx context.Context, p *users.UnfollowPayload) error {
-	follower_id, _ := uuid.Parse(p.FollowerID)
-	followee_id, _ := uuid.Parse(p.FolloweeID)
-	err := s.followshipsRepo.DeleteFollowship(ctx, follower_id, followee_id)
+	followed_user_id, _ := uuid.Parse(p.FollowedUserID)
+	following_user_id, _ := uuid.Parse(p.FollowingUserID)
+	err := s.followshipsRepo.DeleteFollowship(ctx, followed_user_id, following_user_id)
 	if err != nil {
 		s.logger.Printf("users.Unfollow: failed (%s)", err)
 		return users.MakeBadRequest(err)

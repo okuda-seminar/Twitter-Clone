@@ -20,12 +20,6 @@ type CreateUserRequestBody struct {
 	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
 }
 
-// DeleteUserRequestBody is the type of the "users" service "DeleteUser"
-// endpoint HTTP request body.
-type DeleteUserRequestBody struct {
-	ID string `form:"id" json:"id" xml:"id"`
-}
-
 // UpdateUsernameRequestBody is the type of the "users" service
 // "UpdateUsername" endpoint HTTP request body.
 type UpdateUsernameRequestBody struct {
@@ -41,43 +35,19 @@ type UpdateBioRequestBody struct {
 // FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
 // request body.
 type FollowRequestBody struct {
-	FollowerID string `form:"follower_id" json:"follower_id" xml:"follower_id"`
-	FolloweeID string `form:"followee_id" json:"followee_id" xml:"followee_id"`
-}
-
-// UnfollowRequestBody is the type of the "users" service "Unfollow" endpoint
-// HTTP request body.
-type UnfollowRequestBody struct {
-	FollowerID string `form:"follower_id" json:"follower_id" xml:"follower_id"`
-	FolloweeID string `form:"followee_id" json:"followee_id" xml:"followee_id"`
+	FollowedUserID string `form:"followed_user_id" json:"followed_user_id" xml:"followed_user_id"`
 }
 
 // MuteRequestBody is the type of the "users" service "Mute" endpoint HTTP
 // request body.
 type MuteRequestBody struct {
-	MutedUserID  string `form:"muted_user_id" json:"muted_user_id" xml:"muted_user_id"`
-	MutingUserID string `form:"muting_user_id" json:"muting_user_id" xml:"muting_user_id"`
-}
-
-// UnmuteRequestBody is the type of the "users" service "Unmute" endpoint HTTP
-// request body.
-type UnmuteRequestBody struct {
-	MutedUserID  string `form:"muted_user_id" json:"muted_user_id" xml:"muted_user_id"`
-	MutingUserID string `form:"muting_user_id" json:"muting_user_id" xml:"muting_user_id"`
+	MutedUserID string `form:"muted_user_id" json:"muted_user_id" xml:"muted_user_id"`
 }
 
 // BlockRequestBody is the type of the "users" service "Block" endpoint HTTP
 // request body.
 type BlockRequestBody struct {
-	BlockedUserID  string `form:"blocked_user_id" json:"blocked_user_id" xml:"blocked_user_id"`
-	BlockingUserID string `form:"blocking_user_id" json:"blocking_user_id" xml:"blocking_user_id"`
-}
-
-// UnblockRequestBody is the type of the "users" service "Unblock" endpoint
-// HTTP request body.
-type UnblockRequestBody struct {
-	BlockedUserID  string `form:"blocked_user_id" json:"blocked_user_id" xml:"blocked_user_id"`
-	BlockingUserID string `form:"blocking_user_id" json:"blocking_user_id" xml:"blocking_user_id"`
+	BlockedUserID string `form:"blocked_user_id" json:"blocked_user_id" xml:"blocked_user_id"`
 }
 
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
@@ -418,15 +388,6 @@ func NewCreateUserRequestBody(p *users.CreateUserPayload) *CreateUserRequestBody
 	return body
 }
 
-// NewDeleteUserRequestBody builds the HTTP request body from the payload of
-// the "DeleteUser" endpoint of the "users" service.
-func NewDeleteUserRequestBody(p *users.DeleteUserPayload) *DeleteUserRequestBody {
-	body := &DeleteUserRequestBody{
-		ID: p.ID,
-	}
-	return body
-}
-
 // NewUpdateUsernameRequestBody builds the HTTP request body from the payload
 // of the "UpdateUsername" endpoint of the "users" service.
 func NewUpdateUsernameRequestBody(p *users.UpdateUsernamePayload) *UpdateUsernameRequestBody {
@@ -449,18 +410,7 @@ func NewUpdateBioRequestBody(p *users.UpdateBioPayload) *UpdateBioRequestBody {
 // "Follow" endpoint of the "users" service.
 func NewFollowRequestBody(p *users.FollowPayload) *FollowRequestBody {
 	body := &FollowRequestBody{
-		FollowerID: p.FollowerID,
-		FolloweeID: p.FolloweeID,
-	}
-	return body
-}
-
-// NewUnfollowRequestBody builds the HTTP request body from the payload of the
-// "Unfollow" endpoint of the "users" service.
-func NewUnfollowRequestBody(p *users.UnfollowPayload) *UnfollowRequestBody {
-	body := &UnfollowRequestBody{
-		FollowerID: p.FollowerID,
-		FolloweeID: p.FolloweeID,
+		FollowedUserID: p.FollowedUserID,
 	}
 	return body
 }
@@ -469,18 +419,7 @@ func NewUnfollowRequestBody(p *users.UnfollowPayload) *UnfollowRequestBody {
 // "Mute" endpoint of the "users" service.
 func NewMuteRequestBody(p *users.MutePayload) *MuteRequestBody {
 	body := &MuteRequestBody{
-		MutedUserID:  p.MutedUserID,
-		MutingUserID: p.MutingUserID,
-	}
-	return body
-}
-
-// NewUnmuteRequestBody builds the HTTP request body from the payload of the
-// "Unmute" endpoint of the "users" service.
-func NewUnmuteRequestBody(p *users.UnmutePayload) *UnmuteRequestBody {
-	body := &UnmuteRequestBody{
-		MutedUserID:  p.MutedUserID,
-		MutingUserID: p.MutingUserID,
+		MutedUserID: p.MutedUserID,
 	}
 	return body
 }
@@ -489,18 +428,7 @@ func NewUnmuteRequestBody(p *users.UnmutePayload) *UnmuteRequestBody {
 // "Block" endpoint of the "users" service.
 func NewBlockRequestBody(p *users.BlockPayload) *BlockRequestBody {
 	body := &BlockRequestBody{
-		BlockedUserID:  p.BlockedUserID,
-		BlockingUserID: p.BlockingUserID,
-	}
-	return body
-}
-
-// NewUnblockRequestBody builds the HTTP request body from the payload of the
-// "Unblock" endpoint of the "users" service.
-func NewUnblockRequestBody(p *users.UnblockPayload) *UnblockRequestBody {
-	body := &UnblockRequestBody{
-		BlockedUserID:  p.BlockedUserID,
-		BlockingUserID: p.BlockingUserID,
+		BlockedUserID: p.BlockedUserID,
 	}
 	return body
 }

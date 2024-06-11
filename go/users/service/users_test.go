@@ -179,15 +179,15 @@ func TestGetFollowers(t *testing.T) {
 	id := uuid.NewString()
 	rows := sqlmock.NewRows([]string{
 		"id", "username", "display_name", "bio", "created_at", "updated_at",
-		"follower_id", "followee_id",
+		"followed_user_id", "following_user_id",
 	}).
 		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), uuid.NewString(), id).
 		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), uuid.NewString(), id)
 
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.follower_id
-WHERE followships.followee_id = $1
+JOIN followships ON users.id = followships.followed_user_id
+WHERE followships.following_user_id = $1
 `
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
 		WithArgs(id).
@@ -214,7 +214,7 @@ func TestGetFollowings(t *testing.T) {
 	id := uuid.NewString()
 	rows := sqlmock.NewRows([]string{
 		"id", "username", "display_name", "bio", "created_at", "updated_at",
-		"follower_id", "followee_id",
+		"followed_user_id", "following_user_id",
 	}).
 		// User with ID "1" follows user with ID "2".
 		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), id, uuid.NewString()).
@@ -223,8 +223,8 @@ func TestGetFollowings(t *testing.T) {
 
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.followee_id
-WHERE followships.follower_id = $1
+JOIN followships ON users.id = followships.following_user_id
+WHERE followships.followed_user_id = $1
 `
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
 		WithArgs(id).

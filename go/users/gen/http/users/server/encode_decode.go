@@ -98,21 +98,17 @@ func EncodeDeleteUserResponse(encoder func(context.Context, http.ResponseWriter)
 func DecodeDeleteUserRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body DeleteUserRequestBody
-			err  error
+			id  string
+			err error
+
+			params = mux.Vars(r)
 		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateDeleteUserRequestBody(&body)
+		id = params["id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
-		payload := NewDeleteUserPayload(&body)
+		payload := NewDeleteUserPayload(id)
 
 		return payload, nil
 	}
@@ -424,7 +420,18 @@ func DecodeFollowRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.
 		if err != nil {
 			return nil, err
 		}
-		payload := NewFollowPayload(&body)
+
+		var (
+			followingUserID string
+
+			params = mux.Vars(r)
+		)
+		followingUserID = params["following_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("following_user_id", followingUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+		payload := NewFollowPayload(&body, followingUserID)
 
 		return payload, nil
 	}
@@ -473,21 +480,20 @@ func EncodeUnfollowResponse(encoder func(context.Context, http.ResponseWriter) g
 func DecodeUnfollowRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body UnfollowRequestBody
-			err  error
+			followingUserID string
+			followedUserID  string
+			err             error
+
+			params = mux.Vars(r)
 		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUnfollowRequestBody(&body)
+		followingUserID = params["following_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("following_user_id", followingUserID, goa.FormatUUID))
+		followedUserID = params["followed_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("followed_user_id", followedUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUnfollowPayload(&body)
+		payload := NewUnfollowPayload(followingUserID, followedUserID)
 
 		return payload, nil
 	}
@@ -674,7 +680,18 @@ func DecodeMuteRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.De
 		if err != nil {
 			return nil, err
 		}
-		payload := NewMutePayload(&body)
+
+		var (
+			mutingUserID string
+
+			params = mux.Vars(r)
+		)
+		mutingUserID = params["muting_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("muting_user_id", mutingUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+		payload := NewMutePayload(&body, mutingUserID)
 
 		return payload, nil
 	}
@@ -723,21 +740,20 @@ func EncodeUnmuteResponse(encoder func(context.Context, http.ResponseWriter) goa
 func DecodeUnmuteRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body UnmuteRequestBody
-			err  error
+			mutingUserID string
+			mutedUserID  string
+			err          error
+
+			params = mux.Vars(r)
 		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUnmuteRequestBody(&body)
+		mutingUserID = params["muting_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("muting_user_id", mutingUserID, goa.FormatUUID))
+		mutedUserID = params["muted_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("muted_user_id", mutedUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUnmutePayload(&body)
+		payload := NewUnmutePayload(mutingUserID, mutedUserID)
 
 		return payload, nil
 	}
@@ -800,7 +816,18 @@ func DecodeBlockRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 		if err != nil {
 			return nil, err
 		}
-		payload := NewBlockPayload(&body)
+
+		var (
+			blockingUserID string
+
+			params = mux.Vars(r)
+		)
+		blockingUserID = params["blocking_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocking_user_id", blockingUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+		payload := NewBlockPayload(&body, blockingUserID)
 
 		return payload, nil
 	}
@@ -849,21 +876,20 @@ func EncodeUnblockResponse(encoder func(context.Context, http.ResponseWriter) go
 func DecodeUnblockRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body UnblockRequestBody
-			err  error
+			blockingUserID string
+			blockedUserID  string
+			err            error
+
+			params = mux.Vars(r)
 		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUnblockRequestBody(&body)
+		blockingUserID = params["blocking_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocking_user_id", blockingUserID, goa.FormatUUID))
+		blockedUserID = params["blocked_user_id"]
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocked_user_id", blockedUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUnblockPayload(&body)
+		payload := NewUnblockPayload(blockingUserID, blockedUserID)
 
 		return payload, nil
 	}

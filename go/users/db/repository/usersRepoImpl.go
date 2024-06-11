@@ -128,8 +128,8 @@ func (r *usersRepoImpl) UpdateBio(ctx context.Context, id uuid.UUID, bio string)
 func (r *usersRepoImpl) GetFollowers(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.follower_id
-WHERE followships.followee_id = $1
+JOIN followships ON users.id = followships.followed_user_id
+WHERE followships.following_user_id = $1
 `
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {
@@ -160,12 +160,12 @@ WHERE followships.followee_id = $1
 	return followers, nil
 }
 
-// GetFollowees retrieves all the followees of a user with the specified ID.
+// GetFollowings retrieves all the followings of a user with the specified ID.
 func (r *usersRepoImpl) GetFollowings(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.followee_id
-WHERE followships.follower_id = $1
+JOIN followships ON users.id = followships.following_user_id
+WHERE followships.followed_user_id = $1
 `
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {

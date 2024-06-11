@@ -134,15 +134,10 @@ func (c *Client) CreateUser() goa.Endpoint {
 // DeleteUser server.
 func (c *Client) DeleteUser() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeDeleteUserRequest(c.encoder)
 		decodeResponse = DecodeDeleteUserResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildDeleteUserRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
@@ -249,15 +244,10 @@ func (c *Client) Follow() goa.Endpoint {
 // Unfollow server.
 func (c *Client) Unfollow() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeUnfollowRequest(c.encoder)
 		decodeResponse = DecodeUnfollowResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildUnfollowRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
@@ -335,15 +325,10 @@ func (c *Client) Mute() goa.Endpoint {
 // Unmute server.
 func (c *Client) Unmute() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeUnmuteRequest(c.encoder)
 		decodeResponse = DecodeUnmuteResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildUnmuteRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
@@ -383,15 +368,10 @@ func (c *Client) Block() goa.Endpoint {
 // Unblock server.
 func (c *Client) Unblock() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeUnblockRequest(c.encoder)
 		decodeResponse = DecodeUnblockResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
 		req, err := c.BuildUnblockRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
 		if err != nil {
 			return nil, err
 		}
