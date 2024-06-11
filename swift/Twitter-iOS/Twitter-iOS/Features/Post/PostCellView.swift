@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TweetCellView: View {
+struct PostCellView: View {
   @Binding public var showReplyEditSheet: Bool
   @Binding public var showShareSheet: Bool
   // We need to wait for dismissal completion. pendingShowShareSheet
@@ -11,7 +11,7 @@ struct TweetCellView: View {
 
   public var userIcon: Image
   public var userName: String
-  public var tweetBody: String
+  public var postBody: String
 
   @State private var isBottomSheetPresented = false
 
@@ -47,7 +47,7 @@ struct TweetCellView: View {
             .buttonStyle(.plain)
           }
 
-          Text(tweetBody)
+          Text(postBody)
             .padding(.bottom)
 
           HStack {
@@ -92,7 +92,7 @@ struct TweetCellView: View {
                 }
               },
               content: {
-                TweetShareBottomSheet(showShareSheet: $pendingShowShareSheet)
+                PostShareBottomSheet(showShareSheet: $pendingShowShareSheet)
                   .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
               })
           }
@@ -105,15 +105,15 @@ struct TweetCellView: View {
   }
 }
 
-func createFakeTweetCellView() -> TweetCellView {
-  return TweetCellView(
+func createFakePostCellView() -> PostCellView {
+  return PostCellView(
     showReplyEditSheet: .constant(false),
     showShareSheet: .constant(false), userIcon: Image(systemName: "apple.logo"), userName: "Apple",
-    tweetBody:
+    postBody:
       "If you’re looking to make your app more responsive or simply want to give your users access to certain features through various methods like a long press or hidden button, then you absolutely have to read this post!"
   )
 }
 
 #Preview {
-  createFakeTweetCellView()
+  createFakePostCellView()
 }

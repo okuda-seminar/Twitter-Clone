@@ -4,10 +4,10 @@ struct HomeTabView: View {
   @Binding public var showReplyEditSheet: Bool
   @Binding public var showShareSheet: Bool
 
-  @State private var tweetModels: [TweetModel] = {
-    var models: [TweetModel] = []
+  @State private var postModels: [PostModel] = {
+    var models: [PostModel] = []
     for _ in 0..<20 {
-      models.append(createFakeTweetModel())
+      models.append(createFakePostModel())
     }
     return models
   }()
@@ -39,12 +39,12 @@ struct HomeTabView: View {
   var body: some View {
     ScrollView(.vertical) {
       LazyVStack(spacing: 0) {
-        ForEach(tweetModels) { tweetModel in
-          TweetCellView(
+        ForEach(postModels) { postModel in
+          PostCellView(
             showReplyEditSheet: $showReplyEditSheet,
             showShareSheet: $showShareSheet,
-            userIcon: tweetModel.userIcon, userName: tweetModel.userName,
-            tweetBody: tweetModel.bodyText
+            userIcon: postModel.userIcon, userName: postModel.userName,
+            postBody: postModel.bodyText
           )
           .contextMenu(
             ContextMenu(menuItems: {

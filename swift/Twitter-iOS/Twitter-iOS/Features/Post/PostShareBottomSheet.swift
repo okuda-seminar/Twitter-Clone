@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TweetShareBottomSheet: View {
+struct PostShareBottomSheet: View {
   @Environment(\.dismiss) private var dismiss
   @State private var isPresented = false
   @Binding public var showShareSheet: Bool
@@ -97,5 +97,5 @@ struct TweetShareBottomSheet: View {
 }
 
 #Preview {
-  TweetShareBottomSheet(showShareSheet: .constant(false))
+  PostShareBottomSheet(showShareSheet: .constant(false))
 }

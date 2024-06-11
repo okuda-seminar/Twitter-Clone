@@ -6,7 +6,7 @@ struct UserPostsTabView: View {
     // - Disable bounce of ScrollView in UserPostsTabView.
     VStack(spacing: 0) {
       ForEach(0..<30) { _ in
-        createFakeTweetCellView()
+        createFakePostCellView()
       }
     }
   }

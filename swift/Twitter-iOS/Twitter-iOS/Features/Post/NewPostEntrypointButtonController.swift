@@ -1,21 +1,21 @@
 import UIKit
 
-final class NewTweetEntrypointButtonController: UIViewController {
+final class NewPostEntrypointButtonController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let button = NewTweetEntrypointButton()
+    let button = NewPostEntrypointButton()
     button.addAction(
       .init { _ in
-        let newTweetEditViewController = NewTweetEditViewController()
-        newTweetEditViewController.modalPresentationStyle = .fullScreen
-        self.present(newTweetEditViewController, animated: true)
+        let newPostEditViewController = NewPostEditViewController()
+        newPostEditViewController.modalPresentationStyle = .fullScreen
+        self.present(newPostEditViewController, animated: true)
       }, for: .touchUpInside)
     view = button
   }
 }
 
-final class NewTweetEntrypointButton: UIButton {
+final class NewPostEntrypointButton: UIButton {
   private enum LayoutConstant {
     static let buttonSize: CGFloat = 44.0
   }

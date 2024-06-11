@@ -27,7 +27,7 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     return button
   }()
 
-  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
+  private let newPostEntryPointButtonController = NewPostEntrypointButtonController()
 
   private lazy var tabViewController: UIHostingController = {
     let controller = UIHostingController(rootView: NotificationsTabView(delegate: self))
@@ -43,10 +43,10 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     view.backgroundColor = .systemBackground
 
     view.addSubview(tabViewController.view)
-    view.addSubview(newTweetEntryPointButtonController.view)
+    view.addSubview(newPostEntryPointButtonController.view)
 
-    addChild(newTweetEntryPointButtonController)
-    newTweetEntryPointButtonController.didMove(toParent: self)
+    addChild(newPostEntryPointButtonController)
+    newPostEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
@@ -55,9 +55,9 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
       tabViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       tabViewController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
-      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
+      newPostEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
+      newPostEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 
@@ -93,8 +93,8 @@ extension NotificationsViewController: NotificationsTabViewDelegate {
   func didSelectNotification(_ notificationModel: NotificationModel) {
     guard let navigationController else { return }
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/249 - Replace fake tweet models.
-    let tweetModel = createFakeTweetModel()
+    let postModel = createFakePostModel()
     navigationController.pushViewController(
-      TweetDetailViewController(tweetModel: tweetModel), animated: true)
+      PostDetailViewController(postModel: postModel), animated: true)
   }
 }

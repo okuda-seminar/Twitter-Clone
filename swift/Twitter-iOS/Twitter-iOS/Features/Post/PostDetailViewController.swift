@@ -1,11 +1,11 @@
 import SwiftUI
 import UIKit
 
-class TweetDetailViewController: UIViewController {
-  public var tweetModel: TweetModel
+class PostDetailViewController: UIViewController {
+  public var postModel: PostModel
 
-  public init(tweetModel: TweetModel) {
-    self.tweetModel = tweetModel
+  public init(postModel: PostModel) {
+    self.postModel = postModel
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -18,7 +18,7 @@ class TweetDetailViewController: UIViewController {
   }
 
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: TweetDetailView(tweetModel: tweetModel))
+    let controller = UIHostingController(rootView: PostDetailView(postModel: postModel))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -45,8 +45,8 @@ class TweetDetailViewController: UIViewController {
   }
 }
 
-struct TweetDetailView: View {
-  var tweetModel: TweetModel
+struct PostDetailView: View {
+  var postModel: PostModel
 
   private enum LayoutConstant {
     static let userIconSize: CGFloat = 28.0
@@ -59,11 +59,11 @@ struct TweetDetailView: View {
   var body: some View {
     VStack(alignment: .leading) {
       HStack {
-        tweetModel.userIcon
+        postModel.userIcon
           .resizable()
           .scaledToFit()
           .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
-        Text(tweetModel.userName)
+        Text(postModel.userName)
         Spacer()
         Button(
           action: {
@@ -76,7 +76,7 @@ struct TweetDetailView: View {
         .foregroundStyle(.primary)
         .buttonStyle(.plain)
       }
-      Text(tweetModel.bodyText)
+      Text(postModel.bodyText)
         .padding(.bottom)
 
       Button(
@@ -96,5 +96,5 @@ struct TweetDetailView: View {
 }
 
 #Preview {
-  TweetDetailView(tweetModel: createFakeTweetModel())
+  PostDetailView(postModel: createFakePostModel())
 }

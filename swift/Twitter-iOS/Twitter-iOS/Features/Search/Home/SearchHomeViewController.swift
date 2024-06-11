@@ -32,7 +32,7 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
     return controller
   }()
 
-  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
+  private let newPostEntryPointButtonController = NewPostEntrypointButtonController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -42,10 +42,10 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(hostingController.view)
-    view.addSubview(newTweetEntryPointButtonController.view)
+    view.addSubview(newPostEntryPointButtonController.view)
 
-    addChild(newTweetEntryPointButtonController)
-    newTweetEntryPointButtonController.didMove(toParent: self)
+    addChild(newPostEntryPointButtonController)
+    newPostEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
@@ -54,9 +54,9 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
       hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
       hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
 
-      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
+      newPostEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
+      newPostEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 

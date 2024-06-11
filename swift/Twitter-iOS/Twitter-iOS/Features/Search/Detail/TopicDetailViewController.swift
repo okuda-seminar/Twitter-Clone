@@ -10,7 +10,7 @@ class TopicDetailViewController: UIViewController {
     static let edgePadding = 16.0
   }
 
-  private let newTweetEntryPointButtonController = NewTweetEntrypointButtonController()
+  private let newPostEntryPointButtonController = NewPostEntrypointButtonController()
 
   private lazy var searchFiltersEntryPointButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
@@ -26,18 +26,18 @@ class TopicDetailViewController: UIViewController {
   }
 
   private func setUpSubviews() {
-    addChild(newTweetEntryPointButtonController)
-    newTweetEntryPointButtonController.didMove(toParent: self)
+    addChild(newPostEntryPointButtonController)
+    newPostEntryPointButtonController.didMove(toParent: self)
 
     view.backgroundColor = .white
-    view.addSubview(newTweetEntryPointButtonController.view)
+    view.addSubview(newPostEntryPointButtonController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      newTweetEntryPointButtonController.view.bottomAnchor.constraint(
+      newPostEntryPointButtonController.view.bottomAnchor.constraint(
         equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
-      newTweetEntryPointButtonController.view.trailingAnchor.constraint(
+      newPostEntryPointButtonController.view.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])
 

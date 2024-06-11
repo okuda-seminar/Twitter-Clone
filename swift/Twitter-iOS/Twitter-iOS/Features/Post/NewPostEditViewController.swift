@@ -2,20 +2,20 @@ import Photos
 import SwiftUI
 import UIKit
 
-final class NewTweetEditViewController: UIViewController {
+final class NewPostEditViewController: UIViewController {
   private enum LocalizedString {
     static let cancelButtonTitle = String(localized: "Cancel")
-    static let tweetTextViewPlaceholderText = String(localized: "What's happening?")
+    static let postTextViewPlaceholderText = String(localized: "What's happening?")
   }
 
   private enum LayoutConstant {
     static let edgePadding = 16.0
-    static let tweetTextViewTopPadding = 12.0
-    static let tweetTextViewMinimumHeight = 48.0
+    static let postTextViewTopPadding = 12.0
+    static let postTextViewMinimumHeight = 48.0
     static let permissionRequestButtonSize = 28.0
   }
 
-  private var tweetTextViewHightConstraint: NSLayoutConstraint?
+  private var postTextViewHightConstraint: NSLayoutConstraint?
 
   private let cancelButton: UIButton = {
     let button = UIButton()
@@ -31,7 +31,7 @@ final class NewTweetEditViewController: UIViewController {
     return button
   }()
 
-  private let tweetTextView: UITextView = {
+  private let postTextView: UITextView = {
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.backgroundColor = .clear
@@ -40,10 +40,10 @@ final class NewTweetEditViewController: UIViewController {
     return textView
   }()
 
-  private let tweetTextViewPlaceHolder: UITextView = {
+  private let postTextViewPlaceHolder: UITextView = {
     let placeHolder = UITextView()
     placeHolder.translatesAutoresizingMaskIntoConstraints = false
-    placeHolder.text = LocalizedString.tweetTextViewPlaceholderText
+    placeHolder.text = LocalizedString.postTextViewPlaceholderText
     placeHolder.textColor = .lightGray
     placeHolder.isEditable = false
     placeHolder.isUserInteractionEnabled = false
@@ -70,14 +70,14 @@ final class NewTweetEditViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    tweetTextView.becomeFirstResponder()
+    postTextView.becomeFirstResponder()
   }
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(cancelButton)
-    view.addSubview(tweetTextViewPlaceHolder)
-    view.addSubview(tweetTextView)
+    view.addSubview(postTextViewPlaceHolder)
+    view.addSubview(postTextView)
     view.addSubview(photoLibraryPermissionRequestButton)
 
     cancelButton.addAction(
@@ -85,7 +85,7 @@ final class NewTweetEditViewController: UIViewController {
         self.dismiss(animated: true)
       }, for: .touchUpInside)
 
-    tweetTextView.delegate = self
+    postTextView.delegate = self
 
     photoLibraryPermissionRequestButton.addAction(
       .init { _ in
@@ -94,28 +94,28 @@ final class NewTweetEditViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     let keyboardLayoutGuide = view.keyboardLayoutGuide
-    let tweetTextViewPlaceHolderHeight = tweetTextViewPlaceHolder.frame.height
-    tweetTextViewHightConstraint = tweetTextView.heightAnchor.constraint(
-      equalToConstant: tweetTextViewPlaceHolderHeight)
-    guard let tweetTextViewHightConstraint else { return }
+    let postTextViewPlaceHolderHeight = postTextViewPlaceHolder.frame.height
+    postTextViewHightConstraint = postTextView.heightAnchor.constraint(
+      equalToConstant: postTextViewPlaceHolderHeight)
+    guard let postTextViewHightConstraint else { return }
     NSLayoutConstraint.activate([
       cancelButton.topAnchor.constraint(
         equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
       cancelButton.leadingAnchor.constraint(
         equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
 
-      tweetTextView.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
-      tweetTextView.trailingAnchor.constraint(
+      postTextView.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
+      postTextView.trailingAnchor.constraint(
         equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
-      tweetTextView.topAnchor.constraint(
-        equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.tweetTextViewTopPadding),
-      tweetTextViewHightConstraint,
+      postTextView.topAnchor.constraint(
+        equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.postTextViewTopPadding),
+      postTextViewHightConstraint,
 
-      tweetTextViewPlaceHolder.topAnchor.constraint(equalTo: tweetTextView.topAnchor),
-      tweetTextViewPlaceHolder.leadingAnchor.constraint(equalTo: tweetTextView.leadingAnchor),
-      tweetTextViewPlaceHolder.trailingAnchor.constraint(equalTo: tweetTextView.trailingAnchor),
-      tweetTextViewPlaceHolder.heightAnchor.constraint(
-        equalToConstant: tweetTextViewPlaceHolderHeight),
+      postTextViewPlaceHolder.topAnchor.constraint(equalTo: postTextView.topAnchor),
+      postTextViewPlaceHolder.leadingAnchor.constraint(equalTo: postTextView.leadingAnchor),
+      postTextViewPlaceHolder.trailingAnchor.constraint(equalTo: postTextView.trailingAnchor),
+      postTextViewPlaceHolder.heightAnchor.constraint(
+        equalToConstant: postTextViewPlaceHolderHeight),
 
       photoLibraryPermissionRequestButton.bottomAnchor.constraint(
         equalTo: keyboardLayoutGuide.topAnchor),
@@ -153,12 +153,12 @@ final class NewTweetEditViewController: UIViewController {
   }
 }
 
-extension NewTweetEditViewController: UITextViewDelegate {
+extension NewPostEditViewController: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
-    tweetTextViewPlaceHolder.isHidden = !textView.text.isEmpty
+    postTextViewPlaceHolder.isHidden = !textView.text.isEmpty
     let height = textView.sizeThatFits(
       CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)
     ).height
-    tweetTextViewHightConstraint?.constant = height
+    postTextViewHightConstraint?.constant = height
   }
 }

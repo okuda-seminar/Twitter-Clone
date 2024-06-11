@@ -4,7 +4,7 @@ import UIKit
 class ReplyEditViewController: UIViewController {
   private lazy var hostingController: UIHostingController = {
     let controller = UIHostingController(
-      rootView: ReplyEditView(originalTweetModel: createFakeTweetModel()))
+      rootView: ReplyEditView(originalPostModel: createFakePostModel()))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -31,7 +31,7 @@ class ReplyEditViewController: UIViewController {
 }
 
 struct ReplyEditView: View {
-  public var originalTweetModel: TweetModel
+  public var originalPostModel: PostModel
 
   private enum LayoutConstant {
     static let iconSize: CGFloat = 48.0
@@ -102,7 +102,7 @@ struct ReplyEditView: View {
   @ViewBuilder
   private func LeftSideContent() -> some View {
     VStack {
-      originalTweetModel.userIcon
+      originalPostModel.userIcon
         .resizable()
         .scaledToFit()
         .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
@@ -128,9 +128,9 @@ struct ReplyEditView: View {
   private func MainContent() -> some View {
     VStack(alignment: .leading) {
       HStack {
-        Text(originalTweetModel.userName)
+        Text(originalPostModel.userName)
       }
-      Text(originalTweetModel.bodyText)
+      Text(originalPostModel.bodyText)
 
       TextEditor(text: $inputText)
         .overlay(alignment: .topLeading) {
@@ -146,5 +146,5 @@ struct ReplyEditView: View {
 }
 
 #Preview {
-  ReplyEditView(originalTweetModel: createFakeTweetModel())
+  ReplyEditView(originalPostModel: createFakePostModel())
 }
