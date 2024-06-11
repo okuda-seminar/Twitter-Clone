@@ -7,6 +7,8 @@ import (
 	"log"
 	"net"
 	"net/url"
+	"notification/gen/notification"
+	"notification/service"
 	"os"
 	"os/signal"
 	"sync"
@@ -31,6 +33,23 @@ func main() {
 	)
 	{
 		logger = log.New(os.Stderr, "[notificationapi] ", log.Ltime)
+	}
+
+	// Initialize the services.
+	var (
+		notificationSvc notification.Service
+	)
+	{
+		notificationSvc = service.NewNotificationSvc(logger)
+	}
+
+	// Wrap the services in endpoints that can be invoked from other services
+	// potentially running in different processes.
+	var (
+		notificationEndpoints *notification.Endpoints
+	)
+	{
+		notificationEndpoints = notification.NewEndpoints(notificationSvc)
 	}
 
 	// Create channel used by both the signal handler and server goroutines
@@ -72,7 +91,7 @@ func main() {
 			} else if u.Port() == "" {
 				u.Host = net.JoinHostPort(u.Host, "80")
 			}
-			handleHTTPServer(ctx, u, &wg, errc, logger, *dbgF)
+			handleHTTPServer(ctx, u, notificationEndpoints, &wg, errc, logger, *dbgF)
 		}
 
 	default:

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	notificationsvr "notification/gen/http/notification/server"
+	notification "notification/gen/notification"
 	"os"
 	"sync"
 	"time"
@@ -17,7 +18,7 @@ import (
 
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
-func handleHTTPServer(ctx context.Context, u *url.URL, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
+func handleHTTPServer(ctx context.Context, u *url.URL, notificationEndpoints *notification.Endpoints, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
 
 	// Setup goa log adapter.
 	var (
@@ -52,7 +53,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, wg *sync.WaitGroup, errc 
 	)
 	{
 		eh := errorHandler(logger)
-		notificationServer = notificationsvr.New(nil, mux, dec, enc, eh, nil, nil)
+		notificationServer = notificationsvr.New(notificationEndpoints, mux, dec, enc, eh, nil, nil)
 		if debug {
 			servers := goahttp.Servers{
 				notificationServer,
