@@ -36,22 +36,18 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 
 // BuildDeleteUserPayload builds the payload for the users DeleteUser endpoint
 // from CLI flags.
-func BuildDeleteUserPayload(usersDeleteUserBody string) (*users.DeleteUserPayload, error) {
+func BuildDeleteUserPayload(usersDeleteUserID string) (*users.DeleteUserPayload, error) {
 	var err error
-	var body DeleteUserRequestBody
+	var id string
 	{
-		err = json.Unmarshal([]byte(usersDeleteUserBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"5387eca1-261a-11ef-b69d-0242ac120003\"\n   }'")
-		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", body.ID, goa.FormatUUID))
+		id = usersDeleteUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &users.DeleteUserPayload{
-		ID: body.ID,
-	}
+	v := &users.DeleteUserPayload{}
+	v.ID = id
 
 	return v, nil
 }
@@ -82,7 +78,7 @@ func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsern
 	{
 		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Odio quis assumenda voluptate sit incidunt.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Nihil molestias saepe ipsam debitis illo ullam.\"\n   }'")
 		}
 	}
 	var id string
@@ -109,7 +105,7 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 	{
 		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Molestias fugit quod nemo.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Expedita dolor suscipit deleniti ab sit laudantium.\"\n   }'")
 		}
 	}
 	var id string
@@ -130,48 +126,58 @@ func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (
 
 // BuildFollowPayload builds the payload for the users Follow endpoint from CLI
 // flags.
-func BuildFollowPayload(usersFollowBody string) (*users.FollowPayload, error) {
+func BuildFollowPayload(usersFollowBody string, usersFollowFollowingUserID string) (*users.FollowPayload, error) {
 	var err error
 	var body FollowRequestBody
 	{
 		err = json.Unmarshal([]byte(usersFollowBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": \"53883465-261a-11ef-b69d-0242ac120003\",\n      \"follower_id\": \"5388338f-261a-11ef-b69d-0242ac120003\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followed_user_id\": \"86a86a0d-27ea-11ef-8ab2-0242ac120003\"\n   }'")
 		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", body.FollowerID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", body.FolloweeID, goa.FormatUUID))
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.followed_user_id", body.FollowedUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+	}
+	var followingUserID string
+	{
+		followingUserID = usersFollowFollowingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("following_user_id", followingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
 	v := &users.FollowPayload{
-		FollowerID: body.FollowerID,
-		FolloweeID: body.FolloweeID,
+		FollowedUserID: body.FollowedUserID,
 	}
+	v.FollowingUserID = followingUserID
 
 	return v, nil
 }
 
 // BuildUnfollowPayload builds the payload for the users Unfollow endpoint from
 // CLI flags.
-func BuildUnfollowPayload(usersUnfollowBody string) (*users.UnfollowPayload, error) {
+func BuildUnfollowPayload(usersUnfollowFollowingUserID string, usersUnfollowFollowedUserID string) (*users.UnfollowPayload, error) {
 	var err error
-	var body UnfollowRequestBody
+	var followingUserID string
 	{
-		err = json.Unmarshal([]byte(usersUnfollowBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followee_id\": \"53883fc2-261a-11ef-b69d-0242ac120003\",\n      \"follower_id\": \"53883ef9-261a-11ef-b69d-0242ac120003\"\n   }'")
-		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", body.FollowerID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", body.FolloweeID, goa.FormatUUID))
+		followingUserID = usersUnfollowFollowingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("following_user_id", followingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &users.UnfollowPayload{
-		FollowerID: body.FollowerID,
-		FolloweeID: body.FolloweeID,
+	var followedUserID string
+	{
+		followedUserID = usersUnfollowFollowedUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("followed_user_id", followedUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 	}
+	v := &users.UnfollowPayload{}
+	v.FollowingUserID = followingUserID
+	v.FollowedUserID = followedUserID
 
 	return v, nil
 }
@@ -214,96 +220,116 @@ func BuildGetFollowingsPayload(usersGetFollowingsID string) (*users.GetFollowing
 
 // BuildMutePayload builds the payload for the users Mute endpoint from CLI
 // flags.
-func BuildMutePayload(usersMuteBody string) (*users.MutePayload, error) {
+func BuildMutePayload(usersMuteBody string, usersMuteMutingUserID string) (*users.MutePayload, error) {
 	var err error
 	var body MuteRequestBody
 	{
 		err = json.Unmarshal([]byte(usersMuteBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"538877e2-261a-11ef-b69d-0242ac120003\",\n      \"muting_user_id\": \"5388791e-261a-11ef-b69d-0242ac120003\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"86a8a487-27ea-11ef-8ab2-0242ac120003\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", body.MutedUserID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", body.MutingUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+	}
+	var mutingUserID string
+	{
+		mutingUserID = usersMuteMutingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("muting_user_id", mutingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
 	v := &users.MutePayload{
-		MutedUserID:  body.MutedUserID,
-		MutingUserID: body.MutingUserID,
+		MutedUserID: body.MutedUserID,
 	}
+	v.MutingUserID = mutingUserID
 
 	return v, nil
 }
 
 // BuildUnmutePayload builds the payload for the users Unmute endpoint from CLI
 // flags.
-func BuildUnmutePayload(usersUnmuteBody string) (*users.UnmutePayload, error) {
+func BuildUnmutePayload(usersUnmuteMutingUserID string, usersUnmuteMutedUserID string) (*users.UnmutePayload, error) {
 	var err error
-	var body UnmuteRequestBody
+	var mutingUserID string
 	{
-		err = json.Unmarshal([]byte(usersUnmuteBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"5388ae5c-261a-11ef-b69d-0242ac120003\",\n      \"muting_user_id\": \"5388af31-261a-11ef-b69d-0242ac120003\"\n   }'")
-		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", body.MutedUserID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", body.MutingUserID, goa.FormatUUID))
+		mutingUserID = usersUnmuteMutingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("muting_user_id", mutingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &users.UnmutePayload{
-		MutedUserID:  body.MutedUserID,
-		MutingUserID: body.MutingUserID,
+	var mutedUserID string
+	{
+		mutedUserID = usersUnmuteMutedUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("muted_user_id", mutedUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 	}
+	v := &users.UnmutePayload{}
+	v.MutingUserID = mutingUserID
+	v.MutedUserID = mutedUserID
 
 	return v, nil
 }
 
 // BuildBlockPayload builds the payload for the users Block endpoint from CLI
 // flags.
-func BuildBlockPayload(usersBlockBody string) (*users.BlockPayload, error) {
+func BuildBlockPayload(usersBlockBody string, usersBlockBlockingUserID string) (*users.BlockPayload, error) {
 	var err error
 	var body BlockRequestBody
 	{
 		err = json.Unmarshal([]byte(usersBlockBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"5388bac0-261a-11ef-b69d-0242ac120003\",\n      \"blocking_user_id\": \"5388bbb5-261a-11ef-b69d-0242ac120003\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"86a8f8b2-27ea-11ef-8ab2-0242ac120003\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", body.BlockedUserID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", body.BlockingUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
+	}
+	var blockingUserID string
+	{
+		blockingUserID = usersBlockBlockingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocking_user_id", blockingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
 	v := &users.BlockPayload{
-		BlockedUserID:  body.BlockedUserID,
-		BlockingUserID: body.BlockingUserID,
+		BlockedUserID: body.BlockedUserID,
 	}
+	v.BlockingUserID = blockingUserID
 
 	return v, nil
 }
 
 // BuildUnblockPayload builds the payload for the users Unblock endpoint from
 // CLI flags.
-func BuildUnblockPayload(usersUnblockBody string) (*users.UnblockPayload, error) {
+func BuildUnblockPayload(usersUnblockBlockingUserID string, usersUnblockBlockedUserID string) (*users.UnblockPayload, error) {
 	var err error
-	var body UnblockRequestBody
+	var blockingUserID string
 	{
-		err = json.Unmarshal([]byte(usersUnblockBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"5388c713-261a-11ef-b69d-0242ac120003\",\n      \"blocking_user_id\": \"5388c7df-261a-11ef-b69d-0242ac120003\"\n   }'")
-		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", body.BlockedUserID, goa.FormatUUID))
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", body.BlockingUserID, goa.FormatUUID))
+		blockingUserID = usersUnblockBlockingUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocking_user_id", blockingUserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &users.UnblockPayload{
-		BlockedUserID:  body.BlockedUserID,
-		BlockingUserID: body.BlockingUserID,
+	var blockedUserID string
+	{
+		blockedUserID = usersUnblockBlockedUserID
+		err = goa.MergeErrors(err, goa.ValidateFormat("blocked_user_id", blockedUserID, goa.FormatUUID))
+		if err != nil {
+			return nil, err
+		}
 	}
+	v := &users.UnblockPayload{}
+	v.BlockingUserID = blockingUserID
+	v.BlockedUserID = blockedUserID
 
 	return v, nil
 }

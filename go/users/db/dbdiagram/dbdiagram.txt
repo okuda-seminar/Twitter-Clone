@@ -8,11 +8,11 @@ TABLE users {
 }
 
 TABLE followships {
-  follower_id UUID [not null, ref: > users.id]
-  followee_id UUID [not null, ref: > users.id]
+  followed_user_id UUID [not null, ref: > users.id]
+  following_user_id UUID [not null, ref: > users.id]
 
   indexes {
-    (follower_id, followee_id) [pk]
+    (followed_user_id, following_user_id) [pk]
   }
 }
 

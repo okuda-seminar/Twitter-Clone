@@ -47,7 +47,7 @@ var _ = Service("users", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/users")
+			DELETE("/api/users/{id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 			Response("BadRequest", StatusBadRequest)
@@ -108,18 +108,18 @@ var _ = Service("users", func() {
 
 	Method("Follow", func() {
 		Payload(func() {
-			Field(1, "follower_id", String, func() {
+			Field(1, "following_user_id", String, func() {
 				Format(FormatUUID)
 			})
-			Field(2, "followee_id", String, func() {
+			Field(2, "followed_user_id", String, func() {
 				Format(FormatUUID)
 			})
-			Required("follower_id", "followee_id")
+			Required("following_user_id", "followed_user_id")
 		})
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/users/follow")
+			POST("/api/users/{following_user_id}/follow")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -127,18 +127,18 @@ var _ = Service("users", func() {
 
 	Method("Unfollow", func() {
 		Payload(func() {
-			Field(1, "follower_id", String, func() {
+			Field(1, "following_user_id", String, func() {
 				Format(FormatUUID)
 			})
-			Field(2, "followee_id", String, func() {
+			Field(2, "followed_user_id", String, func() {
 				Format(FormatUUID)
 			})
-			Required("follower_id", "followee_id")
+			Required("following_user_id", "followed_user_id")
 		})
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/users/follow")
+			DELETE("/api/users/{following_user_id}/follow/{followed_user_id}")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -189,7 +189,7 @@ var _ = Service("users", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/users/mute")
+			POST("/api/users/{muting_user_id}/mute")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -208,7 +208,7 @@ var _ = Service("users", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/users/mute")
+			DELETE("/api/users/{muting_user_id}/mute/{muted_user_id}")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -227,7 +227,7 @@ var _ = Service("users", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/users/block")
+			POST("/api/users/{blocking_user_id}/block")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -246,7 +246,7 @@ var _ = Service("users", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/users/block")
+			DELETE("/api/users/{blocking_user_id}/block/{blocked_user_id}")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})

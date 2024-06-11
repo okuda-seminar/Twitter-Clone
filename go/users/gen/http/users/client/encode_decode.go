@@ -110,7 +110,17 @@ func DecodeCreateUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 // BuildDeleteUserRequest instantiates a HTTP request object with method and
 // path set to call the "users" service "DeleteUser" endpoint
 func (c *Client) BuildDeleteUserRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteUserUsersPath()}
+	var (
+		id string
+	)
+	{
+		p, ok := v.(*users.DeleteUserPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "DeleteUser", "*users.DeleteUserPayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteUserUsersPath(id)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "DeleteUser", u.String(), err)
@@ -120,22 +130,6 @@ func (c *Client) BuildDeleteUserRequest(ctx context.Context, v any) (*http.Reque
 	}
 
 	return req, nil
-}
-
-// EncodeDeleteUserRequest returns an encoder for requests sent to the users
-// DeleteUser server.
-func EncodeDeleteUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.DeleteUserPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "DeleteUser", "*users.DeleteUserPayload", v)
-		}
-		body := NewDeleteUserRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "DeleteUser", err)
-		}
-		return nil
-	}
 }
 
 // DecodeDeleteUserResponse returns a decoder for responses returned by the
@@ -482,7 +476,17 @@ func DecodeUpdateBioResponse(decoder func(*http.Response) goahttp.Decoder, resto
 // BuildFollowRequest instantiates a HTTP request object with method and path
 // set to call the "users" service "Follow" endpoint
 func (c *Client) BuildFollowRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: FollowUsersPath()}
+	var (
+		followingUserID string
+	)
+	{
+		p, ok := v.(*users.FollowPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Follow", "*users.FollowPayload", v)
+		}
+		followingUserID = p.FollowingUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: FollowUsersPath(followingUserID)}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Follow", u.String(), err)
@@ -557,7 +561,19 @@ func DecodeFollowResponse(decoder func(*http.Response) goahttp.Decoder, restoreB
 // BuildUnfollowRequest instantiates a HTTP request object with method and path
 // set to call the "users" service "Unfollow" endpoint
 func (c *Client) BuildUnfollowRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnfollowUsersPath()}
+	var (
+		followingUserID string
+		followedUserID  string
+	)
+	{
+		p, ok := v.(*users.UnfollowPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Unfollow", "*users.UnfollowPayload", v)
+		}
+		followingUserID = p.FollowingUserID
+		followedUserID = p.FollowedUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnfollowUsersPath(followingUserID, followedUserID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Unfollow", u.String(), err)
@@ -567,22 +583,6 @@ func (c *Client) BuildUnfollowRequest(ctx context.Context, v any) (*http.Request
 	}
 
 	return req, nil
-}
-
-// EncodeUnfollowRequest returns an encoder for requests sent to the users
-// Unfollow server.
-func EncodeUnfollowRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.UnfollowPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "Unfollow", "*users.UnfollowPayload", v)
-		}
-		body := NewUnfollowRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "Unfollow", err)
-		}
-		return nil
-	}
 }
 
 // DecodeUnfollowResponse returns a decoder for responses returned by the users
@@ -808,7 +808,17 @@ func DecodeGetFollowingsResponse(decoder func(*http.Response) goahttp.Decoder, r
 // BuildMuteRequest instantiates a HTTP request object with method and path set
 // to call the "users" service "Mute" endpoint
 func (c *Client) BuildMuteRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: MuteUsersPath()}
+	var (
+		mutingUserID string
+	)
+	{
+		p, ok := v.(*users.MutePayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Mute", "*users.MutePayload", v)
+		}
+		mutingUserID = p.MutingUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: MuteUsersPath(mutingUserID)}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Mute", u.String(), err)
@@ -883,7 +893,19 @@ func DecodeMuteResponse(decoder func(*http.Response) goahttp.Decoder, restoreBod
 // BuildUnmuteRequest instantiates a HTTP request object with method and path
 // set to call the "users" service "Unmute" endpoint
 func (c *Client) BuildUnmuteRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnmuteUsersPath()}
+	var (
+		mutingUserID string
+		mutedUserID  string
+	)
+	{
+		p, ok := v.(*users.UnmutePayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Unmute", "*users.UnmutePayload", v)
+		}
+		mutingUserID = p.MutingUserID
+		mutedUserID = p.MutedUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnmuteUsersPath(mutingUserID, mutedUserID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Unmute", u.String(), err)
@@ -893,22 +915,6 @@ func (c *Client) BuildUnmuteRequest(ctx context.Context, v any) (*http.Request, 
 	}
 
 	return req, nil
-}
-
-// EncodeUnmuteRequest returns an encoder for requests sent to the users Unmute
-// server.
-func EncodeUnmuteRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.UnmutePayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "Unmute", "*users.UnmutePayload", v)
-		}
-		body := NewUnmuteRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "Unmute", err)
-		}
-		return nil
-	}
 }
 
 // DecodeUnmuteResponse returns a decoder for responses returned by the users
@@ -958,7 +964,17 @@ func DecodeUnmuteResponse(decoder func(*http.Response) goahttp.Decoder, restoreB
 // BuildBlockRequest instantiates a HTTP request object with method and path
 // set to call the "users" service "Block" endpoint
 func (c *Client) BuildBlockRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: BlockUsersPath()}
+	var (
+		blockingUserID string
+	)
+	{
+		p, ok := v.(*users.BlockPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Block", "*users.BlockPayload", v)
+		}
+		blockingUserID = p.BlockingUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: BlockUsersPath(blockingUserID)}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Block", u.String(), err)
@@ -1033,7 +1049,19 @@ func DecodeBlockResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 // BuildUnblockRequest instantiates a HTTP request object with method and path
 // set to call the "users" service "Unblock" endpoint
 func (c *Client) BuildUnblockRequest(ctx context.Context, v any) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnblockUsersPath()}
+	var (
+		blockingUserID string
+		blockedUserID  string
+	)
+	{
+		p, ok := v.(*users.UnblockPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("users", "Unblock", "*users.UnblockPayload", v)
+		}
+		blockingUserID = p.BlockingUserID
+		blockedUserID = p.BlockedUserID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UnblockUsersPath(blockingUserID, blockedUserID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("users", "Unblock", u.String(), err)
@@ -1043,22 +1071,6 @@ func (c *Client) BuildUnblockRequest(ctx context.Context, v any) (*http.Request,
 	}
 
 	return req, nil
-}
-
-// EncodeUnblockRequest returns an encoder for requests sent to the users
-// Unblock server.
-func EncodeUnblockRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, any) error {
-	return func(req *http.Request, v any) error {
-		p, ok := v.(*users.UnblockPayload)
-		if !ok {
-			return goahttp.ErrInvalidType("users", "Unblock", "*users.UnblockPayload", v)
-		}
-		body := NewUnblockRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("users", "Unblock", err)
-		}
-		return nil
-	}
 }
 
 // DecodeUnblockResponse returns a decoder for responses returned by the users

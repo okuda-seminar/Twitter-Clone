@@ -78,8 +78,8 @@ type FindUserByIDPayload struct {
 
 // FollowPayload is the payload type of the users service Follow method.
 type FollowPayload struct {
-	FollowerID string
-	FolloweeID string
+	FollowingUserID string
+	FollowedUserID  string
 }
 
 // GetFollowersPayload is the payload type of the users service GetFollowers
@@ -108,8 +108,8 @@ type UnblockPayload struct {
 
 // UnfollowPayload is the payload type of the users service Unfollow method.
 type UnfollowPayload struct {
-	FollowerID string
-	FolloweeID string
+	FollowingUserID string
+	FollowedUserID  string
 }
 
 // UnmutePayload is the payload type of the users service Unmute method.

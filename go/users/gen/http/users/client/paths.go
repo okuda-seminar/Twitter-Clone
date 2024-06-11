@@ -17,8 +17,8 @@ func CreateUserUsersPath() string {
 }
 
 // DeleteUserUsersPath returns the URL path to the users service DeleteUser HTTP endpoint.
-func DeleteUserUsersPath() string {
-	return "/api/users"
+func DeleteUserUsersPath(id string) string {
+	return fmt.Sprintf("/api/users/%v", id)
 }
 
 // FindUserByIDUsersPath returns the URL path to the users service FindUserByID HTTP endpoint.
@@ -37,13 +37,13 @@ func UpdateBioUsersPath(id string) string {
 }
 
 // FollowUsersPath returns the URL path to the users service Follow HTTP endpoint.
-func FollowUsersPath() string {
-	return "/api/users/follow"
+func FollowUsersPath(followingUserID string) string {
+	return fmt.Sprintf("/api/users/%v/follow", followingUserID)
 }
 
 // UnfollowUsersPath returns the URL path to the users service Unfollow HTTP endpoint.
-func UnfollowUsersPath() string {
-	return "/api/users/follow"
+func UnfollowUsersPath(followingUserID string, followedUserID string) string {
+	return fmt.Sprintf("/api/users/%v/follow/%v", followingUserID, followedUserID)
 }
 
 // GetFollowersUsersPath returns the URL path to the users service GetFollowers HTTP endpoint.
@@ -57,21 +57,21 @@ func GetFollowingsUsersPath(id string) string {
 }
 
 // MuteUsersPath returns the URL path to the users service Mute HTTP endpoint.
-func MuteUsersPath() string {
-	return "/api/users/mute"
+func MuteUsersPath(mutingUserID string) string {
+	return fmt.Sprintf("/api/users/%v/mute", mutingUserID)
 }
 
 // UnmuteUsersPath returns the URL path to the users service Unmute HTTP endpoint.
-func UnmuteUsersPath() string {
-	return "/api/users/mute"
+func UnmuteUsersPath(mutingUserID string, mutedUserID string) string {
+	return fmt.Sprintf("/api/users/%v/mute/%v", mutingUserID, mutedUserID)
 }
 
 // BlockUsersPath returns the URL path to the users service Block HTTP endpoint.
-func BlockUsersPath() string {
-	return "/api/users/block"
+func BlockUsersPath(blockingUserID string) string {
+	return fmt.Sprintf("/api/users/%v/block", blockingUserID)
 }
 
 // UnblockUsersPath returns the URL path to the users service Unblock HTTP endpoint.
-func UnblockUsersPath() string {
-	return "/api/users/block"
+func UnblockUsersPath(blockingUserID string, blockedUserID string) string {
+	return fmt.Sprintf("/api/users/%v/block/%v", blockingUserID, blockedUserID)
 }

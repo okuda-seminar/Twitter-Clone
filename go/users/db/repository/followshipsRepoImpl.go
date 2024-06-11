@@ -16,9 +16,10 @@ func NewFollowshipsRepoImpl(db *sql.DB) FollowshipsRepo {
 }
 
 func (r *followshipsRepoImpl) CreateFollowship(
-	ctx context.Context, follower_id, followee_id uuid.UUID) error {
-	query := "INSERT INTO followships (follower_id, followee_id) VALUES ($1, $2)"
-	_, err := r.db.ExecContext(ctx, query, follower_id, followee_id)
+	ctx context.Context, followed_user_id, following_user_id uuid.UUID,
+) error {
+	query := "INSERT INTO followships (followed_user_id, following_user_id) VALUES ($1, $2)"
+	_, err := r.db.ExecContext(ctx, query, followed_user_id, following_user_id)
 	if err != nil {
 		return err
 	}
@@ -26,9 +27,10 @@ func (r *followshipsRepoImpl) CreateFollowship(
 }
 
 func (r *followshipsRepoImpl) DeleteFollowship(
-	ctx context.Context, follower_id, followee_id uuid.UUID) error {
-	query := "DELETE FROM followships WHERE follower_id = $1 and followee_id = $2"
-	_, err := r.db.ExecContext(ctx, query, follower_id, followee_id)
+	ctx context.Context, followed_user_id, following_user_id uuid.UUID,
+) error {
+	query := "DELETE FROM followships WHERE followed_user_id = $1 and following_user_id = $2"
+	_, err := r.db.ExecContext(ctx, query, followed_user_id, following_user_id)
 	if err != nil {
 		return err
 	}

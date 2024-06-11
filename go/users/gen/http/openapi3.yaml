@@ -7,34 +7,6 @@ servers:
     - url: http://0.0.0.0:80/api/users
 paths:
     /api/users:
-        delete:
-            tags:
-                - users
-            summary: DeleteUser users
-            operationId: users#DeleteUser
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/DeleteUserRequestBody'
-                        example:
-                            id: 5387eca1-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                "404":
-                    description: 'NotFound: Not Found response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
         post:
             tags:
                 - users
@@ -60,7 +32,7 @@ paths:
                                 bio: Cumque quas est non laboriosam nam.
                                 created_at: "1986-11-15T05:30:01Z"
                                 display_name: Omnis voluptates nulla earum dolor in ducimus.
-                                id: 538788ba-261a-11ef-b69d-0242ac120003
+                                id: 86a7c2ad-27ea-11ef-8ab2-0242ac120003
                                 updated_at: "1994-09-19T08:32:51Z"
                                 username: Pariatur et magni ea.
                 "400":
@@ -69,7 +41,164 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
+    /api/users/{blocking_user_id}/block:
+        post:
+            tags:
+                - users
+            summary: Block users
+            operationId: users#Block
+            parameters:
+                - name: blocking_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a99b9a-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a99c78-27ea-11ef-8ab2-0242ac120003
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BlockRequestBody'
+                        example:
+                            blocked_user_id: 86a8f8b2-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/{blocking_user_id}/block/{blocked_user_id}:
+        delete:
+            tags:
+                - users
+            summary: Unblock users
+            operationId: users#Unblock
+            parameters:
+                - name: blocking_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a99d97-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a99e6b-27ea-11ef-8ab2-0242ac120003
+                - name: blocked_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a99f45-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a9a019-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/{following_user_id}/follow:
+        post:
+            tags:
+                - users
+            summary: Follow users
+            operationId: users#Follow
+            parameters:
+                - name: following_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a96141-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a96656-27ea-11ef-8ab2-0242ac120003
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FollowRequestBody'
+                        example:
+                            followed_user_id: 86a86a0d-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/{following_user_id}/follow/{followed_user_id}:
+        delete:
+            tags:
+                - users
+            summary: Unfollow users
+            operationId: users#Unfollow
+            parameters:
+                - name: following_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a96880-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a969f5-27ea-11ef-8ab2-0242ac120003
+                - name: followed_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a985fc-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a989ac-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
     /api/users/{id}:
+        delete:
+            tags:
+                - users
+            summary: DeleteUser users
+            operationId: users#DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a958af-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a95a0e-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
         get:
             tags:
                 - users
@@ -81,9 +210,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 53895319-261a-11ef-b69d-0242ac120003
+                    example: 86a95b4e-27ea-11ef-8ab2-0242ac120003
                     format: uuid
-                  example: 538953eb-261a-11ef-b69d-0242ac120003
+                  example: 86a95c21-27ea-11ef-8ab2-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -92,12 +221,12 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Ab earum cumque sint.
-                                created_at: "1996-10-31T18:31:31Z"
-                                display_name: Temporibus labore sed sit ratione optio suscipit.
-                                id: 53880448-261a-11ef-b69d-0242ac120003
-                                updated_at: "2014-04-19T23:50:37Z"
-                                username: Tenetur fugit nisi rerum.
+                                bio: Atque quibusdam et perspiciatis culpa repellendus.
+                                created_at: "2002-10-05T06:27:50Z"
+                                display_name: Maxime consectetur exercitationem laudantium.
+                                id: 86a81f60-27ea-11ef-8ab2-0242ac120003
+                                updated_at: "2009-07-03T09:49:10Z"
+                                username: Ratione harum.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -116,9 +245,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 53895751-261a-11ef-b69d-0242ac120003
+                    example: 86a95f40-27ea-11ef-8ab2-0242ac120003
                     format: uuid
-                  example: 53895828-261a-11ef-b69d-0242ac120003
+                  example: 86a9601a-27ea-11ef-8ab2-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -126,7 +255,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateBioRequestBody'
                         example:
-                            bio: Molestias fugit quod nemo.
+                            bio: Expedita dolor suscipit deleniti ab sit laudantium.
             responses:
                 "200":
                     description: OK response.
@@ -154,9 +283,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 53895992-261a-11ef-b69d-0242ac120003
+                    example: 86a9906a-27ea-11ef-8ab2-0242ac120003
                     format: uuid
-                  example: 53895a7b-261a-11ef-b69d-0242ac120003
+                  example: 86a9918f-27ea-11ef-8ab2-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -167,49 +296,43 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Accusamus officiis.
-                                      created_at: "2003-07-22T15:49:02Z"
-                                      display_name: Et quidem.
-                                      id: 53884e89-261a-11ef-b69d-0242ac120003
-                                      updated_at: "1984-11-29T04:45:28Z"
-                                      username: Similique labore est.
-                                    - bio: Accusamus officiis.
-                                      created_at: "2003-07-22T15:49:02Z"
-                                      display_name: Et quidem.
-                                      id: 53884e89-261a-11ef-b69d-0242ac120003
-                                      updated_at: "1984-11-29T04:45:28Z"
-                                      username: Similique labore est.
-                                    - bio: Accusamus officiis.
-                                      created_at: "2003-07-22T15:49:02Z"
-                                      display_name: Et quidem.
-                                      id: 53884e89-261a-11ef-b69d-0242ac120003
-                                      updated_at: "1984-11-29T04:45:28Z"
-                                      username: Similique labore est.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
                             example:
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -228,9 +351,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 53895b80-261a-11ef-b69d-0242ac120003
+                    example: 86a9930a-27ea-11ef-8ab2-0242ac120003
                     format: uuid
-                  example: 53895c51-261a-11ef-b69d-0242ac120003
+                  example: 86a993ec-27ea-11ef-8ab2-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -241,31 +364,43 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Accusamus officiis.
-                                      created_at: "2003-07-22T15:49:02Z"
-                                      display_name: Et quidem.
-                                      id: 53884e89-261a-11ef-b69d-0242ac120003
-                                      updated_at: "1984-11-29T04:45:28Z"
-                                      username: Similique labore est.
-                                    - bio: Accusamus officiis.
-                                      created_at: "2003-07-22T15:49:02Z"
-                                      display_name: Et quidem.
-                                      id: 53884e89-261a-11ef-b69d-0242ac120003
-                                      updated_at: "1984-11-29T04:45:28Z"
-                                      username: Similique labore est.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
+                                    - bio: Debitis similique rerum ea voluptates.
+                                      created_at: "1984-03-13T05:48:51Z"
+                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                      id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                      updated_at: "1989-10-13T14:05:08Z"
+                                      username: Ea ab dolor.
                             example:
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
-                                - bio: Accusamus officiis.
-                                  created_at: "2003-07-22T15:49:02Z"
-                                  display_name: Et quidem.
-                                  id: 53884e89-261a-11ef-b69d-0242ac120003
-                                  updated_at: "1984-11-29T04:45:28Z"
-                                  username: Similique labore est.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
+                                - bio: Debitis similique rerum ea voluptates.
+                                  created_at: "1984-03-13T05:48:51Z"
+                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
+                                  id: 86a886a6-27ea-11ef-8ab2-0242ac120003
+                                  updated_at: "1989-10-13T14:05:08Z"
+                                  username: Ea ab dolor.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -284,9 +419,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 538954f9-261a-11ef-b69d-0242ac120003
+                    example: 86a95d36-27ea-11ef-8ab2-0242ac120003
                     format: uuid
-                  example: 538955cb-261a-11ef-b69d-0242ac120003
+                  example: 86a95e1c-27ea-11ef-8ab2-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -294,7 +429,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/UpdateUsernameRequestBody'
                         example:
-                            username: Odio quis assumenda voluptate sit incidunt.
+                            username: Nihil molestias saepe ipsam debitis illo ullam.
             responses:
                 "200":
                     description: OK response.
@@ -310,129 +445,21 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/users/block:
-        delete:
-            tags:
-                - users
-            summary: Unblock users
-            operationId: users#Unblock
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BlockRequestBody'
-                        example:
-                            blocked_user_id: 5388c713-261a-11ef-b69d-0242ac120003
-                            blocking_user_id: 5388c7df-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-        post:
-            tags:
-                - users
-            summary: Block users
-            operationId: users#Block
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/BlockRequestBody'
-                        example:
-                            blocked_user_id: 5388bac0-261a-11ef-b69d-0242ac120003
-                            blocking_user_id: 5388bbb5-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-    /api/users/follow:
-        delete:
-            tags:
-                - users
-            summary: Unfollow users
-            operationId: users#Unfollow
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/FollowRequestBody'
-                        example:
-                            followee_id: 53883fc2-261a-11ef-b69d-0242ac120003
-                            follower_id: 53883ef9-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-        post:
-            tags:
-                - users
-            summary: Follow users
-            operationId: users#Follow
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/FollowRequestBody'
-                        example:
-                            followee_id: 53883465-261a-11ef-b69d-0242ac120003
-                            follower_id: 5388338f-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-    /api/users/mute:
-        delete:
-            tags:
-                - users
-            summary: Unmute users
-            operationId: users#Unmute
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MuteRequestBody'
-                        example:
-                            muted_user_id: 5388ae5c-261a-11ef-b69d-0242ac120003
-                            muting_user_id: 5388af31-261a-11ef-b69d-0242ac120003
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
+    /api/users/{muting_user_id}/mute:
         post:
             tags:
                 - users
             summary: Mute users
             operationId: users#Mute
+            parameters:
+                - name: muting_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a99514-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a9969d-27ea-11ef-8ab2-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -440,8 +467,39 @@ paths:
                         schema:
                             $ref: '#/components/schemas/MuteRequestBody'
                         example:
-                            muted_user_id: 538877e2-261a-11ef-b69d-0242ac120003
-                            muting_user_id: 5388791e-261a-11ef-b69d-0242ac120003
+                            muted_user_id: 86a8a487-27ea-11ef-8ab2-0242ac120003
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/users/{muting_user_id}/mute/{muted_user_id}:
+        delete:
+            tags:
+                - users
+            summary: Unmute users
+            operationId: users#Unmute
+            parameters:
+                - name: muting_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a997e7-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a998bf-27ea-11ef-8ab2-0242ac120003
+                - name: muted_user_id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                    example: 86a99996-27ea-11ef-8ab2-0242ac120003
+                    format: uuid
+                  example: 86a99a75-27ea-11ef-8ab2-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -467,51 +525,34 @@ components:
             properties:
                 blocked_user_id:
                     type: string
-                    example: 53894ebf-261a-11ef-b69d-0242ac120003
-                    format: uuid
-                blocking_user_id:
-                    type: string
-                    example: 53894f93-261a-11ef-b69d-0242ac120003
+                    example: 86a9561b-27ea-11ef-8ab2-0242ac120003
                     format: uuid
             example:
-                blocked_user_id: 5389505f-261a-11ef-b69d-0242ac120003
-                blocking_user_id: 53895124-261a-11ef-b69d-0242ac120003
+                blocked_user_id: 86a956f1-27ea-11ef-8ab2-0242ac120003
             required:
                 - blocked_user_id
-                - blocking_user_id
         CreateUserRequestBody:
             type: object
             properties:
                 display_name:
                     type: string
-                    example: Omnis mollitia tenetur corporis quis.
+                    example: Nostrum quae voluptatem et molestias repellendus.
                 username:
                     type: string
-                    example: Debitis doloribus et.
+                    example: Quam commodi.
             example:
-                display_name: Voluptatibus eos eligendi.
-                username: Consequatur explicabo.
+                display_name: Id sunt ducimus beatae at nesciunt.
+                username: Nobis ipsa tempora id.
             required:
                 - username
                 - display_name
-        DeleteUserRequestBody:
-            type: object
-            properties:
-                id:
-                    type: string
-                    example: 538944b5-261a-11ef-b69d-0242ac120003
-                    format: uuid
-            example:
-                id: 5389458e-261a-11ef-b69d-0242ac120003
-            required:
-                - id
         Error:
             type: object
             properties:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: true
+                    example: false
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -527,7 +568,7 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: false
+                    example: true
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
@@ -537,8 +578,8 @@ components:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
-                timeout: false
+                temporary: false
+                timeout: true
             required:
                 - name
                 - id
@@ -549,45 +590,33 @@ components:
         FollowRequestBody:
             type: object
             properties:
-                followee_id:
+                followed_user_id:
                     type: string
-                    example: 53894817-261a-11ef-b69d-0242ac120003
-                    format: uuid
-                follower_id:
-                    type: string
-                    example: 5389473d-261a-11ef-b69d-0242ac120003
+                    example: 86a951cc-27ea-11ef-8ab2-0242ac120003
                     format: uuid
             example:
-                followee_id: 538949ba-261a-11ef-b69d-0242ac120003
-                follower_id: 538948ee-261a-11ef-b69d-0242ac120003
+                followed_user_id: 86a95297-27ea-11ef-8ab2-0242ac120003
             required:
-                - follower_id
-                - followee_id
+                - followed_user_id
         MuteRequestBody:
             type: object
             properties:
                 muted_user_id:
                     type: string
-                    example: 53894b43-261a-11ef-b69d-0242ac120003
-                    format: uuid
-                muting_user_id:
-                    type: string
-                    example: 53894c0c-261a-11ef-b69d-0242ac120003
+                    example: 86a95430-27ea-11ef-8ab2-0242ac120003
                     format: uuid
             example:
-                muted_user_id: 53894cdd-261a-11ef-b69d-0242ac120003
-                muting_user_id: 53894daa-261a-11ef-b69d-0242ac120003
+                muted_user_id: 86a95505-27ea-11ef-8ab2-0242ac120003
             required:
                 - muted_user_id
-                - muting_user_id
         UpdateBioRequestBody:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Assumenda amet.
+                    example: Id magni dicta.
             example:
-                bio: Et maiores omnis.
+                bio: Ut nemo nostrum facilis deleniti.
             required:
                 - bio
         UpdateUsernameRequestBody:
@@ -595,9 +624,9 @@ components:
             properties:
                 username:
                     type: string
-                    example: Magni maiores excepturi vel.
+                    example: Non vel suscipit.
             example:
-                username: Et enim recusandae consequatur illum maxime.
+                username: Dolor voluptatum pariatur.
             required:
                 - username
         User:
@@ -605,32 +634,32 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Unde quis unde.
+                    example: Rerum molestiae quibusdam.
                 created_at:
                     type: string
-                    example: "1976-12-26T02:44:28Z"
+                    example: "1988-07-14T15:44:13Z"
                     format: date-time
                 display_name:
                     type: string
-                    example: Itaque quam.
+                    example: Iure vitae et dolores iusto.
                 id:
                     type: string
-                    example: 53893ed5-261a-11ef-b69d-0242ac120003
+                    example: 86a94bd1-27ea-11ef-8ab2-0242ac120003
                     format: uuid
                 updated_at:
                     type: string
-                    example: "2015-07-18T10:15:29Z"
+                    example: "1995-03-15T00:25:50Z"
                     format: date-time
                 username:
                     type: string
-                    example: Nesciunt quod consequuntur illo placeat veritatis.
+                    example: Iste nostrum eius deserunt sint nesciunt.
             example:
-                bio: Velit inventore sit.
-                created_at: "1987-07-28T01:02:22Z"
-                display_name: Mollitia consequatur minima et.
-                id: 538941bf-261a-11ef-b69d-0242ac120003
-                updated_at: "2008-10-14T03:56:40Z"
-                username: Dolor qui nulla.
+                bio: Voluptatum odio quisquam hic impedit odit.
+                created_at: "1985-04-23T08:06:32Z"
+                display_name: Sunt distinctio.
+                id: 86a94e59-27ea-11ef-8ab2-0242ac120003
+                updated_at: "1984-04-06T12:55:22Z"
+                username: Vero molestiae ea quos nulla suscipit qui.
             required:
                 - id
                 - username

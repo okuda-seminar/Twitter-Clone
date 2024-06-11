@@ -50,8 +50,8 @@ func ParseEndpoint(
 		usersCreateUserFlags    = flag.NewFlagSet("create-user", flag.ExitOnError)
 		usersCreateUserBodyFlag = usersCreateUserFlags.String("body", "REQUIRED", "")
 
-		usersDeleteUserFlags    = flag.NewFlagSet("delete-user", flag.ExitOnError)
-		usersDeleteUserBodyFlag = usersDeleteUserFlags.String("body", "REQUIRED", "")
+		usersDeleteUserFlags  = flag.NewFlagSet("delete-user", flag.ExitOnError)
+		usersDeleteUserIDFlag = usersDeleteUserFlags.String("id", "REQUIRED", "")
 
 		usersFindUserByIDFlags  = flag.NewFlagSet("find-user-by-id", flag.ExitOnError)
 		usersFindUserByIDIDFlag = usersFindUserByIDFlags.String("id", "REQUIRED", "")
@@ -64,11 +64,13 @@ func ParseEndpoint(
 		usersUpdateBioBodyFlag = usersUpdateBioFlags.String("body", "REQUIRED", "")
 		usersUpdateBioIDFlag   = usersUpdateBioFlags.String("id", "REQUIRED", "")
 
-		usersFollowFlags    = flag.NewFlagSet("follow", flag.ExitOnError)
-		usersFollowBodyFlag = usersFollowFlags.String("body", "REQUIRED", "")
+		usersFollowFlags               = flag.NewFlagSet("follow", flag.ExitOnError)
+		usersFollowBodyFlag            = usersFollowFlags.String("body", "REQUIRED", "")
+		usersFollowFollowingUserIDFlag = usersFollowFlags.String("following-user-id", "REQUIRED", "")
 
-		usersUnfollowFlags    = flag.NewFlagSet("unfollow", flag.ExitOnError)
-		usersUnfollowBodyFlag = usersUnfollowFlags.String("body", "REQUIRED", "")
+		usersUnfollowFlags               = flag.NewFlagSet("unfollow", flag.ExitOnError)
+		usersUnfollowFollowingUserIDFlag = usersUnfollowFlags.String("following-user-id", "REQUIRED", "")
+		usersUnfollowFollowedUserIDFlag  = usersUnfollowFlags.String("followed-user-id", "REQUIRED", "")
 
 		usersGetFollowersFlags  = flag.NewFlagSet("get-followers", flag.ExitOnError)
 		usersGetFollowersIDFlag = usersGetFollowersFlags.String("id", "REQUIRED", "")
@@ -76,17 +78,21 @@ func ParseEndpoint(
 		usersGetFollowingsFlags  = flag.NewFlagSet("get-followings", flag.ExitOnError)
 		usersGetFollowingsIDFlag = usersGetFollowingsFlags.String("id", "REQUIRED", "")
 
-		usersMuteFlags    = flag.NewFlagSet("mute", flag.ExitOnError)
-		usersMuteBodyFlag = usersMuteFlags.String("body", "REQUIRED", "")
+		usersMuteFlags            = flag.NewFlagSet("mute", flag.ExitOnError)
+		usersMuteBodyFlag         = usersMuteFlags.String("body", "REQUIRED", "")
+		usersMuteMutingUserIDFlag = usersMuteFlags.String("muting-user-id", "REQUIRED", "")
 
-		usersUnmuteFlags    = flag.NewFlagSet("unmute", flag.ExitOnError)
-		usersUnmuteBodyFlag = usersUnmuteFlags.String("body", "REQUIRED", "")
+		usersUnmuteFlags            = flag.NewFlagSet("unmute", flag.ExitOnError)
+		usersUnmuteMutingUserIDFlag = usersUnmuteFlags.String("muting-user-id", "REQUIRED", "")
+		usersUnmuteMutedUserIDFlag  = usersUnmuteFlags.String("muted-user-id", "REQUIRED", "")
 
-		usersBlockFlags    = flag.NewFlagSet("block", flag.ExitOnError)
-		usersBlockBodyFlag = usersBlockFlags.String("body", "REQUIRED", "")
+		usersBlockFlags              = flag.NewFlagSet("block", flag.ExitOnError)
+		usersBlockBodyFlag           = usersBlockFlags.String("body", "REQUIRED", "")
+		usersBlockBlockingUserIDFlag = usersBlockFlags.String("blocking-user-id", "REQUIRED", "")
 
-		usersUnblockFlags    = flag.NewFlagSet("unblock", flag.ExitOnError)
-		usersUnblockBodyFlag = usersUnblockFlags.String("body", "REQUIRED", "")
+		usersUnblockFlags              = flag.NewFlagSet("unblock", flag.ExitOnError)
+		usersUnblockBlockingUserIDFlag = usersUnblockFlags.String("blocking-user-id", "REQUIRED", "")
+		usersUnblockBlockedUserIDFlag  = usersUnblockFlags.String("blocked-user-id", "REQUIRED", "")
 	)
 	usersFlags.Usage = usersUsage
 	usersCreateUserFlags.Usage = usersCreateUserUsage
@@ -206,7 +212,7 @@ func ParseEndpoint(
 				data, err = usersc.BuildCreateUserPayload(*usersCreateUserBodyFlag)
 			case "delete-user":
 				endpoint = c.DeleteUser()
-				data, err = usersc.BuildDeleteUserPayload(*usersDeleteUserBodyFlag)
+				data, err = usersc.BuildDeleteUserPayload(*usersDeleteUserIDFlag)
 			case "find-user-by-id":
 				endpoint = c.FindUserByID()
 				data, err = usersc.BuildFindUserByIDPayload(*usersFindUserByIDIDFlag)
@@ -218,10 +224,10 @@ func ParseEndpoint(
 				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioIDFlag)
 			case "follow":
 				endpoint = c.Follow()
-				data, err = usersc.BuildFollowPayload(*usersFollowBodyFlag)
+				data, err = usersc.BuildFollowPayload(*usersFollowBodyFlag, *usersFollowFollowingUserIDFlag)
 			case "unfollow":
 				endpoint = c.Unfollow()
-				data, err = usersc.BuildUnfollowPayload(*usersUnfollowBodyFlag)
+				data, err = usersc.BuildUnfollowPayload(*usersUnfollowFollowingUserIDFlag, *usersUnfollowFollowedUserIDFlag)
 			case "get-followers":
 				endpoint = c.GetFollowers()
 				data, err = usersc.BuildGetFollowersPayload(*usersGetFollowersIDFlag)
@@ -230,16 +236,16 @@ func ParseEndpoint(
 				data, err = usersc.BuildGetFollowingsPayload(*usersGetFollowingsIDFlag)
 			case "mute":
 				endpoint = c.Mute()
-				data, err = usersc.BuildMutePayload(*usersMuteBodyFlag)
+				data, err = usersc.BuildMutePayload(*usersMuteBodyFlag, *usersMuteMutingUserIDFlag)
 			case "unmute":
 				endpoint = c.Unmute()
-				data, err = usersc.BuildUnmutePayload(*usersUnmuteBodyFlag)
+				data, err = usersc.BuildUnmutePayload(*usersUnmuteMutingUserIDFlag, *usersUnmuteMutedUserIDFlag)
 			case "block":
 				endpoint = c.Block()
-				data, err = usersc.BuildBlockPayload(*usersBlockBodyFlag)
+				data, err = usersc.BuildBlockPayload(*usersBlockBodyFlag, *usersBlockBlockingUserIDFlag)
 			case "unblock":
 				endpoint = c.Unblock()
-				data, err = usersc.BuildUnblockPayload(*usersUnblockBodyFlag)
+				data, err = usersc.BuildUnblockPayload(*usersUnblockBlockingUserIDFlag, *usersUnblockBlockedUserIDFlag)
 			}
 		}
 	}
@@ -290,15 +296,13 @@ Example:
 }
 
 func usersDeleteUserUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users delete-user -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users delete-user -id STRING
 
 DeleteUser implements DeleteUser.
-    -body JSON: 
+    -id STRING: 
 
 Example:
-    %[1]s users delete-user --body '{
-      "id": "5387eca1-261a-11ef-b69d-0242ac120003"
-   }'
+    %[1]s users delete-user --id "86a7d425-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
@@ -309,7 +313,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "5387ffda-261a-11ef-b69d-0242ac120003"
+    %[1]s users find-user-by-id --id "86a81942-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
@@ -322,8 +326,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Odio quis assumenda voluptate sit incidunt."
-   }' --id "5388148b-261a-11ef-b69d-0242ac120003"
+      "username": "Nihil molestias saepe ipsam debitis illo ullam."
+   }' --id "86a8469b-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
@@ -336,36 +340,34 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Molestias fugit quod nemo."
-   }' --id "53882511-261a-11ef-b69d-0242ac120003"
+      "bio": "Expedita dolor suscipit deleniti ab sit laudantium."
+   }' --id "86a859ef-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersFollowUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users follow -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users follow -body JSON -following-user-id STRING
 
 Follow implements Follow.
     -body JSON: 
+    -following-user-id STRING: 
 
 Example:
     %[1]s users follow --body '{
-      "followee_id": "53883465-261a-11ef-b69d-0242ac120003",
-      "follower_id": "5388338f-261a-11ef-b69d-0242ac120003"
-   }'
+      "followed_user_id": "86a86a0d-27ea-11ef-8ab2-0242ac120003"
+   }' --following-user-id "86a86c28-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersUnfollowUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unfollow -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unfollow -following-user-id STRING -followed-user-id STRING
 
 Unfollow implements Unfollow.
-    -body JSON: 
+    -following-user-id STRING: 
+    -followed-user-id STRING: 
 
 Example:
-    %[1]s users unfollow --body '{
-      "followee_id": "53883fc2-261a-11ef-b69d-0242ac120003",
-      "follower_id": "53883ef9-261a-11ef-b69d-0242ac120003"
-   }'
+    %[1]s users unfollow --following-user-id "86a87935-27ea-11ef-8ab2-0242ac120003" --followed-user-id "86a87a46-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
@@ -376,7 +378,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "53884bca-261a-11ef-b69d-0242ac120003"
+    %[1]s users get-followers --id "86a883b8-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
@@ -387,62 +389,58 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "53885c48-261a-11ef-b69d-0242ac120003"
+    %[1]s users get-followings --id "86a89591-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersMuteUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users mute -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users mute -body JSON -muting-user-id STRING
 
 Mute implements Mute.
     -body JSON: 
+    -muting-user-id STRING: 
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "538877e2-261a-11ef-b69d-0242ac120003",
-      "muting_user_id": "5388791e-261a-11ef-b69d-0242ac120003"
-   }'
+      "muted_user_id": "86a8a487-27ea-11ef-8ab2-0242ac120003"
+   }' --muting-user-id "86a8a67b-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersUnmuteUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unmute -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unmute -muting-user-id STRING -muted-user-id STRING
 
 Unmute implements Unmute.
-    -body JSON: 
+    -muting-user-id STRING: 
+    -muted-user-id STRING: 
 
 Example:
-    %[1]s users unmute --body '{
-      "muted_user_id": "5388ae5c-261a-11ef-b69d-0242ac120003",
-      "muting_user_id": "5388af31-261a-11ef-b69d-0242ac120003"
-   }'
+    %[1]s users unmute --muting-user-id "86a8e626-27ea-11ef-8ab2-0242ac120003" --muted-user-id "86a8e90f-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersBlockUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users block -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users block -body JSON -blocking-user-id STRING
 
 Block implements Block.
     -body JSON: 
+    -blocking-user-id STRING: 
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "5388bac0-261a-11ef-b69d-0242ac120003",
-      "blocking_user_id": "5388bbb5-261a-11ef-b69d-0242ac120003"
-   }'
+      "blocked_user_id": "86a8f8b2-27ea-11ef-8ab2-0242ac120003"
+   }' --blocking-user-id "86a8fae5-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }
 
 func usersUnblockUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unblock -body JSON
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users unblock -blocking-user-id STRING -blocked-user-id STRING
 
 Unblock implements Unblock.
-    -body JSON: 
+    -blocking-user-id STRING: 
+    -blocked-user-id STRING: 
 
 Example:
-    %[1]s users unblock --body '{
-      "blocked_user_id": "5388c713-261a-11ef-b69d-0242ac120003",
-      "blocking_user_id": "5388c7df-261a-11ef-b69d-0242ac120003"
-   }'
+    %[1]s users unblock --blocking-user-id "86a90734-27ea-11ef-8ab2-0242ac120003" --blocked-user-id "86a90853-27ea-11ef-8ab2-0242ac120003"
 `, os.Args[0])
 }

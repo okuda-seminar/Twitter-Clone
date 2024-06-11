@@ -20,12 +20,6 @@ type CreateUserRequestBody struct {
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
 }
 
-// DeleteUserRequestBody is the type of the "users" service "DeleteUser"
-// endpoint HTTP request body.
-type DeleteUserRequestBody struct {
-	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-}
-
 // UpdateUsernameRequestBody is the type of the "users" service
 // "UpdateUsername" endpoint HTTP request body.
 type UpdateUsernameRequestBody struct {
@@ -41,43 +35,19 @@ type UpdateBioRequestBody struct {
 // FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
 // request body.
 type FollowRequestBody struct {
-	FollowerID *string `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
-	FolloweeID *string `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
-}
-
-// UnfollowRequestBody is the type of the "users" service "Unfollow" endpoint
-// HTTP request body.
-type UnfollowRequestBody struct {
-	FollowerID *string `form:"follower_id,omitempty" json:"follower_id,omitempty" xml:"follower_id,omitempty"`
-	FolloweeID *string `form:"followee_id,omitempty" json:"followee_id,omitempty" xml:"followee_id,omitempty"`
+	FollowedUserID *string `form:"followed_user_id,omitempty" json:"followed_user_id,omitempty" xml:"followed_user_id,omitempty"`
 }
 
 // MuteRequestBody is the type of the "users" service "Mute" endpoint HTTP
 // request body.
 type MuteRequestBody struct {
-	MutedUserID  *string `form:"muted_user_id,omitempty" json:"muted_user_id,omitempty" xml:"muted_user_id,omitempty"`
-	MutingUserID *string `form:"muting_user_id,omitempty" json:"muting_user_id,omitempty" xml:"muting_user_id,omitempty"`
-}
-
-// UnmuteRequestBody is the type of the "users" service "Unmute" endpoint HTTP
-// request body.
-type UnmuteRequestBody struct {
-	MutedUserID  *string `form:"muted_user_id,omitempty" json:"muted_user_id,omitempty" xml:"muted_user_id,omitempty"`
-	MutingUserID *string `form:"muting_user_id,omitempty" json:"muting_user_id,omitempty" xml:"muting_user_id,omitempty"`
+	MutedUserID *string `form:"muted_user_id,omitempty" json:"muted_user_id,omitempty" xml:"muted_user_id,omitempty"`
 }
 
 // BlockRequestBody is the type of the "users" service "Block" endpoint HTTP
 // request body.
 type BlockRequestBody struct {
-	BlockedUserID  *string `form:"blocked_user_id,omitempty" json:"blocked_user_id,omitempty" xml:"blocked_user_id,omitempty"`
-	BlockingUserID *string `form:"blocking_user_id,omitempty" json:"blocking_user_id,omitempty" xml:"blocking_user_id,omitempty"`
-}
-
-// UnblockRequestBody is the type of the "users" service "Unblock" endpoint
-// HTTP request body.
-type UnblockRequestBody struct {
-	BlockedUserID  *string `form:"blocked_user_id,omitempty" json:"blocked_user_id,omitempty" xml:"blocked_user_id,omitempty"`
-	BlockingUserID *string `form:"blocking_user_id,omitempty" json:"blocking_user_id,omitempty" xml:"blocking_user_id,omitempty"`
+	BlockedUserID *string `form:"blocked_user_id,omitempty" json:"blocked_user_id,omitempty" xml:"blocked_user_id,omitempty"`
 }
 
 // CreateUserResponseBody is the type of the "users" service "CreateUser"
@@ -691,10 +661,9 @@ func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload 
 }
 
 // NewDeleteUserPayload builds a users service DeleteUser endpoint payload.
-func NewDeleteUserPayload(body *DeleteUserRequestBody) *users.DeleteUserPayload {
-	v := &users.DeleteUserPayload{
-		ID: *body.ID,
-	}
+func NewDeleteUserPayload(id string) *users.DeleteUserPayload {
+	v := &users.DeleteUserPayload{}
+	v.ID = id
 
 	return v
 }
@@ -729,21 +698,20 @@ func NewUpdateBioPayload(body *UpdateBioRequestBody, id string) *users.UpdateBio
 }
 
 // NewFollowPayload builds a users service Follow endpoint payload.
-func NewFollowPayload(body *FollowRequestBody) *users.FollowPayload {
+func NewFollowPayload(body *FollowRequestBody, followingUserID string) *users.FollowPayload {
 	v := &users.FollowPayload{
-		FollowerID: *body.FollowerID,
-		FolloweeID: *body.FolloweeID,
+		FollowedUserID: *body.FollowedUserID,
 	}
+	v.FollowingUserID = followingUserID
 
 	return v
 }
 
 // NewUnfollowPayload builds a users service Unfollow endpoint payload.
-func NewUnfollowPayload(body *UnfollowRequestBody) *users.UnfollowPayload {
-	v := &users.UnfollowPayload{
-		FollowerID: *body.FollowerID,
-		FolloweeID: *body.FolloweeID,
-	}
+func NewUnfollowPayload(followingUserID string, followedUserID string) *users.UnfollowPayload {
+	v := &users.UnfollowPayload{}
+	v.FollowingUserID = followingUserID
+	v.FollowedUserID = followedUserID
 
 	return v
 }
@@ -766,41 +734,39 @@ func NewGetFollowingsPayload(id string) *users.GetFollowingsPayload {
 }
 
 // NewMutePayload builds a users service Mute endpoint payload.
-func NewMutePayload(body *MuteRequestBody) *users.MutePayload {
+func NewMutePayload(body *MuteRequestBody, mutingUserID string) *users.MutePayload {
 	v := &users.MutePayload{
-		MutedUserID:  *body.MutedUserID,
-		MutingUserID: *body.MutingUserID,
+		MutedUserID: *body.MutedUserID,
 	}
+	v.MutingUserID = mutingUserID
 
 	return v
 }
 
 // NewUnmutePayload builds a users service Unmute endpoint payload.
-func NewUnmutePayload(body *UnmuteRequestBody) *users.UnmutePayload {
-	v := &users.UnmutePayload{
-		MutedUserID:  *body.MutedUserID,
-		MutingUserID: *body.MutingUserID,
-	}
+func NewUnmutePayload(mutingUserID string, mutedUserID string) *users.UnmutePayload {
+	v := &users.UnmutePayload{}
+	v.MutingUserID = mutingUserID
+	v.MutedUserID = mutedUserID
 
 	return v
 }
 
 // NewBlockPayload builds a users service Block endpoint payload.
-func NewBlockPayload(body *BlockRequestBody) *users.BlockPayload {
+func NewBlockPayload(body *BlockRequestBody, blockingUserID string) *users.BlockPayload {
 	v := &users.BlockPayload{
-		BlockedUserID:  *body.BlockedUserID,
-		BlockingUserID: *body.BlockingUserID,
+		BlockedUserID: *body.BlockedUserID,
 	}
+	v.BlockingUserID = blockingUserID
 
 	return v
 }
 
 // NewUnblockPayload builds a users service Unblock endpoint payload.
-func NewUnblockPayload(body *UnblockRequestBody) *users.UnblockPayload {
-	v := &users.UnblockPayload{
-		BlockedUserID:  *body.BlockedUserID,
-		BlockingUserID: *body.BlockingUserID,
-	}
+func NewUnblockPayload(blockingUserID string, blockedUserID string) *users.UnblockPayload {
+	v := &users.UnblockPayload{}
+	v.BlockingUserID = blockingUserID
+	v.BlockedUserID = blockedUserID
 
 	return v
 }
@@ -813,18 +779,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.DisplayName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
-	}
-	return
-}
-
-// ValidateDeleteUserRequestBody runs the validations defined on
-// DeleteUserRequestBody
-func ValidateDeleteUserRequestBody(body *DeleteUserRequestBody) (err error) {
-	if body.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
-	}
-	if body.ID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
 	}
 	return
 }
@@ -849,35 +803,11 @@ func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
 
 // ValidateFollowRequestBody runs the validations defined on FollowRequestBody
 func ValidateFollowRequestBody(body *FollowRequestBody) (err error) {
-	if body.FollowerID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("follower_id", "body"))
+	if body.FollowedUserID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("followed_user_id", "body"))
 	}
-	if body.FolloweeID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
-	}
-	if body.FollowerID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", *body.FollowerID, goa.FormatUUID))
-	}
-	if body.FolloweeID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", *body.FolloweeID, goa.FormatUUID))
-	}
-	return
-}
-
-// ValidateUnfollowRequestBody runs the validations defined on
-// UnfollowRequestBody
-func ValidateUnfollowRequestBody(body *UnfollowRequestBody) (err error) {
-	if body.FollowerID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("follower_id", "body"))
-	}
-	if body.FolloweeID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("followee_id", "body"))
-	}
-	if body.FollowerID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.follower_id", *body.FollowerID, goa.FormatUUID))
-	}
-	if body.FolloweeID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.followee_id", *body.FolloweeID, goa.FormatUUID))
+	if body.FollowedUserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.followed_user_id", *body.FollowedUserID, goa.FormatUUID))
 	}
 	return
 }
@@ -887,31 +817,8 @@ func ValidateMuteRequestBody(body *MuteRequestBody) (err error) {
 	if body.MutedUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("muted_user_id", "body"))
 	}
-	if body.MutingUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
-	}
 	if body.MutedUserID != nil {
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", *body.MutedUserID, goa.FormatUUID))
-	}
-	if body.MutingUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", *body.MutingUserID, goa.FormatUUID))
-	}
-	return
-}
-
-// ValidateUnmuteRequestBody runs the validations defined on UnmuteRequestBody
-func ValidateUnmuteRequestBody(body *UnmuteRequestBody) (err error) {
-	if body.MutedUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("muted_user_id", "body"))
-	}
-	if body.MutingUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("muting_user_id", "body"))
-	}
-	if body.MutedUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", *body.MutedUserID, goa.FormatUUID))
-	}
-	if body.MutingUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.muting_user_id", *body.MutingUserID, goa.FormatUUID))
 	}
 	return
 }
@@ -921,31 +828,8 @@ func ValidateBlockRequestBody(body *BlockRequestBody) (err error) {
 	if body.BlockedUserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("blocked_user_id", "body"))
 	}
-	if body.BlockingUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
-	}
 	if body.BlockedUserID != nil {
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", *body.BlockedUserID, goa.FormatUUID))
-	}
-	if body.BlockingUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", *body.BlockingUserID, goa.FormatUUID))
-	}
-	return
-}
-
-// ValidateUnblockRequestBody runs the validations defined on UnblockRequestBody
-func ValidateUnblockRequestBody(body *UnblockRequestBody) (err error) {
-	if body.BlockedUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("blocked_user_id", "body"))
-	}
-	if body.BlockingUserID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("blocking_user_id", "body"))
-	}
-	if body.BlockedUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", *body.BlockedUserID, goa.FormatUUID))
-	}
-	if body.BlockingUserID != nil {
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocking_user_id", *body.BlockingUserID, goa.FormatUUID))
 	}
 	return
 }
