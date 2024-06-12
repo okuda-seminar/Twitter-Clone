@@ -46,7 +46,7 @@ class AppRootViewController: UIViewController {
   }()
 
   private lazy var sideMenuViewController: SideMenuViewController = {
-    var viewController = SideMenuViewController(currentUser: injectCurrentUser())
+    var viewController = SideMenuViewController(currentUser: InjectCurrentUser())
     viewController.sideMenuViewDelegate = self
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(viewController)
@@ -139,7 +139,7 @@ extension AppRootViewController: SideMenuViewDelegate {
       let selectedViewController = mainRootViewController.selectedViewController
         as? UINavigationController
     else { return }
-    let userProfileViewController = UserProfileViewController(userModel: injectCurrentUser())
+    let userProfileViewController = UserProfileViewController(userModel: InjectCurrentUser())
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 

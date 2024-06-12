@@ -93,7 +93,7 @@ class UserProfileViewController: UIViewController {
   @objc
   private func presentUserProfileIconDetailViewController() {
     let userProfileIconDetailViewController = UserProfileIconDetailViewController(
-      currentUser: injectCurrentUser())
+      currentUser: InjectCurrentUser())
     userProfileIconDetailViewController.modalPresentationStyle = .fullScreen
     navigationController?.delegate = self
     navigationController?.pushViewController(

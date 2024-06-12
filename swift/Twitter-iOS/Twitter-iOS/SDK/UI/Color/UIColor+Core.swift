@@ -12,6 +12,7 @@ private func createCustomUIColor(red: CGFloat, green: CGFloat, blue: CGFloat, al
 extension UIColor {
   // MARK: - Background
   static let brandedLightGrayBackground = createCustomUIColor(red: 236, green: 240, blue: 241)
+  static let brandedLightBlueBackground = createCustomUIColor(red: 231, green: 247, blue: 255)
 
   // MARK: - General
   static let brandedBlue = createCustomUIColor(red: 28, green: 134, blue: 237)

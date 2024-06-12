@@ -11,6 +11,14 @@ class ReplyEditViewController: UIViewController {
     return controller
   }()
 
+  private lazy var keyboardToolBarViewController: KeyboardToolbarViewController = {
+    let viewController = KeyboardToolbarViewController()
+    viewController.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(viewController)
+    viewController.didMove(toParent: self)
+    return viewController
+  }()
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
@@ -18,14 +26,22 @@ class ReplyEditViewController: UIViewController {
 
   private func setUpSubviews() {
     view.addSubview(hostingController.view)
+    view.addSubview(keyboardToolBarViewController.view)
     view.backgroundColor = .systemBackground
 
     let layoutGuide = view.safeAreaLayoutGuide
+    let keyboardLayoutGuide = view.keyboardLayoutGuide
     NSLayoutConstraint.activate([
       hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.bottomAnchor.constraint(
+        equalTo: keyboardToolBarViewController.view.topAnchor, constant: -5),
       hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+
+      keyboardToolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      keyboardToolBarViewController.view.bottomAnchor.constraint(
+        equalTo: keyboardLayoutGuide.topAnchor),
+      keyboardToolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
   }
 }
@@ -44,23 +60,30 @@ struct ReplyEditView: View {
 
     static let deleteButtonText = String(localized: "Delete")
     static let saveDraftButtonText = String(localized: "Save draft")
+
   }
 
   @Environment(\.dismiss) private var dismiss
   @State private var inputText = ""
   @State private var showDismissalConfirmationSheet = false
-  private let currentUser = injectCurrentUser()
+  private let currentUser = InjectCurrentUser()
 
   var body: some View {
-    VStack {
-      Header()
-      Divider()
-      Content()
-    }
-    .padding()
-    .sheet(isPresented: $showDismissalConfirmationSheet) {
-      DismissalConfirmationSheet()
-        .presentationDetents([.height(200), .medium])
+    /// Need to refactor this code with UIKit for some reasons.
+    /// 1. becomeFirstResponder is not supported in SwiftUI natively.
+    /// 2. scrollView isn't respecing height adjustment and toolbar can overlap it.
+    /// 3. Need to wrpa this view with NavigationView unnecessary. Otherwise, the position of toolbar becomes wrong.
+    NavigationView {
+      VStack {
+        Header()
+        Divider()
+        Content()
+      }
+      .padding()
+      .sheet(isPresented: $showDismissalConfirmationSheet) {
+        DismissalConfirmationSheet()
+          .presentationDetents([.height(200), .medium])
+      }
     }
   }
 
@@ -105,47 +128,46 @@ struct ReplyEditView: View {
   private func Content() -> some View {
     ScrollView(.vertical) {
       VStack {
-        HStack(alignment: .top) {
-          LeftSideContent()
-          MainContent()
-          Spacer()
-        }
+        OriginalPostContent()
+        ReplyEditingContent()
       }
     }
   }
 
   @ViewBuilder
-  private func LeftSideContent() -> some View {
-    VStack {
-      originalPostModel.userIcon
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
+  private func OriginalPostContent() -> some View {
+    HStack(alignment: .top) {
+      VStack {
+        originalPostModel.userIcon
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
 
-      HStack {
-        // Need to place dummy Text to draw vertical Divider.
-        Text("")
-        Divider()
-          .background(.gray)
-        Text("")
+        HStack {
+          // Need to place dummy Text to draw vertical Divider.
+          Text("")
+          Divider()
+            .background(.gray)
+          Text("")
+        }
       }
-      // Change height dynamically later.
-      .frame(height: 100)
+      VStack(alignment: .leading) {
+        HStack {
+          Text(originalPostModel.userName)
+          Spacer()
+        }
+        Text(originalPostModel.bodyText)
+      }
+    }
+  }
 
+  @ViewBuilder
+  private func ReplyEditingContent() -> some View {
+    HStack(alignment: .top) {
       Image(uiImage: currentUser.icon)
         .resizable()
         .scaledToFit()
         .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
-    }
-  }
-
-  @ViewBuilder
-  private func MainContent() -> some View {
-    VStack(alignment: .leading) {
-      HStack {
-        Text(originalPostModel.userName)
-      }
-      Text(originalPostModel.bodyText)
 
       TextEditor(text: $inputText)
         .overlay(alignment: .topLeading) {

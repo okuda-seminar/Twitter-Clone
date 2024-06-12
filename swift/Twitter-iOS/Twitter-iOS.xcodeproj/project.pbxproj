@@ -92,6 +92,7 @@
 		65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F482C15D8920020A02E /* DependencyInjection.swift */; };
 		65FD4F4C2C15E1520020A02E /* FollowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4B2C15E1520020A02E /* FollowService.swift */; };
 		65FD4F4E2C1739F30020A02E /* ReplyEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */; };
+		65FD4F502C19D87B0020A02E /* KeyboardToolbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4F2C19D87B0020A02E /* KeyboardToolbarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -201,6 +202,7 @@
 		65FD4F482C15D8920020A02E /* DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyInjection.swift; sourceTree = "<group>"; };
 		65FD4F4B2C15E1520020A02E /* FollowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowService.swift; sourceTree = "<group>"; };
 		65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyEditViewController.swift; sourceTree = "<group>"; };
+		65FD4F4F2C19D87B0020A02E /* KeyboardToolbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolbarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +322,7 @@
 				65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */,
 				656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */,
 				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
+				65FD4F4F2C19D87B0020A02E /* KeyboardToolbarViewController.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */,
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
+				65FD4F502C19D87B0020A02E /* KeyboardToolbarViewController.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				65C6CCAD2C00134B00B0A052 /* NewMessageEditViewController.swift in Sources */,
 				658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */,

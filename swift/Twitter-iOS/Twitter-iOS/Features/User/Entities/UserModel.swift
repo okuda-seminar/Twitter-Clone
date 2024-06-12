@@ -5,18 +5,21 @@ class UserModel: Identifiable {
   let icon: UIImage
   let name: String
   let userName: String
+  let isPrivateAccount: Bool
   let bio: String
   let numOfFollowing: Int
   let numOfFollowers: Int
 
   public init(
-    id: UUID, icon: UIImage, name: String, userName: String, bio: String, numOfFollowing: Int,
+    id: UUID, icon: UIImage, name: String, userName: String, isPrivateAccount: Bool, bio: String,
+    numOfFollowing: Int,
     numOfFollowers: Int
   ) {
     self.id = id
     self.icon = icon
     self.name = name
     self.userName = userName
+    self.isPrivateAccount = isPrivateAccount
     self.bio = bio
     self.numOfFollowing = numOfFollowing
     self.numOfFollowers = numOfFollowers
@@ -29,6 +32,7 @@ func createFakeUser() -> UserModel {
     icon: UIImage(systemName: "apple.logo")!,  // Safe to force unwrap
     name: "Apple",
     userName: "@apple",
+    isPrivateAccount: false,
     bio: "Apple.com",
     numOfFollowing: 1,
     numOfFollowers: 0
@@ -42,6 +46,7 @@ class CurrentUser: UserModel {
     icon: UIImage(systemName: "apple.logo")!,  // Safe to force unwrap
     name: "Apple",
     userName: "@apple",
+    isPrivateAccount: true,
     bio: "Apple.com",
     numOfFollowing: 1,
     numOfFollowers: 0)
@@ -57,12 +62,13 @@ private func createFakeCurrentUser() -> FakeCurrentUser {
     icon: UIImage(systemName: "apple.logo")!,  // Safe to force unwrap
     name: "Apple",
     userName: "@apple",
+    isPrivateAccount: true,
     bio: "Apple.com",
     numOfFollowing: 1,
     numOfFollowers: 0)
 }
 
-func injectCurrentUser() -> CurrentUser {
+func InjectCurrentUser() -> CurrentUser {
   if isRunningUnitTests() {
     return createFakeCurrentUser()
   }
