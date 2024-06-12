@@ -95,8 +95,9 @@ struct ReplyEditView: View {
             .foregroundStyle(Color.white)
             .background(Color(uiColor: .brandedBlue))
             .clipShape(Capsule())
-        })
-        .buttonStyle(.plain)
+        }
+      )
+      .buttonStyle(.plain)
     }
   }
 
@@ -162,7 +163,6 @@ struct ReplyEditView: View {
   private func DismissalConfirmationSheet() -> some View {
     VStack(alignment: .leading) {
       Button(
-        role: .destructive,
         action: {
           dismiss()
         },
@@ -175,6 +175,7 @@ struct ReplyEditView: View {
         }
       )
       .buttonStyle(.plain)
+      .foregroundStyle(Color(uiColor: .systemRed))
       .padding(.bottom)
 
       Button(
