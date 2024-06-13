@@ -19,6 +19,8 @@ class ReplyKeyboardToolbarView: UIView {
   }
 
   private let protectedIcon: UIImageView = {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/276
+    // - Polish protectedIcon insets.
     let view = UIImageView(image: UIImage(systemName: "lock.fill"))
     view.translatesAutoresizingMaskIntoConstraints = false
     view.contentMode = .scaleAspectFit

@@ -724,10 +724,10 @@
 		65FD4F512C1B17A80020A02E /* Reply */ = {
 			isa = PBXGroup;
 			children = (
-				65FD4F4F2C19D87B0020A02E /* ReplyKeyboardToolbarView.swift */,
+				65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */,
 				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
 				65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */,
-				65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */,
+				65FD4F4F2C19D87B0020A02E /* ReplyKeyboardToolbarView.swift */,
 			);
 			path = Reply;
 			sourceTree = "<group>";
