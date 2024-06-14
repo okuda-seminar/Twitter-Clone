@@ -43,7 +43,7 @@ struct HomeTabView: View {
           PostCellView(
             showReplyEditSheet: $showReplyEditSheet,
             showShareSheet: $showShareSheet,
-            userIcon: postModel.userIcon, userName: postModel.userName,
+            userIcon: Image(uiImage: postModel.userIcon), userName: postModel.userName,
             postBody: postModel.bodyText
           )
           .contextMenu(

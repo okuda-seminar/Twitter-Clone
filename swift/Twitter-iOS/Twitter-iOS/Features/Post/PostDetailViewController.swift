@@ -59,7 +59,7 @@ struct PostDetailView: View {
   var body: some View {
     VStack(alignment: .leading) {
       HStack {
-        postModel.userIcon
+        Image(uiImage: postModel.userIcon)
           .resizable()
           .scaledToFit()
           .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)

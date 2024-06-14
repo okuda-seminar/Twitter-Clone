@@ -3,6 +3,8 @@ import UIKit
 
 class ReplyEditViewController: UIViewController {
 
+  public let originalPostModel: PostModel
+
   private lazy var headerView: ReplyHeaderView = {
     let view = ReplyHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -14,7 +16,7 @@ class ReplyEditViewController: UIViewController {
   }()
 
   private lazy var bodyView: ReplyBodyView = {
-    let view = ReplyBodyView()
+    let view = ReplyBodyView(originalUserProfileIcon: originalPostModel.userIcon)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -24,6 +26,15 @@ class ReplyEditViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
+
+  public init(originalPostModel: PostModel) {
+    self.originalPostModel = originalPostModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -63,15 +74,7 @@ extension ReplyEditViewController: UITextViewDelegate {
 }
 
 //struct ReplyEditView: View {
-//  public var originalPostModel: PostModel
 //
-//  private enum LayoutConstant {
-//    static let iconSize: CGFloat = 48.0
-//  }
-//
-//
-//  @Environment(\.dismiss) private var dismiss
-//  @State private var inputText = ""
 //  @State private var showDismissalConfirmationSheet = false
 //  private let currentUser = InjectCurrentUser()
 //
@@ -91,35 +94,6 @@ extension ReplyEditViewController: UITextViewDelegate {
 //        DismissalConfirmationSheet()
 //          .presentationDetents([.height(200), .medium])
 //      }
-//    }
-//  }
-//
-//  @ViewBuilder
-//  private func Content() -> some View {
-//    ScrollView(.vertical) {
-//      VStack {
-//        OriginalPostContent()
-//      }
-//    }
-//  }
-//
-//  @ViewBuilder
-//  private func ReplyEditingContent() -> some View {
-//    HStack(alignment: .top) {
-//      Image(uiImage: currentUser.icon)
-//        .resizable()
-//        .scaledToFit()
-//        .frame(width: LayoutConstant.iconSize, height: LayoutConstant.iconSize)
-//
-//      TextEditor(text: $inputText)
-//        .overlay(alignment: .topLeading) {
-//          if inputText.isEmpty {
-//            Text(LocalizedString.inputPlaceholder)
-//              .allowsHitTesting(false)
-//              .foregroundStyle(Color(uiColor: .brandedLightGrayText))
-//              .padding(8)
-//          }
-//        }
 //    }
 //  }
 //

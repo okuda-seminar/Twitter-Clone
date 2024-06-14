@@ -95,6 +95,7 @@
 		65FD4F502C19D87B0020A02E /* ReplyKeyboardToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F4F2C19D87B0020A02E /* ReplyKeyboardToolbarView.swift */; };
 		65FD4F532C1B17F60020A02E /* ReplyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */; };
 		65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */; };
+		65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +208,7 @@
 		65FD4F4F2C19D87B0020A02E /* ReplyKeyboardToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyKeyboardToolbarView.swift; sourceTree = "<group>"; };
 		65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyHeaderView.swift; sourceTree = "<group>"; };
 		65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBodyView.swift; sourceTree = "<group>"; };
+		65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyOriginalPostView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -728,6 +730,7 @@
 				65FD4F4D2C1739F30020A02E /* ReplyEditViewController.swift */,
 				65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */,
 				65FD4F4F2C19D87B0020A02E /* ReplyKeyboardToolbarView.swift */,
+				65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */,
 			);
 			path = Reply;
 			sourceTree = "<group>";
@@ -930,6 +933,7 @@
 				65C6CCA62BFF5C9500B0A052 /* PostCellView.swift in Sources */,
 				6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */,
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
+				65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */,
 				65F908472BE11E2F00C6C8B3 /* PermissionGuideViewController.swift in Sources */,
 				65FD4F4C2C15E1520020A02E /* FollowService.swift in Sources */,
 				65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */,

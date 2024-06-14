@@ -97,7 +97,7 @@ extension HomeViewController: HomeViewDelegate {
   }
 
   func showReplyEditSheet() {
-    let replyEditViewController = ReplyEditViewController()
+    let replyEditViewController = ReplyEditViewController(originalPostModel: createFakePostModel())
     replyEditViewController.modalPresentationStyle = .fullScreen
     self.present(replyEditViewController, animated: true)
   }
