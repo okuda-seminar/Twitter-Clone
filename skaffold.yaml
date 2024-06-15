@@ -26,7 +26,7 @@ build:
       docker:
         dockerfile: docker/postgres.Dockerfile
     - image: tweets_service
-      context: go/users
+      context: go/tweets
       docker:
         dockerfile: docker/Dockerfile
       sync:
