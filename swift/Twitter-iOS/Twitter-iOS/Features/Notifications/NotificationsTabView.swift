@@ -89,19 +89,20 @@ struct NotificationsTabView: View {
       ScrollView(.horizontal) {
         LazyHStack(spacing: 0) {
           ForEach(tabs) { tab in
-            if tab.id == .all {
+            switch tab.id {
+            case .all:
               NotificationsAllTabView(selectedNotificationModel: $selectedNotificationModel)
                 .frame(width: size.width)
                 .onChange(of: selectedNotificationModel) { _, selectedNotificationModel in
                   guard let selectedNotificationModel else { return }
                   delegate?.didSelectNotification(selectedNotificationModel)
                 }
-            } else if tab.id == .mentions {
+            case .verified:
+              NotificationsVerifiedTabView()
+                .frame(width: size.width)
+            case .mentions:
               NotificationsMentionsTabView()
                 .frame(width: size.width)
-            } else {
-              Text(tab.id.rawValue)
-                .frame(width: size.width, height: 100, alignment: .center)
             }
           }
         }
