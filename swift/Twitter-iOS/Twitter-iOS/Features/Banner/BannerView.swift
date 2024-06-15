@@ -2,7 +2,13 @@ import SwiftUI
 
 struct BannerView: View {
   @Environment(\.dismiss) private var dismiss
-  @ObservedObject var dataSource: BannerViewDataSource
+  @ObservedObject public var dataSource: BannerViewDataSource
+  public var type: BannerType
+
+  public enum BannerType {
+    case TextOnly
+    case TextAndButton
+  }
 
   public var headlineText: String
 
@@ -27,25 +33,9 @@ struct BannerView: View {
       }
       .padding()
 
-      Button(
-        action: {
-          dataSource.isBeingDismissed = true
-        },
-        label: {
-          Spacer()
-          Text(LocalizedString.dismissalText)
-            .underline()
-            .foregroundStyle(.white)
-            .padding()
-          Spacer()
-        }
-      )
-      .background(Color(uiColor: .brandedBlue))
-      .frame(height: LayoutConstant.dismissalButtonHeight)
-      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.dismissalButtonCornerRadius))
-      .padding(.leading)
-      .padding(.bottom)
-      .padding(.trailing)
+      if type != .TextOnly {
+        DismissalButton()
+      }
     }
     .background(Color(uiColor: .branededLightBlue2))
     .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.edgeCornerRadius))
@@ -54,6 +44,29 @@ struct BannerView: View {
         .stroke(Color(uiColor: .branededLightBlue))
     )
     .padding()
+  }
+
+  @ViewBuilder
+  private func DismissalButton() -> some View {
+    Button(
+      action: {
+        dataSource.isBeingDismissed = true
+      },
+      label: {
+        Spacer()
+        Text(LocalizedString.dismissalText)
+          .underline()
+          .foregroundStyle(.white)
+          .padding()
+        Spacer()
+      }
+    )
+    .background(Color(uiColor: .brandedBlue))
+    .frame(height: LayoutConstant.dismissalButtonHeight)
+    .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.dismissalButtonCornerRadius))
+    .padding(.leading)
+    .padding(.bottom)
+    .padding(.trailing)
   }
 }
 
@@ -66,5 +79,7 @@ public final class BannerViewDataSource: ObservableObject {
 }
 
 #Preview {
-  BannerView(dataSource: BannerViewDataSource(), headlineText: "koube_neko has been muted")
+  BannerView(
+    dataSource: BannerViewDataSource(), type: .TextAndButton,
+    headlineText: "koube_neko has been muted")
 }

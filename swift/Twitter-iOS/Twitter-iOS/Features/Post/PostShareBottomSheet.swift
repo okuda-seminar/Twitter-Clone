@@ -42,10 +42,19 @@ struct PostShareBottomSheet: View {
         .padding(.bottom)
 
         HStack(alignment: .bottom) {
-          VStack {
-            Image(systemName: "link")
-            Text(LocalizedString.copyLink)
+          Button {
+            UIPasteboard.general.string = "Copied Deep Link"
+            dismiss()
+            let bannerController = BannerController(
+              message: String(localized: "Copied to clipboard"), bannerType: .TextOnly)
+            bannerController.show(on: MainRootViewController.sharedInstance)
+          } label: {
+            VStack {
+              Image(systemName: "link")
+              Text(LocalizedString.copyLink)
+            }
           }
+          .buttonStyle(.plain)
 
           Button(
             action: {
@@ -64,7 +73,7 @@ struct PostShareBottomSheet: View {
 
           VStack {
             Image(systemName: "message")
-            Text(LocalizedString.copyLink)
+            Text(LocalizedString.messages)
           }
           VStack {
             Image(systemName: "envelope.fill")

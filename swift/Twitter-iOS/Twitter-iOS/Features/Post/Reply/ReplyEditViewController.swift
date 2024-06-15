@@ -81,7 +81,7 @@ extension ReplyEditViewController: UITextViewDelegate {
 //  var body: some View {
 //    /// Need to refactor this code with UIKit for some reasons.
 //    /// 1. becomeFirstResponder is not supported in SwiftUI natively.
-//    /// 2. scrollView isn't respecing height adjustment and toolbar can overlap it.
+//    /// 2. scrollView isn't respecting height adjustment and toolbar can overlap it.
 //    /// 3. Need to wrpa this view with NavigationView unnecessary. Otherwise, the position of toolbar becomes wrong.
 //    GeometryReader { geoProxy in
 //      VStack {

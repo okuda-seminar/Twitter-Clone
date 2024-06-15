@@ -16,9 +16,9 @@ class BannerController {
 
   // MARK: - Initalization
 
-  public init(message: String) {
+  public init(message: String, bannerType: BannerView.BannerType = .TextAndButton) {
     hostingController = UIHostingController(
-      rootView: BannerView(dataSource: dataSource, headlineText: message))
+      rootView: BannerView(dataSource: dataSource, type: bannerType, headlineText: message))
 
     let defaultCenter = NotificationCenter.default
     defaultCenter.addObserver(
