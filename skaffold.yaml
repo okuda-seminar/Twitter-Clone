@@ -1,8 +1,9 @@
 apiVersion: skaffold/v4beta3
 kind: Config
 manifests:
-  rawYaml:
-    - ./infra/k8s/*
+  kustomize:
+    paths:
+      - infra/k8s/srv/overlays/dev
 build:
   tagPolicy:
     sha256: {}

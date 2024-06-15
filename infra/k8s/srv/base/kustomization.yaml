@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./ingress-svc.yaml
+- ./users-app-depl.yaml
+- ./tweets-app-depl.yaml
+- ./users-postgres-depl.yaml
+- ./tweets-postgres-depl.yaml
+- ./users-volume.yaml
+- ./postgres-configmap.yaml
+# TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/287
+# - [infra] Refactor manifests by introducing kustomize for notifications service.
