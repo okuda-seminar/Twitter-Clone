@@ -4,6 +4,7 @@ manifests:
   kustomize:
     paths:
       - infra/k8s/srv/overlays/dev
+      - infra/k8s/ingress-nginx/overlays/dev
 build:
   tagPolicy:
     sha256: {}
