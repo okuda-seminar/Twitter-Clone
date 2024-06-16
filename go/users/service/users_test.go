@@ -186,8 +186,8 @@ func TestGetFollowers(t *testing.T) {
 
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.followed_user_id
-WHERE followships.following_user_id = $1
+JOIN followships ON users.id = followships.following_user_id
+WHERE followships.followed_user_id = $1
 `
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
 		WithArgs(id).
@@ -223,8 +223,8 @@ func TestGetFollowings(t *testing.T) {
 
 	query := `
 SELECT * FROM users
-JOIN followships ON users.id = followships.following_user_id
-WHERE followships.followed_user_id = $1
+JOIN followships ON users.id = followships.followed_user_id
+WHERE followships.following_user_id = $1
 `
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
 		WithArgs(id).
