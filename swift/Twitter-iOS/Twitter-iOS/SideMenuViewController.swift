@@ -35,10 +35,12 @@ class SideMenuViewController: UIViewController {
     hostingController.didMove(toParent: self)
     view.addSubview(hostingController.view)
 
+    let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
     ])
   }
 }
@@ -50,7 +52,8 @@ struct SideMenuView: View {
   public weak var delegate: SideMenuViewDelegate?
 
   private enum LayoutConstant {
-    static let imageSize = 20.0
+    static let imageSize: CGFloat = 20.0
+    static let disclosureViewWidth: CGFloat = 300.0
   }
 
   private enum LocalizedString {
@@ -62,127 +65,170 @@ struct SideMenuView: View {
     static let spaces = String(localized: "Spaces")
     static let followerRequests = String(localized: "Follower Requests")
     static let monetization = String(localized: "Monetization")
+
     static let settingsAndSupport = String(localized: "Settings and Support")
     static let settingsAndPrivacy = String(localized: "Settings and privacy")
+    static let helpCenter = String(localized: "Help Center")
+    static let purchases = String(localized: "Purchases")
   }
+
+  @State private var isSettingsAndSupportMenuExpanded = false
 
   var body: some View {
     VStack(alignment: .leading) {
+      Header()
+
+      Divider()
+        .padding(.bottom)
+
+      MainMenu()
+
+      Divider()
+        .padding(.top)
+
+      SettingsAndSupportMenu()
+
+      Spacer()
+    }
+    .padding()
+  }
+
+  @ViewBuilder
+  private func Header() -> some View {
+    Button(
+      action: {
+        delegate?.didTapUserProfile()
+      },
+      label: {
+        Image(systemName: "person.circle.fill")
+          .resizable()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+          .foregroundStyle(.black)
+      })
+
+    Button(
+      action: {
+        delegate?.didTapUserProfile()
+      },
+      label: {
+        Text(userName)
+      }
+    )
+    .foregroundStyle(.primary)
+
+    HStack {
       Button(
         action: {
-          delegate?.didTapUserProfile()
+          delegate?.didTapUserFollowRelationsButton(userName: userName)
         },
         label: {
-          Image(systemName: "person.circle.fill")
-            .resizable()
-            .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+          Text("\(numOfFollowing) \(LocalizedString.following)")
             .foregroundStyle(.black)
         })
 
       Button(
         action: {
-          delegate?.didTapUserProfile()
+          delegate?.didTapUserFollowRelationsButton(userName: userName)
         },
         label: {
-          Text(userName)
-        }
-      )
-      .foregroundStyle(.primary)
+          Text("\(numOfFollowers) \(LocalizedString.followers)")
+            .foregroundStyle(.black)
+        })
+    }
+  }
 
-      HStack {
-        Button(
-          action: {
-            delegate?.didTapUserFollowRelationsButton(userName: userName)
-          },
-          label: {
-            Text("\(numOfFollowing) \(LocalizedString.following)")
-              .foregroundStyle(.black)
-          })
+  @ViewBuilder
+  private func MainMenu() -> some View {
+    HStack {
+      Image(systemName: "person")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.profile)
+    }
+    .onTapGesture {
+      delegate?.didTapUserProfile()
+    }
 
-        Button(
-          action: {
-            delegate?.didTapUserFollowRelationsButton(userName: userName)
-          },
-          label: {
-            Text("\(numOfFollowers) \(LocalizedString.followers)")
-              .foregroundStyle(.black)
-          })
-      }
+    HStack {
+      // We need to align image aspects in prod.
+      Image(systemName: "bookmark")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.bookmarks)
+    }.onTapGesture {
+      delegate?.didTapBookmarks()
+    }
+    HStack {
+      // We need to align image aspects in prod.
+      Image(systemName: "list.clipboard")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.lists)
+    }
+    HStack {
+      // We need to align image aspects in prod.
+      Image(systemName: "mic")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.spaces)
+    }
+    HStack {
+      // We need to align image aspects in prod.
+      Image(systemName: "person.badge.plus")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.followerRequests)
+    }.onTapGesture {
+      delegate?.didTapFollowerRequests()
+    }
+    HStack {
+      // We need to align image aspects in prod.
+      Image(systemName: "bitcoinsign.circle")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+      Text(LocalizedString.monetization)
+    }
+  }
 
-      Divider()
-        .padding(.bottom)
-
-      HStack {
-        Image(systemName: "person")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.profile)
-      }
-      .onTapGesture {
-        delegate?.didTapUserProfile()
-      }
-
-      HStack {
-        // We need to align image aspects in prod.
-        Image(systemName: "bookmark")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.bookmarks)
-      }.onTapGesture {
-        delegate?.didTapBookmarks()
-      }
-      HStack {
-        // We need to align image aspects in prod.
-        Image(systemName: "list.clipboard")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.lists)
-      }
-      HStack {
-        // We need to align image aspects in prod.
-        Image(systemName: "mic")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.spaces)
-      }
-      HStack {
-        // We need to align image aspects in prod.
-        Image(systemName: "person.badge.plus")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.followerRequests)
-      }.onTapGesture {
-        delegate?.didTapFollowerRequests()
-      }
-      HStack {
-        // We need to align image aspects in prod.
-        Image(systemName: "bitcoinsign.circle")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-        Text(LocalizedString.monetization)
-      }
-
-      Divider()
-        .padding(.top)
-
-      Text(LocalizedString.settingsAndSupport)
-
+  @ViewBuilder
+  private func SettingsAndSupportMenu() -> some View {
+    DisclosureGroup(
+      LocalizedString.settingsAndSupport, isExpanded: $isSettingsAndSupportMenuExpanded
+    ) {
       HStack {
         Image(systemName: "gear")
         Text(LocalizedString.settingsAndPrivacy)
+        Spacer()
       }
       .padding()
       .onTapGesture {
         delegate?.didTapSettingsAndPrivacy()
       }
+
+      HStack {
+        Image(systemName: "questionmark.circle")
+        Text(LocalizedString.helpCenter)
+        Spacer()
+      }
+      .padding()
+      .onTapGesture {}
+
+      HStack {
+        Image(systemName: "cart")
+        Text(LocalizedString.purchases)
+        Spacer()
+      }
+      .padding()
+      .onTapGesture {}
     }
-    .padding()
+    .foregroundStyle(.primary)
+    .frame(width: LayoutConstant.disclosureViewWidth)
   }
 }
 
