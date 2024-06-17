@@ -101,6 +101,12 @@ extension HomeViewController: HomeViewDelegate {
     replyEditViewController.modalPresentationStyle = .fullScreen
     self.present(replyEditViewController, animated: true)
   }
+
+  func openWebPage(url: URL?) {
+    let webViewController = WebViewController(url: url)
+    webViewController.modalPresentationStyle = .fullScreen
+    self.present(webViewController, animated: true)
+  }
 }
 
 struct HomeView: View {
@@ -110,6 +116,7 @@ struct HomeView: View {
   @State private var tabToScroll: HomeTabModel.Tab?
   @State private var showShareSheet = false
   @State private var showReplyEditSheet = false
+  @State private var urlStrToOpen = ""
   private var tabModels: [HomeTabModel] = [
     .init(id: .forYou),
     .init(id: .following),
@@ -175,8 +182,12 @@ struct HomeView: View {
     ScrollView(.horizontal) {
       LazyHStack(spacing: 0) {
         ForEach(tabModels) { tabModel in
-          HomeTabView(showReplyEditSheet: $showReplyEditSheet, showShareSheet: $showShareSheet)
-            .frame(width: UIScreen.main.bounds.width)
+          HomeTabView(
+            showReplyEditSheet: $showReplyEditSheet,
+            showShareSheet: $showShareSheet,
+            urlStrToOpen: $urlStrToOpen
+          )
+          .frame(width: UIScreen.main.bounds.width)
         }
       }
       .scrollTargetLayout()
@@ -192,12 +203,19 @@ struct HomeView: View {
         }
       }
     }
+    .onChange(of: urlStrToOpen) { _, newValue in
+      if newValue.count > 0 {
+        delegate?.openWebPage(url: URL(string: newValue))
+        urlStrToOpen = ""
+      }
+    }
   }
 }
 
 protocol HomeViewDelegate: AnyObject {
   func showShareSheet()
   func showReplyEditSheet()
+  func openWebPage(url: URL?)
 }
 
 #Preview {
