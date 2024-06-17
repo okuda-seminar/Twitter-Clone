@@ -134,7 +134,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
 
     settingsHomeViewController.navigationItem.backButtonDisplayMode = .minimal
     presentingViewController.pushViewController(
-      MessagesSettingsViewController(), animated: false)
+      MessagesSettingsHomeViewController(), animated: false)
     presentingViewController.modalPresentationStyle = .overFullScreen
     present(presentingViewController, animated: true)
   }
