@@ -97,6 +97,7 @@
 		65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */; };
 		65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */; };
 		65FD4F8B2C206E3B0020A02E /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8A2C206E3B0020A02E /* WebViewController.swift */; };
+		65FD4F8D2C21AFC00020A02E /* WebViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +212,7 @@
 		65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBodyView.swift; sourceTree = "<group>"; };
 		65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyOriginalPostView.swift; sourceTree = "<group>"; };
 		65FD4F8A2C206E3B0020A02E /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -742,6 +744,7 @@
 			isa = PBXGroup;
 			children = (
 				65FD4F8A2C206E3B0020A02E /* WebViewController.swift */,
+				65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */,
 			);
 			path = WebView;
 			sourceTree = "<group>";
@@ -897,6 +900,7 @@
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
 				65FD4F502C19D87B0020A02E /* ReplyKeyboardToolbarView.swift in Sources */,
+				65FD4F8D2C21AFC00020A02E /* WebViewHeaderView.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				65C6CCAD2C00134B00B0A052 /* NewMessageEditViewController.swift in Sources */,
 				658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */,

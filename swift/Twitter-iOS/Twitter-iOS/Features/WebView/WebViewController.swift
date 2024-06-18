@@ -3,9 +3,7 @@ import WebKit
 
 class WebViewController: UIViewController {
 
-  // Public properties
-
-  public var url: URL?
+  // MARK: - Public Properties
 
   public lazy var webView: WKWebView = {
     let config = WKWebViewConfiguration()
@@ -16,31 +14,28 @@ class WebViewController: UIViewController {
     return view
   }()
 
-  // Private properties
+  // MARK: - Private Properties
+
   private enum LayoutConstant {
+    static let headerViewHeight: CGFloat = 48.0
     static let headerEdgeHorizontalPadding: CGFloat = 12.0
-    static let dismissalButtonHeight: CGFloat = 44.0
   }
 
-  private enum LocalizedString {
-    static let dismissalButtonText = String(localized: "Done")
-  }
+  private var url: URL?
+  private var webViewLoadProgressObservation: NSKeyValueObservation?
 
-  private lazy var dismissalButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    let titleWithUnderLine = NSAttributedString(
-      string: LocalizedString.dismissalButtonText,
-      attributes: [
-        .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.black,
-      ])
-    button.setAttributedTitle(titleWithUnderLine, for: .normal)
-    button.sizeToFit()
-    button.addAction(
+  private lazy var headerView: WebViewHeaderView = {
+    let view = WebViewHeaderView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.dismissalButton.addAction(
       .init { _ in
         self.dismiss(animated: true)
       }, for: .touchUpInside)
-    return button
+    view.reloadButton.addAction(
+      .init { _ in
+        self.webView.reload()
+      }, for: .touchUpInside)
+    return view
   }()
 
   public init(url: URL?) {
@@ -55,12 +50,13 @@ class WebViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+    setUpFunctionalities()
   }
 
   // MARK: - Private API
 
   private func setUpSubviews() {
-    view.addSubview(dismissalButton)
+    view.addSubview(headerView)
     view.addSubview(webView)
     view.backgroundColor = .systemBackground
 
@@ -69,17 +65,32 @@ class WebViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      dismissalButton.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      dismissalButton.leadingAnchor.constraint(
+      headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      headerView.leadingAnchor.constraint(
         equalTo: view.leadingAnchor, constant: LayoutConstant.headerEdgeHorizontalPadding),
-      dismissalButton.heightAnchor.constraint(
-        equalToConstant: LayoutConstant.dismissalButtonHeight),
+      headerView.trailingAnchor.constraint(
+        equalTo: view.trailingAnchor, constant: -LayoutConstant.headerEdgeHorizontalPadding),
+      headerView.heightAnchor.constraint(equalToConstant: LayoutConstant.headerViewHeight),
 
-      webView.topAnchor.constraint(equalTo: dismissalButton.bottomAnchor),
+      webView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
       webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
+  }
+
+  private func setUpFunctionalities() {
+    webViewLoadProgressObservation = webView.observe(\.estimatedProgress, options: .new) {
+      _, change in
+      guard let progressInDouble = change.newValue else { return }
+      self.headerView.progressView.setProgress(Float(progressInDouble), animated: true)
+
+      if progressInDouble == 1.0 {
+        self.headerView.didStopLoadingWebPage()
+      } else {
+        self.headerView.didStartLoadingWebPage()
+      }
+    }
   }
 }
 
