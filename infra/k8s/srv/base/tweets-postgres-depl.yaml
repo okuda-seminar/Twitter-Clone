@@ -35,6 +35,15 @@ spec:
             configMapKeyRef:
               name: postgres-params
               key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: tweets-volume
+          mountPath: /var/lib/postgresql/data/
+      volumes:
+      - name: tweets-volume
+        persistentVolumeClaim:
+          claimName: tweets-pv-claim
+
+
 ---
 apiVersion: v1
 kind: Service
