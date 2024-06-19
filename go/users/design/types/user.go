@@ -15,6 +15,7 @@ var User = Type("User", func() {
 	Attribute("updated_at", String, func() {
 		Format(FormatDateTime)
 	})
+	Attribute("is_private", Boolean)
 
-	Required("id", "username", "display_name", "bio", "created_at", "updated_at")
+	Required("id", "username", "display_name", "bio", "created_at", "updated_at", "is_private")
 })

@@ -18,6 +18,7 @@ import (
 type CreateUserRequestBody struct {
 	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
+	IsPrivate   *bool   `form:"is_private,omitempty" json:"is_private,omitempty" xml:"is_private,omitempty"`
 }
 
 // UpdateUsernameRequestBody is the type of the "users" service
@@ -59,6 +60,7 @@ type CreateUserResponseBody struct {
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
 	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
 	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+	IsPrivate   bool   `form:"is_private" json:"is_private" xml:"is_private"`
 }
 
 // FindUserByIDResponseBody is the type of the "users" service "FindUserByID"
@@ -70,6 +72,7 @@ type FindUserByIDResponseBody struct {
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
 	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
 	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+	IsPrivate   bool   `form:"is_private" json:"is_private" xml:"is_private"`
 }
 
 // GetFollowersResponseBody is the type of the "users" service "GetFollowers"
@@ -376,6 +379,7 @@ type UserResponse struct {
 	Bio         string `form:"bio" json:"bio" xml:"bio"`
 	CreatedAt   string `form:"created_at" json:"created_at" xml:"created_at"`
 	UpdatedAt   string `form:"updated_at" json:"updated_at" xml:"updated_at"`
+	IsPrivate   bool   `form:"is_private" json:"is_private" xml:"is_private"`
 }
 
 // NewCreateUserResponseBody builds the HTTP response body from the result of
@@ -388,6 +392,7 @@ func NewCreateUserResponseBody(res *users.User) *CreateUserResponseBody {
 		Bio:         res.Bio,
 		CreatedAt:   res.CreatedAt,
 		UpdatedAt:   res.UpdatedAt,
+		IsPrivate:   res.IsPrivate,
 	}
 	return body
 }
@@ -402,6 +407,7 @@ func NewFindUserByIDResponseBody(res *users.User) *FindUserByIDResponseBody {
 		Bio:         res.Bio,
 		CreatedAt:   res.CreatedAt,
 		UpdatedAt:   res.UpdatedAt,
+		IsPrivate:   res.IsPrivate,
 	}
 	return body
 }
@@ -655,6 +661,7 @@ func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload 
 	v := &users.CreateUserPayload{
 		Username:    *body.Username,
 		DisplayName: *body.DisplayName,
+		IsPrivate:   *body.IsPrivate,
 	}
 
 	return v
@@ -779,6 +786,9 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.DisplayName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
+	}
+	if body.IsPrivate == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("is_private", "body"))
 	}
 	return
 }

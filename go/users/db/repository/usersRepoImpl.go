@@ -22,16 +22,15 @@ func NewUsersRepoImpl(db *sql.DB) UsersRepo {
 // CreateUser creates a new user with the specified username.
 // The 'Bio' field is set to an empty string, not null.
 // If a user with the specified username already exists, the creation fails.
-func (r *usersRepoImpl) CreateUser(ctx context.Context, username string, display_name string,
-) (*User, error) {
+func (r *usersRepoImpl) CreateUser(ctx context.Context, username string, display_name string, is_private bool) (*User, error) {
 	query := `
-INSERT INTO users (id, username, display_name, bio) VALUES ($1, $2, $3, $4)
+INSERT INTO users (id, username, display_name, bio, is_private) VALUES ($1, $2, $3, $4, $5)
 RETURNING created_at, updated_at
 `
 	var createdAt, updatedAt time.Time
 	id := uuid.New()
 
-	err := r.db.QueryRowContext(ctx, query, id, username, display_name, "").
+	err := r.db.QueryRowContext(ctx, query, id, username, display_name, "", is_private).
 		Scan(&createdAt, &updatedAt)
 	if err != nil {
 		return nil, err
@@ -44,6 +43,7 @@ RETURNING created_at, updated_at
 		Bio:         "",
 		CreatedAt:   createdAt,
 		UpdatedAt:   updatedAt,
+		IsPrivate:   is_private,
 	}
 	return &user, nil
 }
@@ -68,7 +68,7 @@ func (r *usersRepoImpl) DeleteUser(ctx context.Context, id uuid.UUID) error {
 
 // FindUserByID retrieves a user by user ID from the database.
 func (r *usersRepoImpl) FindUserByID(ctx context.Context, id uuid.UUID) (*User, error) {
-	query := "SELECT * FROM users WHERE id = $1"
+	query := "SELECT id, username, display_name, bio, created_at, updated_at, is_private FROM users WHERE id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
 
 	var user User
@@ -80,6 +80,7 @@ func (r *usersRepoImpl) FindUserByID(ctx context.Context, id uuid.UUID) (*User, 
 		&user.Bio,
 		&user.CreatedAt,
 		&user.UpdatedAt,
+		&user.IsPrivate,
 	)
 	if err != nil {
 		return nil, err
@@ -147,6 +148,7 @@ WHERE followships.followed_user_id = $1
 			&user.Bio,
 			&user.CreatedAt,
 			&user.UpdatedAt,
+			&user.IsPrivate,
 			// ignore followed_user_id and following_user_id.
 			IgnoreColumn,
 			IgnoreColumn,
@@ -183,6 +185,7 @@ WHERE followships.following_user_id = $1
 			&user.Bio,
 			&user.CreatedAt,
 			&user.UpdatedAt,
+			&user.IsPrivate,
 			// ignore followed_user_id and following_user_id.
 			IgnoreColumn,
 			IgnoreColumn,

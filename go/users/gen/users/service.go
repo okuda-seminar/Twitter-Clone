@@ -63,6 +63,7 @@ type BlockPayload struct {
 type CreateUserPayload struct {
 	Username    string
 	DisplayName string
+	IsPrivate   bool
 }
 
 // DeleteUserPayload is the payload type of the users service DeleteUser method.
@@ -139,6 +140,7 @@ type User struct {
 	Bio         string
 	CreatedAt   string
 	UpdatedAt   string
+	IsPrivate   bool
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.

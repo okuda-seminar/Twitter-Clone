@@ -8,7 +8,7 @@ import (
 )
 
 type UsersRepo interface {
-	CreateUser(ctx context.Context, username string, display_name string) (*User, error)
+	CreateUser(ctx context.Context, username string, display_name string, is_private bool) (*User, error)
 	DeleteUser(ctx context.Context, id uuid.UUID) error
 	FindUserByID(ctx context.Context, id uuid.UUID) (*User, error)
 	UpdateUsername(ctx context.Context, id uuid.UUID, username string) error
@@ -38,4 +38,5 @@ type User struct {
 	Bio         string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	IsPrivate   bool
 }

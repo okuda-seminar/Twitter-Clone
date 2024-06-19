@@ -5,6 +5,7 @@ TABLE users {
   bio varchar(160) [default: '']
   created_at timestamp [default: 'now()']
   updated_at timestamp [default: 'now()']
+  is_private boolean [default: false]
 }
 
 TABLE followships {
