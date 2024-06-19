@@ -98,6 +98,7 @@
 		65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */; };
 		65FD4F8B2C206E3B0020A02E /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8A2C206E3B0020A02E /* WebViewController.swift */; };
 		65FD4F8D2C21AFC00020A02E /* WebViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */; };
+		65FD4F8F2C22FB0B0020A02E /* WebViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +214,7 @@
 		65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyOriginalPostView.swift; sourceTree = "<group>"; };
 		65FD4F8A2C206E3B0020A02E /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHeaderView.swift; sourceTree = "<group>"; };
+		65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewFooterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -745,6 +747,7 @@
 			children = (
 				65FD4F8A2C206E3B0020A02E /* WebViewController.swift */,
 				65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */,
+				65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */,
 			);
 			path = WebView;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
+				65FD4F8F2C22FB0B0020A02E /* WebViewFooterView.swift in Sources */,
 				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
 				65C6CCA82BFF60FB00B0A052 /* UserPostsTabView.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,

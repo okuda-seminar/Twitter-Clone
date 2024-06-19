@@ -9,8 +9,10 @@ class WebViewController: UIViewController {
     let config = WKWebViewConfiguration()
     let view = WKWebView(frame: .zero, configuration: config)
     view.translatesAutoresizingMaskIntoConstraints = false
+    view.scrollView.delegate = self
     view.uiDelegate = self
     view.navigationDelegate = self
+    view.allowsBackForwardNavigationGestures = true
     return view
   }()
 
@@ -23,20 +25,46 @@ class WebViewController: UIViewController {
 
   private var url: URL?
   private var webViewLoadProgressObservation: NSKeyValueObservation?
+  private var isDraggingWebView = false
 
   private lazy var headerView: WebViewHeaderView = {
     let view = WebViewHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
+
     view.dismissalButton.addAction(
       .init { _ in
         self.dismiss(animated: true)
       }, for: .touchUpInside)
+
     view.reloadButton.addAction(
       .init { _ in
         self.webView.reload()
       }, for: .touchUpInside)
+
     return view
   }()
+
+  private lazy var footerView: WebViewFooterView = {
+    let view = WebViewFooterView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+
+    view.navigationBackButton.addAction(
+      .init { _ in
+        if self.webView.canGoBack {
+          self.webView.goBack()
+        }
+      }, for: .touchUpInside)
+
+    view.navigationForwardButton.addAction(
+      .init { _ in
+        if self.webView.canGoForward {
+          self.webView.goForward()
+        }
+      }, for: .touchUpInside)
+
+    return view
+  }()
+  private var footerViewBottomConstraint: NSLayoutConstraint?
 
   public init(url: URL?) {
     self.url = url
@@ -58,12 +86,15 @@ class WebViewController: UIViewController {
   private func setUpSubviews() {
     view.addSubview(headerView)
     view.addSubview(webView)
+    view.addSubview(footerView)
     view.backgroundColor = .systemBackground
 
     guard let url else { return }
     webView.load(URLRequest(url: url))
 
     let layoutGuide = view.safeAreaLayoutGuide
+    footerViewBottomConstraint = footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    guard let footerViewBottomConstraint else { return }
     NSLayoutConstraint.activate([
       headerView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       headerView.leadingAnchor.constraint(
@@ -76,6 +107,10 @@ class WebViewController: UIViewController {
       webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+      footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      footerViewBottomConstraint,
+      footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
   }
 
@@ -96,3 +131,28 @@ class WebViewController: UIViewController {
 
 extension WebViewController: WKUIDelegate {}
 extension WebViewController: WKNavigationDelegate {}
+
+extension WebViewController: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard !isDraggingWebView else { return }
+    let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+    if translation.y < 0 {  // scrolling down
+      let currentFooterHeight = footerView.frame.height
+      footerViewBottomConstraint?.constant = currentFooterHeight
+    } else {  // scrolling up
+      footerViewBottomConstraint?.constant = 0
+    }
+
+    UIView.animate(withDuration: 0.3) {
+      self.footerView.layoutIfNeeded()
+    }
+  }
+
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    isDraggingWebView = true
+  }
+
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    isDraggingWebView = false
+  }
+}

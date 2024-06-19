@@ -65,6 +65,7 @@ class WebViewHeaderView: UIView {
   // MARK: - Private API
 
   private func setUpSubviews() {
+    backgroundColor = .brandedWhiteBackGround
     addSubview(dismissalButton)
     addSubview(reloadButton)
     addSubview(progressView)
