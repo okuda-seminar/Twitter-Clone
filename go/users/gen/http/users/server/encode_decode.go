@@ -934,6 +934,7 @@ func marshalUsersUserToUserResponse(v *users.User) *UserResponse {
 		Bio:         v.Bio,
 		CreatedAt:   v.CreatedAt,
 		UpdatedAt:   v.UpdatedAt,
+		IsPrivate:   v.IsPrivate,
 	}
 
 	return res

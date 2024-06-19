@@ -30,6 +30,7 @@ func UsageCommands() string {
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
       "display_name": "Saepe sit.",
+      "is_private": false,
       "username": "Non vitae."
    }'` + "\n" +
 		""
@@ -290,6 +291,7 @@ CreateUser implements CreateUser.
 Example:
     %[1]s users create-user --body '{
       "display_name": "Saepe sit.",
+      "is_private": false,
       "username": "Non vitae."
    }'
 `, os.Args[0])
@@ -302,7 +304,7 @@ DeleteUser implements DeleteUser.
     -id STRING: 
 
 Example:
-    %[1]s users delete-user --id "86a7d425-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users delete-user --id "9b8639fe-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -313,7 +315,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "86a81942-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users find-user-by-id --id "9b864f3e-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -326,8 +328,8 @@ UpdateUsername implements UpdateUsername.
 
 Example:
     %[1]s users update-username --body '{
-      "username": "Nihil molestias saepe ipsam debitis illo ullam."
-   }' --id "86a8469b-27ea-11ef-8ab2-0242ac120003"
+      "username": "Ipsam debitis."
+   }' --id "9b866db6-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -340,8 +342,8 @@ UpdateBio implements UpdateBio.
 
 Example:
     %[1]s users update-bio --body '{
-      "bio": "Expedita dolor suscipit deleniti ab sit laudantium."
-   }' --id "86a859ef-27ea-11ef-8ab2-0242ac120003"
+      "bio": "Qui impedit expedita dolor."
+   }' --id "9b86b122-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -354,8 +356,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followed_user_id": "86a86a0d-27ea-11ef-8ab2-0242ac120003"
-   }' --following-user-id "86a86c28-27ea-11ef-8ab2-0242ac120003"
+      "followed_user_id": "9b86ca9a-2de1-11ef-b6d4-cec0a17b7253"
+   }' --following-user-id "9b86cdf6-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -367,7 +369,7 @@ Unfollow implements Unfollow.
     -followed-user-id STRING: 
 
 Example:
-    %[1]s users unfollow --following-user-id "86a87935-27ea-11ef-8ab2-0242ac120003" --followed-user-id "86a87a46-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users unfollow --following-user-id "9b86dfa8-2de1-11ef-b6d4-cec0a17b7253" --followed-user-id "9b86e142-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -378,7 +380,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "86a883b8-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users get-followers --id "9b86ed7c-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -389,7 +391,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "86a89591-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users get-followings --id "9b8705c8-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -402,8 +404,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "86a8a487-27ea-11ef-8ab2-0242ac120003"
-   }' --muting-user-id "86a8a67b-27ea-11ef-8ab2-0242ac120003"
+      "muted_user_id": "9b87190a-2de1-11ef-b6d4-cec0a17b7253"
+   }' --muting-user-id "9b871be4-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -415,7 +417,7 @@ Unmute implements Unmute.
     -muted-user-id STRING: 
 
 Example:
-    %[1]s users unmute --muting-user-id "86a8e626-27ea-11ef-8ab2-0242ac120003" --muted-user-id "86a8e90f-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users unmute --muting-user-id "9b872b52-2de1-11ef-b6d4-cec0a17b7253" --muted-user-id "9b872cce-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -428,8 +430,8 @@ Block implements Block.
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "86a8f8b2-27ea-11ef-8ab2-0242ac120003"
-   }' --blocking-user-id "86a8fae5-27ea-11ef-8ab2-0242ac120003"
+      "blocked_user_id": "9b873962-2de1-11ef-b6d4-cec0a17b7253"
+   }' --blocking-user-id "9b873c1e-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -441,6 +443,6 @@ Unblock implements Unblock.
     -blocked-user-id STRING: 
 
 Example:
-    %[1]s users unblock --blocking-user-id "86a90734-27ea-11ef-8ab2-0242ac120003" --blocked-user-id "86a90853-27ea-11ef-8ab2-0242ac120003"
+    %[1]s users unblock --blocking-user-id "9b8767fc-2de1-11ef-b6d4-cec0a17b7253" --blocked-user-id "9b87696e-2de1-11ef-b6d4-cec0a17b7253"
 `, os.Args[0])
 }

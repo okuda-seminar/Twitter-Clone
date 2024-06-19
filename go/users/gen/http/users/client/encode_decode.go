@@ -1127,6 +1127,7 @@ func unmarshalUserResponseToUsersUser(v *UserResponse) *users.User {
 		Bio:         *v.Bio,
 		CreatedAt:   *v.CreatedAt,
 		UpdatedAt:   *v.UpdatedAt,
+		IsPrivate:   *v.IsPrivate,
 	}
 
 	return res

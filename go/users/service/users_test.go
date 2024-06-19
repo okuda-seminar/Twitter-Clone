@@ -29,10 +29,10 @@ func (dbMock *DBMock) close() {
 }
 
 func (dbMock *DBMock) insertUser(user *repository.User) {
-	rows := sqlmock.NewRows([]string{"id", "username", "display_name", "bio", "created_at", "updated_at"}).
-		AddRow(user.ID, user.Username, user.DisplayName, user.Bio, user.CreatedAt, user.UpdatedAt)
+	rows := sqlmock.NewRows([]string{"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private"}).
+		AddRow(user.ID, user.Username, user.DisplayName, user.Bio, user.CreatedAt, user.UpdatedAt, user.IsPrivate)
 
-	query := "SELECT * FROM users WHERE id = $1"
+	query := "SELECT id, username, display_name, bio, created_at, updated_at, is_private FROM users WHERE id = $1"
 	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
 		WithArgs(user.ID).
 		WillReturnRows(rows)
@@ -70,6 +70,7 @@ func TestFindUserByID(t *testing.T) {
 		Bio:         "some bio",
 		CreatedAt:   now,
 		UpdatedAt:   now,
+		IsPrivate:   false,
 	}
 	dbMock.insertUser(expected)
 
@@ -78,6 +79,7 @@ func TestFindUserByID(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, actual.Username, expected.Username)
 	assert.Equal(t, actual.Bio, expected.Bio)
+	assert.Equal(t, actual.IsPrivate, expected.IsPrivate)
 }
 
 func TestUpdateUsername(t *testing.T) {
@@ -178,14 +180,15 @@ func TestGetFollowers(t *testing.T) {
 
 	id := uuid.NewString()
 	rows := sqlmock.NewRows([]string{
-		"id", "username", "display_name", "bio", "created_at", "updated_at",
+		"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private",
 		"followed_user_id", "following_user_id",
 	}).
-		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), uuid.NewString(), id).
-		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), uuid.NewString(), id)
+		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), false, uuid.NewString(), id).
+		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), false, uuid.NewString(), id)
 
 	query := `
-SELECT * FROM users
+SELECT * 
+FROM users
 JOIN followships ON users.id = followships.following_user_id
 WHERE followships.followed_user_id = $1
 `
@@ -213,16 +216,17 @@ func TestGetFollowings(t *testing.T) {
 
 	id := uuid.NewString()
 	rows := sqlmock.NewRows([]string{
-		"id", "username", "display_name", "bio", "created_at", "updated_at",
+		"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private",
 		"followed_user_id", "following_user_id",
 	}).
 		// User with ID "1" follows user with ID "2".
-		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), id, uuid.NewString()).
+		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), false, id, uuid.NewString()).
 		// User with ID "1" follows user with ID "3".
-		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), id, uuid.NewString())
+		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), false, id, uuid.NewString())
 
 	query := `
-SELECT * FROM users
+SELECT * 
+FROM users
 JOIN followships ON users.id = followships.followed_user_id
 WHERE followships.following_user_id = $1
 `
@@ -231,12 +235,12 @@ WHERE followships.following_user_id = $1
 		WillReturnRows(rows)
 
 	p := &users.GetFollowingsPayload{ID: id}
-	followers, err := service.GetFollowings(context.Background(), p)
+	followings, err := service.GetFollowings(context.Background(), p)
 	if err != nil {
 		t.Errorf("cannot get followings: %s", err)
 	}
 
-	if len(followers) != 2 {
-		t.Errorf("the number of followings was %d, not 2", len(followers))
+	if len(followings) != 2 {
+		t.Errorf("the number of followings was %d, not 2", len(followings))
 	}
 }
