@@ -97,9 +97,6 @@
 		65FD4F532C1B17F60020A02E /* ReplyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */; };
 		65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */; };
 		65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */; };
-		65FD4F8B2C206E3B0020A02E /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8A2C206E3B0020A02E /* WebViewController.swift */; };
-		65FD4F8D2C21AFC00020A02E /* WebViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */; };
-		65FD4F8F2C22FB0B0020A02E /* WebViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,9 +211,6 @@
 		65FD4F522C1B17F60020A02E /* ReplyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyHeaderView.swift; sourceTree = "<group>"; };
 		65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBodyView.swift; sourceTree = "<group>"; };
 		65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyOriginalPostView.swift; sourceTree = "<group>"; };
-		65FD4F8A2C206E3B0020A02E /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewHeaderView.swift; sourceTree = "<group>"; };
-		65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewFooterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,7 +315,6 @@
 				6540F8D22BC018910029BA46 /* Search */,
 				6540F8F82BD294BF0029BA46 /* Settings */,
 				6567CBCF2BD7DD8E00242716 /* User */,
-				65FD4F892C206E220020A02E /* WebView */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -745,16 +738,6 @@
 			path = Reply;
 			sourceTree = "<group>";
 		};
-		65FD4F892C206E220020A02E /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-				65FD4F8A2C206E3B0020A02E /* WebViewController.swift */,
-				65FD4F8C2C21AFC00020A02E /* WebViewHeaderView.swift */,
-				65FD4F8E2C22FB0B0020A02E /* WebViewFooterView.swift */,
-			);
-			path = WebView;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -906,7 +889,6 @@
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
 				65FD4F502C19D87B0020A02E /* ReplyKeyboardToolbarView.swift in Sources */,
-				65FD4F8D2C21AFC00020A02E /* WebViewHeaderView.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				65C6CCAD2C00134B00B0A052 /* NewMessageEditViewController.swift in Sources */,
 				658D08942BF503B4006C6A9E /* CheckboxStyle.swift in Sources */,
@@ -915,7 +897,6 @@
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				65C6CCA22BFE22EA00B0A052 /* UserProfileTabModel.swift in Sources */,
 				656C1BB12C0218D700EEE575 /* NotificationModel.swift in Sources */,
-				65FD4F8B2C206E3B0020A02E /* WebViewController.swift in Sources */,
 				65C6CC272BFB70E400B0A052 /* UIViewController+Settings.swift in Sources */,
 				65C6CC2D2BFCC51F00B0A052 /* CGFloat+Rect.swift in Sources */,
 				65C6CC202BF9625E00B0A052 /* BannerView.swift in Sources */,
@@ -946,7 +927,6 @@
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
-				65FD4F8F2C22FB0B0020A02E /* WebViewFooterView.swift in Sources */,
 				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
 				65C6CCA82BFF60FB00B0A052 /* UserPostsTabView.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,

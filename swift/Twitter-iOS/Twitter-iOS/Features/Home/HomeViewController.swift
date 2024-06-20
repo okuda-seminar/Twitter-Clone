@@ -1,3 +1,4 @@
+import SafariServices
 import SwiftUI
 import UIKit
 
@@ -103,7 +104,8 @@ extension HomeViewController: HomeViewDelegate {
   }
 
   func openWebPage(url: URL?) {
-    let webViewController = WebViewController(url: url)
+    guard let url else { return }
+    let webViewController = SFSafariViewController(url: url)
     webViewController.modalPresentationStyle = .fullScreen
     self.present(webViewController, animated: true)
   }
