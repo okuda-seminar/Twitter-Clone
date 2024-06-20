@@ -2,245 +2,357 @@ package service
 
 import (
 	"context"
-	"database/sql"
-	"log"
-	"os"
-	"regexp"
 	"strings"
 	"testing"
-	"time"
-	"users/db/repository"
 	"users/gen/users"
 
-	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/145
-// - Improve test flow.
-type DBMock struct {
-	db   *sql.DB
-	mock sqlmock.Sqlmock
-}
-
-func (dbMock *DBMock) close() {
-	dbMock.db.Close()
-}
-
-func (dbMock *DBMock) insertUser(user *repository.User) {
-	rows := sqlmock.NewRows([]string{"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private"}).
-		AddRow(user.ID, user.Username, user.DisplayName, user.Bio, user.CreatedAt, user.UpdatedAt, user.IsPrivate)
-
-	query := "SELECT id, username, display_name, bio, created_at, updated_at, is_private FROM users WHERE id = $1"
-	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(user.ID).
-		WillReturnRows(rows)
-}
-
-func setup() (users.Service, *DBMock, error) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		return nil, nil, err
-	}
-	dbMock := &DBMock{
-		db:   db,
-		mock: mock,
-	}
-
-	logger := log.New(os.Stderr, "[usersapiTest] ", log.Ltime)
-	service := NewUsersSvc(db, logger)
-
-	return service, dbMock, nil
-}
-
-func TestFindUserByID(t *testing.T) {
-	service, dbMock, err := setup()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer dbMock.close()
-
-	now := time.Now()
-	id := uuid.New()
-	expected := &repository.User{
-		ID:          id,
-		Username:    "test user",
-		DisplayName: "test account",
-		Bio:         "some bio",
-		CreatedAt:   now,
-		UpdatedAt:   now,
-		IsPrivate:   false,
-	}
-	dbMock.insertUser(expected)
-
-	p := &users.FindUserByIDPayload{ID: id.String()}
-	actual, err := service.FindUserByID(context.Background(), p)
-	assert.NoError(t, err)
-	assert.Equal(t, actual.Username, expected.Username)
-	assert.Equal(t, actual.Bio, expected.Bio)
-	assert.Equal(t, actual.IsPrivate, expected.IsPrivate)
-}
-
-func TestUpdateUsername(t *testing.T) {
-	service, dbMock, err := setup()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer dbMock.close()
-
-	query := "UPDATE users SET username = $1 where id = $2"
-	id := uuid.NewString()
-	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
-		WithArgs("updated", id).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/298
+// - Add tests for use cases which tests have not yet been implemented for
+func (s *UsersTestSuite) TestCreateUser() {
 	tests := []struct {
-		payload   users.UpdateUsernamePayload
-		expectErr bool
+		name         string
+		username     string
+		display_name string
+		expectErr    bool
 	}{
 		{
-			payload:   users.UpdateUsernamePayload{ID: id, Username: "updated"},
-			expectErr: false,
+			name:         "create user",
+			username:     "test_user",
+			display_name: "Test User",
+			expectErr:    false,
 		},
-		// Too short username.
 		{
-			payload:   users.UpdateUsernamePayload{ID: id, Username: ""},
-			expectErr: true,
+			name:         "duplicated username",
+			username:     "test_user",
+			display_name: "Another Test User",
+			expectErr:    true,
 		},
-		// Too long username.
 		{
-			payload:   users.UpdateUsernamePayload{ID: id, Username: strings.Repeat("a", 21)},
-			expectErr: true,
+			name:         "too short username",
+			username:     "a",
+			display_name: "Test User",
+			expectErr:    true,
+		},
+		{
+			name:         "too long username",
+			username:     strings.Repeat("a", 15),
+			display_name: "Test User",
+			expectErr:    true,
 		},
 	}
 
-	for _, tt := range tests {
-		err := service.UpdateUsername(context.Background(), &tt.payload)
-		if tt.expectErr {
+	for _, test := range tests {
+		p := users.CreateUserPayload{Username: test.username, DisplayName: test.display_name}
+		user, err := s.service.CreateUser(context.Background(), &p)
+		if test.expectErr {
 			if err == nil {
-				t.Errorf("expected err, but got nil")
+				s.T().Errorf("%s: expected err, but got nil", test.name)
 			}
 		} else {
 			if err != nil {
-				t.Errorf("expected nil, but got err: %v", err)
+				s.T().Fatalf("%s: expected non-error, but got %s", test.name, err)
+			}
+
+			if user.Username != test.username {
+				s.T().Errorf("%s (Username): expected %s, but got %s", test.name, test.username, user.Username)
+			}
+			if user.DisplayName != test.display_name {
+				s.T().Errorf("%s (DisplayName): expected %s, but got %s",
+					test.name, test.display_name, user.DisplayName)
+			}
+			if user.Bio != "" {
+				s.T().Errorf("%s (Bio): expected empty string, but got %s", test.name, user.Bio)
+			}
+			if user.IsPrivate != false {
+				s.T().Errorf("%s (IsPrivate): expected false, but got %t", test.name, user.IsPrivate)
 			}
 		}
 	}
 }
 
-func TestUpdateBio(t *testing.T) {
-	service, dbMock, err := setup()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer dbMock.close()
-
-	query := "UPDATE users SET bio = $1 where id = $2"
-	id := uuid.NewString()
-	dbMock.mock.ExpectExec(regexp.QuoteMeta(query)).
-		WithArgs("updated", id).
-		WillReturnResult(sqlmock.NewResult(1, 1))
+func (s *UsersTestSuite) TestDeleteUser() {
+	user := s.create_user("test_user", "Test User")
 
 	tests := []struct {
-		payload   users.UpdateBioPayload
+		name      string
+		user_id   string
 		expectErr bool
 	}{
 		{
-			payload:   users.UpdateBioPayload{ID: id, Bio: "updated"},
+			name:      "delete user",
+			user_id:   user.ID,
 			expectErr: false,
 		},
-		// Too long bio.
 		{
-			payload:   users.UpdateBioPayload{ID: id, Bio: strings.Repeat("a", 161)},
+			name:      "non-existent user",
+			user_id:   user.ID,
 			expectErr: true,
 		},
 	}
 
-	for _, tt := range tests {
-		err := service.UpdateBio(context.Background(), &tt.payload)
-		if tt.expectErr {
+	for _, test := range tests {
+		p := users.DeleteUserPayload{ID: test.user_id}
+		err := s.service.DeleteUser(context.Background(), &p)
+		if test.expectErr && err == nil {
+			s.T().Errorf("%s: expected err, but got nil", test.name)
+		}
+		if !test.expectErr && err != nil {
+			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
+		}
+	}
+}
+
+func (s *UsersTestSuite) TestFindUserByID() {
+	user := s.create_user("test_user", "Test User")
+
+	tests := []struct {
+		name      string
+		user_id   string
+		expectErr bool
+	}{
+		{
+			name:      "find user",
+			user_id:   user.ID,
+			expectErr: false,
+		},
+		{
+			name:      "non-existent user",
+			user_id:   uuid.NewString(),
+			expectErr: true,
+		},
+	}
+
+	for _, test := range tests {
+		p := users.FindUserByIDPayload{ID: test.user_id}
+		res, err := s.service.FindUserByID(context.Background(), &p)
+		if test.expectErr {
 			if err == nil {
-				t.Errorf("expected err, but got nil")
+				s.T().Errorf("%s: expected err, but got nil", test.name)
 			}
 		} else {
 			if err != nil {
-				t.Errorf("expected nil, but got err: %v", err)
+				s.T().Fatalf("%s: expected non-error, but got %s", test.name, err)
+			}
+
+			if *res != *user {
+				s.T().Errorf("%s: expected %v+, but got %v+", test.name, user, res)
 			}
 		}
 	}
 }
 
-func TestGetFollowers(t *testing.T) {
-	service, dbMock, err := setup()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+func (s *UsersTestSuite) TestUpdateUsername() {
+	user := s.create_user("test_user", "Test User")
+
+	tests := []struct {
+		name         string
+		user_id      string
+		new_username string
+		expectErr    bool
+	}{
+		{
+			name:         "update username",
+			user_id:      user.ID,
+			new_username: "updated",
+			expectErr:    false,
+		},
+		{
+			name:         "too short username",
+			user_id:      user.ID,
+			new_username: "a",
+			expectErr:    true,
+		},
+		{
+			name:         "too long username",
+			user_id:      user.ID,
+			new_username: strings.Repeat("a", 21),
+			expectErr:    true,
+		},
+		{
+			name:         "non-existent user",
+			user_id:      uuid.NewString(),
+			new_username: "updated",
+			expectErr:    true,
+		},
 	}
-	defer dbMock.close()
 
-	id := uuid.NewString()
-	rows := sqlmock.NewRows([]string{
-		"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private",
-		"followed_user_id", "following_user_id",
-	}).
-		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), false, uuid.NewString(), id).
-		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), false, uuid.NewString(), id)
-
-	query := `
-SELECT * 
-FROM users
-JOIN followships ON users.id = followships.following_user_id
-WHERE followships.followed_user_id = $1
-`
-	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(id).
-		WillReturnRows(rows)
-
-	p := &users.GetFollowersPayload{ID: id}
-	followers, err := service.GetFollowers(context.Background(), p)
-	if err != nil {
-		t.Errorf("cannot get followers: %s", err)
-	}
-
-	if len(followers) != 2 {
-		t.Errorf("the number of followers was %d, not 2", len(followers))
+	for _, test := range tests {
+		p := users.UpdateUsernamePayload{ID: test.user_id, Username: test.new_username}
+		err := s.service.UpdateUsername(context.Background(), &p)
+		if test.expectErr && err == nil {
+			s.T().Errorf("%s: expected err, but got nil", test.name)
+		}
+		if !test.expectErr && err != nil {
+			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
+		}
 	}
 }
 
-func TestGetFollowings(t *testing.T) {
-	service, dbMock, err := setup()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer dbMock.close()
+func (s *UsersTestSuite) TestUpdateBio() {
+	user := s.create_user("test_user", "Test User")
 
-	id := uuid.NewString()
-	rows := sqlmock.NewRows([]string{
-		"id", "username", "display_name", "bio", "created_at", "updated_at", "is_private",
-		"followed_user_id", "following_user_id",
-	}).
-		// User with ID "1" follows user with ID "2".
-		AddRow(uuid.NewString(), "second", "second", "", time.Now(), time.Now(), false, id, uuid.NewString()).
-		// User with ID "1" follows user with ID "3".
-		AddRow(uuid.NewString(), "third", "third", "", time.Now(), time.Now(), false, id, uuid.NewString())
-
-	query := `
-SELECT * 
-FROM users
-JOIN followships ON users.id = followships.followed_user_id
-WHERE followships.following_user_id = $1
-`
-	dbMock.mock.ExpectQuery(regexp.QuoteMeta(query)).
-		WithArgs(id).
-		WillReturnRows(rows)
-
-	p := &users.GetFollowingsPayload{ID: id}
-	followings, err := service.GetFollowings(context.Background(), p)
-	if err != nil {
-		t.Errorf("cannot get followings: %s", err)
+	tests := []struct {
+		name      string
+		user_id   string
+		new_bio   string
+		expectErr bool
+	}{
+		{
+			name:      "update bio",
+			user_id:   user.ID,
+			new_bio:   "updated",
+			expectErr: false,
+		},
+		{
+			name:      "too long bio",
+			user_id:   user.ID,
+			new_bio:   strings.Repeat("a", 161),
+			expectErr: true,
+		},
+		{
+			name:      "non-existent user",
+			user_id:   uuid.NewString(),
+			new_bio:   "updated",
+			expectErr: true,
+		},
 	}
 
-	if len(followings) != 2 {
-		t.Errorf("the number of followings was %d, not 2", len(followings))
+	for _, test := range tests {
+		p := users.UpdateBioPayload{ID: test.user_id, Bio: test.new_bio}
+		err := s.service.UpdateBio(context.Background(), &p)
+		if test.expectErr && err == nil {
+			s.T().Errorf("%s: expected err, but got nil", test.name)
+		}
+		if !test.expectErr && err != nil {
+			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
+		}
 	}
+}
+
+func (s *UsersTestSuite) TestFollow() {
+	followed_user := s.create_user("followed_user", "Followed User")
+	following_user := s.create_user("following_user", "Following User")
+
+	tests := []struct {
+		name              string
+		following_user_id string
+		followed_user_id  string
+		expectErr         bool
+	}{
+		{
+			name:              "follow user",
+			following_user_id: following_user.ID,
+			followed_user_id:  followed_user.ID,
+			expectErr:         false,
+		},
+		{
+			name:              "already followed",
+			following_user_id: following_user.ID,
+			followed_user_id:  followed_user.ID,
+			expectErr:         true,
+		},
+		{
+			name:              "followed user does not exist",
+			following_user_id: following_user.ID,
+			followed_user_id:  uuid.NewString(),
+			expectErr:         true,
+		},
+		{
+			name:              "following user does not exist",
+			following_user_id: uuid.NewString(),
+			followed_user_id:  followed_user.ID,
+			expectErr:         true,
+		},
+		{
+			name:              "follow self",
+			following_user_id: following_user.ID,
+			followed_user_id:  following_user.ID,
+			expectErr:         true,
+		},
+	}
+
+	for _, test := range tests {
+		p := users.FollowPayload{FollowingUserID: test.following_user_id, FollowedUserID: test.followed_user_id}
+		err := s.service.Follow(context.Background(), &p)
+		if test.expectErr && err == nil {
+			s.T().Errorf("%s: expected err, but got nil", test.name)
+		}
+		if !test.expectErr && err != nil {
+			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
+		}
+	}
+}
+
+func (s *UsersTestSuite) TestGetFollowers() {
+	user_1 := s.create_user("user_1", "User 1")
+	user_2 := s.create_user("user_2", "User 2")
+	user_3 := s.create_user("user_3", "User 3")
+
+	s.follow(user_2.ID, user_1.ID) // User 2 follows User 1.
+	s.follow(user_3.ID, user_1.ID) // User 3 follows User 1.
+
+	tests := []struct {
+		name              string
+		user_id           string
+		expectedFollowers []*users.User
+	}{
+		{
+			name:              "get followers",
+			user_id:           user_1.ID,
+			expectedFollowers: []*users.User{user_2, user_3},
+		},
+		{
+			name:              "no followers",
+			user_id:           user_2.ID,
+			expectedFollowers: []*users.User{},
+		},
+	}
+
+	for _, test := range tests {
+		p := users.GetFollowersPayload{ID: test.user_id}
+		followers, err := s.service.GetFollowers(context.Background(), &p)
+		if err != nil {
+			s.T().Fatalf("%s: expected non-error, but got %s", test.name, err)
+		}
+
+		// We need to use `reflect.DeepEqual` to compare two slices
+		// because the `==` operation is not supported for slices.
+		// However, `reflect.DeepEqual` treats a non-nil empty slice and a nil slice as not deeply equal.
+		// Therefore, we use `assert.ElementMatch` instead.
+		// For more information, see https://golang.org/pkg/reflect/#DeepEqual.
+		if !assert.ElementsMatch(s.T(), test.expectedFollowers, followers) {
+			s.T().Errorf("%s: expected %+v, but got %+v", test.name, test.expectedFollowers, followers)
+		}
+	}
+}
+
+// TestUsersTestSuite runs all of the tests attached to UsersTestSuite.
+func TestUsersTestSuite(t *testing.T) {
+	suite.Run(t, new(UsersTestSuite))
+}
+
+func (s *UsersTestSuite) create_user(user_name, display_name string) *users.User {
+	user, _ := s.service.CreateUser(
+		context.Background(),
+		&users.CreateUserPayload{
+			Username:    user_name,
+			DisplayName: display_name,
+		},
+	)
+	return user
+}
+
+func (s *UsersTestSuite) follow(following_user_id, followed_user_id string) {
+	s.service.Follow(
+		context.Background(),
+		&users.FollowPayload{
+			FollowingUserID: following_user_id,
+			FollowedUserID:  followed_user_id,
+		},
+	)
 }
