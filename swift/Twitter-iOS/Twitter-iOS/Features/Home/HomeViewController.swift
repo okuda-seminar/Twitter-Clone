@@ -116,9 +116,12 @@ struct HomeView: View {
 
   @State private var activeTabModel: HomeTabModel.Tab = .forYou
   @State private var tabToScroll: HomeTabModel.Tab?
+
   @State private var showShareSheet = false
+  @State private var reposting = false
   @State private var showReplyEditSheet = false
   @State private var urlStrToOpen = ""
+
   private var tabModels: [HomeTabModel] = [
     .init(id: .forYou),
     .init(id: .following),
@@ -186,6 +189,7 @@ struct HomeView: View {
         ForEach(tabModels) { tabModel in
           HomeTabView(
             showReplyEditSheet: $showReplyEditSheet,
+            reposting: $reposting,
             showShareSheet: $showShareSheet,
             urlStrToOpen: $urlStrToOpen
           )
@@ -210,6 +214,10 @@ struct HomeView: View {
         delegate?.openWebPage(url: URL(string: newValue))
         urlStrToOpen = ""
       }
+    }
+    .sheet(isPresented: $reposting) {
+      RepostOptionsBottomSheet()
+        .presentationDetents([.height(200), .medium])
     }
   }
 }

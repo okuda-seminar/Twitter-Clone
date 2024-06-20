@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeTabView: View {
   @Binding public var showReplyEditSheet: Bool
+  @Binding public var reposting: Bool
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
 
@@ -43,6 +44,7 @@ struct HomeTabView: View {
         ForEach(postModels) { postModel in
           PostCellView(
             showReplyEditSheet: $showReplyEditSheet,
+            reposting: $reposting,
             showShareSheet: $showShareSheet,
             urlStrToOpen: $urlStrToOpen,
             userIcon: Image(uiImage: postModel.userIcon),
@@ -126,6 +128,7 @@ struct HomeTabView: View {
 #Preview {
   HomeTabView(
     showReplyEditSheet: .constant(false),
+    reposting: .constant(false),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant("")
   )

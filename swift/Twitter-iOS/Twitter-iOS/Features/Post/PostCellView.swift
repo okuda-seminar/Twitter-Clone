@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PostCellView: View {
   @Binding public var showReplyEditSheet: Bool
+  @Binding public var reposting: Bool
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
 
@@ -81,6 +82,17 @@ struct PostCellView: View {
       .foregroundStyle(.primary)
       .buttonStyle(.plain)
 
+      Button(
+        action: {
+          reposting.toggle()
+        },
+        label: {
+          Image(systemName: "arrow.rectanglepath")
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
       Spacer()
       Button(
         action: {
@@ -121,6 +133,7 @@ struct PostCellView: View {
 func createFakePostCellView() -> PostCellView {
   return PostCellView(
     showReplyEditSheet: .constant(false),
+    reposting: .constant(false),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant(""),
     userIcon: Image(systemName: "apple.logo"),
