@@ -3,8 +3,10 @@ import SwiftUI
 struct PostCellView: View {
   @Binding public var showReplyEditSheet: Bool
   @Binding public var reposting: Bool
+  @Binding public var postToRepost: PostModel?
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
+  @State public var isRepostedByCurrentUser: Bool = false
 
   @Environment(\.openURL) private var openURL
   // We need to wait for dismissal completion. pendingShowShareSheet
@@ -12,9 +14,7 @@ struct PostCellView: View {
   @State private var pendingShowShareSheet: Bool = false
   @State private var showSheet: Bool = false
 
-  public var userIcon: Image
-  public var userName: String
-  public var postBody: String
+  public var postModel: PostModel
 
   @State private var isBottomSheetPresented = false
 
@@ -28,7 +28,7 @@ struct PostCellView: View {
       Divider()
 
       HStack(alignment: .top) {
-        userIcon
+        Image(uiImage: postModel.userIcon)
           .resizable()
           .scaledToFit()
           .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
@@ -36,7 +36,7 @@ struct PostCellView: View {
 
         VStack(alignment: .leading) {
           HStack {
-            Text(userName)
+            Text(postModel.userName)
             Spacer()
             Button(
               action: {
@@ -50,7 +50,7 @@ struct PostCellView: View {
             .buttonStyle(.plain)
           }
 
-          Text(LocalizedStringKey(postBody))
+          Text(LocalizedStringKey(postModel.bodyText))
             .padding(.bottom)
             .environment(
               \.openURL,
@@ -84,13 +84,14 @@ struct PostCellView: View {
 
       Button(
         action: {
+          postToRepost = postModel
           reposting.toggle()
         },
         label: {
           Image(systemName: "arrow.rectanglepath")
         }
       )
-      .foregroundStyle(.primary)
+      .foregroundStyle(isRepostedByCurrentUser ? Color.green : .primary)
       .buttonStyle(.plain)
 
       Spacer()
@@ -131,15 +132,19 @@ struct PostCellView: View {
 }
 
 func createFakePostCellView() -> PostCellView {
+  let body = """
+    If you’re looking to make your app more responsive or simply want to give 
+    your users access to certain features through various methods like a long
+    press or hidden button, then you absolutely have to read this post!
+    """
+
   return PostCellView(
     showReplyEditSheet: .constant(false),
     reposting: .constant(false),
+    postToRepost: .constant(nil),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant(""),
-    userIcon: Image(systemName: "apple.logo"),
-    userName: "Apple",
-    postBody:
-      "If you’re looking to make your app more responsive or simply want to give your users access to certain features through various methods like a long press or hidden button, then you absolutely have to read this post!"
+    postModel: createFakePostModel()
   )
 }
 

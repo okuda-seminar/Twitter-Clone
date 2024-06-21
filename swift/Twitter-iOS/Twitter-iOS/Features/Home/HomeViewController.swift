@@ -119,6 +119,7 @@ struct HomeView: View {
 
   @State private var showShareSheet = false
   @State private var reposting = false
+  @State private var postToRepost: PostModel? = nil
   @State private var showReplyEditSheet = false
   @State private var urlStrToOpen = ""
 
@@ -190,6 +191,7 @@ struct HomeView: View {
           HomeTabView(
             showReplyEditSheet: $showReplyEditSheet,
             reposting: $reposting,
+            postToRepost: $postToRepost,
             showShareSheet: $showShareSheet,
             urlStrToOpen: $urlStrToOpen
           )
@@ -216,7 +218,7 @@ struct HomeView: View {
       }
     }
     .sheet(isPresented: $reposting) {
-      RepostOptionsBottomSheet()
+      RepostOptionsBottomSheet(postModel: $postToRepost)
         .presentationDetents([.height(200), .medium])
     }
   }

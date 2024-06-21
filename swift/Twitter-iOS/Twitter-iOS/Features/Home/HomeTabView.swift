@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeTabView: View {
   @Binding public var showReplyEditSheet: Bool
   @Binding public var reposting: Bool
+  @Binding public var postToRepost: PostModel?
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
 
@@ -45,11 +46,10 @@ struct HomeTabView: View {
           PostCellView(
             showReplyEditSheet: $showReplyEditSheet,
             reposting: $reposting,
+            postToRepost: $postToRepost,
             showShareSheet: $showShareSheet,
             urlStrToOpen: $urlStrToOpen,
-            userIcon: Image(uiImage: postModel.userIcon),
-            userName: postModel.userName,
-            postBody: postModel.bodyText
+            postModel: postModel
           )
           .contextMenu(
             ContextMenu(menuItems: {
@@ -129,6 +129,7 @@ struct HomeTabView: View {
   HomeTabView(
     showReplyEditSheet: .constant(false),
     reposting: .constant(false),
+    postToRepost: .constant(nil),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant("")
   )

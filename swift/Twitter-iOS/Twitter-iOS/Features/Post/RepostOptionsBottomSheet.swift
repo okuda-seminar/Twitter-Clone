@@ -2,6 +2,8 @@ import SwiftUI
 
 struct RepostOptionsBottomSheet: View {
 
+  @Binding public var postModel: PostModel?
+
   @Environment(\.dismiss) private var dismiss
 
   private enum LocalizedString {
@@ -14,7 +16,11 @@ struct RepostOptionsBottomSheet: View {
     VStack(alignment: .leading) {
       Button(
         action: {
-
+          if let postModel {
+            let postService = InjectPostService()
+            postService.repost(postModelId: postModel.id)
+          }
+          dismiss()
         },
         label: {
           HStack {
@@ -65,5 +71,7 @@ struct RepostOptionsBottomSheet: View {
 }
 
 #Preview {
-  RepostOptionsBottomSheet()
+  RepostOptionsBottomSheet(
+    postModel: .constant(createFakePostModel())
+  )
 }

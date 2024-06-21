@@ -105,6 +105,7 @@
 		65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */; };
 		65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */; };
 		65FD4F912C2449380020A02E /* RepostOptionsBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F902C2449380020A02E /* RepostOptionsBottomSheet.swift */; };
+		65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4F9F2C25B3D70020A02E /* PostService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +228,7 @@
 		65FD4F542C1B1FE60020A02E /* ReplyBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBodyView.swift; sourceTree = "<group>"; };
 		65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyOriginalPostView.swift; sourceTree = "<group>"; };
 		65FD4F902C2449380020A02E /* RepostOptionsBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepostOptionsBottomSheet.swift; sourceTree = "<group>"; };
+		65FD4F9F2C25B3D70020A02E /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -607,6 +609,7 @@
 			isa = PBXGroup;
 			children = (
 				65FD4F4A2C15E13F0020A02E /* Follow */,
+				65FD4F9E2C25B3BA0020A02E /* Post */,
 				658D08882BEF4798006C6A9E /* User */,
 			);
 			path = Services;
@@ -768,6 +771,14 @@
 				65FD4F562C1C7A330020A02E /* ReplyOriginalPostView.swift */,
 			);
 			path = Reply;
+			sourceTree = "<group>";
+		};
+		65FD4F9E2C25B3BA0020A02E /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4F9F2C25B3D70020A02E /* PostService.swift */,
+			);
+			path = Post;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -991,6 +1002,7 @@
 				65C6CCAF2C00136700B0A052 /* NewMessageEntrypointButtonController.swift in Sources */,
 				656C1BAB2C020D2000EEE575 /* NotificationsTabModel.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
+				65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */,
 			);
