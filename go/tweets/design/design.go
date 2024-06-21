@@ -24,7 +24,9 @@ var _ = Service("tweets", func() {
 
 	Method("CreateTweet", func() {
 		Payload(func() {
-			Field(1, "user_id", String)
+			Field(1, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Field(2, "text", String)
 			Required("user_id", "text")
 		})
@@ -47,7 +49,9 @@ var _ = Service("tweets", func() {
 
 	Method("DeleteTweet", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(Empty)
@@ -62,8 +66,12 @@ var _ = Service("tweets", func() {
 
 	Method("LikeTweet", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
+			Field(1, "tweet_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("tweet_id", "user_id")
 		})
 		Result(Empty)
@@ -77,8 +85,12 @@ var _ = Service("tweets", func() {
 
 	Method("DeleteTweetLike", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
+			Field(1, "tweet_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("tweet_id", "user_id")
 		})
 		Result(Empty)
@@ -92,8 +104,12 @@ var _ = Service("tweets", func() {
 
 	Method("Retweet", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
+			Field(1, "tweet_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("tweet_id", "user_id")
 		})
 		Result(Empty)
@@ -107,8 +123,12 @@ var _ = Service("tweets", func() {
 
 	Method("DeleteRetweet", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
+			Field(1, "tweet_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("tweet_id", "user_id")
 		})
 		Result(Empty)
@@ -122,8 +142,12 @@ var _ = Service("tweets", func() {
 
 	Method("CreateReply", func() {
 		Payload(func() {
-			Field(1, "tweet_id", String)
-			Field(2, "user_id", String)
+			Field(1, "tweet_id", String, func() {
+				Format(FormatUUID)
+			})
+			Field(2, "user_id", String, func() {
+				Format(FormatUUID)
+			})
 			Field(3, "text", String)
 			Required("tweet_id", "user_id", "text")
 		})
@@ -138,7 +162,9 @@ var _ = Service("tweets", func() {
 
 	Method("DeleteReply", func() {
 		Payload(func() {
-			Field(1, "id", String)
+			Field(1, "id", String, func() {
+				Format(FormatUUID)
+			})
 			Required("id")
 		})
 		Result(Empty)

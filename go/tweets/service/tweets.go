@@ -40,29 +40,23 @@ func NewTweetsSvc(db *sql.DB, logger *log.Logger) tweets.Service {
 func (s *tweetsSvc) CreateTweet(
 	ctx context.Context,
 	p *tweets.CreateTweetPayload,
-) (res *tweets.Tweet, err error) {
+) (*tweets.Tweet, error) {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
 	// - Discuss how we implement the test for CreateTweet method.
 	if !validateTweet(p.Text) {
-		err = tweets.MakeBadRequest(errors.New("tweet is invalid"))
-		s.logger.Printf("tweets.CreateTweet: failed (%s)\n", err)
+		err := tweets.MakeBadRequest(errors.New("tweet is invalid"))
+		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
 		return nil, err
 	}
 
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.CreateTweet: failed (%s)\n", err)
-		return nil, err
-	}
-
+	userId, _ := uuid.Parse(p.UserID)
 	tweet, err := s.tweetsRepo.CreateTweet(ctx, userId, p.Text)
 	if err != nil {
 		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
 		return nil, tweets.MakeBadRequest(err)
 	}
 
-	res = mapRepoTweetToSvcTweet(tweet)
+	res := mapRepoTweetToSvcTweet(tweet)
 
 	s.logger.Print("tweets.CreateTweet")
 	return res, nil
@@ -71,23 +65,18 @@ func (s *tweetsSvc) CreateTweet(
 func (s *tweetsSvc) DeleteTweet(
 	ctx context.Context,
 	p *tweets.DeleteTweetPayload,
-) (err error) {
+) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
 	// - Discuss how we implement the test for DeleteTweet method.
-	id, err := uuid.Parse(p.ID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteTweet: failed (%s)\n", err)
-		return err
-	}
-	err = s.tweetsRepo.DeleteTweet(ctx, id)
+	tweetId, _ := uuid.Parse(p.ID)
+	err := s.tweetsRepo.DeleteTweet(ctx, tweetId)
 	if err != nil {
 		s.logger.Printf("tweets.DeleteTweet: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
 	}
 
 	s.logger.Printf("tweets.DeleteTweet")
-	return
+	return nil
 }
 
 // LikeTweet handles the action of a user liking a tweet.
@@ -95,19 +84,10 @@ func (s *tweetsSvc) DeleteTweet(
 func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
 	// - Discuss how we implement the test for LikeTweet method.
-	tweetId, err := uuid.Parse(p.TweetID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.LikeTweet: failed (%s)\n", err)
-		return err
-	}
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.LikeTweet: failed (%s)\n", err)
-		return err
-	}
-	err = s.likesRepo.CreateLike(ctx, tweetId, userId)
+	tweetId, _ := uuid.Parse(p.TweetID)
+	userId, _ := uuid.Parse(p.UserID)
+
+	err := s.likesRepo.CreateLike(ctx, tweetId, userId)
 	if err != nil {
 		s.logger.Printf("tweets.LikeTweet: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
@@ -122,19 +102,9 @@ func (s *tweetsSvc) LikeTweet(ctx context.Context, p *tweets.LikeTweetPayload) e
 func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLikePayload) error {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
 	// - Discuss how we implement the test for DeleteTweetLike method.
-	tweetId, err := uuid.Parse(p.TweetID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteTweetLike: failed (%s)\n", err)
-		return err
-	}
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteTweetLike: failed (%s)\n", err)
-		return err
-	}
-	err = s.likesRepo.DeleteLike(ctx, tweetId, userId)
+	tweetId, _ := uuid.Parse(p.TweetID)
+	userId, _ := uuid.Parse(p.UserID)
+	err := s.likesRepo.DeleteLike(ctx, tweetId, userId)
 	if err != nil {
 		s.logger.Printf("tweets.DeleteTweetLike: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
@@ -145,20 +115,9 @@ func (s *tweetsSvc) DeleteTweetLike(ctx context.Context, p *tweets.DeleteTweetLi
 }
 
 func (s *tweetsSvc) Retweet(ctx context.Context, p *tweets.RetweetPayload) error {
-	tweetId, err := uuid.Parse(p.TweetID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.Retweet: failed (%s)\n", err)
-		return err
-	}
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.Retweet: failed (%s)\n", err)
-		return err
-	}
-
-	err = s.retweetsRepo.CreateRetweet(ctx, tweetId, userId)
+	tweetId, _ := uuid.Parse(p.TweetID)
+	userId, _ := uuid.Parse(p.UserID)
+	err := s.retweetsRepo.CreateRetweet(ctx, tweetId, userId)
 	if err != nil {
 		s.logger.Printf("tweets.Retweet: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
@@ -169,20 +128,10 @@ func (s *tweetsSvc) Retweet(ctx context.Context, p *tweets.RetweetPayload) error
 }
 
 func (s *tweetsSvc) DeleteRetweet(ctx context.Context, p *tweets.DeleteRetweetPayload) error {
-	tweetId, err := uuid.Parse(p.TweetID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteRetweet: failed (%s)\n", err)
-		return err
-	}
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteRetweet: failed (%s)\n", err)
-		return err
-	}
+	tweetId, _ := uuid.Parse(p.TweetID)
+	userId, _ := uuid.Parse(p.UserID)
 
-	err = s.retweetsRepo.DeleteRetweet(ctx, tweetId, userId)
+	err := s.retweetsRepo.DeleteRetweet(ctx, tweetId, userId)
 	if err != nil {
 		s.logger.Printf("tweets.DeleteRetweet: failed (%s)", err)
 		return tweets.MakeBadRequest(err)
@@ -192,48 +141,32 @@ func (s *tweetsSvc) DeleteRetweet(ctx context.Context, p *tweets.DeleteRetweetPa
 	return nil
 }
 
-func (s *tweetsSvc) CreateReply(ctx context.Context, p *tweets.CreateReplyPayload) (res *tweets.Reply, err error) {
+func (s *tweetsSvc) CreateReply(ctx context.Context, p *tweets.CreateReplyPayload) (*tweets.Reply, error) {
 	if !validateReply(p.Text) {
 		err := tweets.MakeBadRequest(errors.New("reply is invalid"))
-		s.logger.Printf("tweets.CreateReply: failed (%s)\n", err)
+		s.logger.Printf("tweets.CreateReply: failed (%s)", err)
 		return nil, err
 	}
 
-	tweetId, err := uuid.Parse(p.TweetID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.CreateReply: failed (%s)\n", err)
-		return nil, err
-	}
-	userId, err := uuid.Parse(p.UserID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.CreateReply: failed (%s)\n", err)
-		return nil, err
-	}
+	tweetId, _ := uuid.Parse(p.TweetID)
+	userId, _ := uuid.Parse(p.UserID)
 
 	reply, err := s.repliesRepo.CreateReply(ctx, tweetId, userId, p.Text)
 	if err != nil {
 		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.CreateReply: failed (%s)\n", err)
+		s.logger.Printf("tweets.CreateReply: failed (%s)", err)
 		return nil, err
 	}
 
-	res = mapRepoReplyToSvcReply(reply)
+	res := mapRepoReplyToSvcReply(reply)
 
 	s.logger.Print("tweets.CreateReply")
 	return res, nil
 }
 
 func (s *tweetsSvc) DeleteReply(ctx context.Context, p *tweets.DeleteReplyPayload) error {
-	Id, err := uuid.Parse(p.ID)
-	if err != nil {
-		err = tweets.MakeBadRequest(err)
-		s.logger.Printf("tweets.DeleteReply: failed (%s)\n", err)
-		return err
-	}
-
-	err = s.repliesRepo.DeleteReply(ctx, Id)
+	replyId, _ := uuid.Parse(p.ID)
+	err := s.repliesRepo.DeleteReply(ctx, replyId)
 	if err != nil {
 		err = tweets.MakeBadRequest(err)
 		s.logger.Printf("tweets.DeleteReply: failed (%s)", err)

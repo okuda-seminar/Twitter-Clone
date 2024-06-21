@@ -522,6 +522,9 @@ func ValidateCreateTweetRequestBody(body *CreateTweetRequestBody) (err error) {
 	if body.Text == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("text", "body"))
 	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -530,6 +533,9 @@ func ValidateCreateTweetRequestBody(body *CreateTweetRequestBody) (err error) {
 func ValidateDeleteTweetRequestBody(body *DeleteTweetRequestBody) (err error) {
 	if body.ID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
 	}
 	return
 }
@@ -543,6 +549,12 @@ func ValidateLikeTweetRequestBody(body *LikeTweetRequestBody) (err error) {
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
 	}
+	if body.TweetID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", *body.TweetID, goa.FormatUUID))
+	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -555,6 +567,12 @@ func ValidateDeleteTweetLikeRequestBody(body *DeleteTweetLikeRequestBody) (err e
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
 	}
+	if body.TweetID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", *body.TweetID, goa.FormatUUID))
+	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -565,6 +583,12 @@ func ValidateRetweetRequestBody(body *RetweetRequestBody) (err error) {
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
+	if body.TweetID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", *body.TweetID, goa.FormatUUID))
+	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
 	}
 	return
 }
@@ -577,6 +601,12 @@ func ValidateDeleteRetweetRequestBody(body *DeleteRetweetRequestBody) (err error
 	}
 	if body.UserID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("user_id", "body"))
+	}
+	if body.TweetID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", *body.TweetID, goa.FormatUUID))
+	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
 	}
 	return
 }
@@ -593,6 +623,12 @@ func ValidateCreateReplyRequestBody(body *CreateReplyRequestBody) (err error) {
 	if body.Text == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("text", "body"))
 	}
+	if body.TweetID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", *body.TweetID, goa.FormatUUID))
+	}
+	if body.UserID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", *body.UserID, goa.FormatUUID))
+	}
 	return
 }
 
@@ -601,6 +637,9 @@ func ValidateCreateReplyRequestBody(body *CreateReplyRequestBody) (err error) {
 func ValidateDeleteReplyRequestBody(body *DeleteReplyRequestBody) (err error) {
 	if body.ID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.ID != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", *body.ID, goa.FormatUUID))
 	}
 	return
 }
