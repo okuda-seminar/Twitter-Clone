@@ -1,0 +1,19 @@
+name: "k8s manifests test"
+on:
+  pull_request
+
+jobs:
+  conftest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@master
+    - name: install conftest
+      run: |
+        LATEST_VERSION=$(wget -O - "https://api.github.com/repos/open-policy-agent/conftest/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
+        wget "https://github.com/open-policy-agent/conftest/releases/download/v${LATEST_VERSION}/conftest_${LATEST_VERSION}_Linux_x86_64.tar.gz"
+        tar xzf conftest_${LATEST_VERSION}_Linux_x86_64.tar.gz
+    - name: test
+      run: ./conftest test ./infra/k8s/srv/base/users-app-depl.yaml --policy ./infra/k8s/policies --combine
