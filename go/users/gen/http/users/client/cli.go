@@ -31,6 +31,12 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 		DisplayName: body.DisplayName,
 		IsPrivate:   body.IsPrivate,
 	}
+	{
+		var zero bool
+		if v.IsPrivate == zero {
+			v.IsPrivate = false
+		}
+	}
 
 	return v, nil
 }
@@ -133,7 +139,7 @@ func BuildFollowPayload(usersFollowBody string, usersFollowFollowingUserID strin
 	{
 		err = json.Unmarshal([]byte(usersFollowBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followed_user_id\": \"9b86ca9a-2de1-11ef-b6d4-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followed_user_id\": \"65a07426-3043-11ef-b966-cec0a17b7253\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.followed_user_id", body.FollowedUserID, goa.FormatUUID))
 		if err != nil {
@@ -227,7 +233,7 @@ func BuildMutePayload(usersMuteBody string, usersMuteMutingUserID string) (*user
 	{
 		err = json.Unmarshal([]byte(usersMuteBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"9b87190a-2de1-11ef-b6d4-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"65a0dcae-3043-11ef-b966-cec0a17b7253\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", body.MutedUserID, goa.FormatUUID))
 		if err != nil {
@@ -285,7 +291,7 @@ func BuildBlockPayload(usersBlockBody string, usersBlockBlockingUserID string) (
 	{
 		err = json.Unmarshal([]byte(usersBlockBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"9b873962-2de1-11ef-b6d4-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"65a100e4-3043-11ef-b966-cec0a17b7253\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", body.BlockedUserID, goa.FormatUUID))
 		if err != nil {

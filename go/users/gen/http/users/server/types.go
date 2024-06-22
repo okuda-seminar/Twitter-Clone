@@ -661,7 +661,12 @@ func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload 
 	v := &users.CreateUserPayload{
 		Username:    *body.Username,
 		DisplayName: *body.DisplayName,
-		IsPrivate:   *body.IsPrivate,
+	}
+	if body.IsPrivate != nil {
+		v.IsPrivate = *body.IsPrivate
+	}
+	if body.IsPrivate == nil {
+		v.IsPrivate = false
 	}
 
 	return v
@@ -786,9 +791,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.DisplayName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
-	}
-	if body.IsPrivate == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("is_private", "body"))
 	}
 	return
 }

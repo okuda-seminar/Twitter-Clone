@@ -304,7 +304,7 @@ DeleteUser implements DeleteUser.
     -id STRING: 
 
 Example:
-    %[1]s users delete-user --id "9b8639fe-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users delete-user --id "65a00720-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -315,7 +315,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "9b864f3e-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users find-user-by-id --id "65a01e18-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -329,7 +329,7 @@ UpdateUsername implements UpdateUsername.
 Example:
     %[1]s users update-username --body '{
       "username": "Ipsam debitis."
-   }' --id "9b866db6-2de1-11ef-b6d4-cec0a17b7253"
+   }' --id "65a041ae-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -343,7 +343,7 @@ UpdateBio implements UpdateBio.
 Example:
     %[1]s users update-bio --body '{
       "bio": "Qui impedit expedita dolor."
-   }' --id "9b86b122-2de1-11ef-b6d4-cec0a17b7253"
+   }' --id "65a05c84-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -356,8 +356,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followed_user_id": "9b86ca9a-2de1-11ef-b6d4-cec0a17b7253"
-   }' --following-user-id "9b86cdf6-2de1-11ef-b6d4-cec0a17b7253"
+      "followed_user_id": "65a07426-3043-11ef-b966-cec0a17b7253"
+   }' --following-user-id "65a0775a-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -369,7 +369,7 @@ Unfollow implements Unfollow.
     -followed-user-id STRING: 
 
 Example:
-    %[1]s users unfollow --following-user-id "9b86dfa8-2de1-11ef-b6d4-cec0a17b7253" --followed-user-id "9b86e142-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unfollow --following-user-id "65a089ac-3043-11ef-b966-cec0a17b7253" --followed-user-id "65a08b50-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -380,7 +380,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "9b86ed7c-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users get-followers --id "65a0ac48-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -391,7 +391,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "9b8705c8-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users get-followings --id "65a0c7be-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -404,8 +404,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "9b87190a-2de1-11ef-b6d4-cec0a17b7253"
-   }' --muting-user-id "9b871be4-2de1-11ef-b6d4-cec0a17b7253"
+      "muted_user_id": "65a0dcae-3043-11ef-b966-cec0a17b7253"
+   }' --muting-user-id "65a0dfec-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -417,7 +417,7 @@ Unmute implements Unmute.
     -muted-user-id STRING: 
 
 Example:
-    %[1]s users unmute --muting-user-id "9b872b52-2de1-11ef-b6d4-cec0a17b7253" --muted-user-id "9b872cce-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unmute --muting-user-id "65a0f1da-3043-11ef-b966-cec0a17b7253" --muted-user-id "65a0f360-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -430,8 +430,8 @@ Block implements Block.
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "9b873962-2de1-11ef-b6d4-cec0a17b7253"
-   }' --blocking-user-id "9b873c1e-2de1-11ef-b6d4-cec0a17b7253"
+      "blocked_user_id": "65a100e4-3043-11ef-b966-cec0a17b7253"
+   }' --blocking-user-id "65a103be-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -443,6 +443,6 @@ Unblock implements Unblock.
     -blocked-user-id STRING: 
 
 Example:
-    %[1]s users unblock --blocking-user-id "9b8767fc-2de1-11ef-b6d4-cec0a17b7253" --blocked-user-id "9b87696e-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unblock --blocking-user-id "65a114e4-3043-11ef-b966-cec0a17b7253" --blocked-user-id "65a1162e-3043-11ef-b966-cec0a17b7253"
 `, os.Args[0])
 }

@@ -390,6 +390,12 @@ func NewCreateUserRequestBody(p *users.CreateUserPayload) *CreateUserRequestBody
 		DisplayName: p.DisplayName,
 		IsPrivate:   p.IsPrivate,
 	}
+	{
+		var zero bool
+		if body.IsPrivate == zero {
+			body.IsPrivate = false
+		}
+	}
 	return body
 }
 
