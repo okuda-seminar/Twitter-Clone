@@ -15,37 +15,35 @@ import (
 
 // Endpoints wraps the "users" service endpoints.
 type Endpoints struct {
-	CreateUser     goa.Endpoint
-	DeleteUser     goa.Endpoint
-	FindUserByID   goa.Endpoint
-	UpdateUsername goa.Endpoint
-	UpdateBio      goa.Endpoint
-	Follow         goa.Endpoint
-	Unfollow       goa.Endpoint
-	GetFollowers   goa.Endpoint
-	GetFollowings  goa.Endpoint
-	Mute           goa.Endpoint
-	Unmute         goa.Endpoint
-	Block          goa.Endpoint
-	Unblock        goa.Endpoint
+	CreateUser    goa.Endpoint
+	DeleteUser    goa.Endpoint
+	FindUserByID  goa.Endpoint
+	UpdateProfile goa.Endpoint
+	Follow        goa.Endpoint
+	Unfollow      goa.Endpoint
+	GetFollowers  goa.Endpoint
+	GetFollowings goa.Endpoint
+	Mute          goa.Endpoint
+	Unmute        goa.Endpoint
+	Block         goa.Endpoint
+	Unblock       goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "users" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
-		CreateUser:     NewCreateUserEndpoint(s),
-		DeleteUser:     NewDeleteUserEndpoint(s),
-		FindUserByID:   NewFindUserByIDEndpoint(s),
-		UpdateUsername: NewUpdateUsernameEndpoint(s),
-		UpdateBio:      NewUpdateBioEndpoint(s),
-		Follow:         NewFollowEndpoint(s),
-		Unfollow:       NewUnfollowEndpoint(s),
-		GetFollowers:   NewGetFollowersEndpoint(s),
-		GetFollowings:  NewGetFollowingsEndpoint(s),
-		Mute:           NewMuteEndpoint(s),
-		Unmute:         NewUnmuteEndpoint(s),
-		Block:          NewBlockEndpoint(s),
-		Unblock:        NewUnblockEndpoint(s),
+		CreateUser:    NewCreateUserEndpoint(s),
+		DeleteUser:    NewDeleteUserEndpoint(s),
+		FindUserByID:  NewFindUserByIDEndpoint(s),
+		UpdateProfile: NewUpdateProfileEndpoint(s),
+		Follow:        NewFollowEndpoint(s),
+		Unfollow:      NewUnfollowEndpoint(s),
+		GetFollowers:  NewGetFollowersEndpoint(s),
+		GetFollowings: NewGetFollowingsEndpoint(s),
+		Mute:          NewMuteEndpoint(s),
+		Unmute:        NewUnmuteEndpoint(s),
+		Block:         NewBlockEndpoint(s),
+		Unblock:       NewUnblockEndpoint(s),
 	}
 }
 
@@ -54,8 +52,7 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CreateUser = m(e.CreateUser)
 	e.DeleteUser = m(e.DeleteUser)
 	e.FindUserByID = m(e.FindUserByID)
-	e.UpdateUsername = m(e.UpdateUsername)
-	e.UpdateBio = m(e.UpdateBio)
+	e.UpdateProfile = m(e.UpdateProfile)
 	e.Follow = m(e.Follow)
 	e.Unfollow = m(e.Unfollow)
 	e.GetFollowers = m(e.GetFollowers)
@@ -93,21 +90,12 @@ func NewFindUserByIDEndpoint(s Service) goa.Endpoint {
 	}
 }
 
-// NewUpdateUsernameEndpoint returns an endpoint function that calls the method
-// "UpdateUsername" of service "users".
-func NewUpdateUsernameEndpoint(s Service) goa.Endpoint {
+// NewUpdateProfileEndpoint returns an endpoint function that calls the method
+// "UpdateProfile" of service "users".
+func NewUpdateProfileEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req any) (any, error) {
-		p := req.(*UpdateUsernamePayload)
-		return nil, s.UpdateUsername(ctx, p)
-	}
-}
-
-// NewUpdateBioEndpoint returns an endpoint function that calls the method
-// "UpdateBio" of service "users".
-func NewUpdateBioEndpoint(s Service) goa.Endpoint {
-	return func(ctx context.Context, req any) (any, error) {
-		p := req.(*UpdateBioPayload)
-		return nil, s.UpdateBio(ctx, p)
+		p := req.(*UpdateProfilePayload)
+		return nil, s.UpdateProfile(ctx, p)
 	}
 }
 

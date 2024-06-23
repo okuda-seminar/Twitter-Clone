@@ -79,39 +79,43 @@ func (s *usersSvc) FindUserByID(ctx context.Context, p *users.FindUserByIDPayloa
 	return res, nil
 }
 
-func (s *usersSvc) UpdateUsername(ctx context.Context, p *users.UpdateUsernamePayload) error {
-	if !validateUsername(p.Username) {
-		err := users.MakeBadRequest(errors.New("username is invalid"))
-		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
-		return err
+func (s *usersSvc) UpdateProfile(ctx context.Context, p *users.UpdateProfilePayload) error {
+	// key is a database field name, and value is the new data, e.g. {"username": "new username"}.
+	// Ideally, the service layer should not be aware of database column names,
+	// but we will go with this implementation for now.
+	var fields = make(map[string]any)
+
+	if p.Username != nil {
+		if !validateUsername(*p.Username) {
+			err := users.MakeBadRequest(errors.New("username is invalid"))
+			s.logger.Printf("users.UpdateProfile: failed (%s)", err)
+			return err
+		}
+		fields["username"] = p.Username
 	}
 
-	userID, _ := uuid.Parse(p.ID)
-	err := s.usersRepo.UpdateUsername(ctx, userID, p.Username)
+	if p.Bio != nil {
+		if !validateBio(*p.Bio) {
+			err := users.MakeBadRequest(errors.New("bio is invalid"))
+			s.logger.Printf("users.UpdateProfile: failed (%s)", err)
+			return err
+		}
+		fields["bio"] = p.Bio
+	}
+
+	if p.IsPrivate != nil {
+		fields["is_private"] = p.IsPrivate
+	}
+
+	id, _ := uuid.Parse(p.ID)
+
+	err := s.usersRepo.UpdateProfile(ctx, id, fields)
 	if err != nil {
-		s.logger.Printf("users.UpdateUsername: failed (%s)", err)
+		s.logger.Printf("users.UpdateProfile: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
 
-	s.logger.Print("users.UpdateUsername")
-	return nil
-}
-
-func (s *usersSvc) UpdateBio(ctx context.Context, p *users.UpdateBioPayload) error {
-	if !validateBio(p.Bio) {
-		err := users.MakeBadRequest(errors.New("bio is invalid"))
-		s.logger.Printf("users.UpdateBio: failed (%s)", err)
-		return err
-	}
-
-	userID, _ := uuid.Parse(p.ID)
-	err := s.usersRepo.UpdateBio(ctx, userID, p.Bio)
-	if err != nil {
-		s.logger.Printf("users.UpdateBio: failed (%s)", err)
-		return users.MakeBadRequest(err)
-	}
-
-	s.logger.Print("users.UpdateBio")
+	s.logger.Print("users.UpdateProfile")
 	return nil
 }
 

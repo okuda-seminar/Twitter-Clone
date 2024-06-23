@@ -21,16 +21,12 @@ type CreateUserRequestBody struct {
 	IsPrivate   *bool   `form:"is_private,omitempty" json:"is_private,omitempty" xml:"is_private,omitempty"`
 }
 
-// UpdateUsernameRequestBody is the type of the "users" service
-// "UpdateUsername" endpoint HTTP request body.
-type UpdateUsernameRequestBody struct {
-	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
-}
-
-// UpdateBioRequestBody is the type of the "users" service "UpdateBio" endpoint
-// HTTP request body.
-type UpdateBioRequestBody struct {
-	Bio *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+// UpdateProfileRequestBody is the type of the "users" service "UpdateProfile"
+// endpoint HTTP request body.
+type UpdateProfileRequestBody struct {
+	Username  *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+	Bio       *string `form:"bio,omitempty" json:"bio,omitempty" xml:"bio,omitempty"`
+	IsPrivate *bool   `form:"is_private,omitempty" json:"is_private,omitempty" xml:"is_private,omitempty"`
 }
 
 // FollowRequestBody is the type of the "users" service "Follow" endpoint HTTP
@@ -155,9 +151,9 @@ type FindUserByIDNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// UpdateUsernameNotFoundResponseBody is the type of the "users" service
-// "UpdateUsername" endpoint HTTP response body for the "NotFound" error.
-type UpdateUsernameNotFoundResponseBody struct {
+// UpdateProfileNotFoundResponseBody is the type of the "users" service
+// "UpdateProfile" endpoint HTTP response body for the "NotFound" error.
+type UpdateProfileNotFoundResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -173,45 +169,9 @@ type UpdateUsernameNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
-// UpdateUsernameBadRequestResponseBody is the type of the "users" service
-// "UpdateUsername" endpoint HTTP response body for the "BadRequest" error.
-type UpdateUsernameBadRequestResponseBody struct {
-	// Name is the name of this class of errors.
-	Name string `form:"name" json:"name" xml:"name"`
-	// ID is a unique identifier for this particular occurrence of the problem.
-	ID string `form:"id" json:"id" xml:"id"`
-	// Message is a human-readable explanation specific to this occurrence of the
-	// problem.
-	Message string `form:"message" json:"message" xml:"message"`
-	// Is the error temporary?
-	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
-	// Is the error a timeout?
-	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
-	// Is the error a server-side fault?
-	Fault bool `form:"fault" json:"fault" xml:"fault"`
-}
-
-// UpdateBioNotFoundResponseBody is the type of the "users" service "UpdateBio"
-// endpoint HTTP response body for the "NotFound" error.
-type UpdateBioNotFoundResponseBody struct {
-	// Name is the name of this class of errors.
-	Name string `form:"name" json:"name" xml:"name"`
-	// ID is a unique identifier for this particular occurrence of the problem.
-	ID string `form:"id" json:"id" xml:"id"`
-	// Message is a human-readable explanation specific to this occurrence of the
-	// problem.
-	Message string `form:"message" json:"message" xml:"message"`
-	// Is the error temporary?
-	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
-	// Is the error a timeout?
-	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
-	// Is the error a server-side fault?
-	Fault bool `form:"fault" json:"fault" xml:"fault"`
-}
-
-// UpdateBioBadRequestResponseBody is the type of the "users" service
-// "UpdateBio" endpoint HTTP response body for the "BadRequest" error.
-type UpdateBioBadRequestResponseBody struct {
+// UpdateProfileBadRequestResponseBody is the type of the "users" service
+// "UpdateProfile" endpoint HTTP response body for the "BadRequest" error.
+type UpdateProfileBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -488,10 +448,10 @@ func NewFindUserByIDNotFoundResponseBody(res *goa.ServiceError) *FindUserByIDNot
 	return body
 }
 
-// NewUpdateUsernameNotFoundResponseBody builds the HTTP response body from the
-// result of the "UpdateUsername" endpoint of the "users" service.
-func NewUpdateUsernameNotFoundResponseBody(res *goa.ServiceError) *UpdateUsernameNotFoundResponseBody {
-	body := &UpdateUsernameNotFoundResponseBody{
+// NewUpdateProfileNotFoundResponseBody builds the HTTP response body from the
+// result of the "UpdateProfile" endpoint of the "users" service.
+func NewUpdateProfileNotFoundResponseBody(res *goa.ServiceError) *UpdateProfileNotFoundResponseBody {
+	body := &UpdateProfileNotFoundResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -502,38 +462,10 @@ func NewUpdateUsernameNotFoundResponseBody(res *goa.ServiceError) *UpdateUsernam
 	return body
 }
 
-// NewUpdateUsernameBadRequestResponseBody builds the HTTP response body from
-// the result of the "UpdateUsername" endpoint of the "users" service.
-func NewUpdateUsernameBadRequestResponseBody(res *goa.ServiceError) *UpdateUsernameBadRequestResponseBody {
-	body := &UpdateUsernameBadRequestResponseBody{
-		Name:      res.Name,
-		ID:        res.ID,
-		Message:   res.Message,
-		Temporary: res.Temporary,
-		Timeout:   res.Timeout,
-		Fault:     res.Fault,
-	}
-	return body
-}
-
-// NewUpdateBioNotFoundResponseBody builds the HTTP response body from the
-// result of the "UpdateBio" endpoint of the "users" service.
-func NewUpdateBioNotFoundResponseBody(res *goa.ServiceError) *UpdateBioNotFoundResponseBody {
-	body := &UpdateBioNotFoundResponseBody{
-		Name:      res.Name,
-		ID:        res.ID,
-		Message:   res.Message,
-		Temporary: res.Temporary,
-		Timeout:   res.Timeout,
-		Fault:     res.Fault,
-	}
-	return body
-}
-
-// NewUpdateBioBadRequestResponseBody builds the HTTP response body from the
-// result of the "UpdateBio" endpoint of the "users" service.
-func NewUpdateBioBadRequestResponseBody(res *goa.ServiceError) *UpdateBioBadRequestResponseBody {
-	body := &UpdateBioBadRequestResponseBody{
+// NewUpdateProfileBadRequestResponseBody builds the HTTP response body from
+// the result of the "UpdateProfile" endpoint of the "users" service.
+func NewUpdateProfileBadRequestResponseBody(res *goa.ServiceError) *UpdateProfileBadRequestResponseBody {
+	body := &UpdateProfileBadRequestResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -683,21 +615,13 @@ func NewFindUserByIDPayload(id string) *users.FindUserByIDPayload {
 	return v
 }
 
-// NewUpdateUsernamePayload builds a users service UpdateUsername endpoint
+// NewUpdateProfilePayload builds a users service UpdateProfile endpoint
 // payload.
-func NewUpdateUsernamePayload(body *UpdateUsernameRequestBody, id string) *users.UpdateUsernamePayload {
-	v := &users.UpdateUsernamePayload{
-		Username: *body.Username,
-	}
-	v.ID = id
-
-	return v
-}
-
-// NewUpdateBioPayload builds a users service UpdateBio endpoint payload.
-func NewUpdateBioPayload(body *UpdateBioRequestBody, id string) *users.UpdateBioPayload {
-	v := &users.UpdateBioPayload{
-		Bio: *body.Bio,
+func NewUpdateProfilePayload(body *UpdateProfileRequestBody, id string) *users.UpdateProfilePayload {
+	v := &users.UpdateProfilePayload{
+		Username:  body.Username,
+		Bio:       body.Bio,
+		IsPrivate: body.IsPrivate,
 	}
 	v.ID = id
 
@@ -789,24 +713,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.IsPrivate == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("is_private", "body"))
-	}
-	return
-}
-
-// ValidateUpdateUsernameRequestBody runs the validations defined on
-// UpdateUsernameRequestBody
-func ValidateUpdateUsernameRequestBody(body *UpdateUsernameRequestBody) (err error) {
-	if body.Username == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("username", "body"))
-	}
-	return
-}
-
-// ValidateUpdateBioRequestBody runs the validations defined on
-// UpdateBioRequestBody
-func ValidateUpdateBioRequestBody(body *UpdateBioRequestBody) (err error) {
-	if body.Bio == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("bio", "body"))
 	}
 	return
 }

@@ -218,21 +218,21 @@ func EncodeFindUserByIDError(encoder func(context.Context, http.ResponseWriter) 
 	}
 }
 
-// EncodeUpdateUsernameResponse returns an encoder for responses returned by
-// the users UpdateUsername endpoint.
-func EncodeUpdateUsernameResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+// EncodeUpdateProfileResponse returns an encoder for responses returned by the
+// users UpdateProfile endpoint.
+func EncodeUpdateProfileResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
 	return func(ctx context.Context, w http.ResponseWriter, v any) error {
 		w.WriteHeader(http.StatusOK)
 		return nil
 	}
 }
 
-// DecodeUpdateUsernameRequest returns a decoder for requests sent to the users
-// UpdateUsername endpoint.
-func DecodeUpdateUsernameRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+// DecodeUpdateProfileRequest returns a decoder for requests sent to the users
+// UpdateProfile endpoint.
+func DecodeUpdateProfileRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body UpdateUsernameRequestBody
+			body UpdateProfileRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -241,10 +241,6 @@ func DecodeUpdateUsernameRequest(mux goahttp.Muxer, decoder func(*http.Request) 
 				return nil, goa.MissingPayloadError()
 			}
 			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUpdateUsernameRequestBody(&body)
-		if err != nil {
-			return nil, err
 		}
 
 		var (
@@ -257,15 +253,15 @@ func DecodeUpdateUsernameRequest(mux goahttp.Muxer, decoder func(*http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUpdateUsernamePayload(&body, id)
+		payload := NewUpdateProfilePayload(&body, id)
 
 		return payload, nil
 	}
 }
 
-// EncodeUpdateUsernameError returns an encoder for errors returned by the
-// UpdateUsername users endpoint.
-func EncodeUpdateUsernameError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+// EncodeUpdateProfileError returns an encoder for errors returned by the
+// UpdateProfile users endpoint.
+func EncodeUpdateProfileError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
 	encodeError := goahttp.ErrorEncoder(encoder, formatter)
 	return func(ctx context.Context, w http.ResponseWriter, v error) error {
 		var en goa.GoaErrorNamer
@@ -281,7 +277,7 @@ func EncodeUpdateUsernameError(encoder func(context.Context, http.ResponseWriter
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewUpdateUsernameNotFoundResponseBody(res)
+				body = NewUpdateProfileNotFoundResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusNotFound)
@@ -294,94 +290,7 @@ func EncodeUpdateUsernameError(encoder func(context.Context, http.ResponseWriter
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewUpdateUsernameBadRequestResponseBody(res)
-			}
-			w.Header().Set("goa-error", res.GoaErrorName())
-			w.WriteHeader(http.StatusBadRequest)
-			return enc.Encode(body)
-		default:
-			return encodeError(ctx, w, v)
-		}
-	}
-}
-
-// EncodeUpdateBioResponse returns an encoder for responses returned by the
-// users UpdateBio endpoint.
-func EncodeUpdateBioResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
-	return func(ctx context.Context, w http.ResponseWriter, v any) error {
-		w.WriteHeader(http.StatusOK)
-		return nil
-	}
-}
-
-// DecodeUpdateBioRequest returns a decoder for requests sent to the users
-// UpdateBio endpoint.
-func DecodeUpdateBioRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
-	return func(r *http.Request) (any, error) {
-		var (
-			body UpdateBioRequestBody
-			err  error
-		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateUpdateBioRequestBody(&body)
-		if err != nil {
-			return nil, err
-		}
-
-		var (
-			id string
-
-			params = mux.Vars(r)
-		)
-		id = params["id"]
-		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
-		if err != nil {
-			return nil, err
-		}
-		payload := NewUpdateBioPayload(&body, id)
-
-		return payload, nil
-	}
-}
-
-// EncodeUpdateBioError returns an encoder for errors returned by the UpdateBio
-// users endpoint.
-func EncodeUpdateBioError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
-	encodeError := goahttp.ErrorEncoder(encoder, formatter)
-	return func(ctx context.Context, w http.ResponseWriter, v error) error {
-		var en goa.GoaErrorNamer
-		if !errors.As(v, &en) {
-			return encodeError(ctx, w, v)
-		}
-		switch en.GoaErrorName() {
-		case "NotFound":
-			var res *goa.ServiceError
-			errors.As(v, &res)
-			enc := encoder(ctx, w)
-			var body any
-			if formatter != nil {
-				body = formatter(ctx, res)
-			} else {
-				body = NewUpdateBioNotFoundResponseBody(res)
-			}
-			w.Header().Set("goa-error", res.GoaErrorName())
-			w.WriteHeader(http.StatusNotFound)
-			return enc.Encode(body)
-		case "BadRequest":
-			var res *goa.ServiceError
-			errors.As(v, &res)
-			enc := encoder(ctx, w)
-			var body any
-			if formatter != nil {
-				body = formatter(ctx, res)
-			} else {
-				body = NewUpdateBioBadRequestResponseBody(res)
+				body = NewUpdateProfileBadRequestResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusBadRequest)

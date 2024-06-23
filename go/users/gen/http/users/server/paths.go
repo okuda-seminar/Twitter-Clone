@@ -26,14 +26,9 @@ func FindUserByIDUsersPath(id string) string {
 	return fmt.Sprintf("/api/users/%v", id)
 }
 
-// UpdateUsernameUsersPath returns the URL path to the users service UpdateUsername HTTP endpoint.
-func UpdateUsernameUsersPath(id string) string {
-	return fmt.Sprintf("/api/users/%v/username", id)
-}
-
-// UpdateBioUsersPath returns the URL path to the users service UpdateBio HTTP endpoint.
-func UpdateBioUsersPath(id string) string {
-	return fmt.Sprintf("/api/users/%v/bio", id)
+// UpdateProfileUsersPath returns the URL path to the users service UpdateProfile HTTP endpoint.
+func UpdateProfileUsersPath(id string) string {
+	return fmt.Sprintf("/api/users/%v", id)
 }
 
 // FollowUsersPath returns the URL path to the users service Follow HTTP endpoint.

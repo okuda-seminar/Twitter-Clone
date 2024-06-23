@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -19,9 +21,6 @@ func NewUsersRepoImpl(db *sql.DB) UsersRepo {
 	return &usersRepoImpl{db}
 }
 
-// CreateUser creates a new user with the specified username.
-// The 'Bio' field is set to an empty string, not null.
-// If a user with the specified username already exists, the creation fails.
 func (r *usersRepoImpl) CreateUser(ctx context.Context, username string, display_name string, is_private bool) (*User, error) {
 	query := `
 INSERT INTO users (id, username, display_name, bio, is_private) VALUES ($1, $2, $3, $4, $5)
@@ -48,7 +47,6 @@ RETURNING created_at, updated_at
 	return &user, nil
 }
 
-// DeleteUser deletes a user with the specified user ID.
 func (r *usersRepoImpl) DeleteUser(ctx context.Context, id uuid.UUID) error {
 	query := "DELETE FROM users WHERE id = $1"
 	res, err := r.db.ExecContext(ctx, query, id)
@@ -66,7 +64,6 @@ func (r *usersRepoImpl) DeleteUser(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
-// FindUserByID retrieves a user by user ID from the database.
 func (r *usersRepoImpl) FindUserByID(ctx context.Context, id uuid.UUID) (*User, error) {
 	query := "SELECT id, username, display_name, bio, created_at, updated_at, is_private FROM users WHERE id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
@@ -88,11 +85,24 @@ func (r *usersRepoImpl) FindUserByID(ctx context.Context, id uuid.UUID) (*User, 
 	return &user, nil
 }
 
-// UpdateUsername updates the username of a user with the specified ID.
-// If a user with the specified username already exists, the update fails.
-func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id uuid.UUID, username string) error {
-	query := "UPDATE users SET username = $1 where id = $2"
-	res, err := r.db.ExecContext(ctx, query, username, id)
+func (r *usersRepoImpl) UpdateProfile(ctx context.Context, id uuid.UUID, fields map[string]any) error {
+	if len(fields) == 0 {
+		return errors.New("no fields to update")
+	}
+
+	var clauses []string
+	var args []any
+	i := 1 // placeholder count
+	for field, value := range fields {
+		clauses = append(clauses, fmt.Sprintf("%s = $%d", field, i))
+		args = append(args, value)
+		i += 1
+	}
+	args = append(args, id)
+
+	query := fmt.Sprintf("UPDATE users SET %s WHERE id = $%d", strings.Join(clauses, ", "), i)
+
+	res, err := r.db.ExecContext(ctx, query, args...)
 	if err != nil {
 		return err
 	}
@@ -107,25 +117,6 @@ func (r *usersRepoImpl) UpdateUsername(ctx context.Context, id uuid.UUID, userna
 	return nil
 }
 
-// UpdateBio updates the bio of a user with the specified ID.
-func (r *usersRepoImpl) UpdateBio(ctx context.Context, id uuid.UUID, bio string) error {
-	query := "UPDATE users SET bio = $1 where id = $2"
-	res, err := r.db.ExecContext(ctx, query, bio, id)
-	if err != nil {
-		return err
-	}
-	count, err := res.RowsAffected()
-	if err != nil {
-		return err
-	}
-	if count != 1 {
-		return errors.New("no row found to update")
-	}
-
-	return nil
-}
-
-// GetFollowers retrieves all the followers of a user with the specified ID.
 func (r *usersRepoImpl) GetFollowers(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users
@@ -162,7 +153,6 @@ WHERE followships.followed_user_id = $1
 	return followers, nil
 }
 
-// GetFollowings retrieves all the followings of a user with the specified ID.
 func (r *usersRepoImpl) GetFollowings(ctx context.Context, id uuid.UUID) ([]*User, error) {
 	query := `
 SELECT * FROM users

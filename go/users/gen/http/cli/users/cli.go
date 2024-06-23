@@ -22,16 +22,16 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `users (create-user|delete-user|find-user-by-id|update-username|update-bio|follow|unfollow|get-followers|get-followings|mute|unmute|block|unblock)
+	return `users (create-user|delete-user|find-user-by-id|update-profile|follow|unfollow|get-followers|get-followings|mute|unmute|block|unblock)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
-      "display_name": "Saepe sit.",
-      "is_private": false,
-      "username": "Non vitae."
+      "display_name": "Blanditiis quos voluptas qui.",
+      "is_private": true,
+      "username": "Molestias ipsam."
    }'` + "\n" +
 		""
 }
@@ -57,13 +57,9 @@ func ParseEndpoint(
 		usersFindUserByIDFlags  = flag.NewFlagSet("find-user-by-id", flag.ExitOnError)
 		usersFindUserByIDIDFlag = usersFindUserByIDFlags.String("id", "REQUIRED", "")
 
-		usersUpdateUsernameFlags    = flag.NewFlagSet("update-username", flag.ExitOnError)
-		usersUpdateUsernameBodyFlag = usersUpdateUsernameFlags.String("body", "REQUIRED", "")
-		usersUpdateUsernameIDFlag   = usersUpdateUsernameFlags.String("id", "REQUIRED", "")
-
-		usersUpdateBioFlags    = flag.NewFlagSet("update-bio", flag.ExitOnError)
-		usersUpdateBioBodyFlag = usersUpdateBioFlags.String("body", "REQUIRED", "")
-		usersUpdateBioIDFlag   = usersUpdateBioFlags.String("id", "REQUIRED", "")
+		usersUpdateProfileFlags    = flag.NewFlagSet("update-profile", flag.ExitOnError)
+		usersUpdateProfileBodyFlag = usersUpdateProfileFlags.String("body", "REQUIRED", "")
+		usersUpdateProfileIDFlag   = usersUpdateProfileFlags.String("id", "REQUIRED", "")
 
 		usersFollowFlags               = flag.NewFlagSet("follow", flag.ExitOnError)
 		usersFollowBodyFlag            = usersFollowFlags.String("body", "REQUIRED", "")
@@ -99,8 +95,7 @@ func ParseEndpoint(
 	usersCreateUserFlags.Usage = usersCreateUserUsage
 	usersDeleteUserFlags.Usage = usersDeleteUserUsage
 	usersFindUserByIDFlags.Usage = usersFindUserByIDUsage
-	usersUpdateUsernameFlags.Usage = usersUpdateUsernameUsage
-	usersUpdateBioFlags.Usage = usersUpdateBioUsage
+	usersUpdateProfileFlags.Usage = usersUpdateProfileUsage
 	usersFollowFlags.Usage = usersFollowUsage
 	usersUnfollowFlags.Usage = usersUnfollowUsage
 	usersGetFollowersFlags.Usage = usersGetFollowersUsage
@@ -153,11 +148,8 @@ func ParseEndpoint(
 			case "find-user-by-id":
 				epf = usersFindUserByIDFlags
 
-			case "update-username":
-				epf = usersUpdateUsernameFlags
-
-			case "update-bio":
-				epf = usersUpdateBioFlags
+			case "update-profile":
+				epf = usersUpdateProfileFlags
 
 			case "follow":
 				epf = usersFollowFlags
@@ -217,12 +209,9 @@ func ParseEndpoint(
 			case "find-user-by-id":
 				endpoint = c.FindUserByID()
 				data, err = usersc.BuildFindUserByIDPayload(*usersFindUserByIDIDFlag)
-			case "update-username":
-				endpoint = c.UpdateUsername()
-				data, err = usersc.BuildUpdateUsernamePayload(*usersUpdateUsernameBodyFlag, *usersUpdateUsernameIDFlag)
-			case "update-bio":
-				endpoint = c.UpdateBio()
-				data, err = usersc.BuildUpdateBioPayload(*usersUpdateBioBodyFlag, *usersUpdateBioIDFlag)
+			case "update-profile":
+				endpoint = c.UpdateProfile()
+				data, err = usersc.BuildUpdateProfilePayload(*usersUpdateProfileBodyFlag, *usersUpdateProfileIDFlag)
 			case "follow":
 				endpoint = c.Follow()
 				data, err = usersc.BuildFollowPayload(*usersFollowBodyFlag, *usersFollowFollowingUserIDFlag)
@@ -267,8 +256,7 @@ COMMAND:
     create-user: CreateUser implements CreateUser.
     delete-user: DeleteUser implements DeleteUser.
     find-user-by-id: FindUserByID implements FindUserByID.
-    update-username: UpdateUsername implements UpdateUsername.
-    update-bio: UpdateBio implements UpdateBio.
+    update-profile: UpdateProfile implements UpdateProfile.
     follow: Follow implements Follow.
     unfollow: Unfollow implements Unfollow.
     get-followers: GetFollowers implements GetFollowers.
@@ -290,9 +278,9 @@ CreateUser implements CreateUser.
 
 Example:
     %[1]s users create-user --body '{
-      "display_name": "Saepe sit.",
-      "is_private": false,
-      "username": "Non vitae."
+      "display_name": "Blanditiis quos voluptas qui.",
+      "is_private": true,
+      "username": "Molestias ipsam."
    }'
 `, os.Args[0])
 }
@@ -304,7 +292,7 @@ DeleteUser implements DeleteUser.
     -id STRING: 
 
 Example:
-    %[1]s users delete-user --id "9b8639fe-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users delete-user --id "14a7036e-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -315,35 +303,23 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "9b864f3e-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users find-user-by-id --id "14a71316-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
-func usersUpdateUsernameUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-username -body JSON -id STRING
+func usersUpdateProfileUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-profile -body JSON -id STRING
 
-UpdateUsername implements UpdateUsername.
+UpdateProfile implements UpdateProfile.
     -body JSON: 
     -id STRING: 
 
 Example:
-    %[1]s users update-username --body '{
-      "username": "Ipsam debitis."
-   }' --id "9b866db6-2de1-11ef-b6d4-cec0a17b7253"
-`, os.Args[0])
-}
-
-func usersUpdateBioUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] users update-bio -body JSON -id STRING
-
-UpdateBio implements UpdateBio.
-    -body JSON: 
-    -id STRING: 
-
-Example:
-    %[1]s users update-bio --body '{
-      "bio": "Qui impedit expedita dolor."
-   }' --id "9b86b122-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users update-profile --body '{
+      "bio": "Nam ea laboriosam non sapiente incidunt.",
+      "is_private": false,
+      "username": "Alias quis repellat ea velit provident totam."
+   }' --id "14a7288f-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -356,8 +332,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followed_user_id": "9b86ca9a-2de1-11ef-b6d4-cec0a17b7253"
-   }' --following-user-id "9b86cdf6-2de1-11ef-b6d4-cec0a17b7253"
+      "followed_user_id": "14a73923-310a-11ef-bbda-0242ac120003"
+   }' --following-user-id "14a73b38-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -369,7 +345,7 @@ Unfollow implements Unfollow.
     -followed-user-id STRING: 
 
 Example:
-    %[1]s users unfollow --following-user-id "9b86dfa8-2de1-11ef-b6d4-cec0a17b7253" --followed-user-id "9b86e142-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unfollow --following-user-id "14a746b0-310a-11ef-bbda-0242ac120003" --followed-user-id "14a747a9-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -380,7 +356,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "9b86ed7c-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users get-followers --id "14a74fb3-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -391,7 +367,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "9b8705c8-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users get-followings --id "14a76c9c-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -404,8 +380,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "9b87190a-2de1-11ef-b6d4-cec0a17b7253"
-   }' --muting-user-id "9b871be4-2de1-11ef-b6d4-cec0a17b7253"
+      "muted_user_id": "14a780ac-310a-11ef-bbda-0242ac120003"
+   }' --muting-user-id "14a78373-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -417,7 +393,7 @@ Unmute implements Unmute.
     -muted-user-id STRING: 
 
 Example:
-    %[1]s users unmute --muting-user-id "9b872b52-2de1-11ef-b6d4-cec0a17b7253" --muted-user-id "9b872cce-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unmute --muting-user-id "14a7992a-310a-11ef-bbda-0242ac120003" --muted-user-id "14a79a40-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -430,8 +406,8 @@ Block implements Block.
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "9b873962-2de1-11ef-b6d4-cec0a17b7253"
-   }' --blocking-user-id "9b873c1e-2de1-11ef-b6d4-cec0a17b7253"
+      "blocked_user_id": "14a7a39a-310a-11ef-bbda-0242ac120003"
+   }' --blocking-user-id "14a7a591-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }
 
@@ -443,6 +419,6 @@ Unblock implements Unblock.
     -blocked-user-id STRING: 
 
 Example:
-    %[1]s users unblock --blocking-user-id "9b8767fc-2de1-11ef-b6d4-cec0a17b7253" --blocked-user-id "9b87696e-2de1-11ef-b6d4-cec0a17b7253"
+    %[1]s users unblock --blocking-user-id "14a7b11a-310a-11ef-bbda-0242ac120003" --blocked-user-id "14a7b217-310a-11ef-bbda-0242ac120003"
 `, os.Args[0])
 }

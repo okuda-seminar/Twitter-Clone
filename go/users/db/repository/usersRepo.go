@@ -8,12 +8,27 @@ import (
 )
 
 type UsersRepo interface {
+	// CreateUser creates a new user with the specified username.
+	// The 'Bio' and 'IsPrivate' fields are set to an empty string and false.
+	// If a user with the specified username already exists, the creation fails.
 	CreateUser(ctx context.Context, username string, display_name string, is_private bool) (*User, error)
+
+	// DeleteUser deletes a user with the specified user ID.
+	// If a target user does not exist, it returns an error.
 	DeleteUser(ctx context.Context, id uuid.UUID) error
+
+	// FindUserByID retrieves a user by user ID from the database.
+	// If a target user does not exist, it returns an error.
 	FindUserByID(ctx context.Context, id uuid.UUID) (*User, error)
-	UpdateUsername(ctx context.Context, id uuid.UUID, username string) error
-	UpdateBio(ctx context.Context, id uuid.UUID, bio string) error
+
+	// UpdateProfiles updates the fields of a user with the specified ID.
+	// If a target user does not exist, it returns an error.
+	UpdateProfile(ctx context.Context, id uuid.UUID, fields map[string]any) error
+
+	// GetFollowers retrieves all the followers of a user with the specified ID.
 	GetFollowers(ctx context.Context, id uuid.UUID) ([]*User, error)
+
+	// GetFollowings retrieves all the followings of a user with the specified ID.
 	GetFollowings(ctx context.Context, id uuid.UUID) ([]*User, error)
 }
 
