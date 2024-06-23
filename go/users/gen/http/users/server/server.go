@@ -22,8 +22,7 @@ type Server struct {
 	CreateUser         http.Handler
 	DeleteUser         http.Handler
 	FindUserByID       http.Handler
-	UpdateUsername     http.Handler
-	UpdateBio          http.Handler
+	UpdateProfile      http.Handler
 	Follow             http.Handler
 	Unfollow           http.Handler
 	GetFollowers       http.Handler
@@ -69,8 +68,7 @@ func New(
 			{"CreateUser", "POST", "/api/users"},
 			{"DeleteUser", "DELETE", "/api/users/{id}"},
 			{"FindUserByID", "GET", "/api/users/{id}"},
-			{"UpdateUsername", "POST", "/api/users/{id}/username"},
-			{"UpdateBio", "POST", "/api/users/{id}/bio"},
+			{"UpdateProfile", "POST", "/api/users/{id}"},
 			{"Follow", "POST", "/api/users/{following_user_id}/follow"},
 			{"Unfollow", "DELETE", "/api/users/{following_user_id}/follow/{followed_user_id}"},
 			{"GetFollowers", "GET", "/api/users/{id}/followers"},
@@ -84,8 +82,7 @@ func New(
 		CreateUser:         NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
 		DeleteUser:         NewDeleteUserHandler(e.DeleteUser, mux, decoder, encoder, errhandler, formatter),
 		FindUserByID:       NewFindUserByIDHandler(e.FindUserByID, mux, decoder, encoder, errhandler, formatter),
-		UpdateUsername:     NewUpdateUsernameHandler(e.UpdateUsername, mux, decoder, encoder, errhandler, formatter),
-		UpdateBio:          NewUpdateBioHandler(e.UpdateBio, mux, decoder, encoder, errhandler, formatter),
+		UpdateProfile:      NewUpdateProfileHandler(e.UpdateProfile, mux, decoder, encoder, errhandler, formatter),
 		Follow:             NewFollowHandler(e.Follow, mux, decoder, encoder, errhandler, formatter),
 		Unfollow:           NewUnfollowHandler(e.Unfollow, mux, decoder, encoder, errhandler, formatter),
 		GetFollowers:       NewGetFollowersHandler(e.GetFollowers, mux, decoder, encoder, errhandler, formatter),
@@ -106,8 +103,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreateUser = m(s.CreateUser)
 	s.DeleteUser = m(s.DeleteUser)
 	s.FindUserByID = m(s.FindUserByID)
-	s.UpdateUsername = m(s.UpdateUsername)
-	s.UpdateBio = m(s.UpdateBio)
+	s.UpdateProfile = m(s.UpdateProfile)
 	s.Follow = m(s.Follow)
 	s.Unfollow = m(s.Unfollow)
 	s.GetFollowers = m(s.GetFollowers)
@@ -126,8 +122,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreateUserHandler(mux, h.CreateUser)
 	MountDeleteUserHandler(mux, h.DeleteUser)
 	MountFindUserByIDHandler(mux, h.FindUserByID)
-	MountUpdateUsernameHandler(mux, h.UpdateUsername)
-	MountUpdateBioHandler(mux, h.UpdateBio)
+	MountUpdateProfileHandler(mux, h.UpdateProfile)
 	MountFollowHandler(mux, h.Follow)
 	MountUnfollowHandler(mux, h.Unfollow)
 	MountGetFollowersHandler(mux, h.GetFollowers)
@@ -297,21 +292,21 @@ func NewFindUserByIDHandler(
 	})
 }
 
-// MountUpdateUsernameHandler configures the mux to serve the "users" service
-// "UpdateUsername" endpoint.
-func MountUpdateUsernameHandler(mux goahttp.Muxer, h http.Handler) {
+// MountUpdateProfileHandler configures the mux to serve the "users" service
+// "UpdateProfile" endpoint.
+func MountUpdateProfileHandler(mux goahttp.Muxer, h http.Handler) {
 	f, ok := h.(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/users/{id}/username", f)
+	mux.Handle("POST", "/api/users/{id}", f)
 }
 
-// NewUpdateUsernameHandler creates a HTTP handler which loads the HTTP request
-// and calls the "users" service "UpdateUsername" endpoint.
-func NewUpdateUsernameHandler(
+// NewUpdateProfileHandler creates a HTTP handler which loads the HTTP request
+// and calls the "users" service "UpdateProfile" endpoint.
+func NewUpdateProfileHandler(
 	endpoint goa.Endpoint,
 	mux goahttp.Muxer,
 	decoder func(*http.Request) goahttp.Decoder,
@@ -320,64 +315,13 @@ func NewUpdateUsernameHandler(
 	formatter func(ctx context.Context, err error) goahttp.Statuser,
 ) http.Handler {
 	var (
-		decodeRequest  = DecodeUpdateUsernameRequest(mux, decoder)
-		encodeResponse = EncodeUpdateUsernameResponse(encoder)
-		encodeError    = EncodeUpdateUsernameError(encoder, formatter)
+		decodeRequest  = DecodeUpdateProfileRequest(mux, decoder)
+		encodeResponse = EncodeUpdateProfileResponse(encoder)
+		encodeError    = EncodeUpdateProfileError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
-		ctx = context.WithValue(ctx, goa.MethodKey, "UpdateUsername")
-		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
-		payload, err := decodeRequest(r)
-		if err != nil {
-			if err := encodeError(ctx, w, err); err != nil {
-				errhandler(ctx, w, err)
-			}
-			return
-		}
-		res, err := endpoint(ctx, payload)
-		if err != nil {
-			if err := encodeError(ctx, w, err); err != nil {
-				errhandler(ctx, w, err)
-			}
-			return
-		}
-		if err := encodeResponse(ctx, w, res); err != nil {
-			errhandler(ctx, w, err)
-		}
-	})
-}
-
-// MountUpdateBioHandler configures the mux to serve the "users" service
-// "UpdateBio" endpoint.
-func MountUpdateBioHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
-	if !ok {
-		f = func(w http.ResponseWriter, r *http.Request) {
-			h.ServeHTTP(w, r)
-		}
-	}
-	mux.Handle("POST", "/api/users/{id}/bio", f)
-}
-
-// NewUpdateBioHandler creates a HTTP handler which loads the HTTP request and
-// calls the "users" service "UpdateBio" endpoint.
-func NewUpdateBioHandler(
-	endpoint goa.Endpoint,
-	mux goahttp.Muxer,
-	decoder func(*http.Request) goahttp.Decoder,
-	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
-	errhandler func(context.Context, http.ResponseWriter, error),
-	formatter func(ctx context.Context, err error) goahttp.Statuser,
-) http.Handler {
-	var (
-		decodeRequest  = DecodeUpdateBioRequest(mux, decoder)
-		encodeResponse = EncodeUpdateBioResponse(encoder)
-		encodeError    = EncodeUpdateBioError(encoder, formatter)
-	)
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
-		ctx = context.WithValue(ctx, goa.MethodKey, "UpdateBio")
+		ctx = context.WithValue(ctx, goa.MethodKey, "UpdateProfile")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "users")
 		payload, err := decodeRequest(r)
 		if err != nil {

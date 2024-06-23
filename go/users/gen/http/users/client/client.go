@@ -29,13 +29,9 @@ type Client struct {
 	// FindUserByID endpoint.
 	FindUserByIDDoer goahttp.Doer
 
-	// UpdateUsername Doer is the HTTP client used to make requests to the
-	// UpdateUsername endpoint.
-	UpdateUsernameDoer goahttp.Doer
-
-	// UpdateBio Doer is the HTTP client used to make requests to the UpdateBio
-	// endpoint.
-	UpdateBioDoer goahttp.Doer
+	// UpdateProfile Doer is the HTTP client used to make requests to the
+	// UpdateProfile endpoint.
+	UpdateProfileDoer goahttp.Doer
 
 	// Follow Doer is the HTTP client used to make requests to the Follow endpoint.
 	FollowDoer goahttp.Doer
@@ -88,8 +84,7 @@ func NewClient(
 		CreateUserDoer:      doer,
 		DeleteUserDoer:      doer,
 		FindUserByIDDoer:    doer,
-		UpdateUsernameDoer:  doer,
-		UpdateBioDoer:       doer,
+		UpdateProfileDoer:   doer,
 		FollowDoer:          doer,
 		UnfollowDoer:        doer,
 		GetFollowersDoer:    doer,
@@ -168,15 +163,15 @@ func (c *Client) FindUserByID() goa.Endpoint {
 	}
 }
 
-// UpdateUsername returns an endpoint that makes HTTP requests to the users
-// service UpdateUsername server.
-func (c *Client) UpdateUsername() goa.Endpoint {
+// UpdateProfile returns an endpoint that makes HTTP requests to the users
+// service UpdateProfile server.
+func (c *Client) UpdateProfile() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeUpdateUsernameRequest(c.encoder)
-		decodeResponse = DecodeUpdateUsernameResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeUpdateProfileRequest(c.encoder)
+		decodeResponse = DecodeUpdateProfileResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildUpdateUsernameRequest(ctx, v)
+		req, err := c.BuildUpdateProfileRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -184,33 +179,9 @@ func (c *Client) UpdateUsername() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.UpdateUsernameDoer.Do(req)
+		resp, err := c.UpdateProfileDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("users", "UpdateUsername", err)
-		}
-		return decodeResponse(resp)
-	}
-}
-
-// UpdateBio returns an endpoint that makes HTTP requests to the users service
-// UpdateBio server.
-func (c *Client) UpdateBio() goa.Endpoint {
-	var (
-		encodeRequest  = EncodeUpdateBioRequest(c.encoder)
-		decodeResponse = DecodeUpdateBioResponse(c.decoder, c.RestoreResponseBody)
-	)
-	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildUpdateBioRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		err = encodeRequest(req, v)
-		if err != nil {
-			return nil, err
-		}
-		resp, err := c.UpdateBioDoer.Do(req)
-		if err != nil {
-			return nil, goahttp.ErrRequestError("users", "UpdateBio", err)
+			return nil, goahttp.ErrRequestError("users", "UpdateProfile", err)
 		}
 		return decodeResponse(resp)
 	}
