@@ -156,8 +156,14 @@ struct CommunitiesHomeView: View {
     ScrollView(.horizontal) {
       LazyHStack(spacing: 0) {
         ForEach(tabModels) { tabModel in
-          CommunityHomeMyCommunitiesTabView(showMoreCommunities: $showMoreCommunities)
-            .frame(width: UIScreen.main.bounds.width)
+          switch tabModel.id {
+          case .myCommunity:
+            CommunityHomeMyCommunitiesTabView(showMoreCommunities: $showMoreCommunities)
+              .frame(width: UIScreen.main.bounds.width)
+          case .explore:
+            CommunitiesHomeExploreTabView()
+              .frame(width: UIScreen.main.bounds.width)
+          }
         }
       }
       .scrollTargetLayout()

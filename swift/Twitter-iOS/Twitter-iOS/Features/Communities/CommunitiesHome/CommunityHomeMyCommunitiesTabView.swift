@@ -51,7 +51,10 @@ struct CommunityHomeMyCommunitiesTabView: View {
           },
           label: {
             Text(LocalizedString.showMoreText)
-          })
+          }
+        )
+        .buttonStyle(.plain)
+        .foregroundStyle(Color(uiColor: .brandedBlue))
         Spacer()
       }
 
