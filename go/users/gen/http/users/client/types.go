@@ -18,7 +18,6 @@ import (
 type CreateUserRequestBody struct {
 	Username    string `form:"username" json:"username" xml:"username"`
 	DisplayName string `form:"display_name" json:"display_name" xml:"display_name"`
-	IsPrivate   bool   `form:"is_private" json:"is_private" xml:"is_private"`
 }
 
 // UpdateProfileRequestBody is the type of the "users" service "UpdateProfile"
@@ -348,7 +347,6 @@ func NewCreateUserRequestBody(p *users.CreateUserPayload) *CreateUserRequestBody
 	body := &CreateUserRequestBody{
 		Username:    p.Username,
 		DisplayName: p.DisplayName,
-		IsPrivate:   p.IsPrivate,
 	}
 	return body
 }

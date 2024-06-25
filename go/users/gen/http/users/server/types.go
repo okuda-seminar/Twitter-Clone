@@ -18,7 +18,6 @@ import (
 type CreateUserRequestBody struct {
 	Username    *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 	DisplayName *string `form:"display_name,omitempty" json:"display_name,omitempty" xml:"display_name,omitempty"`
-	IsPrivate   *bool   `form:"is_private,omitempty" json:"is_private,omitempty" xml:"is_private,omitempty"`
 }
 
 // UpdateProfileRequestBody is the type of the "users" service "UpdateProfile"
@@ -593,7 +592,6 @@ func NewCreateUserPayload(body *CreateUserRequestBody) *users.CreateUserPayload 
 	v := &users.CreateUserPayload{
 		Username:    *body.Username,
 		DisplayName: *body.DisplayName,
-		IsPrivate:   *body.IsPrivate,
 	}
 
 	return v
@@ -710,9 +708,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.DisplayName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("display_name", "body"))
-	}
-	if body.IsPrivate == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("is_private", "body"))
 	}
 	return
 }

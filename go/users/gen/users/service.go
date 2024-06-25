@@ -61,7 +61,6 @@ type BlockPayload struct {
 type CreateUserPayload struct {
 	Username    string
 	DisplayName string
-	IsPrivate   bool
 }
 
 // DeleteUserPayload is the payload type of the users service DeleteUser method.

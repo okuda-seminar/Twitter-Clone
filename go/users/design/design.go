@@ -26,8 +26,7 @@ var _ = Service("users", func() {
 		Payload(func() {
 			Field(1, "username", String)
 			Field(2, "display_name", String)
-			Field(3, "is_private", Boolean)
-			Required("username", "display_name", "is_private")
+			Required("username", "display_name")
 		})
 		Result(types.User)
 

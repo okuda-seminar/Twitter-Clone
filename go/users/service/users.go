@@ -30,8 +30,6 @@ func NewUsersSvc(db *sql.DB, logger *log.Logger) users.Service {
 	return &usersSvc{usersRepo, followshipsRepo, mutesRepo, blocksRepo, logger}
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/303
-// - Add default setting for is_private column.
 func (s *usersSvc) CreateUser(ctx context.Context, p *users.CreateUserPayload) (*users.User, error) {
 	if !validateUsername(p.Username) {
 		err := users.MakeBadRequest(errors.New("username is invalid"))
@@ -39,7 +37,7 @@ func (s *usersSvc) CreateUser(ctx context.Context, p *users.CreateUserPayload) (
 		return nil, err
 	}
 
-	user, err := s.usersRepo.CreateUser(ctx, p.Username, p.DisplayName, p.IsPrivate)
+	user, err := s.usersRepo.CreateUser(ctx, p.Username, p.DisplayName, false)
 	if err != nil {
 		s.logger.Printf("users.CreateUser: failed (%s)", err)
 		return nil, users.MakeBadRequest(err)
