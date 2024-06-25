@@ -24,10 +24,18 @@ class MainRootViewController: UITabBarController {
   }
 
   private func setUpSubviews() {
+    let notificationCenter = NotificationCenter.default
+
+    let homeViewController = HomeViewController()
     let homeNavigationController = UINavigationController(
-      rootViewController: HomeViewController())
+      rootViewController: homeViewController)
     homeNavigationController.tabBarItem = UITabBarItem(
       title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
+    notificationCenter.addObserver(
+      self, selector: #selector(didTapHomeTabBarItem), name: .didTapHomeTabBarItem, object: nil)
+    notificationCenter.addObserver(
+      self, selector: #selector(didLongPressHomeTabBarItem), name: .didLongPressHomeTabBarItem,
+      object: nil)
 
     let searchViewController = UINavigationController(
       rootViewController: SearchHomeViewController())
@@ -53,5 +61,27 @@ class MainRootViewController: UITabBarController {
       homeNavigationController, searchViewController, communitiesViewController,
       notificationsViewController, messagesViewController,
     ]
+
+    tabBar.addSubview(homeViewController.tabBarItemOverlayView)
+    let tabBarButton = tabBar.subviews[TabBarItemTag.home.rawValue]
+    let overlayView = homeViewController.tabBarItemOverlayView
+    NSLayoutConstraint.activate([
+      overlayView.topAnchor.constraint(equalTo: tabBarButton.topAnchor),
+      overlayView.leadingAnchor.constraint(equalTo: tabBarButton.leadingAnchor),
+      overlayView.bottomAnchor.constraint(equalTo: tabBarButton.bottomAnchor),
+      overlayView.trailingAnchor.constraint(equalTo: tabBarButton.trailingAnchor),
+    ])
+  }
+
+  // MARK: - NSNotification
+
+  @objc
+  private func didTapHomeTabBarItem() {
+    selectedIndex = TabBarItemTag.home.rawValue
+  }
+
+  @objc
+  private func didLongPressHomeTabBarItem() {
+    selectedIndex = TabBarItemTag.home.rawValue
   }
 }

@@ -4,10 +4,25 @@ import UIKit
 
 class HomeViewController: ViewControllerWithUserIconButton {
 
+  public lazy var tabBarItemOverlayView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    let longPressGestureRecognizer = UILongPressGestureRecognizer(
+      target: self, action: #selector(didLongPressUITabBarItem))
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self, action: #selector(didTapUITabBarItem))
+    view.addGestureRecognizer(longPressGestureRecognizer)
+    view.addGestureRecognizer(tapGestureRecognizer)
+    return view
+  }()
+
   private enum LayoutConstant {
     static let homeTabSelectionHeight = 48.0
     static let edgePadding = 16.0
   }
+
+  private var shouldOpenBottomSheet = false
+  private var didAppear = false
 
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
@@ -41,10 +56,25 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return controller
   }()
 
+  // MARK: - View Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
   }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    didAppear = true
+    openBottomSheetIfNeeded()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    didAppear = false
+  }
+
+  // MARK: - Private API
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
@@ -87,6 +117,34 @@ class HomeViewController: ViewControllerWithUserIconButton {
     let timelineSettingsViewController = TimelineSettingsViewController()
     timelineSettingsViewController.modalPresentationStyle = .fullScreen
     present(timelineSettingsViewController, animated: true)
+  }
+
+  // MARK: - UITabBarItem
+
+  @objc
+  private func didTapUITabBarItem() {
+    guard !didAppear else { return }
+    NotificationCenter.default.post(name: .didTapHomeTabBarItem, object: nil)
+  }
+
+  @objc
+  private func didLongPressUITabBarItem() {
+    shouldOpenBottomSheet = true
+    guard !didAppear else {
+      openBottomSheetIfNeeded()
+      return
+    }
+    NotificationCenter.default.post(name: .didLongPressHomeTabBarItem, object: nil)
+  }
+
+  private func openBottomSheetIfNeeded() {
+    guard shouldOpenBottomSheet else { return }
+    let viewControllerToPresent = HomeBottomSheetViewController()
+    if let sheet = viewControllerToPresent.sheetPresentationController {
+      sheet.detents = [.medium()]
+    }
+    present(viewControllerToPresent, animated: true)
+    shouldOpenBottomSheet = false
   }
 }
 

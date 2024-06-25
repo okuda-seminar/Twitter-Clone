@@ -109,6 +109,8 @@
 		65FD4FA22C2849B30020A02E /* CommunityHomeTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FA12C2849B30020A02E /* CommunityHomeTabModel.swift */; };
 		65FD4FA42C284AF20020A02E /* CommunitiesHomeMyCommunitiesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FA32C284AF20020A02E /* CommunitiesHomeMyCommunitiesTabView.swift */; };
 		65FD4FAD2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */; };
+		65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */; };
+		65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +237,8 @@
 		65FD4FA12C2849B30020A02E /* CommunityHomeTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityHomeTabModel.swift; sourceTree = "<group>"; };
 		65FD4FA32C284AF20020A02E /* CommunitiesHomeMyCommunitiesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeMyCommunitiesTabView.swift; sourceTree = "<group>"; };
 		65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeExploreTabView.swift; sourceTree = "<group>"; };
+		65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Home.swift"; sourceTree = "<group>"; };
+		65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,8 +340,10 @@
 			isa = PBXGroup;
 			children = (
 				656C1BF92C089C0100EEE575 /* Entities */,
+				65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */,
 				656C1BFC2C08A16C00EEE575 /* HomeTabView.swift */,
 				6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */,
+				65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -934,6 +940,7 @@
 				658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
 				656C1BAE2C0216F600EEE575 /* NotificationsAllTabView.swift in Sources */,
+				65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */,
 				658D08912BF4FD50006C6A9E /* MessagesSettingsHomeViewController.swift in Sources */,
 				656C1BFF2C0AE68500EEE575 /* PostShareBottomSheet.swift in Sources */,
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
@@ -962,6 +969,7 @@
 				3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */,
 				658D089A2BF63058006C6A9E /* NotificationsSettingsViewController.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
+				65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */,
 				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
 				656C1BB82C0749EA00EEE575 /* CommunityFilterModel.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewPostEditViewController.swift in Sources */,
