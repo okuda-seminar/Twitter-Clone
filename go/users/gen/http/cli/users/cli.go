@@ -30,7 +30,6 @@ func UsageCommands() string {
 func UsageExamples() string {
 	return os.Args[0] + ` users create-user --body '{
       "display_name": "Blanditiis quos voluptas qui.",
-      "is_private": true,
       "username": "Molestias ipsam."
    }'` + "\n" +
 		""
@@ -279,7 +278,6 @@ CreateUser implements CreateUser.
 Example:
     %[1]s users create-user --body '{
       "display_name": "Blanditiis quos voluptas qui.",
-      "is_private": true,
       "username": "Molestias ipsam."
    }'
 `, os.Args[0])
@@ -292,7 +290,7 @@ DeleteUser implements DeleteUser.
     -id STRING: 
 
 Example:
-    %[1]s users delete-user --id "14a7036e-310a-11ef-bbda-0242ac120003"
+    %[1]s users delete-user --id "ab4022b2-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -303,7 +301,7 @@ FindUserByID implements FindUserByID.
     -id STRING: 
 
 Example:
-    %[1]s users find-user-by-id --id "14a71316-310a-11ef-bbda-0242ac120003"
+    %[1]s users find-user-by-id --id "ab40332e-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -319,7 +317,7 @@ Example:
       "bio": "Nam ea laboriosam non sapiente incidunt.",
       "is_private": false,
       "username": "Alias quis repellat ea velit provident totam."
-   }' --id "14a7288f-310a-11ef-bbda-0242ac120003"
+   }' --id "ab407d84-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -332,8 +330,8 @@ Follow implements Follow.
 
 Example:
     %[1]s users follow --body '{
-      "followed_user_id": "14a73923-310a-11ef-bbda-0242ac120003"
-   }' --following-user-id "14a73b38-310a-11ef-bbda-0242ac120003"
+      "followed_user_id": "ab4093dc-32da-11ef-a882-cec0a17b7253"
+   }' --following-user-id "ab409698-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -345,7 +343,7 @@ Unfollow implements Unfollow.
     -followed-user-id STRING: 
 
 Example:
-    %[1]s users unfollow --following-user-id "14a746b0-310a-11ef-bbda-0242ac120003" --followed-user-id "14a747a9-310a-11ef-bbda-0242ac120003"
+    %[1]s users unfollow --following-user-id "ab40a4da-32da-11ef-a882-cec0a17b7253" --followed-user-id "ab40a5fc-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -356,7 +354,7 @@ GetFollowers implements GetFollowers.
     -id STRING: 
 
 Example:
-    %[1]s users get-followers --id "14a74fb3-310a-11ef-bbda-0242ac120003"
+    %[1]s users get-followers --id "ab40b024-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -367,7 +365,7 @@ GetFollowings implements GetFollowings.
     -id STRING: 
 
 Example:
-    %[1]s users get-followings --id "14a76c9c-310a-11ef-bbda-0242ac120003"
+    %[1]s users get-followings --id "ab40c3f2-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -380,8 +378,8 @@ Mute implements Mute.
 
 Example:
     %[1]s users mute --body '{
-      "muted_user_id": "14a780ac-310a-11ef-bbda-0242ac120003"
-   }' --muting-user-id "14a78373-310a-11ef-bbda-0242ac120003"
+      "muted_user_id": "ab40d4b4-32da-11ef-a882-cec0a17b7253"
+   }' --muting-user-id "ab40d70c-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -393,7 +391,7 @@ Unmute implements Unmute.
     -muted-user-id STRING: 
 
 Example:
-    %[1]s users unmute --muting-user-id "14a7992a-310a-11ef-bbda-0242ac120003" --muted-user-id "14a79a40-310a-11ef-bbda-0242ac120003"
+    %[1]s users unmute --muting-user-id "ab40f2a0-32da-11ef-a882-cec0a17b7253" --muted-user-id "ab40fb56-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -406,8 +404,8 @@ Block implements Block.
 
 Example:
     %[1]s users block --body '{
-      "blocked_user_id": "14a7a39a-310a-11ef-bbda-0242ac120003"
-   }' --blocking-user-id "14a7a591-310a-11ef-bbda-0242ac120003"
+      "blocked_user_id": "ab41056a-32da-11ef-a882-cec0a17b7253"
+   }' --blocking-user-id "ab41079a-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }
 
@@ -419,6 +417,6 @@ Unblock implements Unblock.
     -blocked-user-id STRING: 
 
 Example:
-    %[1]s users unblock --blocking-user-id "14a7b11a-310a-11ef-bbda-0242ac120003" --blocked-user-id "14a7b217-310a-11ef-bbda-0242ac120003"
+    %[1]s users unblock --blocking-user-id "ab4113d4-32da-11ef-a882-cec0a17b7253" --blocked-user-id "ab4114e2-32da-11ef-a882-cec0a17b7253"
 `, os.Args[0])
 }

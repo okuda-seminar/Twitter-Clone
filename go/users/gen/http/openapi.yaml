@@ -28,7 +28,6 @@ paths:
                     required:
                         - username
                         - display_name
-                        - is_private
             responses:
                 "200":
                     description: OK response.
@@ -374,7 +373,7 @@ definitions:
                 example: Nisi rerum.
             id:
                 type: string
-                example: 14a7da57-310a-11ef-bbda-0242ac120003
+                example: ab414494-32da-11ef-a882-cec0a17b7253
                 format: uuid
             is_private:
                 type: boolean
@@ -390,7 +389,7 @@ definitions:
             bio: Aut qui quos dolorem occaecati.
             created_at: "2001-04-04T11:25:18Z"
             display_name: Aspernatur neque laboriosam et quod ut.
-            id: 14a7dcdb-310a-11ef-bbda-0242ac120003
+            id: ab4147a0-32da-11ef-a882-cec0a17b7253
             is_private: false
             updated_at: "1991-07-12T15:26:09Z"
             username: Qui nemo repellendus aut nihil.
@@ -451,10 +450,10 @@ definitions:
         properties:
             blocked_user_id:
                 type: string
-                example: 14a7e3dd-310a-11ef-bbda-0242ac120003
+                example: ab414fd4-32da-11ef-a882-cec0a17b7253
                 format: uuid
         example:
-            blocked_user_id: 14a7e4b5-310a-11ef-bbda-0242ac120003
+            blocked_user_id: ab4150ec-32da-11ef-a882-cec0a17b7253
         required:
             - blocked_user_id
     UsersCreateUserBadRequestResponseBody:
@@ -507,20 +506,15 @@ definitions:
             display_name:
                 type: string
                 example: Doloremque ut consequatur.
-            is_private:
-                type: boolean
-                example: false
             username:
                 type: string
                 example: Voluptas dolores.
         example:
-            display_name: Neque vitae quis.
-            is_private: false
-            username: Quia voluptas saepe non inventore.
+            display_name: Saepe non inventore eos neque vitae.
+            username: Quibusdam quia.
         required:
             - username
             - display_name
-            - is_private
     UsersCreateUserResponseBody:
         title: UsersCreateUserResponseBody
         type: object
@@ -537,7 +531,7 @@ definitions:
                 example: Illo inventore et sit non enim.
             id:
                 type: string
-                example: 14a7c865-310a-11ef-bbda-0242ac120003
+                example: ab412fe0-32da-11ef-a882-cec0a17b7253
                 format: uuid
             is_private:
                 type: boolean
@@ -553,7 +547,7 @@ definitions:
             bio: Et ut consequatur repellat reprehenderit aut perspiciatis.
             created_at: "1991-03-12T16:18:57Z"
             display_name: Atque aut temporibus iusto.
-            id: 14a7cb15-310a-11ef-bbda-0242ac120003
+            id: ab4132d8-32da-11ef-a882-cec0a17b7253
             is_private: true
             updated_at: "2005-11-28T03:55:52Z"
             username: Sit reiciendis voluptatum.
@@ -592,14 +586,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: DeleteUser_BadRequest_Response_Body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -615,7 +609,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -635,7 +629,7 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: DeleteUser_NotFound_Response_Body result type (default view)
         example:
             fault: true
@@ -700,33 +694,33 @@ definitions:
         properties:
             bio:
                 type: string
-                example: Error et.
+                example: Qui est error et quae ut.
             created_at:
                 type: string
-                example: "2004-06-24T10:53:52Z"
+                example: "1982-10-28T02:51:37Z"
                 format: date-time
             display_name:
                 type: string
-                example: Illum dolorem pariatur a quaerat qui.
+                example: Et illum dolorem pariatur a.
             id:
                 type: string
-                example: 14a7cfe5-310a-11ef-bbda-0242ac120003
+                example: ab4138e6-32da-11ef-a882-cec0a17b7253
                 format: uuid
             is_private:
                 type: boolean
-                example: false
+                example: true
             updated_at:
                 type: string
-                example: "2007-07-04T22:25:27Z"
+                example: "1993-11-12T03:53:00Z"
                 format: date-time
             username:
                 type: string
-                example: Nesciunt quod qui laboriosam.
+                example: Odit est minus nesciunt quod qui.
         example:
             bio: Sit impedit non voluptatum eum et sit.
             created_at: "2005-09-26T15:57:42Z"
             display_name: Dolorem quos.
-            id: 14a7d2ce-310a-11ef-bbda-0242ac120003
+            id: ab413bca-32da-11ef-a882-cec0a17b7253
             is_private: false
             updated_at: "1986-12-05T21:02:51Z"
             username: Ut temporibus doloremque.
@@ -787,10 +781,10 @@ definitions:
         properties:
             followed_user_id:
                 type: string
-                example: 14a7d7d1-310a-11ef-bbda-0242ac120003
+                example: ab4141d8-32da-11ef-a882-cec0a17b7253
                 format: uuid
         example:
-            followed_user_id: 14a7d8a0-310a-11ef-bbda-0242ac120003
+            followed_user_id: ab4142aa-32da-11ef-a882-cec0a17b7253
         required:
             - followed_user_id
     UsersGetFollowersBadRequestResponseBody:
@@ -928,10 +922,10 @@ definitions:
         properties:
             muted_user_id:
                 type: string
-                example: 14a7e0fe-310a-11ef-bbda-0242ac120003
+                example: ab414c5a-32da-11ef-a882-cec0a17b7253
                 format: uuid
         example:
-            muted_user_id: 14a7e1c2-310a-11ef-bbda-0242ac120003
+            muted_user_id: ab414d4a-32da-11ef-a882-cec0a17b7253
         required:
             - muted_user_id
     UsersUnblockBadRequestResponseBody:

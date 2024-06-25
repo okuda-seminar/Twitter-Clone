@@ -20,7 +20,6 @@ paths:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
                             display_name: Blanditiis quos voluptas qui.
-                            is_private: true
                             username: Molestias ipsam.
             responses:
                 "200":
@@ -33,7 +32,7 @@ paths:
                                 bio: Debitis voluptatem et aliquam.
                                 created_at: "2010-04-12T00:59:33Z"
                                 display_name: Fuga voluptate praesentium ipsam ut quos.
-                                id: 14a6dffc-310a-11ef-bbda-0242ac120003
+                                id: ab400fca-32da-11ef-a882-cec0a17b7253
                                 is_private: true
                                 updated_at: "2006-02-16T16:24:14Z"
                                 username: Repellendus sunt tenetur autem rerum alias.
@@ -55,9 +54,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a830d3-310a-11ef-bbda-0242ac120003
+                    example: ab418c7e-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a831ae-310a-11ef-bbda-0242ac120003
+                  example: ab418d50-32da-11ef-a882-cec0a17b7253
             requestBody:
                 required: true
                 content:
@@ -65,7 +64,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/BlockRequestBody'
                         example:
-                            blocked_user_id: 14a7a39a-310a-11ef-bbda-0242ac120003
+                            blocked_user_id: ab41056a-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -87,17 +86,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a832ee-310a-11ef-bbda-0242ac120003
+                    example: ab418e86-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a833d4-310a-11ef-bbda-0242ac120003
+                  example: ab418f4e-32da-11ef-a882-cec0a17b7253
                 - name: blocked_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 14a834a8-310a-11ef-bbda-0242ac120003
+                    example: ab419020-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a8357a-310a-11ef-bbda-0242ac120003
+                  example: ab4190f2-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -119,9 +118,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a813e8-310a-11ef-bbda-0242ac120003
+                    example: ab417bbc-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a8151b-310a-11ef-bbda-0242ac120003
+                  example: ab417cc0-32da-11ef-a882-cec0a17b7253
             requestBody:
                 required: true
                 content:
@@ -129,7 +128,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/FollowRequestBody'
                         example:
-                            followed_user_id: 14a73923-310a-11ef-bbda-0242ac120003
+                            followed_user_id: ab4093dc-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -151,17 +150,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a816a7-310a-11ef-bbda-0242ac120003
+                    example: ab417e00-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a817dd-310a-11ef-bbda-0242ac120003
+                  example: ab417f22-32da-11ef-a882-cec0a17b7253
                 - name: followed_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 14a81908-310a-11ef-bbda-0242ac120003
+                    example: ab4180b2-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a81a31-310a-11ef-bbda-0242ac120003
+                  example: ab4181d4-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -183,9 +182,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a80b72-310a-11ef-bbda-0242ac120003
+                    example: ab41743c-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a80cc0-310a-11ef-bbda-0242ac120003
+                  example: ab417572-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -212,9 +211,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a80e57-310a-11ef-bbda-0242ac120003
+                    example: ab4176a8-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a80f98-310a-11ef-bbda-0242ac120003
+                  example: ab417798-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -226,7 +225,7 @@ paths:
                                 bio: Quia voluptates praesentium dolores.
                                 created_at: "2002-07-22T07:59:40Z"
                                 display_name: Numquam incidunt est.
-                                id: 14a717d2-310a-11ef-bbda-0242ac120003
+                                id: ab4037de-32da-11ef-a882-cec0a17b7253
                                 is_private: true
                                 updated_at: "1982-12-18T04:17:29Z"
                                 username: Ut ab earum cumque sint ipsam ex.
@@ -247,9 +246,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a81105-310a-11ef-bbda-0242ac120003
+                    example: ab4178c4-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a81249-310a-11ef-bbda-0242ac120003
+                  example: ab4179e6-32da-11ef-a882-cec0a17b7253
             requestBody:
                 required: true
                 content:
@@ -287,9 +286,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a81ba4-310a-11ef-bbda-0242ac120003
+                    example: ab41830a-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a81cd2-310a-11ef-bbda-0242ac120003
+                  example: ab4183e6-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -303,14 +302,14 @@ paths:
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
@@ -318,21 +317,28 @@ paths:
                                 - bio: Aut blanditiis.
                                   created_at: "1972-04-24T00:04:38Z"
                                   display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
                                   is_private: true
                                   updated_at: "2003-08-09T03:13:03Z"
                                   username: Ex assumenda harum aut officia est beatae.
                                 - bio: Aut blanditiis.
                                   created_at: "1972-04-24T00:04:38Z"
                                   display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
                                   is_private: true
                                   updated_at: "2003-08-09T03:13:03Z"
                                   username: Ex assumenda harum aut officia est beatae.
                                 - bio: Aut blanditiis.
                                   created_at: "1972-04-24T00:04:38Z"
                                   display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
                                   is_private: true
                                   updated_at: "2003-08-09T03:13:03Z"
                                   username: Ex assumenda harum aut officia est beatae.
@@ -354,9 +360,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a81e52-310a-11ef-bbda-0242ac120003
+                    example: ab4184fe-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a81f7a-310a-11ef-bbda-0242ac120003
+                  example: ab4185d0-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -370,28 +376,28 @@ paths:
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
                                     - bio: Aut blanditiis.
                                       created_at: "1972-04-24T00:04:38Z"
                                       display_name: Numquam harum.
-                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      id: ab40b358-32da-11ef-a882-cec0a17b7253
                                       is_private: true
                                       updated_at: "2003-08-09T03:13:03Z"
                                       username: Ex assumenda harum aut officia est beatae.
@@ -399,28 +405,14 @@ paths:
                                 - bio: Aut blanditiis.
                                   created_at: "1972-04-24T00:04:38Z"
                                   display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
                                   is_private: true
                                   updated_at: "2003-08-09T03:13:03Z"
                                   username: Ex assumenda harum aut officia est beatae.
                                 - bio: Aut blanditiis.
                                   created_at: "1972-04-24T00:04:38Z"
                                   display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
-                                  is_private: true
-                                  updated_at: "2003-08-09T03:13:03Z"
-                                  username: Ex assumenda harum aut officia est beatae.
-                                - bio: Aut blanditiis.
-                                  created_at: "1972-04-24T00:04:38Z"
-                                  display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
-                                  is_private: true
-                                  updated_at: "2003-08-09T03:13:03Z"
-                                  username: Ex assumenda harum aut officia est beatae.
-                                - bio: Aut blanditiis.
-                                  created_at: "1972-04-24T00:04:38Z"
-                                  display_name: Numquam harum.
-                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  id: ab40b358-32da-11ef-a882-cec0a17b7253
                                   is_private: true
                                   updated_at: "2003-08-09T03:13:03Z"
                                   username: Ex assumenda harum aut officia est beatae.
@@ -442,9 +434,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a82173-310a-11ef-bbda-0242ac120003
+                    example: ab4186fc-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a823a9-310a-11ef-bbda-0242ac120003
+                  example: ab4187c4-32da-11ef-a882-cec0a17b7253
             requestBody:
                 required: true
                 content:
@@ -452,7 +444,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/MuteRequestBody'
                         example:
-                            muted_user_id: 14a780ac-310a-11ef-bbda-0242ac120003
+                            muted_user_id: ab40d4b4-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -474,17 +466,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 14a82cd8-310a-11ef-bbda-0242ac120003
+                    example: ab4188d2-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a82dcd-310a-11ef-bbda-0242ac120003
+                  example: ab41899a-32da-11ef-a882-cec0a17b7253
                 - name: muted_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 14a82ebd-310a-11ef-bbda-0242ac120003
+                    example: ab418a6c-32da-11ef-a882-cec0a17b7253
                     format: uuid
-                  example: 14a82fa1-310a-11ef-bbda-0242ac120003
+                  example: ab418b52-32da-11ef-a882-cec0a17b7253
             responses:
                 "200":
                     description: OK response.
@@ -510,10 +502,10 @@ components:
             properties:
                 blocked_user_id:
                     type: string
-                    example: 14a807f8-310a-11ef-bbda-0242ac120003
+                    example: ab417162-32da-11ef-a882-cec0a17b7253
                     format: uuid
             example:
-                blocked_user_id: 14a80930-310a-11ef-bbda-0242ac120003
+                blocked_user_id: ab417266-32da-11ef-a882-cec0a17b7253
             required:
                 - blocked_user_id
         CreateUserRequestBody:
@@ -522,20 +514,15 @@ components:
                 display_name:
                     type: string
                     example: Omnis hic cum nostrum exercitationem.
-                is_private:
-                    type: boolean
-                    example: false
                 username:
                     type: string
                     example: Est rerum laboriosam.
             example:
-                display_name: Nostrum aut laboriosam veritatis voluptatem tenetur quam.
-                is_private: true
-                username: Ea sit consequuntur perferendis repellat architecto vero.
+                display_name: Repellat architecto vero distinctio nostrum.
+                username: Labore ea sit consequuntur.
             required:
                 - username
                 - display_name
-                - is_private
         Error:
             type: object
             properties:
@@ -558,7 +545,7 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: true
+                    example: false
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
@@ -568,7 +555,7 @@ components:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: true
             required:
                 - name
@@ -582,10 +569,10 @@ components:
             properties:
                 followed_user_id:
                     type: string
-                    example: 14a801d5-310a-11ef-bbda-0242ac120003
+                    example: ab416c62-32da-11ef-a882-cec0a17b7253
                     format: uuid
             example:
-                followed_user_id: 14a8030f-310a-11ef-bbda-0242ac120003
+                followed_user_id: ab416d5c-32da-11ef-a882-cec0a17b7253
             required:
                 - followed_user_id
         MuteRequestBody:
@@ -593,10 +580,10 @@ components:
             properties:
                 muted_user_id:
                     type: string
-                    example: 14a80538-310a-11ef-bbda-0242ac120003
+                    example: ab416f64-32da-11ef-a882-cec0a17b7253
                     format: uuid
             example:
-                muted_user_id: 14a8066d-310a-11ef-bbda-0242ac120003
+                muted_user_id: ab417036-32da-11ef-a882-cec0a17b7253
             required:
                 - muted_user_id
         UpdateProfileRequestBody:
@@ -604,52 +591,52 @@ components:
             properties:
                 bio:
                     type: string
-                    example: Expedita dolorum.
+                    example: Enim est voluptas nam.
                 is_private:
                     type: boolean
                     example: true
                 username:
                     type: string
-                    example: Iusto et.
+                    example: Et harum et recusandae non accusantium vel.
             example:
-                bio: Ab qui corporis necessitatibus.
-                is_private: true
-                username: Eius est tempore nostrum eveniet non.
+                bio: Eius est tempore nostrum eveniet non.
+                is_private: false
+                username: Et quibusdam expedita dolorum ea.
         User:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Commodi libero iusto.
+                    example: Et esse.
                 created_at:
                     type: string
-                    example: "1973-03-24T09:45:28Z"
+                    example: "1976-12-02T23:52:50Z"
                     format: date-time
                 display_name:
                     type: string
-                    example: Rerum voluptatem aperiam quibusdam debitis repudiandae ex.
+                    example: Animi molestiae laudantium consequuntur.
                 id:
                     type: string
-                    example: 14a7e6ff-310a-11ef-bbda-0242ac120003
+                    example: ab41658c-32da-11ef-a882-cec0a17b7253
                     format: uuid
                 is_private:
                     type: boolean
                     example: true
                 updated_at:
                     type: string
-                    example: "1998-08-15T06:38:25Z"
+                    example: "2000-11-08T21:44:28Z"
                     format: date-time
                 username:
                     type: string
-                    example: Laudantium consequuntur quia et esse ut.
+                    example: Est et laboriosam ea.
             example:
-                bio: Delectus rerum.
-                created_at: "1988-06-05T16:40:03Z"
-                display_name: Dolorem dolorem odit dolor dolores.
-                id: 14a7fbd2-310a-11ef-bbda-0242ac120003
+                bio: Molestias mollitia.
+                created_at: "2015-11-25T11:44:51Z"
+                display_name: Et dolores iusto facilis rerum molestiae quibusdam.
+                id: ab41687a-32da-11ef-a882-cec0a17b7253
                 is_private: true
-                updated_at: "1975-12-14T10:09:07Z"
-                username: Quas quis quaerat ducimus eos voluptas.
+                updated_at: "2009-02-18T22:33:27Z"
+                username: Consequatur iure.
             required:
                 - id
                 - username
