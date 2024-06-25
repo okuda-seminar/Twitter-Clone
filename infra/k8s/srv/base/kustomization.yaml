@@ -4,8 +4,10 @@ resources:
 - ./ingress-svc.yaml
 - ./users-app-depl.yaml
 - ./tweets-app-depl.yaml
+- ./notifications-app-depl.yaml
 - ./users-postgres-depl.yaml
 - ./tweets-postgres-depl.yaml
+- ./notifications-postgres-depl.yaml
 - ./users-volume.yaml
 - ./postgres-configmap.yaml
 # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/287
