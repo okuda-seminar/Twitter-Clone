@@ -29,6 +29,8 @@ class HomeBottomSheetViewController: UIViewController {
 }
 
 struct HomeBottomSheetView: View {
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/325
+  // - Replace dummy view with the correct one in HomeBottomSheetView.
   var body: some View {
     Text("Dummy bottom sheet text")
   }
