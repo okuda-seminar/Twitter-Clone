@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CommunityHomeMyCommunitiesTabView: View {
+struct CommunitiesHomeMyCommunitiesTabView: View {
 
   @Binding public var showMoreCommunities: Bool
 
@@ -67,5 +67,5 @@ struct CommunityHomeMyCommunitiesTabView: View {
 }
 
 #Preview {
-  CommunityHomeMyCommunitiesTabView(showMoreCommunities: .constant(false))
+  CommunitiesHomeMyCommunitiesTabView(showMoreCommunities: .constant(false))
 }

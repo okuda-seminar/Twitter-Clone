@@ -158,7 +158,7 @@ struct CommunitiesHomeView: View {
         ForEach(tabModels) { tabModel in
           switch tabModel.id {
           case .myCommunity:
-            CommunityHomeMyCommunitiesTabView(showMoreCommunities: $showMoreCommunities)
+            CommunitiesHomeMyCommunitiesTabView(showMoreCommunities: $showMoreCommunities)
               .frame(width: UIScreen.main.bounds.width)
           case .explore:
             CommunitiesHomeExploreTabView()
