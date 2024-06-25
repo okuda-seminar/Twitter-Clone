@@ -33,7 +33,7 @@ jobs:
         if: steps.format.outcome == 'failure'
         uses: actions/github-script@0.9.0
         with:
-          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = "## Format failed\n<summary>Files that need to be formatted: ${{ steps.format.outputs.FORMATTED_FILES }}</summary>";
 
