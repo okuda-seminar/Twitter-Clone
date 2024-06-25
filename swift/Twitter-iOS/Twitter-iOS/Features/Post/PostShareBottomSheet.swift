@@ -87,16 +87,24 @@ struct PostShareBottomSheet: View {
             dismiss()
           },
           label: {
-            Text(LocalizedString.dismissalText)
-              .underline()
-              .padding()
-              .clipShape(RoundedRectangle(cornerRadius: 12.0))
+            HStack {
+              Spacer()
+              Text(LocalizedString.dismissalText)
+                .underline()
+                .foregroundStyle(.primary)
+              Spacer()
+            }
+            .padding()
           }
         )
         .buttonStyle(.plain)
-        .foregroundStyle(.primary)
+        .overlay(
+          RoundedRectangle(cornerRadius: 24)
+            .stroke(Color(uiColor: .brandedLightGrayBackground), lineWidth: 2)
+        )
       }
       .padding(.leading)
+      .padding(.trailing)
     }
     .onAppear {
       showShareSheet = false

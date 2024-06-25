@@ -70,36 +70,21 @@ var _ = Service("users", func() {
 		})
 	})
 
-	Method("UpdateUsername", func() {
+	Method("UpdateProfile", func() {
 		Payload(func() {
 			Field(1, "id", String, func() {
 				Format(FormatUUID)
 			})
 			Field(2, "username", String)
-			Required("id", "username")
+			Field(3, "bio", String)
+			Field(4, "is_private", Boolean)
+
+			Required("id")
 		})
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/users/{id}/username")
-			Response(StatusOK)
-			Response("NotFound", StatusNotFound)
-			Response("BadRequest", StatusBadRequest)
-		})
-	})
-
-	Method("UpdateBio", func() {
-		Payload(func() {
-			Field(1, "id", String, func() {
-				Format(FormatUUID)
-			})
-			Field(2, "bio", String)
-			Required("id", "bio")
-		})
-		Result(Empty)
-
-		HTTP(func() {
-			POST("/api/users/{id}/bio")
+			POST("/api/users/{id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 			Response("BadRequest", StatusBadRequest)

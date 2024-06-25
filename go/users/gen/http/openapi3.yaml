@@ -19,9 +19,9 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateUserRequestBody'
                         example:
-                            display_name: Saepe sit.
-                            is_private: false
-                            username: Non vitae.
+                            display_name: Blanditiis quos voluptas qui.
+                            is_private: true
+                            username: Molestias ipsam.
             responses:
                 "200":
                     description: OK response.
@@ -30,13 +30,13 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Cumque quas est non laboriosam nam.
-                                created_at: "1986-11-15T05:30:01Z"
-                                display_name: Omnis voluptates nulla earum dolor in ducimus.
-                                id: 659fc418-3043-11ef-b966-cec0a17b7253
+                                bio: Debitis voluptatem et aliquam.
+                                created_at: "2010-04-12T00:59:33Z"
+                                display_name: Fuga voluptate praesentium ipsam ut quos.
+                                id: 14a6dffc-310a-11ef-bbda-0242ac120003
                                 is_private: true
-                                updated_at: "1994-09-19T08:32:51Z"
-                                username: Pariatur et magni ea.
+                                updated_at: "2006-02-16T16:24:14Z"
+                                username: Repellendus sunt tenetur autem rerum alias.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -55,9 +55,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1b732-3043-11ef-b966-cec0a17b7253
+                    example: 14a830d3-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1b840-3043-11ef-b966-cec0a17b7253
+                  example: 14a831ae-310a-11ef-bbda-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -65,7 +65,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/BlockRequestBody'
                         example:
-                            blocked_user_id: 65a100e4-3043-11ef-b966-cec0a17b7253
+                            blocked_user_id: 14a7a39a-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -87,17 +87,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1b9d0-3043-11ef-b966-cec0a17b7253
+                    example: 14a832ee-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1bb06-3043-11ef-b966-cec0a17b7253
+                  example: 14a833d4-310a-11ef-bbda-0242ac120003
                 - name: blocked_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 65a1bc14-3043-11ef-b966-cec0a17b7253
+                    example: 14a834a8-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1bd54-3043-11ef-b966-cec0a17b7253
+                  example: 14a8357a-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -119,9 +119,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1a1f2-3043-11ef-b966-cec0a17b7253
+                    example: 14a813e8-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1a346-3043-11ef-b966-cec0a17b7253
+                  example: 14a8151b-310a-11ef-bbda-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -129,7 +129,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/FollowRequestBody'
                         example:
-                            followed_user_id: 65a07426-3043-11ef-b966-cec0a17b7253
+                            followed_user_id: 14a73923-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -151,17 +151,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1a486-3043-11ef-b966-cec0a17b7253
+                    example: 14a816a7-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1a5d0-3043-11ef-b966-cec0a17b7253
+                  example: 14a817dd-310a-11ef-bbda-0242ac120003
                 - name: followed_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 65a1a71a-3043-11ef-b966-cec0a17b7253
+                    example: 14a81908-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1a850-3043-11ef-b966-cec0a17b7253
+                  example: 14a81a31-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -183,9 +183,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a196a8-3043-11ef-b966-cec0a17b7253
+                    example: 14a80b72-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a197ca-3043-11ef-b966-cec0a17b7253
+                  example: 14a80cc0-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -212,9 +212,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1996e-3043-11ef-b966-cec0a17b7253
+                    example: 14a80e57-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a19ab8-3043-11ef-b966-cec0a17b7253
+                  example: 14a80f98-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -223,42 +223,43 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/User'
                             example:
-                                bio: Explicabo molestias molestias.
-                                created_at: "2014-04-19T23:50:37Z"
-                                display_name: Atque quibusdam et perspiciatis culpa repellendus.
-                                id: 65a02598-3043-11ef-b966-cec0a17b7253
+                                bio: Quia voluptates praesentium dolores.
+                                created_at: "2002-07-22T07:59:40Z"
+                                display_name: Numquam incidunt est.
+                                id: 14a717d2-310a-11ef-bbda-0242ac120003
                                 is_private: true
-                                updated_at: "1992-02-24T16:09:35Z"
-                                username: Maxime consectetur exercitationem laudantium.
+                                updated_at: "1982-12-18T04:17:29Z"
+                                username: Ut ab earum cumque sint ipsam ex.
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/users/{id}/bio:
         post:
             tags:
                 - users
-            summary: UpdateBio users
-            operationId: users#UpdateBio
+            summary: UpdateProfile users
+            operationId: users#UpdateProfile
             parameters:
                 - name: id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 65a19ef0-3043-11ef-b966-cec0a17b7253
+                    example: 14a81105-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1a012-3043-11ef-b966-cec0a17b7253
+                  example: 14a81249-310a-11ef-bbda-0242ac120003
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateBioRequestBody'
+                            $ref: '#/components/schemas/UpdateProfileRequestBody'
                         example:
-                            bio: Qui impedit expedita dolor.
+                            bio: Nam ea laboriosam non sapiente incidunt.
+                            is_private: false
+                            username: Alias quis repellat ea velit provident totam.
             responses:
                 "200":
                     description: OK response.
@@ -286,9 +287,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1a9cc-3043-11ef-b966-cec0a17b7253
+                    example: 14a81ba4-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1ab2a-3043-11ef-b966-cec0a17b7253
+                  example: 14a81cd2-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -299,49 +300,42 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Debitis similique rerum ea voluptates.
-                                      created_at: "1984-03-13T05:48:51Z"
-                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                      id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                      is_private: false
-                                      updated_at: "1989-10-13T14:05:08Z"
-                                      username: Ea ab dolor.
-                                    - bio: Debitis similique rerum ea voluptates.
-                                      created_at: "1984-03-13T05:48:51Z"
-                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                      id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                      is_private: false
-                                      updated_at: "1989-10-13T14:05:08Z"
-                                      username: Ea ab dolor.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
                             example:
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -360,9 +354,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1acba-3043-11ef-b966-cec0a17b7253
+                    example: 14a81e52-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1adf0-3043-11ef-b966-cec0a17b7253
+                  example: 14a81f7a-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -373,82 +367,65 @@ paths:
                                 items:
                                     $ref: '#/components/schemas/User'
                                 example:
-                                    - bio: Debitis similique rerum ea voluptates.
-                                      created_at: "1984-03-13T05:48:51Z"
-                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                      id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                      is_private: false
-                                      updated_at: "1989-10-13T14:05:08Z"
-                                      username: Ea ab dolor.
-                                    - bio: Debitis similique rerum ea voluptates.
-                                      created_at: "1984-03-13T05:48:51Z"
-                                      display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                      id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                      is_private: false
-                                      updated_at: "1989-10-13T14:05:08Z"
-                                      username: Ea ab dolor.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
+                                    - bio: Aut blanditiis.
+                                      created_at: "1972-04-24T00:04:38Z"
+                                      display_name: Numquam harum.
+                                      id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                      is_private: true
+                                      updated_at: "2003-08-09T03:13:03Z"
+                                      username: Ex assumenda harum aut officia est beatae.
                             example:
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
-                                - bio: Debitis similique rerum ea voluptates.
-                                  created_at: "1984-03-13T05:48:51Z"
-                                  display_name: Distinctio nihil dolor dolor inventore dolorum.
-                                  id: 65a0b080-3043-11ef-b966-cec0a17b7253
-                                  is_private: false
-                                  updated_at: "1989-10-13T14:05:08Z"
-                                  username: Ea ab dolor.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
+                                - bio: Aut blanditiis.
+                                  created_at: "1972-04-24T00:04:38Z"
+                                  display_name: Numquam harum.
+                                  id: 14a7522a-310a-11ef-bbda-0242ac120003
+                                  is_private: true
+                                  updated_at: "2003-08-09T03:13:03Z"
+                                  username: Ex assumenda harum aut officia est beatae.
                 "400":
                     description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-    /api/users/{id}/username:
-        post:
-            tags:
-                - users
-            summary: UpdateUsername users
-            operationId: users#UpdateUsername
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                    example: 65a19c66-3043-11ef-b966-cec0a17b7253
-                    format: uuid
-                  example: 65a19d6a-3043-11ef-b966-cec0a17b7253
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UpdateUsernameRequestBody'
-                        example:
-                            username: Ipsam debitis.
-            responses:
-                "200":
-                    description: OK response.
-                "400":
-                    description: 'BadRequest: Bad Request response.'
-                    content:
-                        application/vnd.goa.error:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                "404":
-                    description: 'NotFound: Not Found response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -465,9 +442,9 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1af9e-3043-11ef-b966-cec0a17b7253
+                    example: 14a82173-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1b0d4-3043-11ef-b966-cec0a17b7253
+                  example: 14a823a9-310a-11ef-bbda-0242ac120003
             requestBody:
                 required: true
                 content:
@@ -475,7 +452,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/MuteRequestBody'
                         example:
-                            muted_user_id: 65a0dcae-3043-11ef-b966-cec0a17b7253
+                            muted_user_id: 14a780ac-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -497,17 +474,17 @@ paths:
                   required: true
                   schema:
                     type: string
-                    example: 65a1b23c-3043-11ef-b966-cec0a17b7253
+                    example: 14a82cd8-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1b368-3043-11ef-b966-cec0a17b7253
+                  example: 14a82dcd-310a-11ef-bbda-0242ac120003
                 - name: muted_user_id
                   in: path
                   required: true
                   schema:
                     type: string
-                    example: 65a1b494-3043-11ef-b966-cec0a17b7253
+                    example: 14a82ebd-310a-11ef-bbda-0242ac120003
                     format: uuid
-                  example: 65a1b5ca-3043-11ef-b966-cec0a17b7253
+                  example: 14a82fa1-310a-11ef-bbda-0242ac120003
             responses:
                 "200":
                     description: OK response.
@@ -533,10 +510,10 @@ components:
             properties:
                 blocked_user_id:
                     type: string
-                    example: 65a1936a-3043-11ef-b966-cec0a17b7253
+                    example: 14a807f8-310a-11ef-bbda-0242ac120003
                     format: uuid
             example:
-                blocked_user_id: 65a1948c-3043-11ef-b966-cec0a17b7253
+                blocked_user_id: 14a80930-310a-11ef-bbda-0242ac120003
             required:
                 - blocked_user_id
         CreateUserRequestBody:
@@ -544,18 +521,18 @@ components:
             properties:
                 display_name:
                     type: string
-                    example: At nesciunt eos.
+                    example: Omnis hic cum nostrum exercitationem.
                 is_private:
                     type: boolean
                     default: false
                     example: false
                 username:
                     type: string
-                    example: Ipsa tempora id quaerat id sunt ducimus.
+                    example: Est rerum laboriosam.
             example:
-                display_name: Est expedita facilis.
+                display_name: Nostrum aut laboriosam veritatis voluptatem tenetur quam.
                 is_private: true
-                username: Similique dolorem itaque sit corporis non porro.
+                username: Ea sit consequuntur perferendis repellat architecto vero.
             required:
                 - username
                 - display_name
@@ -565,7 +542,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: false
+                    example: true
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -592,7 +569,7 @@ components:
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: false
+                timeout: true
             required:
                 - name
                 - id
@@ -605,10 +582,10 @@ components:
             properties:
                 followed_user_id:
                     type: string
-                    example: 65a18d16-3043-11ef-b966-cec0a17b7253
+                    example: 14a801d5-310a-11ef-bbda-0242ac120003
                     format: uuid
             example:
-                followed_user_id: 65a18e7e-3043-11ef-b966-cec0a17b7253
+                followed_user_id: 14a8030f-310a-11ef-bbda-0242ac120003
             required:
                 - followed_user_id
         MuteRequestBody:
@@ -616,67 +593,63 @@ components:
             properties:
                 muted_user_id:
                     type: string
-                    example: 65a190c2-3043-11ef-b966-cec0a17b7253
+                    example: 14a80538-310a-11ef-bbda-0242ac120003
                     format: uuid
             example:
-                muted_user_id: 65a1920c-3043-11ef-b966-cec0a17b7253
+                muted_user_id: 14a8066d-310a-11ef-bbda-0242ac120003
             required:
                 - muted_user_id
-        UpdateBioRequestBody:
+        UpdateProfileRequestBody:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Rerum labore error.
-            example:
-                bio: Ad est accusamus aspernatur qui sed eligendi.
-            required:
-                - bio
-        UpdateUsernameRequestBody:
-            type: object
-            properties:
+                    example: Expedita dolorum.
+                is_private:
+                    type: boolean
+                    example: true
                 username:
                     type: string
-                    example: Nesciunt ex et voluptatibus praesentium dolor unde.
+                    example: Iusto et.
             example:
-                username: Autem molestiae distinctio.
-            required:
-                - username
+                bio: Ab qui corporis necessitatibus.
+                is_private: true
+                username: Eius est tempore nostrum eveniet non.
         User:
             type: object
             properties:
                 bio:
                     type: string
-                    example: Quis quaerat ducimus eos.
+                    example: Commodi libero iusto.
                 created_at:
                     type: string
-                    example: "1980-03-27T10:33:24Z"
+                    example: "1973-03-24T09:45:28Z"
                     format: date-time
                 display_name:
                     type: string
-                    example: Molestias mollitia.
+                    example: Rerum voluptatem aperiam quibusdam debitis repudiandae ex.
                 id:
                     type: string
-                    example: 65a183ca-3043-11ef-b966-cec0a17b7253
+                    example: 14a7e6ff-310a-11ef-bbda-0242ac120003
                     format: uuid
                 is_private:
                     type: boolean
-                    example: false
+                    example: true
                 updated_at:
                     type: string
-                    example: "2003-11-08T09:55:10Z"
+                    example: "1998-08-15T06:38:25Z"
                     format: date-time
                 username:
                     type: string
-                    example: Rerum molestiae quibusdam.
+                    example: Laudantium consequuntur quia et esse ut.
             example:
-                bio: Itaque suscipit dolores quia aperiam tenetur non.
-                created_at: "1973-03-26T12:39:54Z"
-                display_name: Enim similique eos nihil non doloremque.
-                id: 65a187b2-3043-11ef-b966-cec0a17b7253
-                is_private: false
-                updated_at: "1979-12-30T20:07:07Z"
-                username: Hic impedit odit temporibus.
+                bio: Delectus rerum.
+                created_at: "1988-06-05T16:40:03Z"
+                display_name: Dolorem dolorem odit dolor dolores.
+                id: 14a7fbd2-310a-11ef-bbda-0242ac120003
+                is_private: true
+                updated_at: "1975-12-14T10:09:07Z"
+                username: Quas quis quaerat ducimus eos voluptas.
             required:
                 - id
                 - username

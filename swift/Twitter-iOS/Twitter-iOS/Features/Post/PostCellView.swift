@@ -132,12 +132,6 @@ struct PostCellView: View {
 }
 
 func createFakePostCellView() -> PostCellView {
-  let body = """
-    If you’re looking to make your app more responsive or simply want to give 
-    your users access to certain features through various methods like a long
-    press or hidden button, then you absolutely have to read this post!
-    """
-
   return PostCellView(
     showReplyEditSheet: .constant(false),
     reposting: .constant(false),

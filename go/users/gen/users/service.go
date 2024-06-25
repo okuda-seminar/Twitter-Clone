@@ -21,10 +21,8 @@ type Service interface {
 	DeleteUser(context.Context, *DeleteUserPayload) (err error)
 	// FindUserByID implements FindUserByID.
 	FindUserByID(context.Context, *FindUserByIDPayload) (res *User, err error)
-	// UpdateUsername implements UpdateUsername.
-	UpdateUsername(context.Context, *UpdateUsernamePayload) (err error)
-	// UpdateBio implements UpdateBio.
-	UpdateBio(context.Context, *UpdateBioPayload) (err error)
+	// UpdateProfile implements UpdateProfile.
+	UpdateProfile(context.Context, *UpdateProfilePayload) (err error)
 	// Follow implements Follow.
 	Follow(context.Context, *FollowPayload) (err error)
 	// Unfollow implements Unfollow.
@@ -51,7 +49,7 @@ const ServiceName = "users"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [13]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateUsername", "UpdateBio", "Follow", "Unfollow", "GetFollowers", "GetFollowings", "Mute", "Unmute", "Block", "Unblock"}
+var MethodNames = [12]string{"CreateUser", "DeleteUser", "FindUserByID", "UpdateProfile", "Follow", "Unfollow", "GetFollowers", "GetFollowings", "Mute", "Unmute", "Block", "Unblock"}
 
 // BlockPayload is the payload type of the users service Block method.
 type BlockPayload struct {
@@ -119,17 +117,13 @@ type UnmutePayload struct {
 	MutingUserID string
 }
 
-// UpdateBioPayload is the payload type of the users service UpdateBio method.
-type UpdateBioPayload struct {
-	ID  string
-	Bio string
-}
-
-// UpdateUsernamePayload is the payload type of the users service
-// UpdateUsername method.
-type UpdateUsernamePayload struct {
-	ID       string
-	Username string
+// UpdateProfilePayload is the payload type of the users service UpdateProfile
+// method.
+type UpdateProfilePayload struct {
+	ID        string
+	Username  *string
+	Bio       *string
+	IsPrivate *bool
 }
 
 // User is the result type of the users service CreateUser method.

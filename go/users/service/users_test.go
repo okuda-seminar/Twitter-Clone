@@ -146,85 +146,63 @@ func (s *UsersTestSuite) TestFindUserByID() {
 	}
 }
 
-func (s *UsersTestSuite) TestUpdateUsername() {
+func (s *UsersTestSuite) TestUpdateProfile() {
 	user := s.create_user("test_user", "Test User")
 
-	tests := []struct {
-		name         string
-		user_id      string
-		new_username string
-		expectErr    bool
-	}{
-		{
-			name:         "update username",
-			user_id:      user.ID,
-			new_username: "updated",
-			expectErr:    false,
-		},
-		{
-			name:         "too short username",
-			user_id:      user.ID,
-			new_username: "a",
-			expectErr:    true,
-		},
-		{
-			name:         "too long username",
-			user_id:      user.ID,
-			new_username: strings.Repeat("a", 21),
-			expectErr:    true,
-		},
-		{
-			name:         "non-existent user",
-			user_id:      uuid.NewString(),
-			new_username: "updated",
-			expectErr:    true,
-		},
-	}
-
-	for _, test := range tests {
-		p := users.UpdateUsernamePayload{ID: test.user_id, Username: test.new_username}
-		err := s.service.UpdateUsername(context.Background(), &p)
-		if test.expectErr && err == nil {
-			s.T().Errorf("%s: expected err, but got nil", test.name)
-		}
-		if !test.expectErr && err != nil {
-			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
-		}
-	}
-}
-
-func (s *UsersTestSuite) TestUpdateBio() {
-	user := s.create_user("test_user", "Test User")
+	username := "updated"
+	bio := "updated"
+	isPrivate := true
 
 	tests := []struct {
 		name      string
-		user_id   string
-		new_bio   string
+		payload   users.UpdateProfilePayload
 		expectErr bool
 	}{
 		{
-			name:      "update bio",
-			user_id:   user.ID,
-			new_bio:   "updated",
+			name: "update username",
+			payload: users.UpdateProfilePayload{
+				ID:       user.ID,
+				Username: &username,
+			},
 			expectErr: false,
 		},
 		{
-			name:      "too long bio",
-			user_id:   user.ID,
-			new_bio:   strings.Repeat("a", 161),
-			expectErr: true,
+			name: "update bio",
+			payload: users.UpdateProfilePayload{
+				ID:  user.ID,
+				Bio: &bio,
+			},
+			expectErr: false,
 		},
 		{
-			name:      "non-existent user",
-			user_id:   uuid.NewString(),
-			new_bio:   "updated",
+			name: "update isPrivate",
+			payload: users.UpdateProfilePayload{
+				ID:        user.ID,
+				IsPrivate: &isPrivate,
+			},
+			expectErr: false,
+		},
+		{
+			name: "update multiple fields",
+			payload: users.UpdateProfilePayload{
+				ID:       user.ID,
+				Username: &username,
+				Bio:      &bio,
+			},
+			expectErr: false,
+		},
+		{
+			name: "non-existent user",
+			payload: users.UpdateProfilePayload{
+				ID:       uuid.NewString(),
+				Username: &username,
+			},
 			expectErr: true,
 		},
 	}
 
 	for _, test := range tests {
-		p := users.UpdateBioPayload{ID: test.user_id, Bio: test.new_bio}
-		err := s.service.UpdateBio(context.Background(), &p)
+		err := s.service.UpdateProfile(context.Background(), &test.payload)
 		if test.expectErr && err == nil {
 			s.T().Errorf("%s: expected err, but got nil", test.name)
 		}

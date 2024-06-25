@@ -94,62 +94,91 @@ extension CommunitiesHomeViewController: CommunitiesHomeViewDelegate {
 struct CommunitiesHomeView: View {
   public weak var delegate: CommunitiesHomeViewDelegate?
 
-  private enum LayoutConstant {
-    static let edgePadding = 16.0
-  }
+  @State private var activeTabModel: CommunityHomeTabModel.Tab = .myCommunity
+  @State private var tabToScroll: CommunityHomeTabModel.Tab?
+  @State private var showMoreCommunities = false
 
   private enum LocalizedString {
-    static let headlineLabelText = String(localized: "Discover new Communities")
     static let seeLessOften = String(localized: "See less often")
-    static let showMoreText = String(localized: "Show more")
   }
 
-  private let communities: [CommunityModel] = {
-    var communities: [CommunityModel] = []
-    for _ in 0..<4 {
-      communities.append(createFakeCommunityModel())
-    }
-    return communities
-  }()
+  private let tabModels: [CommunityHomeTabModel] = [
+    .init(id: .myCommunity),
+    .init(id: .explore),
+  ]
 
   var body: some View {
     VStack {
-      HStack {
-        Text(LocalizedString.headlineLabelText)
-        Spacer()
-        Menu {
-          Button(
-            action: {
-
-            },
-            label: {
-              Label(LocalizedString.seeLessOften, systemImage: "face.dashed")
-            })
-        } label: {
-          Image(systemName: "ellipsis")
-        }
-      }
-
-      ForEach(communities) { community in
-        CommunityCellView(community: community)
-      }
-
-      HStack {
-        Button(
-          action: {
-            delegate?.didTapShowMoreButton()
-          },
-          label: {
-            Text(LocalizedString.showMoreText)
-          })
-        Spacer()
-      }
-
+      TabBar()
+      Tabs()
       Spacer()
     }
-    .padding(.top, LayoutConstant.edgePadding)
-    .padding(.leading, LayoutConstant.edgePadding)
-    .padding(.trailing, LayoutConstant.edgePadding)
+    .onChange(of: showMoreCommunities) { _, newValue in
+      if newValue {
+        delegate?.didTapShowMoreButton()
+        showMoreCommunities = false
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func TabBar() -> some View {
+    HStack {
+      ForEach(tabModels) { tabModel in
+        Spacer()
+        Button(
+          action: {
+            withAnimation {
+              activeTabModel = tabModel.id
+              tabToScroll = tabModel.id
+            }
+          },
+          label: {
+            Text(tabModel.id.rawValue)
+              .foregroundStyle(activeTabModel == tabModel.id ? Color.primary : .gray)
+          }
+        )
+        .buttonStyle(.plain)
+        Spacer()
+      }
+    }
+    .padding(.top)
+    .padding(.bottom)
+    .overlay(alignment: .bottom) {
+      ZStack {
+        Divider()
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func Tabs() -> some View {
+    ScrollView(.horizontal) {
+      LazyHStack(spacing: 0) {
+        ForEach(tabModels) { tabModel in
+          switch tabModel.id {
+          case .myCommunity:
+            CommunityHomeMyCommunitiesTabView(showMoreCommunities: $showMoreCommunities)
+              .frame(width: UIScreen.main.bounds.width)
+          case .explore:
+            CommunitiesHomeExploreTabView()
+              .frame(width: UIScreen.main.bounds.width)
+          }
+        }
+      }
+      .scrollTargetLayout()
+    }
+    .scrollIndicators(.hidden)
+    .scrollTargetBehavior(.paging)
+    .scrollPosition(id: $tabToScroll)
+    .onChange(of: tabToScroll) { _, newValue in
+      if let newValue {
+        withAnimation {
+          tabToScroll = newValue
+          activeTabModel = newValue
+        }
+      }
+    }
   }
 }
 

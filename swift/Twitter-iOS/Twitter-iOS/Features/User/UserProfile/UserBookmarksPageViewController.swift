@@ -1,52 +1,32 @@
+import SwiftUI
 import UIKit
 
 class UserBookmarksPageViewController: UIViewController {
 
-  private enum LayoutConstant {
-    static let edgePadding: CGFloat = 16.0
-
-    static let headlineFontSize: CGFloat = 29.0
-    static let subHeadlineFontSize: CGFloat = 15.0
-    static let headlineViewSpacing: CGFloat = 10.0
-    static let headlineViewVerticalPadding: CGFloat = 50.0
-
-    static let headerTitleFontSize: CGFloat = 18.0
-
-    static let backButtonSize: CGFloat = 20.0
-  }
-
   private enum LocalizedString {
-    static let headlineText = String(localized: "Save Posts for later")
-    static let subHeadlineText = String(
-      localized:
-        "Don't let the good ones fly away! Bookmarks posts to easily find them again in the future."
-    )
     static let title = String(localized: "Bookmarks")
+    static let menuActionOneTitle = String(localized: "Clear all Bookmarks")
   }
 
-  private let headlineLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = LocalizedString.headlineText
-    label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.headlineFontSize, weight: .heavy)
-    return label
-  }()
-
-  private let subHeadlineLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = LocalizedString.subHeadlineText
-    label.textColor = .gray
-    label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.subHeadlineFontSize)
-    return label
+  private lazy var bookmarkHostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: BookmarkView())
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
 
   private let menuButton: UIBarButtonItem = {
     let button = UIBarButtonItem()
     button.tintColor = .black
     button.image = UIImage(systemName: "ellipsis")
+
+    let action1 = UIAction(title: LocalizedString.menuActionOneTitle) { action in
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/309
+      // - Add Clear All Bookmarks Action to Menu Button in UserBookmarksPageViewController.swift
+    }
+
+    button.menu = UIMenu(children: [action1])
     return button
   }()
 
@@ -56,22 +36,16 @@ class UserBookmarksPageViewController: UIViewController {
   }
 
   private func setSubviews() {
-    let headlineView = UIStackView(arrangedSubviews: [headlineLabel, subHeadlineLabel])
-    headlineView.axis = .vertical
-    headlineView.spacing = LayoutConstant.headlineViewSpacing
-    headlineView.translatesAutoresizingMaskIntoConstraints = false
-
-    view.addSubview(headlineView)
     view.backgroundColor = .systemBackground
+
+    view.addSubview(bookmarkHostingController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headlineView.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.headlineViewVerticalPadding),
-      headlineView.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
-      headlineView.trailingAnchor.constraint(
-        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
+      bookmarkHostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      bookmarkHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      bookmarkHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      bookmarkHostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
     ])
 
     // set up navigation
@@ -80,4 +54,47 @@ class UserBookmarksPageViewController: UIViewController {
     navigationItem.rightBarButtonItems = [menuButton]
     navigationController?.navigationBar.backgroundColor = .systemBackground
   }
+}
+
+struct BookmarkView: View {
+  private enum LayoutConstant {
+    static let headlineFontSize: CGFloat = 29.0
+    static let headlineViewSpacing: CGFloat = 10.0
+    static let headlineViewVerticalPadding: CGFloat = 50.0
+    static let subHeadlineFontSize: CGFloat = 15.0
+  }
+
+  private enum LocalizedString {
+    static let headlineText = String(localized: "Save Posts for later")
+
+    // The backslash (\) at the end of the first line is used for line continuation.
+    static let subHeadlineText = String(
+      localized:
+        """
+        Don't let the good ones fly away! \
+        Bookmarks posts to easily find them again in the future.
+        """
+    )
+  }
+
+  var body: some View {
+    VStack(
+      alignment: .leading, spacing: LayoutConstant.headlineViewSpacing,
+      content: {
+        Text(LocalizedString.headlineText)
+          .font(.system(size: LayoutConstant.headlineFontSize, weight: .heavy))
+
+        Text(LocalizedString.subHeadlineText)
+          .font(.system(size: LayoutConstant.subHeadlineFontSize))
+          .foregroundStyle(.gray)
+
+        Spacer()
+      }
+    )
+    .padding(.vertical, LayoutConstant.headlineViewVerticalPadding)
+  }
+}
+
+#Preview {
+  BookmarkView()
 }

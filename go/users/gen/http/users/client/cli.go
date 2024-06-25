@@ -23,7 +23,7 @@ func BuildCreateUserPayload(usersCreateUserBody string) (*users.CreateUserPayloa
 	{
 		err = json.Unmarshal([]byte(usersCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Saepe sit.\",\n      \"is_private\": false,\n      \"username\": \"Non vitae.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"display_name\": \"Blanditiis quos voluptas qui.\",\n      \"is_private\": true,\n      \"username\": \"Molestias ipsam.\"\n   }'")
 		}
 	}
 	v := &users.CreateUserPayload{
@@ -77,54 +77,29 @@ func BuildFindUserByIDPayload(usersFindUserByIDID string) (*users.FindUserByIDPa
 	return v, nil
 }
 
-// BuildUpdateUsernamePayload builds the payload for the users UpdateUsername
+// BuildUpdateProfilePayload builds the payload for the users UpdateProfile
 // endpoint from CLI flags.
-func BuildUpdateUsernamePayload(usersUpdateUsernameBody string, usersUpdateUsernameID string) (*users.UpdateUsernamePayload, error) {
+func BuildUpdateProfilePayload(usersUpdateProfileBody string, usersUpdateProfileID string) (*users.UpdateProfilePayload, error) {
 	var err error
-	var body UpdateUsernameRequestBody
+	var body UpdateProfileRequestBody
 	{
-		err = json.Unmarshal([]byte(usersUpdateUsernameBody), &body)
+		err = json.Unmarshal([]byte(usersUpdateProfileBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"username\": \"Ipsam debitis.\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Nam ea laboriosam non sapiente incidunt.\",\n      \"is_private\": false,\n      \"username\": \"Alias quis repellat ea velit provident totam.\"\n   }'")
 		}
 	}
 	var id string
 	{
-		id = usersUpdateUsernameID
+		id = usersUpdateProfileID
 		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &users.UpdateUsernamePayload{
-		Username: body.Username,
-	}
-	v.ID = id
-
-	return v, nil
-}
-
-// BuildUpdateBioPayload builds the payload for the users UpdateBio endpoint
-// from CLI flags.
-func BuildUpdateBioPayload(usersUpdateBioBody string, usersUpdateBioID string) (*users.UpdateBioPayload, error) {
-	var err error
-	var body UpdateBioRequestBody
-	{
-		err = json.Unmarshal([]byte(usersUpdateBioBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"bio\": \"Qui impedit expedita dolor.\"\n   }'")
-		}
-	}
-	var id string
-	{
-		id = usersUpdateBioID
-		err = goa.MergeErrors(err, goa.ValidateFormat("id", id, goa.FormatUUID))
-		if err != nil {
-			return nil, err
-		}
-	}
-	v := &users.UpdateBioPayload{
-		Bio: body.Bio,
+	v := &users.UpdateProfilePayload{
+		Username:  body.Username,
+		Bio:       body.Bio,
+		IsPrivate: body.IsPrivate,
 	}
 	v.ID = id
 
@@ -139,7 +114,7 @@ func BuildFollowPayload(usersFollowBody string, usersFollowFollowingUserID strin
 	{
 		err = json.Unmarshal([]byte(usersFollowBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followed_user_id\": \"65a07426-3043-11ef-b966-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"followed_user_id\": \"14a73923-310a-11ef-bbda-0242ac120003\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.followed_user_id", body.FollowedUserID, goa.FormatUUID))
 		if err != nil {
@@ -233,7 +208,7 @@ func BuildMutePayload(usersMuteBody string, usersMuteMutingUserID string) (*user
 	{
 		err = json.Unmarshal([]byte(usersMuteBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"65a0dcae-3043-11ef-b966-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"muted_user_id\": \"14a780ac-310a-11ef-bbda-0242ac120003\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.muted_user_id", body.MutedUserID, goa.FormatUUID))
 		if err != nil {
@@ -291,7 +266,7 @@ func BuildBlockPayload(usersBlockBody string, usersBlockBlockingUserID string) (
 	{
 		err = json.Unmarshal([]byte(usersBlockBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"65a100e4-3043-11ef-b966-cec0a17b7253\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"blocked_user_id\": \"14a7a39a-310a-11ef-bbda-0242ac120003\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.blocked_user_id", body.BlockedUserID, goa.FormatUUID))
 		if err != nil {

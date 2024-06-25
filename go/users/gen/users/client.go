@@ -15,37 +15,35 @@ import (
 
 // Client is the "users" service client.
 type Client struct {
-	CreateUserEndpoint     goa.Endpoint
-	DeleteUserEndpoint     goa.Endpoint
-	FindUserByIDEndpoint   goa.Endpoint
-	UpdateUsernameEndpoint goa.Endpoint
-	UpdateBioEndpoint      goa.Endpoint
-	FollowEndpoint         goa.Endpoint
-	UnfollowEndpoint       goa.Endpoint
-	GetFollowersEndpoint   goa.Endpoint
-	GetFollowingsEndpoint  goa.Endpoint
-	MuteEndpoint           goa.Endpoint
-	UnmuteEndpoint         goa.Endpoint
-	BlockEndpoint          goa.Endpoint
-	UnblockEndpoint        goa.Endpoint
+	CreateUserEndpoint    goa.Endpoint
+	DeleteUserEndpoint    goa.Endpoint
+	FindUserByIDEndpoint  goa.Endpoint
+	UpdateProfileEndpoint goa.Endpoint
+	FollowEndpoint        goa.Endpoint
+	UnfollowEndpoint      goa.Endpoint
+	GetFollowersEndpoint  goa.Endpoint
+	GetFollowingsEndpoint goa.Endpoint
+	MuteEndpoint          goa.Endpoint
+	UnmuteEndpoint        goa.Endpoint
+	BlockEndpoint         goa.Endpoint
+	UnblockEndpoint       goa.Endpoint
 }
 
 // NewClient initializes a "users" service client given the endpoints.
-func NewClient(createUser, deleteUser, findUserByID, updateUsername, updateBio, follow, unfollow, getFollowers, getFollowings, mute, unmute, block, unblock goa.Endpoint) *Client {
+func NewClient(createUser, deleteUser, findUserByID, updateProfile, follow, unfollow, getFollowers, getFollowings, mute, unmute, block, unblock goa.Endpoint) *Client {
 	return &Client{
-		CreateUserEndpoint:     createUser,
-		DeleteUserEndpoint:     deleteUser,
-		FindUserByIDEndpoint:   findUserByID,
-		UpdateUsernameEndpoint: updateUsername,
-		UpdateBioEndpoint:      updateBio,
-		FollowEndpoint:         follow,
-		UnfollowEndpoint:       unfollow,
-		GetFollowersEndpoint:   getFollowers,
-		GetFollowingsEndpoint:  getFollowings,
-		MuteEndpoint:           mute,
-		UnmuteEndpoint:         unmute,
-		BlockEndpoint:          block,
-		UnblockEndpoint:        unblock,
+		CreateUserEndpoint:    createUser,
+		DeleteUserEndpoint:    deleteUser,
+		FindUserByIDEndpoint:  findUserByID,
+		UpdateProfileEndpoint: updateProfile,
+		FollowEndpoint:        follow,
+		UnfollowEndpoint:      unfollow,
+		GetFollowersEndpoint:  getFollowers,
+		GetFollowingsEndpoint: getFollowings,
+		MuteEndpoint:          mute,
+		UnmuteEndpoint:        unmute,
+		BlockEndpoint:         block,
+		UnblockEndpoint:       unblock,
 	}
 }
 
@@ -87,23 +85,13 @@ func (c *Client) FindUserByID(ctx context.Context, p *FindUserByIDPayload) (res 
 	return ires.(*User), nil
 }
 
-// UpdateUsername calls the "UpdateUsername" endpoint of the "users" service.
-// UpdateUsername may return the following errors:
+// UpdateProfile calls the "UpdateProfile" endpoint of the "users" service.
+// UpdateProfile may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) UpdateUsername(ctx context.Context, p *UpdateUsernamePayload) (err error) {
-	_, err = c.UpdateUsernameEndpoint(ctx, p)
-	return
-}
-
-// UpdateBio calls the "UpdateBio" endpoint of the "users" service.
-// UpdateBio may return the following errors:
-//   - "NotFound" (type *goa.ServiceError)
-//   - "BadRequest" (type *goa.ServiceError)
-//   - error: internal error
-func (c *Client) UpdateBio(ctx context.Context, p *UpdateBioPayload) (err error) {
-	_, err = c.UpdateBioEndpoint(ctx, p)
+func (c *Client) UpdateProfile(ctx context.Context, p *UpdateProfilePayload) (err error) {
+	_, err = c.UpdateProfileEndpoint(ctx, p)
 	return
 }
 
