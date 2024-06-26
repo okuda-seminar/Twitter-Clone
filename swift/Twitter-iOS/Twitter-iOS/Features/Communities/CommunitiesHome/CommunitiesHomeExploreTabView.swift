@@ -62,7 +62,9 @@ struct CommunitiesHomeExploreTabView: View {
           postToRepost: .constant(nil),
           showShareSheet: .constant(false),
           urlStrToOpen: .constant(""),
-          postModel: postModel)
+          postModel: postModel,
+          canReply: false
+        )
       }
     }
   }

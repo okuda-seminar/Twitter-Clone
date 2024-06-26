@@ -15,6 +15,7 @@ struct PostCellView: View {
   @State private var showSheet: Bool = false
 
   public var postModel: PostModel
+  public var canReply: Bool = true
 
   @State private var isBottomSheetPresented = false
 
@@ -71,16 +72,33 @@ struct PostCellView: View {
   @ViewBuilder
   private func ActionItemStack() -> some View {
     HStack {
-      Button(
-        action: {
-          showReplyEditSheet = true
-        },
-        label: {
-          Image(systemName: "message")
+      if canReply {
+        Button(
+          action: {
+            showReplyEditSheet = true
+          },
+          label: {
+            Image(systemName: "message")
+          }
+        )
+        .foregroundStyle(.primary)
+        .buttonStyle(.plain)
+      } else {
+        Button(
+          action: {},
+          label: {
+            Image(systemName: "message")
+          }
+        )
+        .foregroundStyle(.primary)
+        .buttonStyle(.plain)
+        .disabled(true)
+        .onTapGesture {
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/330
+          // - Open "You can't reply ... yet" bottom sheet when tapping disabled reply buttons in the Communities Explore tab.
+          NotificationCenter.default.post(name: .didConductForbittenReply, object: nil)
         }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
+      }
 
       Button(
         action: {
@@ -131,17 +149,21 @@ struct PostCellView: View {
   }
 }
 
-func createFakePostCellView() -> PostCellView {
+func createFakePostCellView(canReply: Bool = false) -> PostCellView {
   return PostCellView(
     showReplyEditSheet: .constant(false),
     reposting: .constant(false),
     postToRepost: .constant(nil),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant(""),
-    postModel: createFakePostModel()
+    postModel: createFakePostModel(),
+    canReply: canReply
   )
 }
 
 #Preview {
-  createFakePostCellView()
+  VStack(spacing: 0) {
+    createFakePostCellView(canReply: true)
+    createFakePostCellView()
+  }
 }

@@ -123,7 +123,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   @objc
   private func didTapUITabBarItem() {
-    guard !didAppear else { return }
     NotificationCenter.default.post(name: .didTapHomeTabBarItem, object: nil)
   }
 

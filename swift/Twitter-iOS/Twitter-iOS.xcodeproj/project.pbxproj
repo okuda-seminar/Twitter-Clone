@@ -111,6 +111,7 @@
 		65FD4FAD2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */; };
 		65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */; };
 		65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */; };
+		65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,6 +240,7 @@
 		65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeExploreTabView.swift; sourceTree = "<group>"; };
 		65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Home.swift"; sourceTree = "<group>"; };
 		65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetViewController.swift; sourceTree = "<group>"; };
+		65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Post.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -372,6 +374,7 @@
 				65FD4F512C1B17A80020A02E /* Reply */,
 				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
 				6540F8BD2BB576740029BA46 /* NewPostEntrypointButtonController.swift */,
+				65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */,
 				65C6CCA52BFF5C9500B0A052 /* PostCellView.swift */,
 				65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */,
 				656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */,
@@ -979,6 +982,7 @@
 				65FD4F912C2449380020A02E /* RepostOptionsBottomSheet.swift in Sources */,
 				3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */,
 				65FD4F4E2C1739F30020A02E /* ReplyEditViewController.swift in Sources */,
+				65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesHomeViewController.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewPostEntrypointButtonController.swift in Sources */,
 				65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */,
