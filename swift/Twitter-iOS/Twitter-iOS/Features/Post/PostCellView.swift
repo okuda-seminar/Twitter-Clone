@@ -6,6 +6,8 @@ struct PostCellView: View {
   @Binding public var postToRepost: PostModel?
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
+
+  @State public var isBookmarkedByCurrentUser: Bool = false
   @State public var isRepostedByCurrentUser: Bool = false
 
   @Environment(\.openURL) private var openURL
@@ -72,47 +74,76 @@ struct PostCellView: View {
   @ViewBuilder
   private func ActionItemStack() -> some View {
     HStack {
-      if canReply {
-        Button(
-          action: {
-            showReplyEditSheet = true
-          },
-          label: {
-            Image(systemName: "message")
-          }
-        )
-        .foregroundStyle(.primary)
-        .buttonStyle(.plain)
-      } else {
-        Button(
-          action: {},
-          label: {
-            Image(systemName: "message")
-          }
-        )
-        .foregroundStyle(.primary)
-        .buttonStyle(.plain)
-        .disabled(true)
-        .onTapGesture {
-          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/330
-          // - Open "You can't reply ... yet" bottom sheet when tapping disabled reply buttons in the Communities Explore tab.
-          NotificationCenter.default.post(name: .didConductForbittenReply, object: nil)
-        }
-      }
-
-      Button(
-        action: {
-          postToRepost = postModel
-          reposting.toggle()
-        },
-        label: {
-          Image(systemName: "arrow.rectanglepath")
-        }
-      )
-      .foregroundStyle(isRepostedByCurrentUser ? Color.green : .primary)
-      .buttonStyle(.plain)
+      ReplyButton()
+      RepostButton()
 
       Spacer()
+
+      BookmarkButton()
+      ShareButton()
+    }
+  }
+
+  @ViewBuilder
+  private func ReplyButton() -> some View {
+    if canReply {
+      Button(
+        action: {
+          showReplyEditSheet = true
+        },
+        label: {
+          Image(systemName: "message")
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+    } else {
+      Button(
+        action: {},
+        label: {
+          Image(systemName: "message")
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+      .disabled(true)
+      .onTapGesture {
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/330
+        // - Open "You can't reply ... yet" bottom sheet when tapping disabled reply buttons in the Communities Explore tab.
+        NotificationCenter.default.post(name: .didConductForbittenReply, object: nil)
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func RepostButton() -> some View {
+    Button(
+      action: {
+        postToRepost = postModel
+        reposting.toggle()
+      },
+      label: {
+        Image(systemName: "arrow.rectanglepath")
+      }
+    )
+    .foregroundStyle(isRepostedByCurrentUser ? Color.green : .primary)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func BookmarkButton() -> some View {
+    if isBookmarkedByCurrentUser {
+      Button(
+        action: {
+          print("Need to trigger bookmark.")
+        },
+        label: {
+          Image(systemName: "bookmark.fill")
+        }
+      )
+      .foregroundStyle(Color(uiColor: .brandedBlue))
+      .buttonStyle(.plain)
+    } else {
       Button(
         action: {
           print("Need to trigger bookmark.")
@@ -123,39 +154,45 @@ struct PostCellView: View {
       )
       .foregroundStyle(.primary)
       .buttonStyle(.plain)
-
-      Button(
-        action: {
-          isBottomSheetPresented.toggle()
-        },
-        label: {
-          Image(systemName: "square.and.arrow.up")
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-      .sheet(
-        isPresented: $isBottomSheetPresented,
-        onDismiss: {
-          Task { @MainActor in
-            showShareSheet = pendingShowShareSheet
-          }
-        },
-        content: {
-          PostShareBottomSheet(showShareSheet: $pendingShowShareSheet)
-            .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
-        })
     }
+  }
+
+  @ViewBuilder
+  private func ShareButton() -> some View {
+    Button(
+      action: {
+        isBottomSheetPresented.toggle()
+      },
+      label: {
+        Image(systemName: "square.and.arrow.up")
+      }
+    )
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
+    .sheet(
+      isPresented: $isBottomSheetPresented,
+      onDismiss: {
+        Task { @MainActor in
+          showShareSheet = pendingShowShareSheet
+        }
+      },
+      content: {
+        PostShareBottomSheet(showShareSheet: $pendingShowShareSheet)
+          .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
+      })
   }
 }
 
-func createFakePostCellView(canReply: Bool = false) -> PostCellView {
+func createFakePostCellView(isBookmarkedByCurrentUser: Bool = false, canReply: Bool = false)
+  -> PostCellView
+{
   return PostCellView(
     showReplyEditSheet: .constant(false),
     reposting: .constant(false),
     postToRepost: .constant(nil),
     showShareSheet: .constant(false),
     urlStrToOpen: .constant(""),
+    isBookmarkedByCurrentUser: isBookmarkedByCurrentUser,
     postModel: createFakePostModel(),
     canReply: canReply
   )
@@ -163,7 +200,9 @@ func createFakePostCellView(canReply: Bool = false) -> PostCellView {
 
 #Preview {
   VStack(spacing: 0) {
-    createFakePostCellView(canReply: true)
-    createFakePostCellView()
+    createFakePostCellView(
+      canReply: true
+    )
+    createFakePostCellView(isBookmarkedByCurrentUser: true)
   }
 }

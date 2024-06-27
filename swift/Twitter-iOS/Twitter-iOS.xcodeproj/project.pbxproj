@@ -112,6 +112,7 @@
 		65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */; };
 		65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */; };
 		65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */; };
+		65FD4FC42C2D8BB00020A02E /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +242,7 @@
 		65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Home.swift"; sourceTree = "<group>"; };
 		65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetViewController.swift; sourceTree = "<group>"; };
 		65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Post.swift"; sourceTree = "<group>"; };
+		65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -625,6 +627,7 @@
 		658D08872BEF474F006C6A9E /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				65FD4FC22C2D8B9B0020A02E /* Bookmark */,
 				65FD4F4A2C15E13F0020A02E /* Follow */,
 				65FD4F9E2C25B3BA0020A02E /* Post */,
 				658D08882BEF4798006C6A9E /* User */,
@@ -797,6 +800,14 @@
 				65FD4F9F2C25B3D70020A02E /* PostService.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		65FD4FC22C2D8B9B0020A02E /* Bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */,
+			);
+			path = Bookmark;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1021,6 +1032,7 @@
 				65FD4F3F2C1556EB0020A02E /* UserConnectViewController.swift in Sources */,
 				6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
+				65FD4FC42C2D8BB00020A02E /* BookmarkService.swift in Sources */,
 				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,
 				65C6CCAF2C00136700B0A052 /* NewMessageEntrypointButtonController.swift in Sources */,
 				656C1BAB2C020D2000EEE575 /* NotificationsTabModel.swift in Sources */,

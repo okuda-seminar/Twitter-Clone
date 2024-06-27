@@ -9,7 +9,8 @@ class UserBookmarksPageViewController: UIViewController {
   }
 
   private lazy var bookmarkHostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: BookmarkView())
+    let bookmarkedPosts = InjectBookmarkService().fetchCurrentBookmarks()
+    let controller = UIHostingController(rootView: BookmarkView(bookmarkedPosts: bookmarkedPosts))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -57,6 +58,8 @@ class UserBookmarksPageViewController: UIViewController {
 }
 
 struct BookmarkView: View {
+  public var bookmarkedPosts: [PostModel]
+
   private enum LayoutConstant {
     static let headlineFontSize: CGFloat = 29.0
     static let headlineViewSpacing: CGFloat = 10.0
@@ -78,6 +81,15 @@ struct BookmarkView: View {
   }
 
   var body: some View {
+    if bookmarkedPosts.isEmpty {
+      MessagesWithoutData()
+    } else {
+      BookmarkedPostsStack()
+    }
+  }
+
+  @ViewBuilder
+  private func MessagesWithoutData() -> some View {
     VStack(
       alignment: .leading, spacing: LayoutConstant.headlineViewSpacing,
       content: {
@@ -93,8 +105,26 @@ struct BookmarkView: View {
     )
     .padding(.vertical, LayoutConstant.headlineViewVerticalPadding)
   }
+
+  @ViewBuilder
+  private func BookmarkedPostsStack() -> some View {
+    ScrollView(.vertical) {
+      VStack(spacing: 0) {
+        ForEach(bookmarkedPosts) { bookmarkedPost in
+          PostCellView(
+            showReplyEditSheet: .constant(false),
+            reposting: .constant(false),
+            postToRepost: .constant(nil),
+            showShareSheet: .constant(false),
+            urlStrToOpen: .constant(""),
+            isBookmarkedByCurrentUser: true,
+            postModel: bookmarkedPost)
+        }
+      }
+    }
+  }
 }
 
 #Preview {
-  BookmarkView()
+  BookmarkView(bookmarkedPosts: [createFakePostModel()])
 }
