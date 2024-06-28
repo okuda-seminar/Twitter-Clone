@@ -113,6 +113,7 @@
 		65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */; };
 		65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */; };
 		65FD4FC42C2D8BB00020A02E /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */; };
+		65FD4FCF2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FCE2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -243,6 +244,7 @@
 		65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetViewController.swift; sourceTree = "<group>"; };
 		65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Post.swift"; sourceTree = "<group>"; };
 		65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
+		65FD4FCE2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeOptionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,6 +365,7 @@
 				6540F8B82BB575E80029BA46 /* Post */,
 				6540F8D22BC018910029BA46 /* Search */,
 				6540F8F82BD294BF0029BA46 /* Settings */,
+				65FD4FCD2C2EEDF50020A02E /* Subscription */,
 				6567CBCF2BD7DD8E00242716 /* User */,
 			);
 			path = Features;
@@ -810,6 +813,14 @@
 			path = Bookmark;
 			sourceTree = "<group>";
 		};
+		65FD4FCD2C2EEDF50020A02E /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4FCE2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -974,6 +985,7 @@
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				65C6CCA22BFE22EA00B0A052 /* UserProfileTabModel.swift in Sources */,
 				656C1BB12C0218D700EEE575 /* NotificationModel.swift in Sources */,
+				65FD4FCF2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift in Sources */,
 				65C6CC272BFB70E400B0A052 /* UIViewController+Settings.swift in Sources */,
 				65C6CC2D2BFCC51F00B0A052 /* CGFloat+Rect.swift in Sources */,
 				65C6CC202BF9625E00B0A052 /* BannerView.swift in Sources */,

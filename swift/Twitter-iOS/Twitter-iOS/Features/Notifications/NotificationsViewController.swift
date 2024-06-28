@@ -97,4 +97,9 @@ extension NotificationsViewController: NotificationsTabViewDelegate {
     navigationController.pushViewController(
       PostDetailViewController(postModel: postModel), animated: true)
   }
+
+  func didTapSubscribeButton() {
+    guard let navigationController else { return }
+    navigationController.pushViewController(SubscribeOptionsViewController(), animated: true)
+  }
 }

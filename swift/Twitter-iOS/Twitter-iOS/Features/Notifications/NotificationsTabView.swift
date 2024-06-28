@@ -12,6 +12,7 @@ struct NotificationsTabView: View {
   @State private var tabScrollState: NotificationsTabModel.Tab?
   @State private var progress: CGFloat = .zero
   @State private var selectedNotificationModel: NotificationModel?
+  @State private var openSubscriptionOptionsPage: Bool = false
 
   private enum LayoutConstant {
     static let minTabLength: CGFloat = 40.0
@@ -98,7 +99,7 @@ struct NotificationsTabView: View {
                   delegate?.didSelectNotification(selectedNotificationModel)
                 }
             case .verified:
-              NotificationsVerifiedTabView()
+              NotificationsVerifiedTabView(openSubscribeOptionsPage: $openSubscriptionOptionsPage)
                 .frame(width: size.width)
             case .mentions:
               NotificationsMentionsTabView()
@@ -122,12 +123,16 @@ struct NotificationsTabView: View {
           }
         }
       }
+      .onChange(of: openSubscriptionOptionsPage) {
+        delegate?.didTapSubscribeButton()
+      }
     }
   }
 }
 
 protocol NotificationsTabViewDelegate: AnyObject {
   func didSelectNotification(_ notificationModel: NotificationModel)
+  func didTapSubscribeButton()
 }
 
 #Preview {

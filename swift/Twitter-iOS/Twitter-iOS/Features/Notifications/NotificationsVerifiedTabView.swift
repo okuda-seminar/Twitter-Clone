@@ -2,6 +2,8 @@ import SwiftUI
 
 struct NotificationsVerifiedTabView: View {
 
+  @Binding public var openSubscribeOptionsPage: Bool
+
   private enum LayoutConstant {
     static let headlineFontSize: CGFloat = 29.0
     static let vStackSpacing: CGFloat = 5.0
@@ -11,15 +13,18 @@ struct NotificationsVerifiedTabView: View {
 
   private enum LocalizedString {
     static let headlineText = String(localized: "Nothing to see here — yet")
+    // \ is required to avoid unintended line breaks.
     static let firstSubHeadlineText = String(
-      localized:
-        "Likes, mentions, reports, and a whole lot more — when it comes from a verified account, you'll find it here. "
-    )
+      localized: """
+        Likes, mentions, reports, and a whole lot more — when it comes from a verified account, \
+        you'll find it here.
+        """)
     static let learnMoreText = String(localized: "Learn More\n")
     static let secondSubHeadlineText = String(
-      localized:
-        "Not verified? Subscribe now to get a verified account and join other people in quality conversations."
-    )
+      localized: """
+        Not verified? Subscribe now to get a verified account and join other people in quality \
+        conversations.
+        """)
     static let subscribeButtonLabel = String(localized: "Subscribe")
   }
 
@@ -52,7 +57,7 @@ struct NotificationsVerifiedTabView: View {
 
       Button(
         action: {
-
+          openSubscribeOptionsPage.toggle()
         },
         label: {
           Spacer()
@@ -77,5 +82,5 @@ struct NotificationsVerifiedTabView: View {
 }
 
 #Preview {
-  NotificationsVerifiedTabView()
+  NotificationsVerifiedTabView(openSubscribeOptionsPage: .constant(false))
 }
