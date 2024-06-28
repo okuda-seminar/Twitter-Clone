@@ -11,7 +11,7 @@ var _ = API("tweets", func() {
 	Description("Service for managing tweets")
 	Server("tweets", func() {
 		Host("localhost", func() {
-			URI("http://0.0.0.0:80/api/tweets")
+			URI("http://0.0.0.0:80/api/posts")
 		})
 	})
 })
@@ -33,7 +33,7 @@ var _ = Service("tweets", func() {
 		Result(types.Tweet)
 
 		HTTP(func() {
-			POST("/api/tweets")
+			POST("/api/posts")
 
 			Response(StatusOK, func() {
 				Description("Created tweet")
@@ -57,7 +57,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/tweets")
+			DELETE("/api/posts")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 			Response("BadRequest", StatusBadRequest)
@@ -77,7 +77,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/tweets/like")
+			POST("/api/posts/like")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -96,7 +96,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/tweets/like")
+			DELETE("/api/posts/like")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -115,7 +115,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			POST("/api/tweets/retweet")
+			POST("/api/posts/retweet")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -134,7 +134,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/tweets/retweet")
+			DELETE("/api/posts/retweet")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -154,7 +154,7 @@ var _ = Service("tweets", func() {
 		Result(types.Reply)
 
 		HTTP(func() {
-			POST("/api/tweets/reply")
+			POST("/api/posts/reply")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})
@@ -170,7 +170,7 @@ var _ = Service("tweets", func() {
 		Result(Empty)
 
 		HTTP(func() {
-			DELETE("/api/tweets/reply")
+			DELETE("/api/posts/reply")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 		})

@@ -4,9 +4,9 @@ info:
     description: Service for managing tweets
     version: 0.0.1
 servers:
-    - url: http://0.0.0.0:80/api/tweets
+    - url: http://0.0.0.0:80/api/posts
 paths:
-    /api/tweets:
+    /api/posts:
         delete:
             tags:
                 - tweets
@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            id: db779130-2fed-11ef-b440-b2d74bfa9f65
+                            id: aefe166c-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -47,8 +47,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateTweetRequestBody'
                         example:
-                            text: Dolores omnis ut rerum.
-                            user_id: db7770ce-2fed-11ef-b440-b2d74bfa9f65
+                            text: Quaerat odit.
+                            user_id: aefdee08-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: Created tweet
@@ -57,10 +57,10 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Tweet'
                             example:
-                                created_at: "2009-02-25T23:43:51Z"
-                                id: Deleniti optio quaerat vitae quia ipsum corrupti.
-                                text: Autem dicta nulla illum ab.
-                                user_id: Inventore voluptatum a.
+                                created_at: "2009-03-13T12:29:33Z"
+                                id: aefdfb78-3559-11ef-b633-b2d74bfa9f65
+                                text: Illo ut eaque quo modi ad.
+                                user_id: aefdfc9a-3559-11ef-b633-b2d74bfa9f65
                 "400":
                     description: 'BadRequest: Failed to create tweet'
                     content:
@@ -73,7 +73,7 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/tweets/like:
+    /api/posts/like:
         delete:
             tags:
                 - tweets
@@ -86,8 +86,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: db77d96a-2fed-11ef-b440-b2d74bfa9f65
-                            user_id: db77daa0-2fed-11ef-b440-b2d74bfa9f65
+                            tweet_id: aefe4038-3559-11ef-b633-b2d74bfa9f65
+                            user_id: aefe41aa-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -109,8 +109,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: db77a580-2fed-11ef-b440-b2d74bfa9f65
-                            user_id: db77a698-2fed-11ef-b440-b2d74bfa9f65
+                            tweet_id: aefe2e2c-3559-11ef-b633-b2d74bfa9f65
+                            user_id: aefe2f76-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -120,7 +120,7 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/tweets/reply:
+    /api/posts/reply:
         delete:
             tags:
                 - tweets
@@ -133,7 +133,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            id: db782c94-2fed-11ef-b440-b2d74bfa9f65
+                            id: aefebd92-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -155,9 +155,9 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateReplyRequestBody'
                         example:
-                            text: Ratione dicta.
-                            tweet_id: db7812e0-2fed-11ef-b440-b2d74bfa9f65
-                            user_id: db781402-2fed-11ef-b440-b2d74bfa9f65
+                            text: Quo similique numquam laboriosam.
+                            tweet_id: aefe9f92-3559-11ef-b633-b2d74bfa9f65
+                            user_id: aefea0b4-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -166,18 +166,18 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Reply'
                             example:
-                                created_at: "1975-01-13T14:48:33Z"
-                                id: Recusandae minus maiores est.
-                                text: Consequatur rerum voluptatibus facilis aperiam minima quibusdam.
-                                tweet_id: Recusandae et ipsum et culpa sequi eveniet.
-                                user_id: Voluptatum laudantium nihil magni.
+                                created_at: "1976-04-28T16:19:42Z"
+                                id: aefeab36-3559-11ef-b633-b2d74bfa9f65
+                                text: Similique eveniet et sint.
+                                tweet_id: aefeac58-3559-11ef-b633-b2d74bfa9f65
+                                user_id: aefead70-3559-11ef-b633-b2d74bfa9f65
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/tweets/retweet:
+    /api/posts/retweet:
         delete:
             tags:
                 - tweets
@@ -190,8 +190,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: db78008e-2fed-11ef-b440-b2d74bfa9f65
-                            user_id: db7801c4-2fed-11ef-b440-b2d74bfa9f65
+                            tweet_id: aefe849e-3559-11ef-b633-b2d74bfa9f65
+                            user_id: aefe8cc8-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -213,8 +213,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: db77ee1e-2fed-11ef-b440-b2d74bfa9f65
-                            user_id: db77ef86-2fed-11ef-b440-b2d74bfa9f65
+                            tweet_id: aefe52b2-3559-11ef-b633-b2d74bfa9f65
+                            user_id: aefe53e8-3559-11ef-b633-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -240,19 +240,19 @@ components:
             properties:
                 text:
                     type: string
-                    example: Ipsam minima voluptas quasi voluptatem non nam.
+                    example: Omnis assumenda perferendis.
                 tweet_id:
                     type: string
-                    example: db78be16-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff62a6-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
                 user_id:
                     type: string
-                    example: db78bf10-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff63a0-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
             example:
-                text: Cum ut aspernatur.
-                tweet_id: db78c046-2fed-11ef-b440-b2d74bfa9f65
-                user_id: db78c136-2fed-11ef-b440-b2d74bfa9f65
+                text: Voluptatibus consequatur.
+                tweet_id: aeff64a4-3559-11ef-b633-b2d74bfa9f65
+                user_id: aeff65a8-3559-11ef-b633-b2d74bfa9f65
             required:
                 - tweet_id
                 - user_id
@@ -262,14 +262,14 @@ components:
             properties:
                 text:
                     type: string
-                    example: Atque aut aspernatur.
+                    example: Reprehenderit aliquam.
                 user_id:
                     type: string
-                    example: db78b20e-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff5220-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
             example:
-                text: Nulla ex.
-                user_id: db78b326-2fed-11ef-b440-b2d74bfa9f65
+                text: Qui saepe et voluptas dicta non.
+                user_id: aeff5342-3559-11ef-b633-b2d74bfa9f65
             required:
                 - user_id
                 - text
@@ -278,10 +278,10 @@ components:
             properties:
                 id:
                     type: string
-                    example: db78b704-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff5bbc-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
             example:
-                id: db78b812-2fed-11ef-b440-b2d74bfa9f65
+                id: aeff5cde-3559-11ef-b633-b2d74bfa9f65
             required:
                 - id
         Error:
@@ -290,7 +290,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: true
+                    example: false
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -306,17 +306,17 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: false
+                    example: true
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
                 fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: false
             required:
                 - name
@@ -330,15 +330,15 @@ components:
             properties:
                 tweet_id:
                     type: string
-                    example: db78b952-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff5e1e-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
                 user_id:
                     type: string
-                    example: db78ba7e-2fed-11ef-b440-b2d74bfa9f65
+                    example: aeff5f2c-3559-11ef-b633-b2d74bfa9f65
                     format: uuid
             example:
-                tweet_id: db78bb78-2fed-11ef-b440-b2d74bfa9f65
-                user_id: db78bc90-2fed-11ef-b440-b2d74bfa9f65
+                tweet_id: aeff6026-3559-11ef-b633-b2d74bfa9f65
+                user_id: aeff6120-3559-11ef-b633-b2d74bfa9f65
             required:
                 - tweet_id
                 - user_id
@@ -347,26 +347,29 @@ components:
             properties:
                 created_at:
                     type: string
-                    example: "1979-11-22T15:11:48Z"
+                    example: "2001-08-26T00:01:02Z"
                     format: date-time
                 id:
                     type: string
-                    example: Praesentium consequatur perferendis iure autem deserunt ea.
+                    example: aeff6706-3559-11ef-b633-b2d74bfa9f65
+                    format: uuid
                 text:
                     type: string
-                    example: Excepturi asperiores ut amet et minus possimus.
+                    example: Aut omnis voluptatem suscipit modi ut natus.
                 tweet_id:
                     type: string
-                    example: Ullam ipsum molestiae eos et id.
+                    example: aeff6800-3559-11ef-b633-b2d74bfa9f65
+                    format: uuid
                 user_id:
                     type: string
-                    example: Voluptas eius.
+                    example: aeff68fa-3559-11ef-b633-b2d74bfa9f65
+                    format: uuid
             example:
-                created_at: "1990-02-23T01:16:57Z"
-                id: Similique deserunt nostrum est officiis officiis.
-                text: Suscipit voluptatum aut aspernatur excepturi maxime.
-                tweet_id: Facilis ipsa.
-                user_id: Et nostrum beatae error saepe.
+                created_at: "1997-02-20T03:57:55Z"
+                id: aeff6b20-3559-11ef-b633-b2d74bfa9f65
+                text: Doloremque dolore ea error est omnis quibusdam.
+                tweet_id: aeff6c10-3559-11ef-b633-b2d74bfa9f65
+                user_id: aeff6d32-3559-11ef-b633-b2d74bfa9f65
             required:
                 - id
                 - tweet_id
@@ -378,22 +381,24 @@ components:
             properties:
                 created_at:
                     type: string
-                    example: "1995-10-04T18:40:44Z"
+                    example: "1994-07-29T14:41:57Z"
                     format: date-time
                 id:
                     type: string
-                    example: Nemo ea ullam.
+                    example: aeff54aa-3559-11ef-b633-b2d74bfa9f65
+                    format: uuid
                 text:
                     type: string
-                    example: Impedit et ullam illum qui.
+                    example: Provident sunt est temporibus consequatur consectetur libero.
                 user_id:
                     type: string
-                    example: Eum cum eligendi ratione officia animi omnis.
+                    example: aeff55ae-3559-11ef-b633-b2d74bfa9f65
+                    format: uuid
             example:
-                created_at: "2012-09-23T16:19:27Z"
-                id: Dolorem quis.
-                text: Ut perspiciatis omnis eligendi recusandae.
-                user_id: Quia illum quibusdam illum ullam aut doloremque.
+                created_at: "2004-07-20T04:23:50Z"
+                id: aeff581a-3559-11ef-b633-b2d74bfa9f65
+                text: Et voluptatem aliquid eaque consequatur quibusdam qui.
+                user_id: aeff591e-3559-11ef-b633-b2d74bfa9f65
             required:
                 - id
                 - user_id
