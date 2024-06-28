@@ -61,14 +61,14 @@ func New(
 	}
 	return &Server{
 		Mounts: []*MountPoint{
-			{"CreateTweet", "POST", "/api/tweets"},
-			{"DeleteTweet", "DELETE", "/api/tweets"},
-			{"LikeTweet", "POST", "/api/tweets/like"},
-			{"DeleteTweetLike", "DELETE", "/api/tweets/like"},
-			{"Retweet", "POST", "/api/tweets/retweet"},
-			{"DeleteRetweet", "DELETE", "/api/tweets/retweet"},
-			{"CreateReply", "POST", "/api/tweets/reply"},
-			{"DeleteReply", "DELETE", "/api/tweets/reply"},
+			{"CreateTweet", "POST", "/api/posts"},
+			{"DeleteTweet", "DELETE", "/api/posts"},
+			{"LikeTweet", "POST", "/api/posts/like"},
+			{"DeleteTweetLike", "DELETE", "/api/posts/like"},
+			{"Retweet", "POST", "/api/posts/retweet"},
+			{"DeleteRetweet", "DELETE", "/api/posts/retweet"},
+			{"CreateReply", "POST", "/api/posts/reply"},
+			{"DeleteReply", "DELETE", "/api/posts/reply"},
 			{"./gen/http/openapi.json", "GET", "/swagger.json"},
 		},
 		CreateTweet:        NewCreateTweetHandler(e.CreateTweet, mux, decoder, encoder, errhandler, formatter),
@@ -128,7 +128,7 @@ func MountCreateTweetHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/tweets", f)
+	mux.Handle("POST", "/api/posts", f)
 }
 
 // NewCreateTweetHandler creates a HTTP handler which loads the HTTP request
@@ -179,7 +179,7 @@ func MountDeleteTweetHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/tweets", f)
+	mux.Handle("DELETE", "/api/posts", f)
 }
 
 // NewDeleteTweetHandler creates a HTTP handler which loads the HTTP request
@@ -230,7 +230,7 @@ func MountLikeTweetHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/tweets/like", f)
+	mux.Handle("POST", "/api/posts/like", f)
 }
 
 // NewLikeTweetHandler creates a HTTP handler which loads the HTTP request and
@@ -281,7 +281,7 @@ func MountDeleteTweetLikeHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/tweets/like", f)
+	mux.Handle("DELETE", "/api/posts/like", f)
 }
 
 // NewDeleteTweetLikeHandler creates a HTTP handler which loads the HTTP
@@ -332,7 +332,7 @@ func MountRetweetHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/tweets/retweet", f)
+	mux.Handle("POST", "/api/posts/retweet", f)
 }
 
 // NewRetweetHandler creates a HTTP handler which loads the HTTP request and
@@ -383,7 +383,7 @@ func MountDeleteRetweetHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/tweets/retweet", f)
+	mux.Handle("DELETE", "/api/posts/retweet", f)
 }
 
 // NewDeleteRetweetHandler creates a HTTP handler which loads the HTTP request
@@ -434,7 +434,7 @@ func MountCreateReplyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/api/tweets/reply", f)
+	mux.Handle("POST", "/api/posts/reply", f)
 }
 
 // NewCreateReplyHandler creates a HTTP handler which loads the HTTP request
@@ -485,7 +485,7 @@ func MountDeleteReplyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/api/tweets/reply", f)
+	mux.Handle("DELETE", "/api/posts/reply", f)
 }
 
 // NewDeleteReplyHandler creates a HTTP handler which loads the HTTP request

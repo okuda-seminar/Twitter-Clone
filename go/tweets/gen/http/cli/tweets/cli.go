@@ -29,8 +29,8 @@ func UsageCommands() string {
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` tweets create-tweet --body '{
-      "text": "Dolores omnis ut rerum.",
-      "user_id": "db7770ce-2fed-11ef-b440-b2d74bfa9f65"
+      "text": "Quaerat odit.",
+      "user_id": "aefdee08-3559-11ef-b633-b2d74bfa9f65"
    }'` + "\n" +
 		""
 }
@@ -226,8 +226,8 @@ CreateTweet implements CreateTweet.
 
 Example:
     %[1]s tweets create-tweet --body '{
-      "text": "Dolores omnis ut rerum.",
-      "user_id": "db7770ce-2fed-11ef-b440-b2d74bfa9f65"
+      "text": "Quaerat odit.",
+      "user_id": "aefdee08-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -240,7 +240,7 @@ DeleteTweet implements DeleteTweet.
 
 Example:
     %[1]s tweets delete-tweet --body '{
-      "id": "db779130-2fed-11ef-b440-b2d74bfa9f65"
+      "id": "aefe166c-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -253,8 +253,8 @@ LikeTweet implements LikeTweet.
 
 Example:
     %[1]s tweets like-tweet --body '{
-      "tweet_id": "db77a580-2fed-11ef-b440-b2d74bfa9f65",
-      "user_id": "db77a698-2fed-11ef-b440-b2d74bfa9f65"
+      "tweet_id": "aefe2e2c-3559-11ef-b633-b2d74bfa9f65",
+      "user_id": "aefe2f76-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -267,8 +267,8 @@ DeleteTweetLike implements DeleteTweetLike.
 
 Example:
     %[1]s tweets delete-tweet-like --body '{
-      "tweet_id": "db77d96a-2fed-11ef-b440-b2d74bfa9f65",
-      "user_id": "db77daa0-2fed-11ef-b440-b2d74bfa9f65"
+      "tweet_id": "aefe4038-3559-11ef-b633-b2d74bfa9f65",
+      "user_id": "aefe41aa-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -281,8 +281,8 @@ Retweet implements Retweet.
 
 Example:
     %[1]s tweets retweet --body '{
-      "tweet_id": "db77ee1e-2fed-11ef-b440-b2d74bfa9f65",
-      "user_id": "db77ef86-2fed-11ef-b440-b2d74bfa9f65"
+      "tweet_id": "aefe52b2-3559-11ef-b633-b2d74bfa9f65",
+      "user_id": "aefe53e8-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -295,8 +295,8 @@ DeleteRetweet implements DeleteRetweet.
 
 Example:
     %[1]s tweets delete-retweet --body '{
-      "tweet_id": "db78008e-2fed-11ef-b440-b2d74bfa9f65",
-      "user_id": "db7801c4-2fed-11ef-b440-b2d74bfa9f65"
+      "tweet_id": "aefe849e-3559-11ef-b633-b2d74bfa9f65",
+      "user_id": "aefe8cc8-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -309,9 +309,9 @@ CreateReply implements CreateReply.
 
 Example:
     %[1]s tweets create-reply --body '{
-      "text": "Ratione dicta.",
-      "tweet_id": "db7812e0-2fed-11ef-b440-b2d74bfa9f65",
-      "user_id": "db781402-2fed-11ef-b440-b2d74bfa9f65"
+      "text": "Quo similique numquam laboriosam.",
+      "tweet_id": "aefe9f92-3559-11ef-b633-b2d74bfa9f65",
+      "user_id": "aefea0b4-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -324,7 +324,7 @@ DeleteReply implements DeleteReply.
 
 Example:
     %[1]s tweets delete-reply --body '{
-      "id": "db782c94-2fed-11ef-b440-b2d74bfa9f65"
+      "id": "aefebd92-3559-11ef-b633-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
