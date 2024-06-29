@@ -1,0 +1,21 @@
+name: "Validate for PR and Commits"
+on:
+  pull_request
+
+jobs:
+  validate-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      - name: set-current-branch
+        id: vars
+        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+      - name: validate-pr-and-commits
+        run: |
+          HEAD=${{ github.head_ref }} sh hack/validate_pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
