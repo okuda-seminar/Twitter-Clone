@@ -2,12 +2,14 @@ import SwiftUI
 import UIKit
 
 class SubscribeOptionsViewController: UIViewController {
+
   private enum LocalizedString {
     static let title = String(localized: "Subscribe")
   }
 
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: SubscribeOptionsView())
+    let prices = InjectSubscriptionService().fetchPrices()
+    let controller = UIHostingController(rootView: SubscribeOptionsView(prices: prices))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -48,6 +50,8 @@ class SubscribeOptionsViewController: UIViewController {
 
 struct SubscribeOptionsView: View {
 
+  public var prices: [SubscriptionPrice]
+
   private enum LayoutConstant {
     static let footerButtonHeight: CGFloat = 44.0
     static let footerButtonCornerRadius: CGFloat = 22.0
@@ -68,7 +72,7 @@ struct SubscribeOptionsView: View {
         },
         label: {
           Spacer()
-          Text(LocalizedString.footerButtonPrefix)
+          Text(LocalizedString.footerButtonPrefix + " \(prices[0].rawValue)")
             .underline()
             .foregroundStyle(.white)
             .padding()
@@ -86,5 +90,5 @@ struct SubscribeOptionsView: View {
 }
 
 #Preview {
-  SubscribeOptionsView()
+  SubscribeOptionsView(prices: InjectSubscriptionService().fetchPrices())
 }
