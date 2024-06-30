@@ -7,8 +7,8 @@
 
 package server
 
-// CreateTweetTweetsPath returns the URL path to the tweets service CreateTweet HTTP endpoint.
-func CreateTweetTweetsPath() string {
+// CreatePostTweetsPath returns the URL path to the tweets service CreatePost HTTP endpoint.
+func CreatePostTweetsPath() string {
 	return "/api/posts"
 }
 

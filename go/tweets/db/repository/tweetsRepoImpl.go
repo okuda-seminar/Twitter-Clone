@@ -20,7 +20,7 @@ func NewTweetsRepoImpl(db *sql.DB) TweetsRepo {
 }
 
 // CreateTweet creates a new tweet entry and inserts it into 'tweets' table.
-func (r *tweetsRepoImpl) CreateTweet(
+func (r *tweetsRepoImpl) CreatePost(
 	ctx context.Context,
 	user_id uuid.UUID,
 	text string,

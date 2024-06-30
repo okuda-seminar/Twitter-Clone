@@ -17,9 +17,9 @@ import (
 
 // Client lists the tweets service endpoint HTTP clients.
 type Client struct {
-	// CreateTweet Doer is the HTTP client used to make requests to the CreateTweet
+	// CreatePost Doer is the HTTP client used to make requests to the CreatePost
 	// endpoint.
-	CreateTweetDoer goahttp.Doer
+	CreatePostDoer goahttp.Doer
 
 	// DeleteTweet Doer is the HTTP client used to make requests to the DeleteTweet
 	// endpoint.
@@ -69,7 +69,7 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		CreateTweetDoer:     doer,
+		CreatePostDoer:      doer,
 		DeleteTweetDoer:     doer,
 		LikeTweetDoer:       doer,
 		DeleteTweetLikeDoer: doer,
@@ -85,15 +85,15 @@ func NewClient(
 	}
 }
 
-// CreateTweet returns an endpoint that makes HTTP requests to the tweets
-// service CreateTweet server.
-func (c *Client) CreateTweet() goa.Endpoint {
+// CreatePost returns an endpoint that makes HTTP requests to the tweets
+// service CreatePost server.
+func (c *Client) CreatePost() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeCreateTweetRequest(c.encoder)
-		decodeResponse = DecodeCreateTweetResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeCreatePostRequest(c.encoder)
+		decodeResponse = DecodeCreatePostResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v any) (any, error) {
-		req, err := c.BuildCreateTweetRequest(ctx, v)
+		req, err := c.BuildCreatePostRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -101,9 +101,9 @@ func (c *Client) CreateTweet() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.CreateTweetDoer.Do(req)
+		resp, err := c.CreatePostDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("tweets", "CreateTweet", err)
+			return nil, goahttp.ErrRequestError("tweets", "CreatePost", err)
 		}
 		return decodeResponse(resp)
 	}

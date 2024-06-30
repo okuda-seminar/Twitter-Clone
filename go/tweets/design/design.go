@@ -22,7 +22,7 @@ var _ = Service("tweets", func() {
 	Error("NotFound")
 	Error("BadRequest")
 
-	Method("CreateTweet", func() {
+	Method("CreatePost", func() {
 		Payload(func() {
 			Field(1, "user_id", String, func() {
 				Format(FormatUUID)

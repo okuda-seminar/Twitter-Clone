@@ -18,24 +18,24 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// EncodeCreateTweetResponse returns an encoder for responses returned by the
-// tweets CreateTweet endpoint.
-func EncodeCreateTweetResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
+// EncodeCreatePostResponse returns an encoder for responses returned by the
+// tweets CreatePost endpoint.
+func EncodeCreatePostResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, any) error {
 	return func(ctx context.Context, w http.ResponseWriter, v any) error {
 		res, _ := v.(*tweets.Tweet)
 		enc := encoder(ctx, w)
-		body := NewCreateTweetResponseBody(res)
+		body := NewCreatePostResponseBody(res)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
 }
 
-// DecodeCreateTweetRequest returns a decoder for requests sent to the tweets
-// CreateTweet endpoint.
-func DecodeCreateTweetRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
+// DecodeCreatePostRequest returns a decoder for requests sent to the tweets
+// CreatePost endpoint.
+func DecodeCreatePostRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (any, error) {
 	return func(r *http.Request) (any, error) {
 		var (
-			body CreateTweetRequestBody
+			body CreatePostRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -45,19 +45,19 @@ func DecodeCreateTweetRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 			}
 			return nil, goa.DecodePayloadError(err.Error())
 		}
-		err = ValidateCreateTweetRequestBody(&body)
+		err = ValidateCreatePostRequestBody(&body)
 		if err != nil {
 			return nil, err
 		}
-		payload := NewCreateTweetPayload(&body)
+		payload := NewCreatePostPayload(&body)
 
 		return payload, nil
 	}
 }
 
-// EncodeCreateTweetError returns an encoder for errors returned by the
-// CreateTweet tweets endpoint.
-func EncodeCreateTweetError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+// EncodeCreatePostError returns an encoder for errors returned by the
+// CreatePost tweets endpoint.
+func EncodeCreatePostError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
 	encodeError := goahttp.ErrorEncoder(encoder, formatter)
 	return func(ctx context.Context, w http.ResponseWriter, v error) error {
 		var en goa.GoaErrorNamer
@@ -73,7 +73,7 @@ func EncodeCreateTweetError(encoder func(context.Context, http.ResponseWriter) g
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewCreateTweetNotFoundResponseBody(res)
+				body = NewCreatePostNotFoundResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusNotFound)
@@ -86,7 +86,7 @@ func EncodeCreateTweetError(encoder func(context.Context, http.ResponseWriter) g
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewCreateTweetBadRequestResponseBody(res)
+				body = NewCreatePostBadRequestResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
 			w.WriteHeader(http.StatusBadRequest)

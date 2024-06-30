@@ -15,8 +15,8 @@ import (
 
 // The tweets service performs operations on tweets information.
 type Service interface {
-	// CreateTweet implements CreateTweet.
-	CreateTweet(context.Context, *CreateTweetPayload) (res *Tweet, err error)
+	// CreatePost implements CreatePost.
+	CreatePost(context.Context, *CreatePostPayload) (res *Tweet, err error)
 	// DeleteTweet implements DeleteTweet.
 	DeleteTweet(context.Context, *DeleteTweetPayload) (err error)
 	// LikeTweet implements LikeTweet.
@@ -47,7 +47,14 @@ const ServiceName = "tweets"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [8]string{"CreateTweet", "DeleteTweet", "LikeTweet", "DeleteTweetLike", "Retweet", "DeleteRetweet", "CreateReply", "DeleteReply"}
+var MethodNames = [8]string{"CreatePost", "DeleteTweet", "LikeTweet", "DeleteTweetLike", "Retweet", "DeleteRetweet", "CreateReply", "DeleteReply"}
+
+// CreatePostPayload is the payload type of the tweets service CreatePost
+// method.
+type CreatePostPayload struct {
+	UserID string
+	Text   string
+}
 
 // CreateReplyPayload is the payload type of the tweets service CreateReply
 // method.
@@ -55,13 +62,6 @@ type CreateReplyPayload struct {
 	TweetID string
 	UserID  string
 	Text    string
-}
-
-// CreateTweetPayload is the payload type of the tweets service CreateTweet
-// method.
-type CreateTweetPayload struct {
-	UserID string
-	Text   string
 }
 
 // DeleteReplyPayload is the payload type of the tweets service DeleteReply
@@ -111,7 +111,7 @@ type RetweetPayload struct {
 	UserID  string
 }
 
-// Tweet is the result type of the tweets service CreateTweet method.
+// Tweet is the result type of the tweets service CreatePost method.
 type Tweet struct {
 	ID        string
 	UserID    string

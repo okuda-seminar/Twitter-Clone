@@ -8,7 +8,7 @@ import (
 )
 
 type TweetsRepo interface {
-	CreateTweet(ctx context.Context, user_id uuid.UUID, text string) (*Tweet, error)
+	CreatePost(ctx context.Context, user_id uuid.UUID, text string) (*Tweet, error)
 	DeleteTweet(ctx context.Context, id uuid.UUID) error
 }
 
