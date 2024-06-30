@@ -82,7 +82,6 @@ class SearchHomeViewController: ViewControllerWithUserIconButton {
 
 extension SearchHomeViewController: TapOnlySearchBarDelegate {
   func didTapSearchBar() {
-    navigationItem.backButtonDisplayMode = .minimal
     navigationController?.pushViewController(SearchInputViewController(), animated: true)
   }
 }

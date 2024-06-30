@@ -63,7 +63,6 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
 
     // set up the navigation header
     navigationController?.navigationBar.tintColor = .black
-    navigationItem.backButtonDisplayMode = .minimal
     navigationItem.title = LocalizedString.title
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [exploreSettingsEntryPointButton]
@@ -79,7 +78,6 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     presentingViewController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     presentingViewController.navigationBar.tintColor = .black
 
-    settingsHomeViewController.navigationItem.backButtonDisplayMode = .minimal
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/177
     // - Remove direct initialization of NotificationsSettingsViewController
     presentingViewController.pushViewController(

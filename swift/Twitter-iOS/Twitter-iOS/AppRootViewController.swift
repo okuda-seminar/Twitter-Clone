@@ -201,17 +201,14 @@ class ViewControllerWithUserIconButton: UIViewController {
     rootViewController.showSideMenu()
   }
 
+  // MARK: - View Lifecycle
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    setUpNavigation()
 
     guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
     rootViewController.hideSideMenu(animated: false)
-
-    // Navigation
-    let backButtonImage = UIImage(systemName: "arrow.left")
-    navigationController?.navigationBar.backIndicatorImage = backButtonImage
-    navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-    navigationController?.setNavigationBarHidden(false, animated: true)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -224,5 +221,17 @@ class ViewControllerWithUserIconButton: UIViewController {
     super.viewDidDisappear(animated)
     guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
     rootViewController.isSideMenuScrollable = false
+  }
+
+  // MARK: - Private API
+
+  private func setUpNavigation() {
+    navigationItem.backButtonDisplayMode = .minimal
+
+    guard let navigationController else { return }
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    navigationController.navigationBar.backIndicatorImage = backButtonImage
+    navigationController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    navigationController.setNavigationBarHidden(false, animated: true)
   }
 }
