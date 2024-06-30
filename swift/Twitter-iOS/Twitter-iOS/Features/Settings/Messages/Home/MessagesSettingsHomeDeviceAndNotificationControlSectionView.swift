@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct MessagesSettingsHomeDeviceAndNotificationControlSectionView: View {
+
+  @Binding public var showPushNotificationsSettings: Bool
+
   private enum LocalizedString {
     static let manageDevicesTitle = String(localized: "Manage encrypted devices")
     static let pushNotificationsTitle = String(localized: "Push notifications")
@@ -8,20 +11,25 @@ struct MessagesSettingsHomeDeviceAndNotificationControlSectionView: View {
 
   var body: some View {
     VStack {
-      MessagesStackItem(title: LocalizedString.manageDevicesTitle)
+      MessagesStackItem(showSettings: .constant(false), title: LocalizedString.manageDevicesTitle)
 
-      MessagesStackItem(title: LocalizedString.pushNotificationsTitle)
+      MessagesStackItem(
+        showSettings: $showPushNotificationsSettings, title: LocalizedString.pushNotificationsTitle)
     }
     .padding(.horizontal)
   }
 }
 
 struct MessagesStackItem: View {
+
+  @Binding public var showSettings: Bool
   public var title: String
 
   var body: some View {
     Button(
-      action: {},
+      action: {
+        showSettings.toggle()
+      },
       label: {
         HStack(alignment: .center) {
           Text(title)
@@ -38,5 +46,6 @@ struct MessagesStackItem: View {
 }
 
 #Preview {
-  MessagesSettingsHomeDeviceAndNotificationControlSectionView()
+  MessagesSettingsHomeDeviceAndNotificationControlSectionView(
+    showPushNotificationsSettings: .constant(false))
 }

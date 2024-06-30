@@ -86,6 +86,7 @@
 		65C6CCAB2C00130600B0A052 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6CCAA2C00130600B0A052 /* MessagesViewController.swift */; };
 		65C6CCAD2C00134B00B0A052 /* NewMessageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6CCAC2C00134B00B0A052 /* NewMessageEditViewController.swift */; };
 		65C6CCAF2C00136700B0A052 /* NewMessageEntrypointButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6CCAE2C00136700B0A052 /* NewMessageEntrypointButtonController.swift */; };
+		65C71B902C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71B8F2C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -218,6 +219,7 @@
 		65C6CCAA2C00130600B0A052 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		65C6CCAC2C00134B00B0A052 /* NewMessageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEditViewController.swift; sourceTree = "<group>"; };
 		65C6CCAE2C00136700B0A052 /* NewMessageEntrypointButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageEntrypointButtonController.swift; sourceTree = "<group>"; };
+		65C71B8F2C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesSettingsPushNotificationsViewController.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 		658D088F2BF4FD1A006C6A9E /* Messages */ = {
 			isa = PBXGroup;
 			children = (
+				65C71B8E2C3181450025839C /* PushNotifications */,
 				3B4CD12C2C2457700071C69F /* Home */,
 			);
 			path = Messages;
@@ -736,6 +739,14 @@
 				65C6CCAE2C00136700B0A052 /* NewMessageEntrypointButtonController.swift */,
 			);
 			path = Messages;
+			sourceTree = "<group>";
+		};
+		65C71B8E2C3181450025839C /* PushNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				65C71B8F2C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift */,
+			);
+			path = PushNotifications;
 			sourceTree = "<group>";
 		};
 		65F908432BE119AD00C6C8B3 /* Navigation */ = {
@@ -964,6 +975,7 @@
 			files = (
 				656C1BFD2C08A16C00EEE575 /* HomeTabView.swift in Sources */,
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
+				65C71B902C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift in Sources */,
 				65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */,
 				65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */,
 				65FD4FAD2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift in Sources */,

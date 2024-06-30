@@ -12,7 +12,7 @@ class MessagesSettingsHomeViewController: SettingsViewController {
   }
 
   private func setUpSubviews() {
-    let hostingController = UIHostingController(rootView: MessagesSettingsHomeView())
+    let hostingController = UIHostingController(rootView: MessagesSettingsHomeView(delegate: self))
     addChild(hostingController)
     hostingController.didMove(toParent: self)
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -32,10 +32,24 @@ class MessagesSettingsHomeViewController: SettingsViewController {
     navigationItem.leftBarButtonItems = []
     navigationController?.navigationBar.backgroundColor = .systemBackground
   }
+}
 
+extension MessagesSettingsHomeViewController: MessagesSettingsHomeViewDelegate {
+  func shouldShowPushNotificationsSettings() {
+    guard let navigationController else { return }
+    navigationController.pushViewController(
+      MessagesSettingsPushNotificationsViewController(), animated: true)
+  }
 }
 
 struct MessagesSettingsHomeView: View {
+
+  // MARK: - Public Props
+
+  public weak var delegate: MessagesSettingsHomeViewDelegate?
+
+  // MARK: - Private Props
+
   @Environment(\.dismiss) private var dismiss
 
   @State private var isNoOneOptionEnabled = true
@@ -51,6 +65,8 @@ struct MessagesSettingsHomeView: View {
   @State private var isRelayCallsEnabled = false
   @State private var isFilterQualityEnabled = true
   @State private var isReadReceiptsEnabled = false
+
+  @State private var showPushNotificationsSettings = false
 
   var body: some View {
     VStack {
@@ -76,11 +92,21 @@ struct MessagesSettingsHomeView: View {
 
         MessagesSettingsHomeReadReceiptsSectionView(isEnabled: $isReadReceiptsEnabled)
 
-        MessagesSettingsHomeDeviceAndNotificationControlSectionView()
-
+        MessagesSettingsHomeDeviceAndNotificationControlSectionView(
+          showPushNotificationsSettings: $showPushNotificationsSettings
+        )
+        .onChange(of: showPushNotificationsSettings) { _, newValue in
+          if newValue {
+            delegate?.shouldShowPushNotificationsSettings()
+          }
+        }
       }
     }
   }
+}
+
+protocol MessagesSettingsHomeViewDelegate: AnyObject {
+  func shouldShowPushNotificationsSettings()
 }
 
 #Preview {

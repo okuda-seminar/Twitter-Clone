@@ -13,6 +13,7 @@ extension UIViewController {
 }
 
 class SettingsViewController: UIViewController {
+
   private lazy var dismissalButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: String(localized: "Done"), style: .plain, target: self,
@@ -24,12 +25,25 @@ class SettingsViewController: UIViewController {
     return button
   }()
 
+  // MARK: - View Lifecycle
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setUpNavigation()
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     if isModal {
       navigationItem.rightBarButtonItems = [dismissalButton]
     }
+  }
+
+  // MARK: - Private API
+
+  private func setUpNavigation() {
+    navigationItem.backButtonDisplayMode = .minimal
   }
 
   @objc
