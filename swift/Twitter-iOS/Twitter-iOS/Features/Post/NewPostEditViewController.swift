@@ -3,52 +3,18 @@ import SwiftUI
 import UIKit
 
 final class NewPostEditViewController: UIViewController {
-  private enum LocalizedString {
-    static let cancelButtonTitle = String(localized: "Cancel")
-    static let postTextViewPlaceholderText = String(localized: "What's happening?")
-  }
 
   private enum LayoutConstant {
-    static let edgePadding = 16.0
-    static let postTextViewTopPadding = 12.0
-    static let postTextViewMinimumHeight = 48.0
-    static let permissionRequestButtonSize = 28.0
+    static let edgePadding: CGFloat = 16.0
+    static let permissionRequestButtonSize: CGFloat = 28.0
   }
 
-  private var postTextViewHightConstraint: NSLayoutConstraint?
-
-  private let cancelButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.tintColor = .black
-    let titleWithUnderLine = NSAttributedString(
-      string: LocalizedString.cancelButtonTitle,
-      attributes: [
-        .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.black,
-      ])
-    button.setAttributedTitle(titleWithUnderLine, for: .normal)
-    button.sizeToFit()
-    return button
-  }()
-
-  private let postTextView: UITextView = {
-    let textView = UITextView()
-    textView.translatesAutoresizingMaskIntoConstraints = false
-    textView.backgroundColor = .clear
-    textView.textColor = .black
-    textView.isEditable = true
-    return textView
-  }()
-
-  private let postTextViewPlaceHolder: UITextView = {
-    let placeHolder = UITextView()
-    placeHolder.translatesAutoresizingMaskIntoConstraints = false
-    placeHolder.text = LocalizedString.postTextViewPlaceholderText
-    placeHolder.textColor = .lightGray
-    placeHolder.isEditable = false
-    placeHolder.isUserInteractionEnabled = false
-    placeHolder.sizeToFit()
-    return placeHolder
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: NewPostEditView(delegate: self))
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
 
   private let photoLibraryPermissionRequestButton: UIButton = {
@@ -68,24 +34,11 @@ final class NewPostEditViewController: UIViewController {
     setUpSubviews()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    postTextView.becomeFirstResponder()
-  }
-
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
-    view.addSubview(cancelButton)
-    view.addSubview(postTextViewPlaceHolder)
-    view.addSubview(postTextView)
+
+    view.addSubview(hostingController.view)
     view.addSubview(photoLibraryPermissionRequestButton)
-
-    cancelButton.addAction(
-      .init { _ in
-        self.dismiss(animated: true)
-      }, for: .touchUpInside)
-
-    postTextView.delegate = self
 
     photoLibraryPermissionRequestButton.addAction(
       .init { _ in
@@ -94,28 +47,16 @@ final class NewPostEditViewController: UIViewController {
 
     let layoutGuide = view.safeAreaLayoutGuide
     let keyboardLayoutGuide = view.keyboardLayoutGuide
-    let postTextViewPlaceHolderHeight = postTextViewPlaceHolder.frame.height
-    postTextViewHightConstraint = postTextView.heightAnchor.constraint(
-      equalToConstant: postTextViewPlaceHolderHeight)
-    guard let postTextViewHightConstraint else { return }
+
     NSLayoutConstraint.activate([
-      cancelButton.topAnchor.constraint(
+      hostingController.view.topAnchor.constraint(
         equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
-      cancelButton.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
-
-      postTextView.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
-      postTextView.trailingAnchor.constraint(
-        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
-      postTextView.topAnchor.constraint(
-        equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.postTextViewTopPadding),
-      postTextViewHightConstraint,
-
-      postTextViewPlaceHolder.topAnchor.constraint(equalTo: postTextView.topAnchor),
-      postTextViewPlaceHolder.leadingAnchor.constraint(equalTo: postTextView.leadingAnchor),
-      postTextViewPlaceHolder.trailingAnchor.constraint(equalTo: postTextView.trailingAnchor),
-      postTextViewPlaceHolder.heightAnchor.constraint(
-        equalToConstant: postTextViewPlaceHolderHeight),
+      hostingController.view.leadingAnchor.constraint(
+        equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.trailingAnchor.constraint(
+        equalTo: layoutGuide.trailingAnchor),
+      hostingController.view.bottomAnchor.constraint(
+        equalTo: keyboardLayoutGuide.bottomAnchor),
 
       photoLibraryPermissionRequestButton.bottomAnchor.constraint(
         equalTo: keyboardLayoutGuide.topAnchor),
@@ -153,12 +94,121 @@ final class NewPostEditViewController: UIViewController {
   }
 }
 
-extension NewPostEditViewController: UITextViewDelegate {
-  func textViewDidChange(_ textView: UITextView) {
-    postTextViewPlaceHolder.isHidden = !textView.text.isEmpty
-    let height = textView.sizeThatFits(
-      CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)
-    ).height
-    postTextViewHightConstraint?.constant = height
+extension NewPostEditViewController: NewPostEditViewDelegate {
+
+  func didTapDismissalButton() {
+    hostingController.view.layer.opacity = 0.0
+    photoLibraryPermissionRequestButton.layer.opacity = 0.0
+
+    dismiss(animated: true, completion: nil)
   }
+}
+
+struct NewPostEditView: View {
+
+  // MARK: - Public Props
+
+  public weak var delegate: NewPostEditViewDelegate?
+
+  // MARK: - Private Props
+
+  private enum LayoutConstant {
+    static let userIconSize: CGFloat = 32.0
+    static let postButtonSize: CGFloat = 40.0
+    static let postButtonRadius: CGFloat = 20.0
+    static let textFieldTopPadding: CGFloat = 5.0
+  }
+
+  private enum LocalizedString {
+    static let cancelButtonText = String(localized: "Cancel")
+    static let draftsButtonText = String(localized: "Drafts")
+    static let postButtonText = String(localized: "Post")
+    static let textFieldPlaceHolderText = String(localized: "What's happening?")
+  }
+
+  @State private var postText: String = ""
+
+  private var isPostButtonDisabled: Bool {
+    postText.isEmpty
+  }
+
+  var body: some View {
+    VStack {
+      Header()
+      InputTextFieldWithUserIcon()
+    }
+    Spacer()
+  }
+
+  @ViewBuilder
+  private func Header() -> some View {
+    HStack {
+      Button(
+        action: {
+          delegate?.didTapDismissalButton()
+        },
+        label: {
+          Text(LocalizedString.cancelButtonText)
+            .underline()
+            .foregroundStyle(.black)
+        })
+
+      Spacer()
+
+      Button(
+        action: {
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/337
+          // - Add Post Functionality to POST Button in NewPostEditViewController.swift.
+        },
+        label: {
+          Text(LocalizedString.draftsButtonText)
+            .underline()
+        })
+
+      Button(
+        action: {
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/338
+          // - Add Making Post Drafts Functionality to Drafts Button in NewPostEditViewController.swift.
+        },
+        label: {
+          Text(LocalizedString.postButtonText)
+            .foregroundStyle(.white)
+            .underline()
+            .padding()
+        }
+      )
+      .background(Color(.blue))
+      .frame(height: LayoutConstant.postButtonSize)
+      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.postButtonRadius))
+      .opacity(isPostButtonDisabled ? 0.5 : 1.0)
+      .disabled(isPostButtonDisabled)
+    }
+    .padding(.horizontal)
+  }
+
+  @ViewBuilder
+  private func InputTextFieldWithUserIcon() -> some View {
+    HStack(alignment: .top) {
+      Image(systemName: "person.circle.fill")
+        .resizable()
+        .scaledToFit()
+        .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
+
+      TextField(
+        LocalizedString.textFieldPlaceHolderText,
+        text: $postText,
+        axis: .vertical
+      )
+      .padding(.top, LayoutConstant.textFieldTopPadding)
+    }
+    .padding()
+  }
+}
+
+protocol NewPostEditViewDelegate: AnyObject {
+  func didTapDismissalButton()
+}
+
+#Preview {
+  NewPostEditView()
 }
