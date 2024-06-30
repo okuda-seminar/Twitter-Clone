@@ -35,30 +35,30 @@ func NewTweetsSvc(db *sql.DB, logger *log.Logger) tweets.Service {
 	return &tweetsSvc{tweetsRepo, likesRepo, retweetsRepo, repliesRepo, logger}
 }
 
-// CreateTweet creates a tweet posted by a user with the specified ID.
+// CreatePost creates a tweet posted by a user with the specified ID.
 // Returns the created tweet with 200 OK when all the processes succeed, otherwise returns 400 Bad Request.
-func (s *tweetsSvc) CreateTweet(
+func (s *tweetsSvc) CreatePost(
 	ctx context.Context,
-	p *tweets.CreateTweetPayload,
+	p *tweets.CreatePostPayload,
 ) (*tweets.Tweet, error) {
 	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/134
-	// - Discuss how we implement the test for CreateTweet method.
+	// - Discuss how we implement the test for CreatePost method.
 	if !validateTweet(p.Text) {
 		err := tweets.MakeBadRequest(errors.New("tweet is invalid"))
-		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
+		s.logger.Printf("tweets.CreatePost: failed (%s)", err)
 		return nil, err
 	}
 
 	userId, _ := uuid.Parse(p.UserID)
-	tweet, err := s.tweetsRepo.CreateTweet(ctx, userId, p.Text)
+	tweet, err := s.tweetsRepo.CreatePost(ctx, userId, p.Text)
 	if err != nil {
-		s.logger.Printf("tweets.CreateTweet: failed (%s)", err)
+		s.logger.Printf("tweets.CreatePost: failed (%s)", err)
 		return nil, tweets.MakeBadRequest(err)
 	}
 
 	res := mapRepoTweetToSvcTweet(tweet)
 
-	s.logger.Print("tweets.CreateTweet")
+	s.logger.Print("tweets.CreatePost")
 	return res, nil
 }
 

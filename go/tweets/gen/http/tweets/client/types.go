@@ -13,9 +13,9 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// CreateTweetRequestBody is the type of the "tweets" service "CreateTweet"
+// CreatePostRequestBody is the type of the "tweets" service "CreatePost"
 // endpoint HTTP request body.
-type CreateTweetRequestBody struct {
+type CreatePostRequestBody struct {
 	UserID string `form:"user_id" json:"user_id" xml:"user_id"`
 	Text   string `form:"text" json:"text" xml:"text"`
 }
@@ -68,9 +68,9 @@ type DeleteReplyRequestBody struct {
 	ID string `form:"id" json:"id" xml:"id"`
 }
 
-// CreateTweetResponseBody is the type of the "tweets" service "CreateTweet"
+// CreatePostResponseBody is the type of the "tweets" service "CreatePost"
 // endpoint HTTP response body.
-type CreateTweetResponseBody struct {
+type CreatePostResponseBody struct {
 	ID        *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	UserID    *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	Text      *string `form:"text,omitempty" json:"text,omitempty" xml:"text,omitempty"`
@@ -87,9 +87,9 @@ type CreateReplyResponseBody struct {
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 }
 
-// CreateTweetNotFoundResponseBody is the type of the "tweets" service
-// "CreateTweet" endpoint HTTP response body for the "NotFound" error.
-type CreateTweetNotFoundResponseBody struct {
+// CreatePostNotFoundResponseBody is the type of the "tweets" service
+// "CreatePost" endpoint HTTP response body for the "NotFound" error.
+type CreatePostNotFoundResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -105,9 +105,9 @@ type CreateTweetNotFoundResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
-// CreateTweetBadRequestResponseBody is the type of the "tweets" service
-// "CreateTweet" endpoint HTTP response body for the "BadRequest" error.
-type CreateTweetBadRequestResponseBody struct {
+// CreatePostBadRequestResponseBody is the type of the "tweets" service
+// "CreatePost" endpoint HTTP response body for the "BadRequest" error.
+type CreatePostBadRequestResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -267,10 +267,10 @@ type DeleteReplyBadRequestResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
-// NewCreateTweetRequestBody builds the HTTP request body from the payload of
-// the "CreateTweet" endpoint of the "tweets" service.
-func NewCreateTweetRequestBody(p *tweets.CreateTweetPayload) *CreateTweetRequestBody {
-	body := &CreateTweetRequestBody{
+// NewCreatePostRequestBody builds the HTTP request body from the payload of
+// the "CreatePost" endpoint of the "tweets" service.
+func NewCreatePostRequestBody(p *tweets.CreatePostPayload) *CreatePostRequestBody {
+	body := &CreatePostRequestBody{
 		UserID: p.UserID,
 		Text:   p.Text,
 	}
@@ -346,9 +346,9 @@ func NewDeleteReplyRequestBody(p *tweets.DeleteReplyPayload) *DeleteReplyRequest
 	return body
 }
 
-// NewCreateTweetTweetOK builds a "tweets" service "CreateTweet" endpoint
-// result from a HTTP "OK" response.
-func NewCreateTweetTweetOK(body *CreateTweetResponseBody) *tweets.Tweet {
+// NewCreatePostTweetOK builds a "tweets" service "CreatePost" endpoint result
+// from a HTTP "OK" response.
+func NewCreatePostTweetOK(body *CreatePostResponseBody) *tweets.Tweet {
 	v := &tweets.Tweet{
 		ID:        *body.ID,
 		UserID:    *body.UserID,
@@ -359,9 +359,9 @@ func NewCreateTweetTweetOK(body *CreateTweetResponseBody) *tweets.Tweet {
 	return v
 }
 
-// NewCreateTweetNotFound builds a tweets service CreateTweet endpoint NotFound
+// NewCreatePostNotFound builds a tweets service CreatePost endpoint NotFound
 // error.
-func NewCreateTweetNotFound(body *CreateTweetNotFoundResponseBody) *goa.ServiceError {
+func NewCreatePostNotFound(body *CreatePostNotFoundResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -374,9 +374,9 @@ func NewCreateTweetNotFound(body *CreateTweetNotFoundResponseBody) *goa.ServiceE
 	return v
 }
 
-// NewCreateTweetBadRequest builds a tweets service CreateTweet endpoint
+// NewCreatePostBadRequest builds a tweets service CreatePost endpoint
 // BadRequest error.
-func NewCreateTweetBadRequest(body *CreateTweetBadRequestResponseBody) *goa.ServiceError {
+func NewCreatePostBadRequest(body *CreatePostBadRequestResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -523,9 +523,9 @@ func NewDeleteReplyBadRequest(body *DeleteReplyBadRequestResponseBody) *goa.Serv
 	return v
 }
 
-// ValidateCreateTweetResponseBody runs the validations defined on
-// CreateTweetResponseBody
-func ValidateCreateTweetResponseBody(body *CreateTweetResponseBody) (err error) {
+// ValidateCreatePostResponseBody runs the validations defined on
+// CreatePostResponseBody
+func ValidateCreatePostResponseBody(body *CreatePostResponseBody) (err error) {
 	if body.ID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
 	}
@@ -583,9 +583,9 @@ func ValidateCreateReplyResponseBody(body *CreateReplyResponseBody) (err error) 
 	return
 }
 
-// ValidateCreateTweetNotFoundResponseBody runs the validations defined on
-// CreateTweet_NotFound_Response_Body
-func ValidateCreateTweetNotFoundResponseBody(body *CreateTweetNotFoundResponseBody) (err error) {
+// ValidateCreatePostNotFoundResponseBody runs the validations defined on
+// CreatePost_NotFound_Response_Body
+func ValidateCreatePostNotFoundResponseBody(body *CreatePostNotFoundResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}
@@ -607,9 +607,9 @@ func ValidateCreateTweetNotFoundResponseBody(body *CreateTweetNotFoundResponseBo
 	return
 }
 
-// ValidateCreateTweetBadRequestResponseBody runs the validations defined on
-// CreateTweet_BadRequest_Response_Body
-func ValidateCreateTweetBadRequestResponseBody(body *CreateTweetBadRequestResponseBody) (err error) {
+// ValidateCreatePostBadRequestResponseBody runs the validations defined on
+// CreatePost_BadRequest_Response_Body
+func ValidateCreatePostBadRequestResponseBody(body *CreatePostBadRequestResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

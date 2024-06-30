@@ -15,22 +15,22 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// BuildCreateTweetPayload builds the payload for the tweets CreateTweet
-// endpoint from CLI flags.
-func BuildCreateTweetPayload(tweetsCreateTweetBody string) (*tweets.CreateTweetPayload, error) {
+// BuildCreatePostPayload builds the payload for the tweets CreatePost endpoint
+// from CLI flags.
+func BuildCreatePostPayload(tweetsCreatePostBody string) (*tweets.CreatePostPayload, error) {
 	var err error
-	var body CreateTweetRequestBody
+	var body CreatePostRequestBody
 	{
-		err = json.Unmarshal([]byte(tweetsCreateTweetBody), &body)
+		err = json.Unmarshal([]byte(tweetsCreatePostBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Quaerat odit.\",\n      \"user_id\": \"aefdee08-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Quaerat odit.\",\n      \"user_id\": \"b7e08794-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
 		if err != nil {
 			return nil, err
 		}
 	}
-	v := &tweets.CreateTweetPayload{
+	v := &tweets.CreatePostPayload{
 		UserID: body.UserID,
 		Text:   body.Text,
 	}
@@ -46,7 +46,7 @@ func BuildDeleteTweetPayload(tweetsDeleteTweetBody string) (*tweets.DeleteTweetP
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"aefe166c-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"b7e0a972-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", body.ID, goa.FormatUUID))
 		if err != nil {
@@ -68,7 +68,7 @@ func BuildLikeTweetPayload(tweetsLikeTweetBody string) (*tweets.LikeTweetPayload
 	{
 		err = json.Unmarshal([]byte(tweetsLikeTweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"aefe2e2c-3559-11ef-b633-b2d74bfa9f65\",\n      \"user_id\": \"aefe2f76-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"b7e0c024-3700-11ef-8ce0-b2d74bfa9f65\",\n      \"user_id\": \"b7e0c13c-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", body.TweetID, goa.FormatUUID))
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
@@ -92,7 +92,7 @@ func BuildDeleteTweetLikePayload(tweetsDeleteTweetLikeBody string) (*tweets.Dele
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteTweetLikeBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"aefe4038-3559-11ef-b633-b2d74bfa9f65\",\n      \"user_id\": \"aefe41aa-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"b7e0d05a-3700-11ef-8ce0-b2d74bfa9f65\",\n      \"user_id\": \"b7e0d19a-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", body.TweetID, goa.FormatUUID))
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
@@ -116,7 +116,7 @@ func BuildRetweetPayload(tweetsRetweetBody string) (*tweets.RetweetPayload, erro
 	{
 		err = json.Unmarshal([]byte(tweetsRetweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"aefe52b2-3559-11ef-b633-b2d74bfa9f65\",\n      \"user_id\": \"aefe53e8-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"b7e0e0f4-3700-11ef-8ce0-b2d74bfa9f65\",\n      \"user_id\": \"b7e0e1ee-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", body.TweetID, goa.FormatUUID))
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
@@ -140,7 +140,7 @@ func BuildDeleteRetweetPayload(tweetsDeleteRetweetBody string) (*tweets.DeleteRe
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteRetweetBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"aefe849e-3559-11ef-b633-b2d74bfa9f65\",\n      \"user_id\": \"aefe8cc8-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tweet_id\": \"b7e1145c-3700-11ef-8ce0-b2d74bfa9f65\",\n      \"user_id\": \"b7e11cae-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", body.TweetID, goa.FormatUUID))
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
@@ -164,7 +164,7 @@ func BuildCreateReplyPayload(tweetsCreateReplyBody string) (*tweets.CreateReplyP
 	{
 		err = json.Unmarshal([]byte(tweetsCreateReplyBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Quo similique numquam laboriosam.\",\n      \"tweet_id\": \"aefe9f92-3559-11ef-b633-b2d74bfa9f65\",\n      \"user_id\": \"aefea0b4-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"text\": \"Quo similique numquam laboriosam.\",\n      \"tweet_id\": \"b7e1318a-3700-11ef-8ce0-b2d74bfa9f65\",\n      \"user_id\": \"b7e132c0-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.tweet_id", body.TweetID, goa.FormatUUID))
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.user_id", body.UserID, goa.FormatUUID))
@@ -189,7 +189,7 @@ func BuildDeleteReplyPayload(tweetsDeleteReplyBody string) (*tweets.DeleteReplyP
 	{
 		err = json.Unmarshal([]byte(tweetsDeleteReplyBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"aefebd92-3559-11ef-b633-b2d74bfa9f65\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"id\": \"b7e150ac-3700-11ef-8ce0-b2d74bfa9f65\"\n   }'")
 		}
 		err = goa.MergeErrors(err, goa.ValidateFormat("body.id", body.ID, goa.FormatUUID))
 		if err != nil {

@@ -22,15 +22,15 @@ import (
 //
 //	command (subcommand1|subcommand2|...)
 func UsageCommands() string {
-	return `tweets (create-tweet|delete-tweet|like-tweet|delete-tweet-like|retweet|delete-retweet|create-reply|delete-reply)
+	return `tweets (create-post|delete-tweet|like-tweet|delete-tweet-like|retweet|delete-retweet|create-reply|delete-reply)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` tweets create-tweet --body '{
+	return os.Args[0] + ` tweets create-post --body '{
       "text": "Quaerat odit.",
-      "user_id": "aefdee08-3559-11ef-b633-b2d74bfa9f65"
+      "user_id": "b7e08794-3700-11ef-8ce0-b2d74bfa9f65"
    }'` + "\n" +
 		""
 }
@@ -47,8 +47,8 @@ func ParseEndpoint(
 	var (
 		tweetsFlags = flag.NewFlagSet("tweets", flag.ContinueOnError)
 
-		tweetsCreateTweetFlags    = flag.NewFlagSet("create-tweet", flag.ExitOnError)
-		tweetsCreateTweetBodyFlag = tweetsCreateTweetFlags.String("body", "REQUIRED", "")
+		tweetsCreatePostFlags    = flag.NewFlagSet("create-post", flag.ExitOnError)
+		tweetsCreatePostBodyFlag = tweetsCreatePostFlags.String("body", "REQUIRED", "")
 
 		tweetsDeleteTweetFlags    = flag.NewFlagSet("delete-tweet", flag.ExitOnError)
 		tweetsDeleteTweetBodyFlag = tweetsDeleteTweetFlags.String("body", "REQUIRED", "")
@@ -72,7 +72,7 @@ func ParseEndpoint(
 		tweetsDeleteReplyBodyFlag = tweetsDeleteReplyFlags.String("body", "REQUIRED", "")
 	)
 	tweetsFlags.Usage = tweetsUsage
-	tweetsCreateTweetFlags.Usage = tweetsCreateTweetUsage
+	tweetsCreatePostFlags.Usage = tweetsCreatePostUsage
 	tweetsDeleteTweetFlags.Usage = tweetsDeleteTweetUsage
 	tweetsLikeTweetFlags.Usage = tweetsLikeTweetUsage
 	tweetsDeleteTweetLikeFlags.Usage = tweetsDeleteTweetLikeUsage
@@ -115,8 +115,8 @@ func ParseEndpoint(
 		switch svcn {
 		case "tweets":
 			switch epn {
-			case "create-tweet":
-				epf = tweetsCreateTweetFlags
+			case "create-post":
+				epf = tweetsCreatePostFlags
 
 			case "delete-tweet":
 				epf = tweetsDeleteTweetFlags
@@ -164,9 +164,9 @@ func ParseEndpoint(
 		case "tweets":
 			c := tweetsc.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
-			case "create-tweet":
-				endpoint = c.CreateTweet()
-				data, err = tweetsc.BuildCreateTweetPayload(*tweetsCreateTweetBodyFlag)
+			case "create-post":
+				endpoint = c.CreatePost()
+				data, err = tweetsc.BuildCreatePostPayload(*tweetsCreatePostBodyFlag)
 			case "delete-tweet":
 				endpoint = c.DeleteTweet()
 				data, err = tweetsc.BuildDeleteTweetPayload(*tweetsDeleteTweetBodyFlag)
@@ -205,7 +205,7 @@ Usage:
     %[1]s [globalflags] tweets COMMAND [flags]
 
 COMMAND:
-    create-tweet: CreateTweet implements CreateTweet.
+    create-post: CreatePost implements CreatePost.
     delete-tweet: DeleteTweet implements DeleteTweet.
     like-tweet: LikeTweet implements LikeTweet.
     delete-tweet-like: DeleteTweetLike implements DeleteTweetLike.
@@ -218,16 +218,16 @@ Additional help:
     %[1]s tweets COMMAND --help
 `, os.Args[0])
 }
-func tweetsCreateTweetUsage() {
-	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets create-tweet -body JSON
+func tweetsCreatePostUsage() {
+	fmt.Fprintf(os.Stderr, `%[1]s [flags] tweets create-post -body JSON
 
-CreateTweet implements CreateTweet.
+CreatePost implements CreatePost.
     -body JSON: 
 
 Example:
-    %[1]s tweets create-tweet --body '{
+    %[1]s tweets create-post --body '{
       "text": "Quaerat odit.",
-      "user_id": "aefdee08-3559-11ef-b633-b2d74bfa9f65"
+      "user_id": "b7e08794-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -240,7 +240,7 @@ DeleteTweet implements DeleteTweet.
 
 Example:
     %[1]s tweets delete-tweet --body '{
-      "id": "aefe166c-3559-11ef-b633-b2d74bfa9f65"
+      "id": "b7e0a972-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -253,8 +253,8 @@ LikeTweet implements LikeTweet.
 
 Example:
     %[1]s tweets like-tweet --body '{
-      "tweet_id": "aefe2e2c-3559-11ef-b633-b2d74bfa9f65",
-      "user_id": "aefe2f76-3559-11ef-b633-b2d74bfa9f65"
+      "tweet_id": "b7e0c024-3700-11ef-8ce0-b2d74bfa9f65",
+      "user_id": "b7e0c13c-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -267,8 +267,8 @@ DeleteTweetLike implements DeleteTweetLike.
 
 Example:
     %[1]s tweets delete-tweet-like --body '{
-      "tweet_id": "aefe4038-3559-11ef-b633-b2d74bfa9f65",
-      "user_id": "aefe41aa-3559-11ef-b633-b2d74bfa9f65"
+      "tweet_id": "b7e0d05a-3700-11ef-8ce0-b2d74bfa9f65",
+      "user_id": "b7e0d19a-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -281,8 +281,8 @@ Retweet implements Retweet.
 
 Example:
     %[1]s tweets retweet --body '{
-      "tweet_id": "aefe52b2-3559-11ef-b633-b2d74bfa9f65",
-      "user_id": "aefe53e8-3559-11ef-b633-b2d74bfa9f65"
+      "tweet_id": "b7e0e0f4-3700-11ef-8ce0-b2d74bfa9f65",
+      "user_id": "b7e0e1ee-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -295,8 +295,8 @@ DeleteRetweet implements DeleteRetweet.
 
 Example:
     %[1]s tweets delete-retweet --body '{
-      "tweet_id": "aefe849e-3559-11ef-b633-b2d74bfa9f65",
-      "user_id": "aefe8cc8-3559-11ef-b633-b2d74bfa9f65"
+      "tweet_id": "b7e1145c-3700-11ef-8ce0-b2d74bfa9f65",
+      "user_id": "b7e11cae-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -310,8 +310,8 @@ CreateReply implements CreateReply.
 Example:
     %[1]s tweets create-reply --body '{
       "text": "Quo similique numquam laboriosam.",
-      "tweet_id": "aefe9f92-3559-11ef-b633-b2d74bfa9f65",
-      "user_id": "aefea0b4-3559-11ef-b633-b2d74bfa9f65"
+      "tweet_id": "b7e1318a-3700-11ef-8ce0-b2d74bfa9f65",
+      "user_id": "b7e132c0-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }
@@ -324,7 +324,7 @@ DeleteReply implements DeleteReply.
 
 Example:
     %[1]s tweets delete-reply --body '{
-      "id": "aefebd92-3559-11ef-b633-b2d74bfa9f65"
+      "id": "b7e150ac-3700-11ef-8ce0-b2d74bfa9f65"
    }'
 `, os.Args[0])
 }

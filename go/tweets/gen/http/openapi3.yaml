@@ -19,7 +19,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            id: aefe166c-3559-11ef-b633-b2d74bfa9f65
+                            id: b7e0a972-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -38,17 +38,17 @@ paths:
         post:
             tags:
                 - tweets
-            summary: CreateTweet tweets
-            operationId: tweets#CreateTweet
+            summary: CreatePost tweets
+            operationId: tweets#CreatePost
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateTweetRequestBody'
+                            $ref: '#/components/schemas/CreatePostRequestBody'
                         example:
                             text: Quaerat odit.
-                            user_id: aefdee08-3559-11ef-b633-b2d74bfa9f65
+                            user_id: b7e08794-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: Created tweet
@@ -58,9 +58,9 @@ paths:
                                 $ref: '#/components/schemas/Tweet'
                             example:
                                 created_at: "2009-03-13T12:29:33Z"
-                                id: aefdfb78-3559-11ef-b633-b2d74bfa9f65
+                                id: b7e091e4-3700-11ef-8ce0-b2d74bfa9f65
                                 text: Illo ut eaque quo modi ad.
-                                user_id: aefdfc9a-3559-11ef-b633-b2d74bfa9f65
+                                user_id: b7e092f2-3700-11ef-8ce0-b2d74bfa9f65
                 "400":
                     description: 'BadRequest: Failed to create tweet'
                     content:
@@ -86,8 +86,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: aefe4038-3559-11ef-b633-b2d74bfa9f65
-                            user_id: aefe41aa-3559-11ef-b633-b2d74bfa9f65
+                            tweet_id: b7e0d05a-3700-11ef-8ce0-b2d74bfa9f65
+                            user_id: b7e0d19a-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -109,8 +109,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: aefe2e2c-3559-11ef-b633-b2d74bfa9f65
-                            user_id: aefe2f76-3559-11ef-b633-b2d74bfa9f65
+                            tweet_id: b7e0c024-3700-11ef-8ce0-b2d74bfa9f65
+                            user_id: b7e0c13c-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -133,7 +133,7 @@ paths:
                         schema:
                             $ref: '#/components/schemas/DeleteTweetRequestBody'
                         example:
-                            id: aefebd92-3559-11ef-b633-b2d74bfa9f65
+                            id: b7e150ac-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -156,8 +156,8 @@ paths:
                             $ref: '#/components/schemas/CreateReplyRequestBody'
                         example:
                             text: Quo similique numquam laboriosam.
-                            tweet_id: aefe9f92-3559-11ef-b633-b2d74bfa9f65
-                            user_id: aefea0b4-3559-11ef-b633-b2d74bfa9f65
+                            tweet_id: b7e1318a-3700-11ef-8ce0-b2d74bfa9f65
+                            user_id: b7e132c0-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -167,10 +167,10 @@ paths:
                                 $ref: '#/components/schemas/Reply'
                             example:
                                 created_at: "1976-04-28T16:19:42Z"
-                                id: aefeab36-3559-11ef-b633-b2d74bfa9f65
+                                id: b7e13da6-3700-11ef-8ce0-b2d74bfa9f65
                                 text: Similique eveniet et sint.
-                                tweet_id: aefeac58-3559-11ef-b633-b2d74bfa9f65
-                                user_id: aefead70-3559-11ef-b633-b2d74bfa9f65
+                                tweet_id: b7e13edc-3700-11ef-8ce0-b2d74bfa9f65
+                                user_id: b7e13ff4-3700-11ef-8ce0-b2d74bfa9f65
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -190,8 +190,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: aefe849e-3559-11ef-b633-b2d74bfa9f65
-                            user_id: aefe8cc8-3559-11ef-b633-b2d74bfa9f65
+                            tweet_id: b7e1145c-3700-11ef-8ce0-b2d74bfa9f65
+                            user_id: b7e11cae-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -213,8 +213,8 @@ paths:
                         schema:
                             $ref: '#/components/schemas/LikeTweetRequestBody'
                         example:
-                            tweet_id: aefe52b2-3559-11ef-b633-b2d74bfa9f65
-                            user_id: aefe53e8-3559-11ef-b633-b2d74bfa9f65
+                            tweet_id: b7e0e0f4-3700-11ef-8ce0-b2d74bfa9f65
+                            user_id: b7e0e1ee-3700-11ef-8ce0-b2d74bfa9f65
             responses:
                 "200":
                     description: OK response.
@@ -235,6 +235,22 @@ paths:
                     description: File downloaded
 components:
     schemas:
+        CreatePostRequestBody:
+            type: object
+            properties:
+                text:
+                    type: string
+                    example: Reprehenderit aliquam.
+                user_id:
+                    type: string
+                    example: b7e1dc02-3700-11ef-8ce0-b2d74bfa9f65
+                    format: uuid
+            example:
+                text: Qui saepe et voluptas dicta non.
+                user_id: b7e1dd06-3700-11ef-8ce0-b2d74bfa9f65
+            required:
+                - user_id
+                - text
         CreateReplyRequestBody:
             type: object
             properties:
@@ -243,34 +259,18 @@ components:
                     example: Omnis assumenda perferendis.
                 tweet_id:
                     type: string
-                    example: aeff62a6-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1eb8e-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
                 user_id:
                     type: string
-                    example: aeff63a0-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1ec92-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
             example:
                 text: Voluptatibus consequatur.
-                tweet_id: aeff64a4-3559-11ef-b633-b2d74bfa9f65
-                user_id: aeff65a8-3559-11ef-b633-b2d74bfa9f65
+                tweet_id: b7e1ed96-3700-11ef-8ce0-b2d74bfa9f65
+                user_id: b7e1ee9a-3700-11ef-8ce0-b2d74bfa9f65
             required:
                 - tweet_id
-                - user_id
-                - text
-        CreateTweetRequestBody:
-            type: object
-            properties:
-                text:
-                    type: string
-                    example: Reprehenderit aliquam.
-                user_id:
-                    type: string
-                    example: aeff5220-3559-11ef-b633-b2d74bfa9f65
-                    format: uuid
-            example:
-                text: Qui saepe et voluptas dicta non.
-                user_id: aeff5342-3559-11ef-b633-b2d74bfa9f65
-            required:
                 - user_id
                 - text
         DeleteTweetRequestBody:
@@ -278,10 +278,10 @@ components:
             properties:
                 id:
                     type: string
-                    example: aeff5bbc-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1e4c2-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
             example:
-                id: aeff5cde-3559-11ef-b633-b2d74bfa9f65
+                id: b7e1e5c6-3700-11ef-8ce0-b2d74bfa9f65
             required:
                 - id
         Error:
@@ -330,15 +330,15 @@ components:
             properties:
                 tweet_id:
                     type: string
-                    example: aeff5e1e-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1e706-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
                 user_id:
                     type: string
-                    example: aeff5f2c-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1e80a-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
             example:
-                tweet_id: aeff6026-3559-11ef-b633-b2d74bfa9f65
-                user_id: aeff6120-3559-11ef-b633-b2d74bfa9f65
+                tweet_id: b7e1e904-3700-11ef-8ce0-b2d74bfa9f65
+                user_id: b7e1e9f4-3700-11ef-8ce0-b2d74bfa9f65
             required:
                 - tweet_id
                 - user_id
@@ -351,25 +351,25 @@ components:
                     format: date-time
                 id:
                     type: string
-                    example: aeff6706-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1efd0-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
                 text:
                     type: string
                     example: Aut omnis voluptatem suscipit modi ut natus.
                 tweet_id:
                     type: string
-                    example: aeff6800-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1f0d4-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
                 user_id:
                     type: string
-                    example: aeff68fa-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1f1c4-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
             example:
                 created_at: "1997-02-20T03:57:55Z"
-                id: aeff6b20-3559-11ef-b633-b2d74bfa9f65
+                id: b7e1f3d6-3700-11ef-8ce0-b2d74bfa9f65
                 text: Doloremque dolore ea error est omnis quibusdam.
-                tweet_id: aeff6c10-3559-11ef-b633-b2d74bfa9f65
-                user_id: aeff6d32-3559-11ef-b633-b2d74bfa9f65
+                tweet_id: b7e1f4c6-3700-11ef-8ce0-b2d74bfa9f65
+                user_id: b7e1f5ca-3700-11ef-8ce0-b2d74bfa9f65
             required:
                 - id
                 - tweet_id
@@ -385,20 +385,20 @@ components:
                     format: date-time
                 id:
                     type: string
-                    example: aeff54aa-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1de5a-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
                 text:
                     type: string
                     example: Provident sunt est temporibus consequatur consectetur libero.
                 user_id:
                     type: string
-                    example: aeff55ae-3559-11ef-b633-b2d74bfa9f65
+                    example: b7e1df54-3700-11ef-8ce0-b2d74bfa9f65
                     format: uuid
             example:
                 created_at: "2004-07-20T04:23:50Z"
-                id: aeff581a-3559-11ef-b633-b2d74bfa9f65
+                id: b7e1e166-3700-11ef-8ce0-b2d74bfa9f65
                 text: Et voluptatem aliquid eaque consequatur quibusdam qui.
-                user_id: aeff591e-3559-11ef-b633-b2d74bfa9f65
+                user_id: b7e1e256-3700-11ef-8ce0-b2d74bfa9f65
             required:
                 - id
                 - user_id
