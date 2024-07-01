@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 struct HomeTabModel: Identifiable {
   private(set) var id: Tab

@@ -61,6 +61,7 @@ struct SideMenuView: View {
     static let followers = String(localized: "Followers")
     static let profile = String(localized: "Profile")
     static let bookmarks = String(localized: "Bookmarks")
+    static let jobs = String(localized: "Jobs")
     static let lists = String(localized: "Lists")
     static let spaces = String(localized: "Spaces")
     static let followerRequests = String(localized: "Follower Requests")
@@ -139,61 +140,101 @@ struct SideMenuView: View {
 
   @ViewBuilder
   private func MainMenu() -> some View {
-    HStack {
-      Image(systemName: "person")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.profile)
-    }
-    .onTapGesture {
-      delegate?.didTapUserProfile()
-    }
+    Button(
+      action: {
+        delegate?.didTapUserProfile()
+      },
+      label: {
+        Image(systemName: "person")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.profile)
+      }
+    )
+    .buttonStyle(.plain)
 
-    HStack {
-      // We need to align image aspects in prod.
-      Image(systemName: "bookmark")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.bookmarks)
-    }.onTapGesture {
-      delegate?.didTapBookmarks()
-    }
-    HStack {
-      // We need to align image aspects in prod.
-      Image(systemName: "list.clipboard")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.lists)
-    }
-    HStack {
-      // We need to align image aspects in prod.
-      Image(systemName: "mic")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.spaces)
-    }
-    HStack {
-      // We need to align image aspects in prod.
-      Image(systemName: "person.badge.plus")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.followerRequests)
-    }.onTapGesture {
-      delegate?.didTapFollowerRequests()
-    }
-    HStack {
-      // We need to align image aspects in prod.
-      Image(systemName: "bitcoinsign.circle")
-        .resizable()
-        .scaledToFit()
-        .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-      Text(LocalizedString.monetization)
-    }
+    Button(
+      action: {
+        delegate?.didTapBookmarks()
+      },
+      label: {
+        Image(systemName: "bookmark")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.bookmarks)
+      }
+    )
+    .buttonStyle(.plain)
+
+    Button(
+      action: {
+        delegate?.didTapJobs()
+      },
+      label: {
+        Image(systemName: "handbag")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.jobs)
+      }
+    )
+    .buttonStyle(.plain)
+
+    Button(
+      action: {
+      },
+      label: {
+        Image(systemName: "list.clipboard")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.lists)
+      }
+    )
+    .buttonStyle(.plain)
+
+    Button(
+      action: {
+      },
+      label: {
+        Image(systemName: "mic")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.spaces)
+      }
+    )
+    .buttonStyle(.plain)
+
+    Button(
+      action: {
+        delegate?.didTapFollowerRequests()
+      },
+      label: {
+        Image(systemName: "person.badge.plus")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.followerRequests)
+      }
+    )
+    .buttonStyle(.plain)
+
+    Button(
+      action: {
+        delegate?.didTapFollowerRequests()
+      },
+      label: {
+        Image(systemName: "bitcoinsign.circle")
+          .resizable()
+          .scaledToFit()
+          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
+        Text(LocalizedString.monetization)
+      }
+    )
+    .buttonStyle(.plain)
   }
 
   @ViewBuilder
@@ -235,6 +276,7 @@ struct SideMenuView: View {
 protocol SideMenuViewDelegate: AnyObject {
   func didTapUserProfile()
   func didTapBookmarks()
+  func didTapJobs()
   func didTapFollowerRequests()
   func didTapSettingsAndPrivacy()
   func didTapUserFollowRelationsButton(userName: String)
