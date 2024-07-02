@@ -266,6 +266,60 @@ func (s *UsersTestSuite) TestFollow() {
 	}
 }
 
+func (s *UsersTestSuite) TestUnfollow() {
+	followed_user := s.create_user("followed_user", "Followed User")
+	following_user := s.create_user("following_user", "Following User")
+
+	// Set up initial follow relationship
+	s.follow(following_user.ID, followed_user.ID)
+
+	tests := []struct {
+		name              string
+		following_user_id string
+		followed_user_id  string
+		expectErr         bool
+	}{
+		{
+			name:              "unfollow user",
+			following_user_id: following_user.ID,
+			followed_user_id:  followed_user.ID,
+			expectErr:         false,
+		},
+		{
+			name:              "unfollow non-followed user",
+			following_user_id: following_user.ID,
+			followed_user_id:  uuid.NewString(),
+			expectErr:         true,
+		},
+		{
+			name:              "unfollow non-existent followed user",
+			following_user_id: following_user.ID,
+			followed_user_id:  uuid.NewString(),
+			expectErr:         true,
+		},
+		{
+			name:              "non-existent following user",
+			following_user_id: uuid.NewString(),
+			followed_user_id:  followed_user.ID,
+			expectErr:         true,
+		},
+		{
+			name:              "unfollow self",
+			following_user_id: following_user.ID,
+			followed_user_id:  following_user.ID,
+			expectErr:         true,
+		},
+	}
+
+	for _, test := range tests {
+		p := users.UnfollowPayload{FollowingUserID: test.following_user_id, FollowedUserID: test.followed_user_id}
+		err := s.service.Unfollow(context.Background(), &p)
+		if !test.expectErr && err != nil {
+			s.T().Errorf("%s: expected non-error, but got %s", test.name, err)
+		}
+	}
+}
+
 func (s *UsersTestSuite) TestGetFollowers() {
 	user_1 := s.create_user("user_1", "User 1")
 	user_2 := s.create_user("user_2", "User 2")

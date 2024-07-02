@@ -145,6 +145,8 @@ func (s *usersSvc) Unfollow(ctx context.Context, p *users.UnfollowPayload) error
 	}
 	err := s.followshipsRepo.DeleteFollowship(ctx, followed_user_id, following_user_id)
 	if err != nil {
+		// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/345
+		// - Add an error to the Unfollow function when trying to unfollow a non-existent user
 		s.logger.Printf("users.Unfollow: failed (%s)", err)
 		return users.MakeBadRequest(err)
 	}
