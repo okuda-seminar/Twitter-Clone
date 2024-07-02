@@ -54,6 +54,8 @@ struct JobsView: View {
   @State private var activeTabModel: JobsTabModel.Tab = .search
   @State private var tabToScroll: JobsTabModel.Tab?
 
+  @State private var showSearchInputSheet: Bool = false
+
   private var tabModels: [JobsTabModel] = [
     .init(id: .search),
     .init(id: .saved),
@@ -64,6 +66,9 @@ struct JobsView: View {
       TabBar()
       Tabs()
       Spacer()
+    }
+    .fullScreenCover(isPresented: $showSearchInputSheet) {
+      JobsSearchInputSheetView()
     }
   }
 
@@ -104,7 +109,7 @@ struct JobsView: View {
         ForEach(tabModels) { tabModel in
           switch tabModel.id {
           case .search:
-            Text("Duumy")
+            JobsSearchTabView(showSearchInputSheet: $showSearchInputSheet)
               .frame(width: UIScreen.main.bounds.width)
           case .saved:
             Text("No saved jobs")
