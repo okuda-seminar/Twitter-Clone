@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: notifications-postgres
-          image: notifications_postgres:latest
+          image: notifications_postgres
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432

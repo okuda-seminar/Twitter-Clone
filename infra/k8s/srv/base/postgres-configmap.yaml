@@ -8,3 +8,4 @@ data:
   POSTGRES_PASSWORD: postgres
   USERS_POSTGRES_URL: postgres://postgres:postgres@users-postgres:5432/postgres?sslmode=disable
   TWEETS_POSTGRES_URL: postgres://postgres:postgres@tweets-postgres:5432/postgres?sslmode=disable
+  NOTIFICATIONS_POSTGRES_URL: postgres://postgres:postgres@notifications-postgres:5432/postgres?sslmode=disable

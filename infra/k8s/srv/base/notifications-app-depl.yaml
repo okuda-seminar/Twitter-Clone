@@ -15,11 +15,19 @@ spec:
     spec:
       containers:
         - name: notifications-app
-          image: notifications_app:latest
+          image: notifications_app
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
-          command: ["tail", "-f", "/dev/null"]
+          env:
+            - name: PGURL
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-params
+                  key: NOTIFICATIONS_POSTGRES_URL
+          # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/350
+          # - [Infra] Implement a Dockerfile for notifications service
+          command: ["/bin/sh", "-c", "cd cmd/notifications && go build -o notifications . && ./notifications"]
 ---
 apiVersion: v1
 kind: Service
@@ -28,7 +36,7 @@ metadata:
   namespace: default
 spec:
   ports:
-    - port: 80
+    - port: 81
       targetPort: 80
   selector:
     app: notifications-app
