@@ -1,6 +1,10 @@
+import SwiftUI
 import UIKit
 
 class SearchInputViewController: UIViewController {
+
+  // MARK: - Private Props
+
   private enum LayoutConstant {
     static let headlineLabelTopPadding = 8.0
     static let edgeHorizontalPadding = 16.0
@@ -9,8 +13,9 @@ class SearchInputViewController: UIViewController {
   private enum LocalizedString {
     static let cancelButtonTitle = String(localized: "Cancel")
     static let title = String(localized: "Search")
-    static let headlineText = String(localized: "Recent searches")
   }
+
+  private let dataSource = SearchInputDataSource()
 
   private lazy var cancelButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
@@ -24,33 +29,44 @@ class SearchInputViewController: UIViewController {
     return button
   }()
 
-  private let headelineLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = LocalizedString.headlineText
-    label.textColor = .black
-    label.sizeToFit()
-    return label
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(rootView: SearchInputView(dataSource: dataSource))
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
+
+  // MARK: - View Lifecycle
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setUpNavigationAndBackground()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+    startFetchingRecentSearches()
   }
 
+  // MARK: - Private API
+
   private func setUpSubviews() {
-    view.backgroundColor = .systemBackground
-    view.addSubview(headelineLabel)
+    view.addSubview(hostingController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
-      headelineLabel.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
-      headelineLabel.leadingAnchor.constraint(
-        equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
+      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      hostingController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+      hostingController.view.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
     ])
+  }
 
-    // set up navigation bar
+  private func setUpNavigationAndBackground() {
+    view.backgroundColor = .systemBackground
+
     navigationItem.backButtonDisplayMode = .minimal
     navigationItem.rightBarButtonItems = []
     let searchBar = UISearchBar()
@@ -60,8 +76,89 @@ class SearchInputViewController: UIViewController {
     navigationItem.titleView = searchBar
   }
 
+  private func startFetchingRecentSearches() {
+    let searchService = injectSearchService()
+    DispatchQueue.global(qos: .userInitiated).async {
+      searchService.fetchRecentSearches { [weak self] recentlySearchedUsers in
+        DispatchQueue.main.async {
+          self?.fetchRecentSearchesCompletion(recentlySearchedUsers: recentlySearchedUsers)
+        }
+      }
+    }
+  }
+
+  private func fetchRecentSearchesCompletion(recentlySearchedUsers: [SearchedUserModel]) {
+    dataSource.recentlySearchedUsers = recentlySearchedUsers
+  }
+
   @objc
   private func dismissByTappingCancelButton() {
     navigationController?.popViewController(animated: true)
   }
+}
+
+struct SearchInputView: View {
+
+  // MARK: - Public Props
+
+  @ObservedObject var dataSource: SearchInputDataSource
+
+  // MARK: - Private Props
+
+  private enum LayoutConstant {
+    static let userIconSize: CGFloat = 36.0
+  }
+
+  private enum LocalizedString {
+    static let headlineText = String(localized: "Recent searches")
+  }
+
+  // MARK: - View
+
+  var body: some View {
+    VStack {
+      Headline()
+      RecentlySearchedUsersCatalog()
+      Spacer()
+    }
+    .padding()
+  }
+
+  @ViewBuilder
+  private func Headline() -> some View {
+    HStack {
+      Text(LocalizedString.headlineText)
+        .bold()
+      Spacer()
+    }
+    .padding(.bottom)
+  }
+
+  @ViewBuilder
+  private func RecentlySearchedUsersCatalog() -> some View {
+    ScrollView(.horizontal) {
+      HStack {
+        if dataSource.recentlySearchedUsers.count > 0 {
+          ForEach(dataSource.recentlySearchedUsers) { searchedUserModel in
+            VStack {
+              if let icon = searchedUserModel.icon {
+                Image(uiImage: icon)
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: LayoutConstant.userIconSize)
+                  .clipShape(Circle())
+              }
+              Text(searchedUserModel.name)
+              Text(searchedUserModel.userName)
+                .font(.caption)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#Preview {
+  SearchInputView(dataSource: createFakeSearchInputDataSource())
 }
