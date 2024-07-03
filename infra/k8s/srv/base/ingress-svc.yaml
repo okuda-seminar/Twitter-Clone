@@ -15,4 +15,13 @@ spec:
                 name: users-app
                 port:
                   number: 80
+          
+          - path: "/api/notifications/?(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: notifications-app
+                port:
+                  number: 81
+
   ingressClassName: nginx
