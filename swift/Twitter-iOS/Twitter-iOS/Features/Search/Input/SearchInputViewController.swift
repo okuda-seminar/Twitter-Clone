@@ -79,16 +79,27 @@ class SearchInputViewController: UIViewController {
   private func startFetchingRecentSearches() {
     let searchService = injectSearchService()
     DispatchQueue.global(qos: .userInitiated).async {
-      searchService.fetchRecentSearches { [weak self] recentlySearchedUsers in
+      searchService.fetchRecentSearchedUsers { [weak self] recentlySearchedUsers in
         DispatchQueue.main.async {
-          self?.fetchRecentSearchesCompletion(recentlySearchedUsers: recentlySearchedUsers)
+          self?.fetchRecentSearchedUsersCompletion(recentlySearchedUsers: recentlySearchedUsers)
+        }
+      }
+
+      searchService.fetchRecentSearchedQueries { [weak self] recentlySearchedQueries in
+        DispatchQueue.main.async {
+          self?.fetchRecentSearchedQueriesCompletion(
+            recentlySearchedQueries: recentlySearchedQueries)
         }
       }
     }
   }
 
-  private func fetchRecentSearchesCompletion(recentlySearchedUsers: [SearchedUserModel]) {
+  private func fetchRecentSearchedUsersCompletion(recentlySearchedUsers: [SearchedUserModel]) {
     dataSource.recentlySearchedUsers = recentlySearchedUsers
+  }
+
+  private func fetchRecentSearchedQueriesCompletion(recentlySearchedQueries: [SearchedQueryModel]) {
+    dataSource.recentlySearchedQueries = recentlySearchedQueries
   }
 
   @objc
@@ -119,6 +130,7 @@ struct SearchInputView: View {
     VStack {
       Headline()
       RecentlySearchedUsersCatalog()
+      RecentlySearchedQueriesList()
       Spacer()
     }
     .padding()
@@ -154,6 +166,20 @@ struct SearchInputView: View {
             }
           }
         }
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func RecentlySearchedQueriesList() -> some View {
+    VStack {
+      if dataSource.recentlySearchedQueries.count > 0 {
+        List {
+          ForEach(dataSource.recentlySearchedQueries) { searchedQueryModel in
+            Text(searchedQueryModel.text)
+          }
+        }
+        .listStyle(PlainListStyle())
       }
     }
   }

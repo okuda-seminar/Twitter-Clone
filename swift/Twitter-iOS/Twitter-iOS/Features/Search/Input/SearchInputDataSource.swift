@@ -2,6 +2,7 @@ import Foundation
 
 final class SearchInputDataSource: ObservableObject {
   @Published var recentlySearchedUsers = [SearchedUserModel]()
+  @Published var recentlySearchedQueries = [SearchedQueryModel]()
 }
 
 func createFakeSearchInputDataSource() -> SearchInputDataSource {
@@ -11,5 +12,11 @@ func createFakeSearchInputDataSource() -> SearchInputDataSource {
     recentlySearchedUsers.append(createFakeSearchedUserModel())
   }
   dataSource.recentlySearchedUsers = recentlySearchedUsers
+
+  var recentlySearchedQueries = [SearchedQueryModel]()
+  for _ in 0..<10 {
+    recentlySearchedQueries.append(createFakeSearchedQueryModel())
+  }
+  dataSource.recentlySearchedQueries = recentlySearchedQueries
   return dataSource
 }

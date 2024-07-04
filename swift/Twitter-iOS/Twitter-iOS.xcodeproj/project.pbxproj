@@ -94,6 +94,7 @@
 		65C71BB22C357C2A0025839C /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BB12C357C2A0025839C /* SearchService.swift */; };
 		65C71BB52C357CDE0025839C /* SearchedUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BB42C357CDE0025839C /* SearchedUserModel.swift */; };
 		65C71BB72C3580A00025839C /* SearchInputDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BB62C3580A00025839C /* SearchInputDataSource.swift */; };
+		65C71BBC2C36DBC90025839C /* SearchedQueryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BBB2C36DBC90025839C /* SearchedQueryModel.swift */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -234,6 +235,7 @@
 		65C71BB12C357C2A0025839C /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		65C71BB42C357CDE0025839C /* SearchedUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedUserModel.swift; sourceTree = "<group>"; };
 		65C71BB62C3580A00025839C /* SearchInputDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputDataSource.swift; sourceTree = "<group>"; };
+		65C71BBB2C36DBC90025839C /* SearchedQueryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedQueryModel.swift; sourceTree = "<group>"; };
 		65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPermissionController.swift; sourceTree = "<group>"; };
 		65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
 		65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+UIGestureRecognizerDelegate.swift"; sourceTree = "<group>"; };
@@ -798,6 +800,7 @@
 			isa = PBXGroup;
 			children = (
 				65C71BB42C357CDE0025839C /* SearchedUserModel.swift */,
+				65C71BBB2C36DBC90025839C /* SearchedQueryModel.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -1051,6 +1054,7 @@
 				65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */,
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
+				65C71BBC2C36DBC90025839C /* SearchedQueryModel.swift in Sources */,
 				65FD4F502C19D87B0020A02E /* ReplyKeyboardToolbarView.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				3B7332F02C23153F007F4537 /* MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift in Sources */,

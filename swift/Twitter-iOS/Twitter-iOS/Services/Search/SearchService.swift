@@ -1,20 +1,30 @@
 import Foundation
 
 protocol SearchService {
-  func fetchRecentSearches(completion: FetchRecentSearchesCompletion)
+  func fetchRecentSearchedUsers(completion: FetchRecentSearchedUsersCompletion)
+  func fetchRecentSearchedQueries(completion: FetchRecentSearchedQueriesCompletion)
 }
 
-typealias FetchRecentSearchesCompletion = ([SearchedUserModel]) -> (Void)
+typealias FetchRecentSearchedUsersCompletion = ([SearchedUserModel]) -> (Void)
+typealias FetchRecentSearchedQueriesCompletion = ([SearchedQueryModel]) -> (Void)
 
 class SearchServiceImplementation: SearchService {
   static let shared = SearchServiceImplementation()
 
-  func fetchRecentSearches(completion: FetchRecentSearchesCompletion) {
+  func fetchRecentSearchedUsers(completion: FetchRecentSearchedUsersCompletion) {
     var searchedUsers = [SearchedUserModel]()
     for _ in 0..<30 {
       searchedUsers.append(createFakeSearchedUserModel())
     }
     completion(searchedUsers)
+  }
+
+  func fetchRecentSearchedQueries(completion: FetchRecentSearchedQueriesCompletion) {
+    var searchedQueries = [SearchedQueryModel]()
+    for _ in 0..<10 {
+      searchedQueries.append(createFakeSearchedQueryModel())
+    }
+    completion(searchedQueries)
   }
 }
 
