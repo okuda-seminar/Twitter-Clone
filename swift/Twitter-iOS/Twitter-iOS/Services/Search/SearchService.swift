@@ -3,6 +3,7 @@ import Foundation
 protocol SearchService {
   func fetchRecentSearchedUsers(completion: FetchRecentSearchedUsersCompletion)
   func fetchRecentSearchedQueries(completion: FetchRecentSearchedQueriesCompletion)
+  func removeRecentlySearchedQuery(_ removedQuery: String)
 }
 
 typealias FetchRecentSearchedUsersCompletion = ([SearchedUserModel]) -> (Void)
@@ -25,6 +26,10 @@ class SearchServiceImplementation: SearchService {
       searchedQueries.append(createFakeSearchedQueryModel())
     }
     completion(searchedQueries)
+  }
+
+  func removeRecentlySearchedQuery(_ removedQuery: String) {
+    print("Sending a request to remove \(removedQuery)")
   }
 }
 

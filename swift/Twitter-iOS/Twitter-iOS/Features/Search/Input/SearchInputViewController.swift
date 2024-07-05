@@ -16,6 +16,7 @@ class SearchInputViewController: UIViewController {
   }
 
   private let dataSource = SearchInputDataSource()
+  private let viewObserver = SearchInputViewObserver()
 
   private lazy var cancelButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
@@ -30,7 +31,9 @@ class SearchInputViewController: UIViewController {
   }()
 
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: SearchInputView(dataSource: dataSource))
+    let controller = UIHostingController(
+      rootView: SearchInputView(
+        dataSource: dataSource, viewObserver: viewObserver))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -48,6 +51,7 @@ class SearchInputViewController: UIViewController {
     super.viewDidLoad()
     setUpSubviews()
     startFetchingRecentSearches()
+    setUpViewObserver()
   }
 
   // MARK: - Private API
@@ -74,6 +78,12 @@ class SearchInputViewController: UIViewController {
     searchBar.barTintColor = .blue
     searchBar.showsCancelButton = true
     navigationItem.titleView = searchBar
+  }
+
+  private func setUpViewObserver() {
+    viewObserver.didRemoveRecentlySearchQuery = { removedQuery in
+      injectSearchService().removeRecentlySearchedQuery(removedQuery)
+    }
   }
 
   private func startFetchingRecentSearches() {
@@ -113,6 +123,7 @@ struct SearchInputView: View {
   // MARK: - Public Props
 
   @ObservedObject var dataSource: SearchInputDataSource
+  @ObservedObject var viewObserver: SearchInputViewObserver
 
   // MARK: - Private Props
 
@@ -178,6 +189,9 @@ struct SearchInputView: View {
           ForEach(dataSource.recentlySearchedQueries) { searchedQueryModel in
             Text(searchedQueryModel.text)
           }
+          .onDelete(perform: { indexSet in
+            viewObserver.didRemoveRecentlySearchQuery?("")
+          })
         }
         .listStyle(PlainListStyle())
       }
@@ -186,5 +200,6 @@ struct SearchInputView: View {
 }
 
 #Preview {
-  SearchInputView(dataSource: createFakeSearchInputDataSource())
+  SearchInputView(
+    dataSource: createFakeSearchInputDataSource(), viewObserver: SearchInputViewObserver())
 }
