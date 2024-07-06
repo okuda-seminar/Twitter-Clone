@@ -43,6 +43,14 @@ build:
       context: go/tweets
       docker:
         dockerfile: docker/postgres.Dockerfile
+    - image: notifications_service
+      context: go/notifications
+      docker:
+        dockerfile: docker/Dockerfile
+      sync:
+        manual:
+          - src: "**/*.go"
+            dest: .
     - image: notifications_app
       context: go/notifications
       docker:
