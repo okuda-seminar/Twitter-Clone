@@ -9,7 +9,7 @@
   padding: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   #vertical_tab_nav ul {
     background: #555;
   }
@@ -27,4 +27,4 @@
   #vertical_tab_nav li {
     color: #555;
   }
-}
+} */
