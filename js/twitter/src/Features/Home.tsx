@@ -1,4 +1,6 @@
+import React from "react";
 import "./Home.css";
+
 import {
   Tab,
   Tabs,
@@ -8,7 +10,7 @@ import {
   TabPanels,
 } from "@chakra-ui/react";
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <Tabs position="relative" variant="unstyled">
       <TabList>
@@ -26,6 +28,6 @@ function Home() {
       </TabPanels>
     </Tabs>
   );
-}
+};
 
 export default Home;
