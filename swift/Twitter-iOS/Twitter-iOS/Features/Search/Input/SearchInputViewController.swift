@@ -5,11 +5,6 @@ class SearchInputViewController: UIViewController {
 
   // MARK: - Private Props
 
-  private enum LayoutConstant {
-    static let headlineLabelTopPadding = 8.0
-    static let edgeHorizontalPadding = 16.0
-  }
-
   private enum LocalizedString {
     static let cancelButtonTitle = String(localized: "Cancel")
     static let title = String(localized: "Search")
@@ -18,14 +13,12 @@ class SearchInputViewController: UIViewController {
   private let dataSource = SearchInputDataSource()
   private let viewObserver = SearchInputViewObserver()
 
+  private var searchQuery = ""
+
   private lazy var cancelButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: LocalizedString.cancelButtonTitle, style: .plain, target: self,
       action: #selector(dismissByTappingCancelButton))
-    let attributes: [NSAttributedString.Key: Any] = [
-      .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: UIColor.black,
-    ]
-    button.setTitleTextAttributes(attributes, for: .normal)
     button.tintColor = .black
     return button
   }()
@@ -72,11 +65,12 @@ class SearchInputViewController: UIViewController {
     view.backgroundColor = .systemBackground
 
     navigationItem.backButtonDisplayMode = .minimal
-    navigationItem.rightBarButtonItems = []
+    navigationItem.rightBarButtonItems = [cancelButton]
+    navigationItem.hidesBackButton = true
     let searchBar = UISearchBar()
+    searchBar.delegate = self
     searchBar.placeholder = LocalizedString.title
     searchBar.barTintColor = .blue
-    searchBar.showsCancelButton = true
     navigationItem.titleView = searchBar
   }
 
@@ -115,6 +109,17 @@ class SearchInputViewController: UIViewController {
   @objc
   private func dismissByTappingCancelButton() {
     navigationController?.popViewController(animated: true)
+  }
+}
+
+extension SearchInputViewController: UISearchBarDelegate {
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    searchQuery = searchText
+  }
+
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    navigationController?.pushViewController(
+      SearchResultViewController(searchQuery: searchQuery), animated: true)
   }
 }
 
