@@ -1,0 +1,67 @@
+name: Issue Title Check
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  check_title:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install js-yaml
+      run: npm install js-yaml
+
+    - name: Check issue title
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const fs = require('fs');
+          const yaml = require('js-yaml');
+
+          const title = context.payload.issue.title;
+          console.log(`Issue title: ${title}`);
+          if (title.endsWith('.')) {
+            console.log("Issue title ends with a period. Removing the period.");
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Issue title ends with a period. Removing the period."
+            });
+          }
+
+          let data;
+          try {
+            const fileContents = fs.readFileSync('hack/prefix.yaml', 'utf8');
+            data = yaml.load(fileContents);
+          } catch (e) {
+            console.log(`Error reading or parsing config.yml: ${e.message}`);
+            throw e;
+          }
+
+          const prefix = data['allow-prefix'];
+          if (prefix) {
+            for (let i = 0; i < prefix.length; i++) {
+              if (title.startsWith(prefix[i])) {
+                console.log("Title matches the allowed prefix.");
+                return;
+              }
+            }
+          }
+
+          console.log("Title does not match any allowed prefix. Creating a comment.");
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `You should add the correct prefix to the issue title. Allowed prefixes: ${prefix}.`
+          });
