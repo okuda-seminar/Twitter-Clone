@@ -3,19 +3,6 @@ import UIKit
 
 class UserFollowerRequestsPageViewController: UIViewController {
 
-  private enum LayoutConstant {
-    static let edgePadding: CGFloat = 16.0
-
-    static let headlineFontSize: CGFloat = 29.0
-    static let subHeadlineFontSize: CGFloat = 15.0
-    static let headlineViewSpacing: CGFloat = 10.0
-    static let headlineViewVerticalPadding: CGFloat = 50.0
-
-    static let headerTitleFontSize: CGFloat = 18.0
-
-    static let backButtonSize: CGFloat = 20.0
-  }
-
   private enum LocalizedString {
     static let title = String(localized: "Follower requests")
   }
@@ -64,6 +51,19 @@ struct UserFollowerRequestsView: View {
     static let roundedButtonPadding: CGFloat = 12.0
     static let roundedButtonIconSize: CGFloat = 16.0
     static let roundedButtonLineWidth: CGFloat = 1.5
+
+    static let headlineFontSize: CGFloat = 29.0
+    static let subHeadlineFontSize: CGFloat = 15.0
+    static let headlineViewSpacing: CGFloat = 10.0
+    static let headlineViewTopPadding: CGFloat = 50.0
+  }
+
+  private enum LocalizedString {
+    static let headlineText = String(localized: "You're up to date")
+    static let subHeadlineText = String(
+      localized:
+        "When someone requests to follow you, it'll show up here for you to accept or decline."
+    )
   }
 
   var body: some View {
@@ -77,8 +77,7 @@ struct UserFollowerRequestsView: View {
         Spacer()
       }
     } else {
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/265
-      // - Refactor follower reuqests page without data using SwiftUI.
+      FollowerReuqestsPageWithoutData()
     }
   }
 
@@ -149,6 +148,22 @@ struct UserFollowerRequestsView: View {
       .buttonStyle(.plain)
     }
     .padding()
+  }
+
+  @ViewBuilder
+  private func FollowerReuqestsPageWithoutData() -> some View {
+    VStack(alignment: .leading, spacing: LayoutConstant.headlineViewSpacing) {
+      Text(LocalizedString.headlineText)
+        .font(.system(size: LayoutConstant.headlineFontSize, weight: .heavy))
+
+      Text(LocalizedString.subHeadlineText)
+        .font(.system(size: LayoutConstant.subHeadlineFontSize))
+        .foregroundStyle(.gray)
+
+      Spacer()
+    }
+    .padding(.top, LayoutConstant.headlineViewTopPadding)
+    .padding(.horizontal)
   }
 }
 

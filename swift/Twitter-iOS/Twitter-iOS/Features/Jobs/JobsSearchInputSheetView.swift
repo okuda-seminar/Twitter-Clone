@@ -58,7 +58,7 @@ struct JobsSearchInputSheetView: View {
       }
       .background(Color(uiColor: .brandedLightGrayBackground))
       .frame(height: LayoutConstant.searchBarHeight)
-      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.searchBarHeight/2))
+      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.searchBarHeight / 2))
 
       HStack {
         Image(systemName: "map")
@@ -68,7 +68,7 @@ struct JobsSearchInputSheetView: View {
       }
       .background(Color(uiColor: .brandedLightGrayBackground))
       .frame(height: LayoutConstant.searchBarHeight)
-      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.searchBarHeight/2))
+      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.searchBarHeight / 2))
     }
   }
 }
