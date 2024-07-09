@@ -19,8 +19,9 @@ JS is not encouraged to use.
   - [Chakra UI でブランドカラーを適用させる方法について調べてみた](https://dev.classmethod.jp/articles/chakra-ui-theme/)
 - [ ] How to configure CSS
   - [React におけるスタイリング手法まとめ](https://zenn.dev/chiji/articles/b0669fc3094ce3)
-- [ ] JS vs TS (Frontend migration)
+- [x] JS vs TS (Frontend migration)
   - [CS Tool のフロントエンドのリプレイスプロジェクトについて](https://engineering.mercari.com/blog/entry/20230112-frontend-replacement/)
+  - [Why and How to use TypeScript in your React App?](https://blog.bitsrc.io/why-and-how-use-typescript-in-your-react-app-60e8987be8de)
 - [ ] React vs Next
 - [ ] REST vs GraphQL
 - [ ] Localization
