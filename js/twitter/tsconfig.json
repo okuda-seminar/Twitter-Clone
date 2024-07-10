@@ -8,5 +8,5 @@
     "sourceMap": true,
     "esModuleInterop": true
   },
-  "files": ["./src/Features/Home.tsx"]
+  "files": ["./src/Features/Home.tsx", "./src/Features/SideBar.tsx"]
 }
