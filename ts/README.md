@@ -9,9 +9,7 @@ If you want to run some commands like `yarn add XXX`, then you can run `docker c
 ## Note
 
 You need to use VSCode and install [Prettier formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
-For consistent readability, you can refer to [Google's style guide](https://google.github.io/styleguide/jsguide.html).
-Though TS is recommend, we can still start with JS first and truly understand why
-JS is not encouraged to use.
+For consistent readability, you can refer to [Google's style guide](https://google.github.io/styleguide/tsguide.html).
 
 ## Discussion Points
 
