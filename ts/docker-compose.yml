@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    command: yarn start
+    command: yarn dev
     volumes:
       - .:/app
     ports:
