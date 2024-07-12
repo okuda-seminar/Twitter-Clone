@@ -5,7 +5,7 @@ import Home from "./home";
 
 export default function Page() {
   return (
-    <HStack>
+    <HStack align="start">
       <SideBar />
       <Home />
     </HStack>

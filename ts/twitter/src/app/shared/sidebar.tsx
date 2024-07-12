@@ -8,11 +8,7 @@ const SideBar: React.FC = () => {
   return (
     <VStack>
       <Link href="/home">
-        <IconButton
-          aria-label="Home"
-          icon={<PiHouseFill />}
-          onClick={() => console.log("How are you?")}
-        ></IconButton>
+        <IconButton aria-label="Home" icon={<PiHouseFill />}></IconButton>
       </Link>
 
       <Link href="/explore">
