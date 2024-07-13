@@ -9,6 +9,7 @@ resources:
 - ./tweets-postgres-depl.yaml
 - ./notifications-postgres-depl.yaml
 - ./users-volume.yaml
+- ./tweets-volume.yaml
 - ./postgres-configmap.yaml
 # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/287
 # - [infra] Refactor manifests by introducing kustomize for notifications service.
