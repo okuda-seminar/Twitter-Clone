@@ -20,7 +20,10 @@ For consistent readability, you can refer to [Google's style guide](https://goog
 - [x] JS vs TS (Frontend migration)
   - [CS Tool のフロントエンドのリプレイスプロジェクトについて](https://engineering.mercari.com/blog/entry/20230112-frontend-replacement/)
   - [Why and How to use TypeScript in your React App?](https://blog.bitsrc.io/why-and-how-use-typescript-in-your-react-app-60e8987be8de)
-- [ ] React vs Next
+- [x] React vs Next
 - [ ] REST vs GraphQL
 - [ ] Localization
   - [React の多言語化 (i18n) 対応 - Format.JS vs react-i18next](https://blogs.jp.infragistics.com/entry/react-localization-libraries)
+- [ ] Jest
+- [x] Cypress
+  - [メルペイフロントエンドのテスト自動化方針](https://engineering.mercari.com/blog/entry/20211208-test-automation-policy-in-merpay-frontend/)
