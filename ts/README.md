@@ -24,6 +24,6 @@ For consistent readability, you can refer to [Google's style guide](https://goog
 - [ ] REST vs GraphQL
 - [ ] Localization
   - [React の多言語化 (i18n) 対応 - Format.JS vs react-i18next](https://blogs.jp.infragistics.com/entry/react-localization-libraries)
-- [ ] Jest
+- [x] Jest
 - [x] Cypress
   - [メルペイフロントエンドのテスト自動化方針](https://engineering.mercari.com/blog/entry/20211208-test-automation-policy-in-merpay-frontend/)
