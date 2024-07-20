@@ -1,0 +1,47 @@
+name: Duplicate Issue
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  check_duplicate:
+    runs-on: ubuntu-latest
+    if: github.event.comment.body == '/duplicate'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Create duplicate issue
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const sourceIssue = context.payload.issue;
+          const labels = sourceIssue.labels.map(label => label.name);
+          const assignees = sourceIssue.assignees.map(assignee => assignee.login);
+          const newIssue = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `${sourceIssue.title} Copy`,
+            body: sourceIssue.body,
+            labels: labels,
+            assignees: assignees,
+          })
+
+          await github.rest.issues.createComment({
+            issue_number: sourceIssue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Duplicate issue created: ' + newIssue.data.html_url
+          })
+
+          // Add a dispatch event to trigger the workflow
+          // for validating the new issue.
+          await github.rest.repos.createDispatchEvent({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            event_type: 'issue_created',
+            client_payload: {
+              issue_number: newIssue.data.number,
+            },
+          });
