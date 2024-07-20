@@ -3,6 +3,8 @@ name: Issue Title Check
 on:
   issues:
     types: [opened, edited]
+  repository_dispatch:
+    types: [issue_created]
 
 jobs:
   check_title:
@@ -27,12 +29,27 @@ jobs:
           const fs = require('fs');
           const yaml = require('js-yaml');
 
-          const title = context.payload.issue.title;
+          let issue_number;
+
+          if (context.payload.client_payload) {
+            issue_number = context.payload.client_payload.issue_number;
+          } else {
+            issue_number = context.issue.number;
+          }
+
+          console.log(`Issue number: ${issue_number}`);
+          const issue = await github.rest.issues.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue_number,
+          });
+
+          const title = issue.data.title;
           console.log(`Issue title: ${title}`);
           if (title.endsWith('.')) {
             console.log("Issue title ends with a period. Removing the period.");
             github.rest.issues.createComment({
-              issue_number: context.issue.number,
+              issue_number: issue_number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "Issue title ends with a period. Removing the period."
