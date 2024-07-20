@@ -2,6 +2,10 @@ import SwiftUI
 import UIKit
 
 class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
+  private enum LayoutConstant {
+    static let sheetDetentRatio: CGFloat = 0.35
+  }
+
   private enum LocalizedString {
     static let title = String(localized: "Communities")
   }
@@ -72,7 +76,11 @@ class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
 
     if let sheet = blockedNewCommunityCreationBottomSheetViewController.sheetPresentationController
     {
-      sheet.detents = [.medium()]
+      sheet.detents = [
+        .custom(resolver: { context in
+          LayoutConstant.sheetDetentRatio * context.maximumDetentValue
+        })
+      ]
       sheet.prefersGrabberVisible = true
     }
     present(blockedNewCommunityCreationBottomSheetViewController, animated: true, completion: nil)
