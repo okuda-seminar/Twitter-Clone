@@ -19,6 +19,7 @@
 		3B7332F02C23153F007F4537 /* MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332EB2C23153F007F4537 /* MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift */; };
 		3B7332F22C231548007F4537 /* MessagesSettingsHomeReadReceiptsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332F12C231548007F4537 /* MessagesSettingsHomeReadReceiptsSectionView.swift */; };
 		3B7332F42C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */; };
+		3B861EC72C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */; };
 		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
@@ -159,6 +160,7 @@
 		3B7332EB2C23153F007F4537 /* MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift; sourceTree = "<group>"; };
 		3B7332F12C231548007F4537 /* MessagesSettingsHomeReadReceiptsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeReadReceiptsSectionView.swift; sourceTree = "<group>"; };
 		3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeRelayCallsControlSectionView.swift; sourceTree = "<group>"; };
+		3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedNewCommunityCreationBottomSheetViewObserver.swift; sourceTree = "<group>"; };
 		3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowerRequestsPageViewController.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				6540F9082BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift */,
+				3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */,
 				65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */,
 				65FD4FA32C284AF20020A02E /* CommunitiesHomeMyCommunitiesTabView.swift */,
 				6540F8ED2BCA28070029BA46 /* CommunitiesHomeViewController.swift */,
@@ -1050,6 +1053,7 @@
 				6540F8D42BC018B30029BA46 /* SearchHomeViewController.swift in Sources */,
 				65C71B902C3181660025839C /* MessagesSettingsPushNotificationsViewController.swift in Sources */,
 				65FD4F492C15D8920020A02E /* DependencyInjection.swift in Sources */,
+				3B861EC72C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift in Sources */,
 				65FD4F552C1B1FE60020A02E /* ReplyBodyView.swift in Sources */,
 				65FD4FAD2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift in Sources */,
 				658D087F2BEBA774006C6A9E /* UserModel.swift in Sources */,
