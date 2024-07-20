@@ -4,5 +4,13 @@ services:
     command: yarn dev
     volumes:
       - .:/app
+      - node_modules:/app/twitter/node_modules
     ports:
       - 3000:3000
+volumes:
+  node_modules:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/twitter/node_modules
+      o: bind
