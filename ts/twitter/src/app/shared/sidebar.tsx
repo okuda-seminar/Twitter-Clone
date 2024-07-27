@@ -1,18 +1,22 @@
 import React from "react";
-import { IconButton, LinkOverlay, VStack } from "@chakra-ui/react";
+import { IconButton, Tooltip, VStack } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { PiHouseFill } from "react-icons/pi";
 import Link from "next/link";
 
 const SideBar: React.FC = () => {
   return (
-    <VStack>
+    <VStack marginBottom="48px">
       <Link href="/home">
-        <IconButton aria-label="Home" icon={<PiHouseFill />}></IconButton>
+        <Tooltip label="Home" placement="bottom">
+          <IconButton aria-label="Home" icon={<PiHouseFill />} />
+        </Tooltip>
       </Link>
 
       <Link href="/explore">
-        <IconButton aria-label="Explore" icon={<SearchIcon />}></IconButton>
+        <Tooltip label="Explore" placement="bottom">
+          <IconButton aria-label="Explore" icon={<SearchIcon />} />
+        </Tooltip>
       </Link>
     </VStack>
   );
