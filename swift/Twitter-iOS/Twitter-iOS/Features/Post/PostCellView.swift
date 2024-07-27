@@ -1,6 +1,15 @@
 import SwiftUI
 
 struct PostCellView: View {
+
+  private enum LocalizedString {
+    static let unfollowButtonText = String(localized: "Unfollow")
+    static let listButtonText = String(localized: "Add/remove from Lists")
+    static let muteButtonText = String(localized: "Mute")
+    static let blockButtonText = String(localized: "Block")
+    static let reportButtonText = String(localized: "Report post")
+  }
+
   @Binding public var showReplyEditSheet: Bool
   @Binding public var reposting: Bool
   @Binding public var postToRepost: PostModel?
@@ -41,16 +50,7 @@ struct PostCellView: View {
           HStack {
             Text(postModel.userName)
             Spacer()
-            Button(
-              action: {
-                print("Need to show ContextMenu.")
-              },
-              label: {
-                Image(systemName: "ellipsis")
-              }
-            )
-            .foregroundStyle(.primary)
-            .buttonStyle(.plain)
+            PostCellMenu()
           }
 
           Text(LocalizedStringKey(postModel.bodyText))
@@ -180,6 +180,91 @@ struct PostCellView: View {
         PostShareBottomSheet(showShareSheet: $pendingShowShareSheet)
           .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
       })
+  }
+
+  @ViewBuilder
+  private func PostCellMenu() -> some View {
+    Menu {
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/383
+      // - Implement Appropriate Functionality for Each Menu Item in PostCellView.swift.
+      Button(
+        action: {
+
+        },
+        label: {
+          HStack {
+            Text(LocalizedString.unfollowButtonText + " @" + postModel.userName)
+            
+            Image(systemName: "person.fill.xmark")
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
+      Button(
+        action: {
+
+        },
+        label: {
+          HStack {
+            Text(LocalizedString.listButtonText)
+
+            Image(systemName: "note.text.badge.plus")
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
+      Button(
+        action: {
+
+        },
+        label: {
+          HStack {
+            Text(LocalizedString.muteButtonText + " @" + postModel.userName)
+
+            Image(systemName: "speaker.slash")
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
+      Button(
+        action: {
+
+        },
+        label: {
+          HStack {
+            Text(LocalizedString.blockButtonText + " @" + postModel.userName)
+
+            Image(systemName: "circle.slash")
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
+      Button(
+        action: {
+
+        },
+        label: {
+          HStack {
+            Text(LocalizedString.reportButtonText)
+            Image(systemName: "flag")
+          }
+        }
+      )
+      .foregroundStyle(.primary)
+      .buttonStyle(.plain)
+
+    } label: {
+      Image(systemName: "ellipsis")
+        .foregroundStyle(Color(.black))
+    }
   }
 }
 
