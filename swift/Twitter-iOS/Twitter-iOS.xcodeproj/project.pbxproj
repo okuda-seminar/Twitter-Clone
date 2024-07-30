@@ -12,6 +12,7 @@
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
 		3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */; };
+		3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */; };
 		3B7332EC2C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */; };
 		3B7332ED2C23153F007F4537 /* MessagesSettingsHomeEnableCallingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332E82C23153F007F4537 /* MessagesSettingsHomeEnableCallingSectionView.swift */; };
 		3B7332EE2C23153F007F4537 /* MessagesSettingsHomeMessageFilteringSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332E92C23153F007F4537 /* MessagesSettingsHomeMessageFilteringSectionView.swift */; };
@@ -153,6 +154,7 @@
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
 		3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsMentionsTabView.swift; sourceTree = "<group>"; };
+		3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewObserver.swift; sourceTree = "<group>"; };
 		3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeCallingAccessControlSectionView.swift; sourceTree = "<group>"; };
 		3B7332E82C23153F007F4537 /* MessagesSettingsHomeEnableCallingSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeEnableCallingSectionView.swift; sourceTree = "<group>"; };
 		3B7332E92C23153F007F4537 /* MessagesSettingsHomeMessageFilteringSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeMessageFilteringSectionView.swift; sourceTree = "<group>"; };
@@ -555,6 +557,7 @@
 				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
 				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				6567CBD02BD7DDC200242716 /* UserProfileViewController.swift */,
+				3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -1094,6 +1097,7 @@
 				65C6CC202BF9625E00B0A052 /* BannerView.swift in Sources */,
 				65C71BA62C342EC90025839C /* JobsSearchTabView.swift in Sources */,
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
+				3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */,
 				658D087D2BEBA069006C6A9E /* SideMenuViewController.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */,
