@@ -3,6 +3,8 @@ import UIKit
 
 class UserProfileViewController: UIViewController {
 
+  // MARK: Public Props
+
   public var userModel: UserModel? {
     didSet {
       guard let userModel else { return }
@@ -18,6 +20,8 @@ class UserProfileViewController: UIViewController {
     return imageView
   }()
 
+  // MARK: Private Props
+
   private enum LayoutConstant {
     static let edgeHorizontalPadding = 16.0
 
@@ -27,6 +31,8 @@ class UserProfileViewController: UIViewController {
     static let profileIconViewTopPadding = 8.0
     static let profileIconViewSize = 48.0
   }
+
+  private var viewObserver = UserProfileViewObserver()
 
   private let userNameLabel: UILabel = {
     let label = UILabel()
@@ -47,7 +53,7 @@ class UserProfileViewController: UIViewController {
   }()
 
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: UserProfileView())
+    let controller = UIHostingController(rootView: UserProfileView(viewObserver: viewObserver))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -70,6 +76,7 @@ class UserProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+    setUpViewObserver()
   }
 
   // MARK: Private API
@@ -88,6 +95,12 @@ class UserProfileViewController: UIViewController {
 
     // Hide navigation bar
     navigationController?.setNavigationBarHidden(true, animated: false)
+  }
+
+  private func setUpViewObserver() {
+    viewObserver.didTapBackButtonCompletion = { [weak self] in
+      self?.navigationController?.popViewController(animated: true)
+    }
   }
 
   @objc
@@ -130,6 +143,8 @@ extension UserProfileViewController: UINavigationControllerDelegate {
 
 /// Currently only tab bar is implemented. but tab views will be added.
 struct UserProfileView: View {
+  @ObservedObject var viewObserver: UserProfileViewObserver
+
   @State private var tabs: [UserProfileTabModel] = [
     .init(id: .posts),
     .init(id: .replies),
@@ -163,7 +178,8 @@ struct UserProfileView: View {
         UserProfileBannerView(
           scrollOffset: $scrollOffset,
           titleOffset: $titleOffset,
-          borderOffsetToSwitch: LayoutConstant.borderOffsetToSwitch
+          borderOffsetToSwitch: LayoutConstant.borderOffsetToSwitch,
+          viewObserver: viewObserver
         )
         .frame(height: LayoutConstant.bannerViewHeight)
         .zIndex(ZIndex.banner)
@@ -251,5 +267,5 @@ struct UserProfileView: View {
 }
 
 #Preview {
-  UserProfileView()
+  UserProfileView(viewObserver: UserProfileViewObserver())
 }
