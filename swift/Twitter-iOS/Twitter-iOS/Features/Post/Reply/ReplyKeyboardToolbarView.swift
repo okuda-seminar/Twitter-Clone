@@ -5,9 +5,9 @@ class ReplyKeyboardToolbarView: UIView {
 
   private enum LayoutConstant {
     static let edgeVerticalPadding: CGFloat = 8.0
-    static let edgeHorizontalPadding: CGFloat = 12.0
+    static let edgeHorizontalPadding: CGFloat = 17.0
 
-    static let protectedIconSize: CGFloat = 36.0
+    static let protectedIconSize: CGFloat = 29.0
 
     static let textStackViewLeadingPadding: CGFloat = 8.0
   }
@@ -19,8 +19,6 @@ class ReplyKeyboardToolbarView: UIView {
   }
 
   private let protectedIcon: UIImageView = {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/276
-    // - Polish protectedIcon insets.
     let view = UIImageView(image: UIImage(systemName: "lock.fill"))
     view.translatesAutoresizingMaskIntoConstraints = false
     view.contentMode = .scaleAspectFit
@@ -73,7 +71,8 @@ class ReplyKeyboardToolbarView: UIView {
     NSLayoutConstraint.activate([
       protectedIcon.leadingAnchor.constraint(
         equalTo: leadingAnchor, constant: LayoutConstant.edgeHorizontalPadding),
-      protectedIcon.centerYAnchor.constraint(equalTo: textStackView.centerYAnchor),
+      protectedIcon.topAnchor.constraint(
+        equalTo: topAnchor, constant: LayoutConstant.edgeVerticalPadding),
       protectedIcon.widthAnchor.constraint(equalToConstant: LayoutConstant.protectedIconSize),
       protectedIcon.heightAnchor.constraint(equalToConstant: LayoutConstant.protectedIconSize),
 
