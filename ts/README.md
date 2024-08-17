@@ -27,3 +27,5 @@ For consistent readability, you can refer to [Google's style guide](https://goog
 - [x] Jest
 - [x] Cypress
   - [メルペイフロントエンドのテスト自動化方針](https://engineering.mercari.com/blog/entry/20211208-test-automation-policy-in-merpay-frontend/)
+- [ ] WebView
+  - [メルカリアプリのWebView向けWebアプリケーションの開発を支えるモック技術](https://engineering.mercari.com/blog/entry/2019-12-21-000000/)
