@@ -30,3 +30,6 @@ For consistent readability, you can refer to [Google's style guide](https://goog
   - [メルペイフロントエンドのテスト自動化方針](https://engineering.mercari.com/blog/entry/20211208-test-automation-policy-in-merpay-frontend/)
 - [ ] WebView
   - [メルカリアプリのWebView向けWebアプリケーションの開発を支えるモック技術](https://engineering.mercari.com/blog/entry/2019-12-21-000000/)
+
+## Evaluation
+- [フロントエンドチームの技術課題評価システム改善の取り組み](https://engineering.mercari.com/blog/entry/20231023-mmtf2023-day1-7/)
