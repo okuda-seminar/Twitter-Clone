@@ -21,7 +21,8 @@ For consistent readability, you can refer to [Google's style guide](https://goog
   - [CS Tool のフロントエンドのリプレイスプロジェクトについて](https://engineering.mercari.com/blog/entry/20230112-frontend-replacement/)
   - [Why and How to use TypeScript in your React App?](https://blog.bitsrc.io/why-and-how-use-typescript-in-your-react-app-60e8987be8de)
 - [x] React vs Next
-- [ ] REST vs GraphQL
+- [ ] GraphQL
+  - [GraphQL Client Architecture Recommendation 社外版](https://engineering.mercari.com/blog/entry/20221215-graphql-client-architecture-recommendation/)
 - [ ] Localization
   - [React の多言語化 (i18n) 対応 - Format.JS vs react-i18next](https://blogs.jp.infragistics.com/entry/react-localization-libraries)
 - [x] Jest
