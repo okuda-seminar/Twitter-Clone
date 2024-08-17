@@ -3,15 +3,15 @@ import { IconButton, Tooltip, VStack, Button ,Flex, Box} from "@chakra-ui/react"
 import { SearchIcon, BellIcon, EmailIcon, EditIcon } from "@chakra-ui/icons";
 import { PiHouseFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
-import { BsSlashSquare, BsPeople } from "react-icons/bs";
+import { BsSlashSquare, BsPeople, BsLayersHalf } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
+import IconButtonWithLink from "./CustomIconLink";
 
 const SideBar: React.FC = () => {
   return (
     <VStack marginBottom="48px" align="flex-start">
-       {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/389 - Create a reusable Sidebar component for the Link-Tooltip-IconButton structure */}
       <Link href="/home">
         <Tooltip label="twitter" placement="bottom" >
           <Flex alignItems="center">
@@ -20,83 +20,47 @@ const SideBar: React.FC = () => {
         </Tooltip>
       </Link>
 
-      <Link href="/home">
-        <Tooltip label="Home" placement="bottom">
-        {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/392 - Implement conditional tooltips for sidebar icons based on window size */}
-          <Flex alignItems="center">
-            <IconButton aria-label="Home" icon={<PiHouseFill />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Home</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/home"} 
+        tooltipText={"Home"} 
+        ariaLabel={"Home"}
+        icon={<PiHouseFill />}/>
 
-      <Link href="/explore">
-        <Tooltip label="Explore" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="Explore" icon={<SearchIcon />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Explore</span>
-            </Box>
-          </Flex>
-        </Tooltip> 
-      </Link>
+      <IconButtonWithLink 
+        url={"/explore"} 
+        tooltipText={"Explore"} 
+        ariaLabel={"Explore"}
+        icon={<SearchIcon />}/>
 
-      <Link href="/notifications">
-        <Tooltip label="Notifications" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="Notifications" icon={<BellIcon />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Notifications</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/notifications"} 
+        tooltipText={"Notifications"} 
+        ariaLabel={"Notifications"}
+        icon={<BellIcon />}/>
 
-      <Link href="/message">
-        <Tooltip label="Message" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="Message" icon={<EmailIcon />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Message</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/message"} 
+        tooltipText={"Message"} 
+        ariaLabel={"Message"}
+        icon={<EmailIcon />}/>
 
-      <Link href="/groc">
-        <Tooltip label="Groc" placement="bottom">
-         <Flex alignItems="center">
-           <IconButton aria-label="Groc" icon={<BsSlashSquare />} mx={4}/>
-           <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Groc</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/groc"} 
+        tooltipText={"Groc"} 
+        ariaLabel={"Groc"}
+        icon={<BsSlashSquare />}/>
 
-      <Link href="/comunity">
-        <Tooltip label="Comunity" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="Comunity" icon={<BsPeople />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Comunity</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/community"} 
+        tooltipText={"Community"} 
+        ariaLabel={"Community"}
+        icon={<BsPeople />}/>
 
-      <Link href="/profile">
-        <Tooltip label="Profile" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="Profile" icon={<FaUser />} mx={4}/>
-            <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">Profile</span>
-            </Box>
-          </Flex>
-        </Tooltip>
-      </Link>
+      <IconButtonWithLink 
+        url={"/profile"} 
+        tooltipText={"Profile"} 
+        ariaLabel={"Profile"}
+        icon={<FaUser />}/>
 
       <Tooltip label="More" placement="bottom">
         <Flex alignItems="center">
