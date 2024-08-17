@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <HStack align="start">
       <SideBar />
-      <h1>comunity page</h1>
+      <h1>community page</h1>
     </HStack>
   )
 }
