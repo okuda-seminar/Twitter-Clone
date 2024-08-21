@@ -12,6 +12,9 @@
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
 		3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */; };
+		3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */; };
+		3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */; };
+		3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */; };
 		3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */; };
 		3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */; };
 		3B7332EC2C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */; };
@@ -156,6 +159,9 @@
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
 		3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditViewObserver.swift; sourceTree = "<group>"; };
+		3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewController.swift; sourceTree = "<group>"; };
+		3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltTextEditViewController.swift; sourceTree = "<group>"; };
+		3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewObserver.swift; sourceTree = "<group>"; };
 		3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsMentionsTabView.swift; sourceTree = "<group>"; };
 		3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewObserver.swift; sourceTree = "<group>"; };
 		3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeCallingAccessControlSectionView.swift; sourceTree = "<group>"; };
@@ -329,6 +335,19 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		3B5CE85B2C775841005833E1 /* NewPost */ = {
+			isa = PBXGroup;
+			children = (
+				3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */,
+				3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */,
+				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
+				3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */,
+				3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */,
+				3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */,
+			);
+			path = NewPost;
+			sourceTree = "<group>";
+		};
 		6540F8742BB44D430029BA46 = {
 			isa = PBXGroup;
 			children = (
@@ -418,11 +437,9 @@
 			isa = PBXGroup;
 			children = (
 				65C6CCA32BFF5C2400B0A052 /* Entities */,
+				3B5CE85B2C775841005833E1 /* NewPost */,
 				65F908482BE1273700C6C8B3 /* Permission */,
 				65FD4F512C1B17A80020A02E /* Reply */,
-				3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */,
-				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
-				3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */,
 				6540F8BD2BB576740029BA46 /* NewPostEntrypointButtonController.swift */,
 				65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */,
 				65C6CCA52BFF5C9500B0A052 /* PostCellView.swift */,
@@ -1085,6 +1102,7 @@
 				3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */,
 				65C6CC222BF9684400B0A052 /* BannerController.swift in Sources */,
 				65C71BBC2C36DBC90025839C /* SearchedQueryModel.swift in Sources */,
+				3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */,
 				65FD4F502C19D87B0020A02E /* ReplyKeyboardToolbarView.swift in Sources */,
 				658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */,
 				3B7332F02C23153F007F4537 /* MessagesSettingsHomeDeviceAndNotificationControlSectionView.swift in Sources */,
@@ -1096,7 +1114,9 @@
 				6540F8CB2BB57A8B0029BA46 /* HomeViewController.swift in Sources */,
 				65C6CCA22BFE22EA00B0A052 /* UserProfileTabModel.swift in Sources */,
 				656C1BB12C0218D700EEE575 /* NotificationModel.swift in Sources */,
+				3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */,
 				65FD4FCF2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift in Sources */,
+				3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */,
 				65FD4FDC2C3039580020A02E /* SubscriptionService.swift in Sources */,
 				65C6CC272BFB70E400B0A052 /* UIViewController+Settings.swift in Sources */,
 				65C6CC2D2BFCC51F00B0A052 /* CGFloat+Rect.swift in Sources */,
