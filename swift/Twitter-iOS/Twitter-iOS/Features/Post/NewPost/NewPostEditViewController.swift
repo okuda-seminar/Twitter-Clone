@@ -70,12 +70,28 @@ final class NewPostEditViewController: UIViewController {
   }
 
   private func setUpViewObserver() {
-    viewObserver.didTapCancelButtonCompletion = { [weak self] in
-      self?.newPostEditHostingController.view.layer.opacity = 0.0
-      self?.photoLibraryAccessHostingController.view.layer.opacity = 0.0
-
-      self?.dismiss(animated: true, completion: nil)
+    viewObserver.didTapNewPostEditCancelButtonCompletion = { [weak self] in
+      self?.makeTransparentAndDismiss()
     }
+
+    viewObserver.didTapImageEditButtonCompletion = { [weak self] in
+      let selectedImageEditViewController = SelectedImageEditViewController()
+      selectedImageEditViewController.modalPresentationStyle = .fullScreen
+      self?.present(selectedImageEditViewController, animated: true)
+    }
+
+    viewObserver.didTapImageAltButtonCompletion = { [weak self] in
+      guard let dataSource = self?.dataSource else { return }
+      let altTextEditViewController = AltTextEditViewController(dataSource: dataSource)
+      self?.present(altTextEditViewController, animated: true)
+    }
+  }
+
+  private func makeTransparentAndDismiss() {
+    newPostEditHostingController.view.layer.opacity = 0.0
+    photoLibraryAccessHostingController.view.layer.opacity = 0.0
+
+    dismiss(animated: true, completion: nil)
   }
 
   // MARK: - Permission Request
@@ -120,6 +136,12 @@ struct NewPostEditView: View {
     static let multipleImagesHeight: CGFloat = 190.0
     static let firstImageLeadingPadding: CGFloat = 40.0
     static let imageCornerRadius: CGFloat = 10.0
+    static let imageEditButtonsOpacity: CGFloat = 0.7
+    static let deleteButtonSize: CGFloat = 30.0
+    static let brushButtonSize: CGFloat = 30.0
+    static let altButtonWidth: CGFloat = 45.0
+    static let altButtonHeight: CGFloat = 30.0
+    static let altButtonCornerRadius: CGFloat = 15.0
   }
 
   private enum LocalizedString {
@@ -127,6 +149,7 @@ struct NewPostEditView: View {
     static let draftsButtonText = String(localized: "Drafts")
     static let postButtonText = String(localized: "Post")
     static let textFieldPlaceHolderText = String(localized: "What's happening?")
+    static let altButtonText = String(localized: "+Alt")
   }
 
   private enum imageSelectionState: Int {
@@ -166,7 +189,7 @@ struct NewPostEditView: View {
     HStack {
       Button(
         action: {
-          viewObserver.didTapCancelButtonCompletion?()
+          viewObserver.didTapNewPostEditCancelButtonCompletion?()
         },
         label: {
           Text(LocalizedString.cancelButtonText)
@@ -236,8 +259,6 @@ struct NewPostEditView: View {
   @ViewBuilder
   private func SelectedImagesCatalog() -> some View {
     switch currentImageSelectionState {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/394
-    // - Add Cancel, Alt, and Edit Button to Image in NewPostEditViewController.swift.
     case .none:
       EmptyView()
     case .single:
@@ -247,6 +268,9 @@ struct NewPostEditView: View {
         .frame(height: LayoutConstant.singleImageHeight)
         .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
         .padding(.leading, LayoutConstant.singleImageLeadingPadding)
+        .overlay(alignment: .trailing) {
+          imageEditButtons()
+        }
     case .multiple:
       ScrollView(.horizontal) {
         HStack {
@@ -258,11 +282,70 @@ struct NewPostEditView: View {
                 height: LayoutConstant.multipleImagesHeight
               )
               .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
+              .overlay(alignment: .trailing) {
+                imageEditButtons()
+              }
               .padding(.leading, index == 0 ? LayoutConstant.firstImageLeadingPadding : 0.0)
           }
         }
       }
     }
+  }
+
+  @ViewBuilder
+  private func imageEditButtons() -> some View {
+    VStack(alignment: .trailing) {
+      Button {
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/402
+        // - Add Delete Image Functionality to Cancel Button in NewPostEditViewController.swift.
+      } label: {
+        Image(systemName: "xmark")
+          .foregroundStyle(.white)
+          .background(
+            Circle()
+              .fill(Color.black)
+              .frame(
+                width: LayoutConstant.deleteButtonSize, height: LayoutConstant.deleteButtonSize
+              )
+              .opacity(LayoutConstant.imageEditButtonsOpacity)
+          )
+      }
+
+      Spacer()
+
+      HStack {
+        Button {
+          viewObserver.didTapImageAltButtonCompletion?()
+        } label: {
+          Text(LocalizedString.altButtonText)
+            .font(.headline)
+            .foregroundStyle(.white)
+            .background(
+              RoundedRectangle(cornerRadius: LayoutConstant.altButtonCornerRadius)
+                .fill(Color.black)
+                .frame(width: LayoutConstant.altButtonWidth, height: LayoutConstant.altButtonHeight)
+                .opacity(LayoutConstant.imageEditButtonsOpacity)
+            )
+        }
+        .padding(.horizontal)
+
+        Button {
+          viewObserver.didTapImageEditButtonCompletion?()
+        } label: {
+          Image(systemName: "paintbrush.pointed")
+            .foregroundStyle(.white)
+            .background(
+              Circle()
+                .fill(Color.black)
+                .frame(
+                  width: LayoutConstant.brushButtonSize, height: LayoutConstant.brushButtonSize
+                )
+                .opacity(LayoutConstant.imageEditButtonsOpacity)
+            )
+        }
+      }
+    }
+    .padding()
   }
 }
 
@@ -298,5 +381,5 @@ struct PhotosSelector: View {
 }
 
 #Preview {
-  NewPostEditView(dataSource: NewPostEditDataSource(), viewObserver: NewPostEditViewObserver())
+  NewPostEditViewController()
 }
