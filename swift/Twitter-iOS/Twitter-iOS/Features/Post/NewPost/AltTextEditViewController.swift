@@ -3,8 +3,8 @@ import UIKit
 
 class AltTextEditViewController: UIViewController {
 
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/401
-  // - Polish AltTextEditView UI and Enable Mutual Data Transition with NewPostEditDataSource.
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/416
+  // - Fix Memory Leaks in AltTextEditViewController.swift.
 
   private enum LocalizedString {
     static let titleText = String(localized: "Write alt text")
@@ -17,17 +17,16 @@ class AltTextEditViewController: UIViewController {
     static let headlineFontSize: CGFloat = 20.0
     static let buttonsAndTitleStackViewTopPadding: CGFloat = 10.0
     static let scrollViewTopPadding: CGFloat = 10.0
-    static let textViewTopPadding: CGFloat = 10.0
     static let helpButtonAndCountStackViewTopPadding: CGFloat = 10.0
     static let leadingPadding: CGFloat = 15.0
     static let trailingPadding: CGFloat = -15.0
-    static let imageHeight: CGFloat = 150.0
-    static let textViewHeight: CGFloat = 200.0
   }
 
   @ObservedObject private var dataSource: NewPostEditDataSource
+  private let selectedImageIndex: Int
 
-  init(dataSource: NewPostEditDataSource) {
+  init(selectedImageIndex: Int, dataSource: NewPostEditDataSource) {
+    self.selectedImageIndex = selectedImageIndex
     self.dataSource = dataSource
     super.init(nibName: nil, bundle: nil)
   }
@@ -59,35 +58,14 @@ class AltTextEditViewController: UIViewController {
     return button
   }()
 
-  private let inputTextView: UITextView = {
-    let textView = UITextView()
-    textView.translatesAutoresizingMaskIntoConstraints = false
-    textView.textColor = .white
-    textView.backgroundColor = .black
-    return textView
-  }()
-
-  private let selectedImageView: UIImageView = {
-    let imageView = UIImageView(image: UIImage(systemName: "apple.logo"))
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    imageView.contentMode = .scaleAspectFit
-    return imageView
-  }()
-
-  private let helpButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle(LocalizedString.helpButtonText, for: .normal)
-    button.setTitleColor(.brandedBlue, for: .normal)
-    return button
-  }()
-
-  private lazy var altTextCountLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = .gray
-    label.text = "\(dataSource.altText.count)/1000"
-    return label
+  private lazy var hostingController: UIHostingController = {
+    let controller = UIHostingController(
+      rootView: AltTextEditSheetView(selectedImageIndex: selectedImageIndex, dataSource: dataSource)
+    )
+    controller.view.translatesAutoresizingMaskIntoConstraints = false
+    addChild(controller)
+    controller.didMove(toParent: self)
+    return controller
   }()
 
   override func viewDidLoad() {
@@ -95,11 +73,6 @@ class AltTextEditViewController: UIViewController {
     setUpSubViews()
   }
 
-  /// The reason we're choosing UIKit instead of SwiftUi here.
-  /// 1.Although it is easier to create a View in SwiftUI, SwiftUI doesn’t support becomeFirstResponder,
-  /// and it is easier to implement that functionality with UIKit.
-  /// 2. SwiftUI ScrollView is not compatible with NSLayoutConstant and this makes it harder to align its height with the keyboardLayoutGuide
-  /// and could impair UX.
   private func setUpSubViews() {
     view.backgroundColor = .black
 
@@ -110,16 +83,10 @@ class AltTextEditViewController: UIViewController {
     buttonsAndTitleStackView.axis = .horizontal
     buttonsAndTitleStackView.distribution = .equalSpacing
 
-    let helpButtonAndCountStackView = UIStackView(arrangedSubviews: [helpButton, altTextCountLabel])
-    helpButtonAndCountStackView.translatesAutoresizingMaskIntoConstraints = false
-    helpButtonAndCountStackView.axis = .horizontal
-    helpButtonAndCountStackView.distribution = .equalSpacing
-
     let scrollView = UIScrollView()
     scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.addSubview(selectedImageView)
-    scrollView.addSubview(inputTextView)
-    scrollView.addSubview(helpButtonAndCountStackView)
+    hostingController.view.backgroundColor = .black
+    scrollView.addSubview(hostingController.view)
 
     view.addSubview(buttonsAndTitleStackView)
     view.addSubview(scrollView)
@@ -128,8 +95,6 @@ class AltTextEditViewController: UIViewController {
       .init { _ in
         self.dismiss(animated: true)
       }, for: .touchUpInside)
-
-    inputTextView.becomeFirstResponder()
 
     let layoutGuide = view.safeAreaLayoutGuide
     let keyboardLayoutGuide = view.keyboardLayoutGuide
@@ -152,34 +117,91 @@ class AltTextEditViewController: UIViewController {
         equalTo: buttonsAndTitleStackView.trailingAnchor),
       scrollViewFrameLayoutGuide.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor),
 
-      selectedImageView.topAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.topAnchor),
-      selectedImageView.leadingAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.leadingAnchor),
-      selectedImageView.trailingAnchor.constraint(
-        equalTo: scrollViewFrameLayoutGuide.trailingAnchor),
-      selectedImageView.heightAnchor.constraint(equalToConstant: LayoutConstant.imageHeight),
-      selectedImageView.widthAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.widthAnchor),
-
-      inputTextView.topAnchor.constraint(
-        equalTo: selectedImageView.bottomAnchor, constant: LayoutConstant.textViewTopPadding),
-      inputTextView.leadingAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.leadingAnchor),
-      inputTextView.trailingAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.trailingAnchor),
-      inputTextView.heightAnchor.constraint(equalToConstant: LayoutConstant.textViewHeight),
-
-      helpButtonAndCountStackView.topAnchor.constraint(
-        equalTo: inputTextView.bottomAnchor,
-        constant: LayoutConstant.helpButtonAndCountStackViewTopPadding),
-      helpButtonAndCountStackView.leadingAnchor.constraint(
+      hostingController.view.topAnchor.constraint(equalTo: scrollViewFrameLayoutGuide.topAnchor),
+      hostingController.view.leadingAnchor.constraint(
         equalTo: scrollViewFrameLayoutGuide.leadingAnchor),
-      helpButtonAndCountStackView.trailingAnchor.constraint(
+      hostingController.view.trailingAnchor.constraint(
         equalTo: scrollViewFrameLayoutGuide.trailingAnchor),
-      helpButtonAndCountStackView.bottomAnchor.constraint(
+      hostingController.view.bottomAnchor.constraint(
         equalTo: scrollViewFrameLayoutGuide.bottomAnchor),
-      helpButtonAndCountStackView.widthAnchor.constraint(
-        equalTo: scrollViewFrameLayoutGuide.widthAnchor),
     ])
   }
 }
 
+struct AltTextEditSheetView: View {
+
+  init(selectedImageIndex: Int, dataSource: NewPostEditDataSource) {
+    self.selectedImageIndex = selectedImageIndex
+    self.dataSource = dataSource
+  }
+
+  private enum LocalizedString {
+    static let cancelEditButtonText = String(localized: "Cancel")
+    static let sheetViewTitle = String("Write alt text")
+    static let doneEditButtonText = String(localized: "Done")
+    static let textFieldPlaceHolder = String(localized: "Image description")
+    static let helpButtonText = String(localized: "What's an image description?")
+  }
+
+  private enum LayoutConstant {
+    static let selectedImageHeight: CGFloat = 300.0
+  }
+
+  @ObservedObject private(set) var dataSource: NewPostEditDataSource
+  @FocusState private(set) var isFocused: Bool
+
+  private let selectedImageIndex: Int
+  private let maxCharCounts: Int = 1000
+
+  var body: some View {
+    VStack {
+      VStack {
+        Image(uiImage: dataSource.selectedImages[selectedImageIndex])
+          .resizable()
+          .frame(
+            height: LayoutConstant.selectedImageHeight
+          )
+      }
+
+      TextField(
+        "",
+        text: $dataSource.altTexts[selectedImageIndex],
+        prompt: Text(LocalizedString.textFieldPlaceHolder).foregroundStyle(.gray),
+        axis: .vertical
+      )
+      .focused($isFocused)
+      .foregroundStyle(.white)
+      .onChange(of: dataSource.altTexts[selectedImageIndex]) {
+        guard dataSource.altTexts[selectedImageIndex].count <= maxCharCounts else {
+          dataSource.altTexts[selectedImageIndex] = String(
+            dataSource.altTexts[selectedImageIndex].prefix(maxCharCounts))
+          return
+        }
+      }
+
+      HStack {
+        Button {
+          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/414
+          // - Connect Help Button to "help.x.com" in AltTextEditViewController.swift.
+        } label: {
+          Text(LocalizedString.helpButtonText)
+        }
+
+        Spacer()
+
+        Text("\(dataSource.altTexts[selectedImageIndex].count)/\(maxCharCounts)")
+          .foregroundStyle(.gray)
+      }
+
+      Spacer()
+    }
+    .background(.black)
+    .onAppear {
+      isFocused = true
+    }
+  }
+}
+
 #Preview {
-  AltTextEditViewController(dataSource: NewPostEditDataSource())
+  AltTextEditViewController(selectedImageIndex: 0, dataSource: createFakeNewPostEditDataSource())
 }
