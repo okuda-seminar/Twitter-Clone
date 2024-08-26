@@ -80,9 +80,11 @@ final class NewPostEditViewController: UIViewController {
       self?.present(selectedImageEditViewController, animated: true)
     }
 
-    viewObserver.didTapImageAltButtonCompletion = { [weak self] in
+    viewObserver.didTapImageAltButtonCompletion = { [weak self] selectedImageIndex in
       guard let dataSource = self?.dataSource else { return }
-      let altTextEditViewController = AltTextEditViewController(dataSource: dataSource)
+      let altTextEditViewController = AltTextEditViewController(
+        selectedImageIndex: selectedImageIndex, dataSource: dataSource)
+      altTextEditViewController.modalPresentationStyle = .pageSheet
       self?.present(altTextEditViewController, animated: true)
     }
   }
@@ -269,7 +271,7 @@ struct NewPostEditView: View {
         .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
         .padding(.leading, LayoutConstant.singleImageLeadingPadding)
         .overlay(alignment: .trailing) {
-          imageEditButtons()
+          imageEditButtons(selectedImageIndex: 0)
         }
     case .multiple:
       ScrollView(.horizontal) {
@@ -283,7 +285,7 @@ struct NewPostEditView: View {
               )
               .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
               .overlay(alignment: .trailing) {
-                imageEditButtons()
+                imageEditButtons(selectedImageIndex: index)
               }
               .padding(.leading, index == 0 ? LayoutConstant.firstImageLeadingPadding : 0.0)
           }
@@ -293,7 +295,7 @@ struct NewPostEditView: View {
   }
 
   @ViewBuilder
-  private func imageEditButtons() -> some View {
+  private func imageEditButtons(selectedImageIndex: Int) -> some View {
     VStack(alignment: .trailing) {
       Button {
         // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/402
@@ -315,7 +317,7 @@ struct NewPostEditView: View {
 
       HStack {
         Button {
-          viewObserver.didTapImageAltButtonCompletion?()
+          viewObserver.didTapImageAltButtonCompletion?(selectedImageIndex)
         } label: {
           Text(LocalizedString.altButtonText)
             .font(.headline)
@@ -373,6 +375,7 @@ struct PhotosSelector: View {
         guard let data = try? await selectedItem.loadTransferable(type: Data.self) else { return }
         guard let uiImage = UIImage(data: data) else { return }
         images.append(uiImage)
+        dataSource.altTexts.append("")
       }
 
       dataSource.selectedImages = images

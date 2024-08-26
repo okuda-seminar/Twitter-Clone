@@ -2,7 +2,7 @@ import Foundation
 
 typealias didTapNewPostEditCancelButtonCompletion = () -> Void
 typealias didTapImageEditButtonCompletion = () -> Void
-typealias didTapImageAltButtonCompletion = () -> Void
+typealias didTapImageAltButtonCompletion = (Int) -> Void
 
 class NewPostEditViewObserver: ObservableObject {
   var didTapNewPostEditCancelButtonCompletion: didTapNewPostEditCancelButtonCompletion?
