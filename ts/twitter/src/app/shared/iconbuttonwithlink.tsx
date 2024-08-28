@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Tooltip,Flex, Box} from "@chakra-ui/react";
+import { IconButton, Tooltip,Flex, Box, Text} from "@chakra-ui/react";
 import Link from "next/link";
 
 interface Props {
@@ -18,7 +18,7 @@ const IconButtonWithLink: React.FC<Props> = (props) => {
           <Flex alignItems="center">
             <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4}/>
             <Box display={{ base: "none", xl: "inline" }}>
-              <span className="font-bold">{props.ariaLabel}</span>
+              <Text fontWeight="bold">{props.ariaLabel}</Text>
             </Box>
           </Flex>
         </Tooltip>

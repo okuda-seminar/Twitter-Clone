@@ -1,13 +1,14 @@
 import React from "react";
-import { IconButton, Tooltip, VStack, Button ,Flex, Box} from "@chakra-ui/react";
-import { SearchIcon, BellIcon, EmailIcon, EditIcon } from "@chakra-ui/icons";
+import { IconButton, Tooltip, VStack, Flex, Box, Text } from "@chakra-ui/react";
+import { SearchIcon, BellIcon, EmailIcon } from "@chakra-ui/icons";
 import { PiHouseFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
-import { BsSlashSquare, BsPeople, BsLayersHalf } from "react-icons/bs";
+import { BsSlashSquare, BsPeople } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
-import IconButtonWithLink from "./CustomIconLink";
+import IconButtonWithLink from "./iconbuttonwithlink";
+import Posts from "../posts/page";
 
 const SideBar: React.FC = () => {
   return (
@@ -66,26 +67,12 @@ const SideBar: React.FC = () => {
         <Flex alignItems="center">
           <IconButton aria-label="More" icon={<CiCircleMore />} mx={4}/>
           <Box display={{ base: "none", xl: "inline" }}>
-            <span className="font-bold">More</span>
+          <Text fontWeight="bold">More</Text>
           </Box>
         </Flex>
       </Tooltip>
-
-      <Box display={{ base: "none", xl: "inline" }}>
-        <Button
-          className="hover:brightness-95 transition-all duration-200"
-          bg="blue.400"
-          color="white"
-          borderRadius="full"
-          px={4}
-          py={2}
-          mt={4}
-          w="48"
-          h="9"
-          boxShadow="md">
-          Post
-        </Button>  
-      </Box>
+      
+      <Posts/>
       
     </VStack>
   );
