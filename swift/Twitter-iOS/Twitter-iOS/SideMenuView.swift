@@ -1,50 +1,6 @@
 import SwiftUI
 import UIKit
 
-class SideMenuViewController: UIViewController {
-
-  public var currentUser: CurrentUser
-  public weak var sideMenuViewDelegate: SideMenuViewDelegate?
-
-  // MARK: - Public API
-
-  public init(currentUser: CurrentUser, sideMenuViewDelegate: SideMenuViewDelegate? = nil) {
-    self.currentUser = currentUser
-    self.sideMenuViewDelegate = sideMenuViewDelegate
-    super.init(nibName: nil, bundle: nil)
-  }
-
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setUpSubviews()
-  }
-
-  // MARK: - Private API
-
-  private func setUpSubviews() {
-    let hostingController = UIHostingController(
-      rootView: SideMenuView(
-        userName: currentUser.userName, numOfFollowing: currentUser.numOfFollowing,
-        numOfFollowers: currentUser.numOfFollowers, delegate: sideMenuViewDelegate))
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-    addChild(hostingController)
-    hostingController.didMove(toParent: self)
-    view.addSubview(hostingController.view)
-
-    let layoutGuide = view.safeAreaLayoutGuide
-    NSLayoutConstraint.activate([
-      hostingController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
-      hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-    ])
-  }
-}
-
 struct SideMenuView: View {
   public var userName: String
   public var numOfFollowing: Int
@@ -53,7 +9,7 @@ struct SideMenuView: View {
 
   private enum LayoutConstant {
     static let imageSize: CGFloat = 20.0
-    static let disclosureViewWidth: CGFloat = 300.0
+    static let disclosureViewWidth: CGFloat = 250.0
   }
 
   private enum LocalizedString {

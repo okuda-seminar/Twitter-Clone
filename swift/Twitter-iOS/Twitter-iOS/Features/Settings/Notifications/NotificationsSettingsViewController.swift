@@ -12,6 +12,8 @@ class NotificationsSettingsViewController: SettingsViewController {
   }
 
   private func setSubviews() {
+    view.backgroundColor = .systemBackground
+
     let hostingController = UIHostingController(rootView: NotificationsSettingsView())
     addChild(hostingController)
     hostingController.didMove(toParent: self)

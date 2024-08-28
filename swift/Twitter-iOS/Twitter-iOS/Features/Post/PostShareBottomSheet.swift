@@ -47,7 +47,7 @@ struct PostShareBottomSheet: View {
             dismiss()
             let bannerController = BannerController(
               message: String(localized: "Copied to clipboard"), bannerType: .TextOnly)
-            bannerController.show(on: MainRootViewController.sharedInstance)
+            bannerController.show(on: AppRootViewController.sharedInstance)
           } label: {
             VStack {
               Image(systemName: "link")
