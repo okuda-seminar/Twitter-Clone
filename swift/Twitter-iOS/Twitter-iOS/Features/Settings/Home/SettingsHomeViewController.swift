@@ -13,6 +13,8 @@ class SettingsHomeViewController: SettingsViewController {
   }
 
   private func setSubviews() {
+    view.backgroundColor = .systemBackground
+
     let hostingController = UIHostingController(rootView: SettingsHomeView(delegate: self))
     addChild(hostingController)
     hostingController.didMove(toParent: self)

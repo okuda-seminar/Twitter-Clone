@@ -1,133 +1,96 @@
+import DrawerPresentation
 import SwiftUI
 import UIKit
 
-class AppRootViewController: UIViewController {
+class AppRootViewController: UITabBarController {
 
-  // MARK: - Public properties
+  public static var sharedInstance = AppRootViewController()
 
-  public var isSideMenuScrollable: Bool = true {
-    didSet {
-      scrollView.isScrollEnabled = isSideMenuScrollable
-    }
+  private enum TabBarItemTag: Int {
+    case home
+    case search
+    case communities
+    case notifications
+    case messages
   }
-
-  // MARK: - Private properties
-
-  private lazy var mainRootViewController: MainRootViewController = {
-    let viewController = MainRootViewController.sharedInstance
-    viewController.view.translatesAutoresizingMaskIntoConstraints = false
-    addChild(viewController)
-    viewController.didMove(toParent: self)
-    return viewController
-  }()
-
-  private let scrollView: UIScrollView = {
-    let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.showsVerticalScrollIndicator = false
-    scrollView.bounces = false
-    return scrollView
-  }()
-
-  private let stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .horizontal
-    return stackView
-  }()
-
-  private let overlayView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = .brandedLightGrayBackground
-    view.alpha = 0.0
-    return view
-  }()
-
-  private lazy var sideMenuViewController: SideMenuViewController = {
-    var viewController = SideMenuViewController(currentUser: InjectCurrentUser())
-    viewController.sideMenuViewDelegate = self
-    viewController.view.translatesAutoresizingMaskIntoConstraints = false
-    addChild(viewController)
-    viewController.didMove(toParent: self)
-    return viewController
-  }()
-
-  private lazy var backGroundTapGestureRecognizer: UITapGestureRecognizer = {
-    var gestureRecognizer = UITapGestureRecognizer()
-    gestureRecognizer.addTarget(self, action: #selector(didTapOverlayView))
-    return gestureRecognizer
-  }()
-
-  // MARK: - Layout
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    setUpTabBar()
     setUpSubviews()
   }
 
+  private func setUpTabBar() {
+    tabBar.backgroundColor = .systemBackground
+  }
+
   private func setUpSubviews() {
-    stackView.addArrangedSubview(sideMenuViewController.view)
-    stackView.addArrangedSubview(mainRootViewController.view)
-    scrollView.addSubview(stackView)
-    view.addSubview(scrollView)
-    view.addSubview(overlayView)
-    view.backgroundColor = .systemBackground
+    let notificationCenter = NotificationCenter.default
 
+    let homeViewController = HomeViewController(delegate: self)
+    let homeNavigationController = UINavigationController(
+      rootViewController: homeViewController)
+    homeNavigationController.tabBarItem = UITabBarItem(
+      title: "", image: UIImage(systemName: "house"), tag: TabBarItemTag.home.rawValue)
+    notificationCenter.addObserver(
+      self, selector: #selector(didTapHomeTabBarItem), name: .didTapHomeTabBarItem, object: nil)
+    notificationCenter.addObserver(
+      self, selector: #selector(didLongPressHomeTabBarItem), name: .didLongPressHomeTabBarItem,
+      object: nil)
+
+    let searchViewController = UINavigationController(
+      rootViewController: SearchHomeViewController(delegate: self))
+    searchViewController.tabBarItem = UITabBarItem(
+      title: "", image: UIImage(systemName: "magnifyingglass"), tag: TabBarItemTag.search.rawValue)
+
+    let communitiesViewController = UINavigationController(
+      rootViewController: CommunitiesHomeViewController(delegate: self))
+    communitiesViewController.tabBarItem = UITabBarItem(
+      title: "", image: UIImage(systemName: "person.2"), tag: TabBarItemTag.communities.rawValue)
+
+    let notificationsViewController = UINavigationController(
+      rootViewController: NotificationsViewController(delegate: self))
+    notificationsViewController.tabBarItem = UITabBarItem(
+      title: "", image: UIImage(systemName: "bell"), tag: TabBarItemTag.notifications.rawValue)
+
+    let messagesViewController = UINavigationController(
+      rootViewController: MessagesViewController(delegate: self))
+    messagesViewController.tabBarItem = UITabBarItem(
+      title: "", image: UIImage(systemName: "envelope"), tag: TabBarItemTag.messages.rawValue)
+
+    viewControllers = [
+      homeNavigationController, searchViewController, communitiesViewController,
+      notificationsViewController, messagesViewController,
+    ]
+
+    tabBar.addSubview(homeViewController.tabBarItemOverlayView)
+    let tabBarButton = tabBar.subviews[TabBarItemTag.home.rawValue]
+    let overlayView = homeViewController.tabBarItemOverlayView
     NSLayoutConstraint.activate([
-      scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-      scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-      stackView.topAnchor.constraint(equalTo: view.topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-      stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-
-      sideMenuViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-      sideMenuViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-      mainRootViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-      mainRootViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      mainRootViewController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
-
-      overlayView.topAnchor.constraint(equalTo: mainRootViewController.view.topAnchor),
-      overlayView.leadingAnchor.constraint(equalTo: mainRootViewController.view.leadingAnchor),
-      overlayView.bottomAnchor.constraint(equalTo: mainRootViewController.view.bottomAnchor),
-      overlayView.trailingAnchor.constraint(equalTo: mainRootViewController.view.trailingAnchor),
+      overlayView.topAnchor.constraint(equalTo: tabBarButton.topAnchor),
+      overlayView.leadingAnchor.constraint(equalTo: tabBarButton.leadingAnchor),
+      overlayView.bottomAnchor.constraint(equalTo: tabBarButton.bottomAnchor),
+      overlayView.trailingAnchor.constraint(equalTo: tabBarButton.trailingAnchor),
     ])
-
-    overlayView.addGestureRecognizer(backGroundTapGestureRecognizer)
-
-    Task {
-      hideSideMenu(animated: false)
-    }
   }
 
-  // MARK: - Public API
+  private func hideSideMenu() {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/409
+    // - Enable Smoother Transitions from SideMenu to Other Views.
+    self.dismiss(animated: true)
+  }
 
-  public func showSideMenu() {
-    scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    overlayView.alpha = 1.0
-    overlayView.layer.opacity = 0.5
+  // MARK: - NSNotification
+
+  @objc
+  private func didTapHomeTabBarItem() {
+    selectedIndex = TabBarItemTag.home.rawValue
   }
 
   @objc
-  public func hideSideMenu(animated: Bool = true) {
-    scrollView.setContentOffset(
-      CGPoint(x: sideMenuViewController.view.frame.width, y: 0), animated: animated)
-    overlayView.alpha = 0.0
-  }
-
-  // MARK: - Private API
-
-  @objc
-  private func didTapOverlayView() {
-    // Without this wrap, animated becomes false when tapping overlay view.
-    hideSideMenu()
+  private func didLongPressHomeTabBarItem() {
+    selectedIndex = TabBarItemTag.home.rawValue
   }
 }
 
@@ -136,7 +99,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapUserProfile() {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     let userProfileViewController = UserProfileViewController(userModel: InjectCurrentUser())
@@ -146,7 +109,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapBookmarks() {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     let userBookmarksPageViewController = UserBookmarksPageViewController()
@@ -156,7 +119,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapJobs() {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     selectedViewController.pushViewController(JobsViewController(), animated: true)
@@ -165,7 +128,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapFollowerRequests() {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     let userFollowerRequestsPageViewController = UserFollowerRequestsPageViewController()
@@ -176,7 +139,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapSettingsAndPrivacy() {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     let settingsViewController = SettingsHomeViewController()
@@ -186,7 +149,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   func didTapUserFollowRelationsButton(userName: String) {
     hideSideMenu()
     guard
-      let selectedViewController = mainRootViewController.selectedViewController
+      let selectedViewController = self.selectedViewController
         as? UINavigationController
     else { return }
     let userFollowRelationsViewController = UserFollowRelationsViewController(userName: userName)
@@ -196,43 +159,46 @@ extension AppRootViewController: SideMenuViewDelegate {
 
 class ViewControllerWithUserIconButton: UIViewController {
 
-  private var rootViewController: UIViewController {
-    var viewController = self as UIViewController
-    while let parent = viewController.parent {
-      viewController = parent
-    }
-    return viewController
+  private let drawerController = DrawerTransitionController()
+  public weak var delegate: SideMenuViewDelegate?
+
+  init(delegate: SideMenuViewDelegate) {
+    self.delegate = delegate
+    super.init(nibName: nil, bundle: nil)
   }
 
-  @objc
-  public func showSideMenu() {
-    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
-    rootViewController.showSideMenu()
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - View Lifecycle
+  private lazy var sideMenuHostingController: UIHostingController = {
+    let fakeUser = createFakeUser()
+    let controller = UIHostingController(
+      rootView: SideMenuView(
+        userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowing,
+        numOfFollowers: fakeUser.numOfFollowers, delegate: delegate))
+    return controller
+  }()
+
+  // MARK: View Lifecycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setUpDrawerController()
+  }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     setUpNavigation()
-
-    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
-    rootViewController.hideSideMenu(animated: false)
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
-    rootViewController.isSideMenuScrollable = true
+  private func setUpDrawerController() {
+    drawerController.addDrawerGesture(
+      to: self,
+      drawerViewController: {
+        self.sideMenuHostingController
+      })
   }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    guard let rootViewController = self.rootViewController as? AppRootViewController else { return }
-    rootViewController.isSideMenuScrollable = false
-  }
-
-  // MARK: - Private API
 
   private func setUpNavigation() {
     navigationItem.backButtonDisplayMode = .minimal
@@ -241,6 +207,12 @@ class ViewControllerWithUserIconButton: UIViewController {
     let backButtonImage = UIImage(systemName: "arrow.left")
     navigationController.navigationBar.backIndicatorImage = backButtonImage
     navigationController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-    navigationController.setNavigationBarHidden(false, animated: true)
+    navigationController.navigationBar.tintColor = .black
+    navigationController.setNavigationBarHidden(false, animated: false)
+  }
+
+  @objc
+  public func showSideMenu() {
+    drawerController.presentRegisteredDrawer()
   }
 }
