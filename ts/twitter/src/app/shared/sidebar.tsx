@@ -9,72 +9,90 @@ import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
 import IconButtonWithLink from "./iconbuttonwithlink";
 import Posts from "../posts/page";
+import SignInButton from "../auth/signinbutton";
 
 const SideBar: React.FC = () => {
   return (
-    <VStack marginBottom="48px" align="flex-start">
-      <Link href="/home">
-        <Tooltip label="twitter" placement="bottom" >
+    <Flex>
+      <VStack marginBottom="48px" align="flex-start">
+        <Link href="/home">
+          <Tooltip label="twitter" placement="bottom">
+            <Flex alignItems="center">
+              <IconButton
+                aria-label="Twitter"
+                borderRadius="full"
+                icon={<FaTwitter />}
+                mx={4}
+              />
+            </Flex>
+          </Tooltip>
+        </Link>
+
+        <IconButtonWithLink
+          url={"/home"}
+          tooltipText={"Home"}
+          ariaLabel={"Home"}
+          icon={<PiHouseFill />}
+        />
+
+        <IconButtonWithLink
+          url={"/explore"}
+          tooltipText={"Explore"}
+          ariaLabel={"Explore"}
+          icon={<SearchIcon />}
+        />
+
+        <IconButtonWithLink
+          url={"/notifications"}
+          tooltipText={"Notifications"}
+          ariaLabel={"Notifications"}
+          icon={<BellIcon />}
+        />
+
+        <IconButtonWithLink
+          url={"/message"}
+          tooltipText={"Message"}
+          ariaLabel={"Message"}
+          icon={<EmailIcon />}
+        />
+
+        <IconButtonWithLink
+          url={"/groc"}
+          tooltipText={"Groc"}
+          ariaLabel={"Groc"}
+          icon={<BsSlashSquare />}
+        />
+
+        <IconButtonWithLink
+          url={"/community"}
+          tooltipText={"Community"}
+          ariaLabel={"Community"}
+          icon={<BsPeople />}
+        />
+
+        <IconButtonWithLink
+          url={"/profile"}
+          tooltipText={"Profile"}
+          ariaLabel={"Profile"}
+          icon={<FaUser />}
+        />
+
+        <Tooltip label="More" placement="bottom">
           <Flex alignItems="center">
-            <IconButton aria-label="Twitter" borderRadius="full" icon={<FaTwitter />} mx={4}/>
+            <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
+            <Box display={{ base: "none", xl: "inline" }}>
+              <Text fontWeight="bold">More</Text>
+            </Box>
           </Flex>
         </Tooltip>
-      </Link>
 
-      <IconButtonWithLink 
-        url={"/home"} 
-        tooltipText={"Home"} 
-        ariaLabel={"Home"}
-        icon={<PiHouseFill />}/>
+        <Posts />
+      </VStack>
 
-      <IconButtonWithLink 
-        url={"/explore"} 
-        tooltipText={"Explore"} 
-        ariaLabel={"Explore"}
-        icon={<SearchIcon />}/>
-
-      <IconButtonWithLink 
-        url={"/notifications"} 
-        tooltipText={"Notifications"} 
-        ariaLabel={"Notifications"}
-        icon={<BellIcon />}/>
-
-      <IconButtonWithLink 
-        url={"/message"} 
-        tooltipText={"Message"} 
-        ariaLabel={"Message"}
-        icon={<EmailIcon />}/>
-
-      <IconButtonWithLink 
-        url={"/groc"} 
-        tooltipText={"Groc"} 
-        ariaLabel={"Groc"}
-        icon={<BsSlashSquare />}/>
-
-      <IconButtonWithLink 
-        url={"/community"} 
-        tooltipText={"Community"} 
-        ariaLabel={"Community"}
-        icon={<BsPeople />}/>
-
-      <IconButtonWithLink 
-        url={"/profile"} 
-        tooltipText={"Profile"} 
-        ariaLabel={"Profile"}
-        icon={<FaUser />}/>
-
-      <Tooltip label="More" placement="bottom">
-        <Flex alignItems="center">
-          <IconButton aria-label="More" icon={<CiCircleMore />} mx={4}/>
-          <Box display={{ base: "none", xl: "inline" }}>
-          <Text fontWeight="bold">More</Text>
-          </Box>
-        </Flex>
-      </Tooltip>
-      
-      <Posts/>
-      
-    </VStack>
+      <Box position="fixed" bottom={8} left={0} right={0}>
+        <SignInButton />
+      </Box>
+    </Flex>
   );
 };
 

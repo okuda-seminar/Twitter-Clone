@@ -8,5 +8,5 @@ export default function Page() {
       <SideBar />
       <h1>notifications page</h1>
     </HStack>
-  )
+  );
 }

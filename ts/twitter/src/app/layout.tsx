@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { ColorModeScript } from "@chakra-ui/react";
 import theme from "./shared/theme";
+import { SessionProvider } from "./auth/sessioncontext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <Providers>{children}</Providers>
+          <Providers>
+            <SessionProvider>{children}</SessionProvider>
+          </Providers>
       </body>
     </html>
   );
