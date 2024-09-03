@@ -8,5 +8,5 @@ export default function Page() {
       <SideBar />
       <h1>message page</h1>
     </HStack>
-  )
+  );
 }
