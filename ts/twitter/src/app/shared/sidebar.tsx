@@ -7,9 +7,9 @@ import { BsSlashSquare, BsPeople } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
-import IconButtonWithLink from "./iconbuttonwithlink";
+import IconButtonWithLink from "./icon-button-with-link";
 import Posts from "../posts/page";
-import SignInButton from "../auth/signinbutton";
+import SignInButton from "../auth/sign-in-button";
 
 const SideBar: React.FC = () => {
   return (

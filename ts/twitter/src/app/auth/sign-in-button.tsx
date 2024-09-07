@@ -2,8 +2,8 @@
 import React from "react";
 import { IconButton, Tooltip, Box, Button } from "@chakra-ui/react";
 import { CiLogin } from "react-icons/ci";
-import { useSession } from "./sessioncontext";
-import MiniProfile from "../user/miniprofile";
+import { useSession } from "./session-context";
+import MiniProfile from "../user/mini-profile";
 
 export default function SignInbutton() {
   const { session, user, setSession } = useSession();
@@ -15,9 +15,7 @@ export default function SignInbutton() {
   return (
     <Box>
       {session && user ? (
-        <Box>
-          <MiniProfile user={user} />
-        </Box>
+        <MiniProfile user={user} />
       ) : (
         <Box>
           <Box display={{ base: "none", xl: "inline" }}>
