@@ -140,6 +140,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
+        delegate?.didTapLists()
       },
       label: {
         Image(systemName: "list.clipboard")
@@ -233,6 +234,7 @@ protocol SideMenuViewDelegate: AnyObject {
   func didTapUserProfile()
   func didTapBookmarks()
   func didTapJobs()
+  func didTapLists()
   func didTapFollowerRequests()
   func didTapSettingsAndPrivacy()
   func didTapUserFollowRelationsButton(userName: String)
