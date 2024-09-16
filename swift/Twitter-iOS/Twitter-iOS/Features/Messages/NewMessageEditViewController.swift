@@ -57,8 +57,8 @@ final class NewMessageEditViewController: UIViewController {
     view.addSubview(addressTextField)
 
     cancelButton.addAction(
-      .init { _ in
-        self.dismiss(animated: true)
+      .init { [weak self] _ in
+        self?.dismiss(animated: true)
       }, for: .touchUpInside)
 
     addressTextField.becomeFirstResponder()

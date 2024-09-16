@@ -6,10 +6,10 @@ final class NewPostEntrypointButtonController: UIViewController {
 
     let button = NewPostEntrypointButton()
     button.addAction(
-      .init { _ in
+      .init { [weak self] _ in
         let newPostEditViewController = NewPostEditViewController()
         newPostEditViewController.modalPresentationStyle = .fullScreen
-        self.present(newPostEditViewController, animated: true)
+        self?.present(newPostEditViewController, animated: true)
       }, for: .touchUpInside)
     view = button
   }

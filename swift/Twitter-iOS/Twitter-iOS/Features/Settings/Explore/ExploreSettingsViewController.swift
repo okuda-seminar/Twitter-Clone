@@ -48,8 +48,8 @@ class ExploreSettingsViewController: UIViewController {
     ])
 
     headerView.dismissButton.addAction(
-      .init { _ in
-        self.dismiss(animated: true)
+      .init { [weak self] _ in
+        self?.dismiss(animated: true)
       }, for: .touchUpInside)
   }
 }

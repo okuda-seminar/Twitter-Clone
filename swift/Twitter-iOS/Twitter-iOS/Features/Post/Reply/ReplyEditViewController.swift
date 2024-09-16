@@ -9,8 +9,8 @@ class ReplyEditViewController: UIViewController {
     let view = ReplyHeaderView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.dismissalButton.addAction(
-      .init { _ in
-        self.dismiss(animated: false)
+      .init { [weak self] _ in
+        self?.dismiss(animated: false)
       }, for: .touchUpInside)
     return view
   }()

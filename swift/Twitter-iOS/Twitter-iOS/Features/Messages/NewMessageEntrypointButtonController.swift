@@ -29,9 +29,9 @@ final class NewMessageEntrypointButtonController: UIViewController {
       case .writeMessageButton: WriteMessageButton()
       }
     button.addAction(
-      .init { _ in
+      .init { [weak self] _ in
         let newMessageEditViewController = NewMessageEditViewController()
-        self.present(newMessageEditViewController, animated: true)
+        self?.present(newMessageEditViewController, animated: true)
       }, for: .touchUpInside)
     view = button
   }

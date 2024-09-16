@@ -92,8 +92,8 @@ class AltTextEditViewController: UIViewController {
     view.addSubview(scrollView)
 
     dismissalButton.addAction(
-      .init { _ in
-        self.dismiss(animated: true)
+      .init { [weak self] _ in
+        self?.dismiss(animated: true)
       }, for: .touchUpInside)
 
     let layoutGuide = view.safeAreaLayoutGuide

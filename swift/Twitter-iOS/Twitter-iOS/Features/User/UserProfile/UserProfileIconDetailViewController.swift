@@ -50,8 +50,8 @@ class UserProfileIconDetailViewController: UIViewController {
     view.addSubview(profileIconView)
 
     closeButton.addAction(
-      .init { _ in
-        self.navigationController?.popViewController(animated: true)
+      .init { [weak self] _ in
+        self?.navigationController?.popViewController(animated: true)
       }, for: .touchUpInside)
 
     let layoutGuide = view.safeAreaLayoutGuide
