@@ -12,16 +12,17 @@ interface Props {
 const IconButtonWithLink: React.FC<Props> = (props) => {
   return (
     <Link href={props.url}>
-      <Tooltip label={props.tooltipText} placement="bottom">
-        {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/392 - Show tooltips on sidebar icons only when window size isn't large enough and icon labels are hidden. */}
-
-        <Flex alignItems="center">
-          <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4} />
-          <Box display={{ base: "none", xl: "inline" }}>
-            <Text fontWeight="bold">{props.ariaLabel}</Text>
+      <Flex alignItems="center">
+        <Tooltip label={props.tooltipText} placement="bottom">
+          <Box display={{ base: "inline", xl: "none" }}>
+            <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4} />
           </Box>
-        </Flex>
-      </Tooltip>
+        </Tooltip>
+        <Box display={{ base: "none", xl: "flex" }}>
+          <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4} />
+          <Text fontWeight="bold">{props.ariaLabel}</Text>
+        </Box>
+      </Flex>
     </Link>
   );
 };
