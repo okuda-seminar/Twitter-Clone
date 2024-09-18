@@ -76,15 +76,17 @@ const SideBar: React.FC = () => {
           ariaLabel={"Profile"}
           icon={<FaUser />}
         />
-
-        <Tooltip label="More" placement="bottom">
-          <Flex alignItems="center">
-            <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
-            <Box display={{ base: "none", xl: "inline" }}>
-              <Text fontWeight="bold">More</Text>
+        <Flex>
+          <Tooltip label="More" placement="bottom">
+            <Box display={{ base: "inline", xl: "none" }}>
+              <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
             </Box>
-          </Flex>
-        </Tooltip>
+          </Tooltip>
+          <Box display={{ base: "none", xl: "flex" }}>
+            <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
+            <Text fontWeight="bold">More</Text>
+          </Box>
+        </Flex>
 
         <Posts />
       </VStack>
