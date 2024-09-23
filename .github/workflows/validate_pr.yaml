@@ -13,9 +13,9 @@ jobs:
           fetch-depth: 0
       - name: set-current-branch
         id: vars
-        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "branch=${GITHUB_HEAD_REF}" >> $GITHUB_ENV
       - name: validate-pr-and-commits
         run: |
-          HEAD=${{ github.head_ref }} sh hack/validate_pr.sh
+          HEAD="${{ env.branch }}" sh hack/validate_pr.sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
