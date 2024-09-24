@@ -1,0 +1,8 @@
+# dependencies
+node_modules/
+
+# yarn error logs
+yarn-error.log
+
+# macOS system files
+.DS_Store

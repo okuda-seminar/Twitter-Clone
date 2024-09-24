@@ -9,6 +9,7 @@ import {
   TabPanels,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Feed from "../shared/feed";
 
 const Home: React.FC = () => {
   return (
@@ -16,13 +17,17 @@ const Home: React.FC = () => {
       <TabList>
         <Tab
           width="200px"
-          _hover={{ background: useColorModeValue("gray.100", "transparent") }}
+          _hover={{
+            background: useColorModeValue("gray.100", "transparent"),
+          }}
         >
           For You
         </Tab>
         <Tab
           width="200px"
-          _hover={{ background: useColorModeValue("gray.100", "transparent") }}
+          _hover={{
+            background: useColorModeValue("gray.100", "transparent"),
+          }}
         >
           Following
         </Tab>
@@ -30,10 +35,10 @@ const Home: React.FC = () => {
       <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
       <TabPanels>
         <TabPanel>
-          <p>one!</p>
+          <Feed />
         </TabPanel>
         <TabPanel>
-          <p>two!</p>
+          <p>Posts from followed users</p>
         </TabPanel>
       </TabPanels>
     </Tabs>

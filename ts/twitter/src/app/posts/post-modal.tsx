@@ -14,6 +14,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { FaImage } from "react-icons/fa6";
+import axios from 'axios';
 
 interface PostModalProps {
   isOpen: boolean;
@@ -29,16 +30,22 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
     setPostState(event.target.value);
   };
 
-  const postSubmitHandler = () => {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/406 - Store Posts in Online Storage.
+  const postSubmitHandler = async () => {
+    try {
+      const response = await axios.post("http://localhost:3002/api/posts", {
+        userId: id,
+        userName: name,
+        content: postState,
+      });
 
-    console.log(`
-      userID: ${id}
-      userName: ${name}
-      context: ${postState}
-      `);
-    setPostState("");
-    onClose();
+      if (response.status === 201) {
+        console.log("Post created successfully");
+        setPostState("");
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
   const closeButttonHandler = () => {
