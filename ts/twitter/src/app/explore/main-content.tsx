@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { IoIosSearch } from "react-icons/io";
+import Feed from "../shared/feed";
 
 const MainContent: React.FC = () => {
   return (
@@ -74,7 +75,7 @@ const TabBar: React.FC = () => {
       <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
       <TabPanels>
         <TabPanel>
-          <p>for you</p>
+          <Feed />
         </TabPanel>
         <TabPanel>
           <p>trending</p>
