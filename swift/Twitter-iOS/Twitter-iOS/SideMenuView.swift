@@ -7,6 +7,8 @@ struct SideMenuView: View {
   public var numOfFollowers: Int
   public weak var delegate: SideMenuViewDelegate?
 
+  @Environment(\.dismiss) private var dismiss
+
   private enum LayoutConstant {
     static let imageSize: CGFloat = 20.0
     static let disclosureViewWidth: CGFloat = 250.0
@@ -55,6 +57,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapUserProfile()
+        dismiss()
       },
       label: {
         Image(systemName: "person.circle.fill")
@@ -66,6 +69,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapUserProfile()
+        dismiss()
       },
       label: {
         Text(userName)
@@ -77,6 +81,7 @@ struct SideMenuView: View {
       Button(
         action: {
           delegate?.didTapUserFollowRelationsButton(userName: userName)
+          dismiss()
         },
         label: {
           Text("\(numOfFollowing) \(LocalizedString.following)")
@@ -86,6 +91,7 @@ struct SideMenuView: View {
       Button(
         action: {
           delegate?.didTapUserFollowRelationsButton(userName: userName)
+          dismiss()
         },
         label: {
           Text("\(numOfFollowers) \(LocalizedString.followers)")
@@ -99,6 +105,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapUserProfile()
+        dismiss()
       },
       label: {
         Image(systemName: "person")
@@ -113,6 +120,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapBookmarks()
+        dismiss()
       },
       label: {
         Image(systemName: "bookmark")
@@ -127,6 +135,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapJobs()
+        dismiss()
       },
       label: {
         Image(systemName: "handbag")
@@ -141,6 +150,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapLists()
+        dismiss()
       },
       label: {
         Image(systemName: "list.clipboard")
@@ -168,6 +178,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapFollowerRequests()
+        dismiss()
       },
       label: {
         Image(systemName: "person.badge.plus")
@@ -182,6 +193,7 @@ struct SideMenuView: View {
     Button(
       action: {
         delegate?.didTapFollowerRequests()
+        dismiss()
       },
       label: {
         Image(systemName: "bitcoinsign.circle")
@@ -207,6 +219,7 @@ struct SideMenuView: View {
       .padding()
       .onTapGesture {
         delegate?.didTapSettingsAndPrivacy()
+        dismiss()
       }
 
       HStack {

@@ -75,12 +75,6 @@ class AppRootViewController: UITabBarController {
     ])
   }
 
-  private func hideSideMenu() {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/409
-    // - Enable Smoother Transitions from SideMenu to Other Views.
-    self.dismiss(animated: true)
-  }
-
   // MARK: - NSNotification
 
   @objc
@@ -97,7 +91,6 @@ class AppRootViewController: UITabBarController {
 extension AppRootViewController: SideMenuViewDelegate {
 
   func didTapUserProfile() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -107,7 +100,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapBookmarks() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -117,7 +109,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapJobs() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -126,7 +117,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapLists() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -135,7 +125,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapFollowerRequests() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -146,7 +135,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapSettingsAndPrivacy() {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
@@ -156,7 +144,6 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 
   func didTapUserFollowRelationsButton(userName: String) {
-    hideSideMenu()
     guard
       let selectedViewController = self.selectedViewController
         as? UINavigationController
