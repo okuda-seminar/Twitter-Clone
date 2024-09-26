@@ -16,9 +16,8 @@ class UserListsPageViewController: UIViewController {
     button.tintColor = .black
     button.image = UIImage(systemName: "ellipsis")
 
-    let action = UIAction(title: LocalizedString.listMenuActionText) { action in
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/419
-      // - Create View to Display Lists User Has Been Added to (No Data State).
+    let action = UIAction(title: LocalizedString.listMenuActionText) { [weak self] _ in
+      self?.navigationController?.pushViewController(UserAddedListsViewController(), animated: true)
     }
 
     button.menu = UIMenu(children: [action])
