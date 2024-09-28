@@ -1,12 +1,10 @@
 "use client";
-import { HStack } from "@chakra-ui/react";
-import SideBar from "../shared/sidebar";
+import PageLayout from "../page-layout";
 
 export default function Page() {
   return (
-    <HStack align="start">
-      <SideBar />
-      <h1>message page</h1>
-    </HStack>
+    <PageLayout>
+      message page
+    </PageLayout>
   );
 }

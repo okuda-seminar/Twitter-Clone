@@ -1,5 +1,13 @@
 import React from "react";
-import { IconButton, Tooltip, VStack, Flex, Box, Text } from "@chakra-ui/react";
+import {
+  IconButton,
+  Tooltip,
+  VStack,
+  Flex,
+  Box,
+  Text,
+  Spacer,
+} from "@chakra-ui/react";
 import { SearchIcon, BellIcon, EmailIcon } from "@chakra-ui/icons";
 import { PiHouseFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
@@ -14,7 +22,7 @@ import SignInButton from "../auth/sign-in-button";
 const SideBar: React.FC = () => {
   return (
     <Flex>
-      <VStack marginBottom="48px" align="flex-start">
+      <VStack marginBottom="24px" align="flex-start">
         <Link href="/home">
           <Tooltip label="twitter" placement="bottom">
             <Flex alignItems="center">
@@ -89,11 +97,9 @@ const SideBar: React.FC = () => {
         </Flex>
 
         <Posts />
-      </VStack>
-
-      <Box position="fixed" bottom={8} left={0} right={0}>
+        <Spacer />
         <SignInButton />
-      </Box>
+      </VStack>
     </Flex>
   );
 };
