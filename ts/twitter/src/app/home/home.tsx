@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     <Tabs position="relative" variant="unstyled">
       <TabList>
         <Tab
-          width="200px"
+          width="50%"
           _hover={{
             background: useColorModeValue("gray.100", "transparent"),
           }}
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
           For You
         </Tab>
         <Tab
-          width="200px"
+          width="50%"
           _hover={{
             background: useColorModeValue("gray.100", "transparent"),
           }}

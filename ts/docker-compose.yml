@@ -3,8 +3,8 @@ services:
     build: .
     command: yarn dev
     volumes:
-      - .:/app
-      - node_modules:/app/twitter/node_modules
+      - ./twitter:/app/twitter
+      - /app/twitter/node_modules
     ports:
       - 3000:3000
   api:
@@ -12,20 +12,6 @@ services:
     command: yarn start
     volumes:
       - ./twitter/api:/app
-      - api_node_modules:/app/node_modules
+      - /app/node_modules
     ports:
       - "3002:3002"
-volumes:
-  node_modules:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/twitter/node_modules
-      o: bind
-  api_node_modules:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/twitter/api/node_modules
-      o: bind
-      
