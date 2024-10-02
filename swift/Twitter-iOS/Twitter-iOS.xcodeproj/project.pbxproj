@@ -27,6 +27,8 @@
 		3B7332F42C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */; };
 		3B861EC72C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */; };
 		3B8E61792CA55F5000E72FBC /* UserAddedListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */; };
+		3B9764152CAD2308007FE8BC /* NewPostTagEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */; };
+		3B9764172CAD3441007FE8BC /* LocationPermissionAlertPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764162CAD3441007FE8BC /* LocationPermissionAlertPopUpView.swift */; };
 		3BA1CD682C6B845900924DA5 /* NewPostEditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */; };
 		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		3BDE73E12C90376300714EE2 /* UserListsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */; };
@@ -175,6 +177,8 @@
 		3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeRelayCallsControlSectionView.swift; sourceTree = "<group>"; };
 		3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedNewCommunityCreationBottomSheetViewObserver.swift; sourceTree = "<group>"; };
 		3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddedListsViewController.swift; sourceTree = "<group>"; };
+		3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostTagEditView.swift; sourceTree = "<group>"; };
+		3B9764162CAD3441007FE8BC /* LocationPermissionAlertPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionAlertPopUpView.swift; sourceTree = "<group>"; };
 		3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditDataSource.swift; sourceTree = "<group>"; };
 		3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowerRequestsPageViewController.swift; sourceTree = "<group>"; };
 		3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListsPageViewController.swift; sourceTree = "<group>"; };
@@ -343,9 +347,11 @@
 			isa = PBXGroup;
 			children = (
 				3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */,
+				3B9764162CAD3441007FE8BC /* LocationPermissionAlertPopUpView.swift */,
 				3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */,
 				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
 				3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */,
+				3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */,
 				3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */,
 				3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */,
 			);
@@ -1106,6 +1112,7 @@
 				656C1BFF2C0AE68500EEE575 /* PostShareBottomSheet.swift in Sources */,
 				6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */,
 				658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */,
+				3B9764152CAD2308007FE8BC /* NewPostTagEditView.swift in Sources */,
 				658D088C2BF39FE7006C6A9E /* CommunitiesCollectionCell.swift in Sources */,
 				658D08712BE8BACC006C6A9E /* SearchInputViewController.swift in Sources */,
 				65FD4F452C155D810020A02E /* UserOverviewCell.swift in Sources */,
@@ -1208,6 +1215,7 @@
 				65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */,
+				3B9764172CAD3441007FE8BC /* LocationPermissionAlertPopUpView.swift in Sources */,
 				65FD4FA22C2849B30020A02E /* CommunityHomeTabModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -81,11 +81,24 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didTapImageAltButtonCompletion = { [weak self] selectedImageIndex in
-      guard let dataSource = self?.dataSource else { return }
-      let altTextEditViewController = AltTextEditViewController(
-        selectedImageIndex: selectedImageIndex, dataSource: dataSource)
-      altTextEditViewController.modalPresentationStyle = .pageSheet
-      self?.present(altTextEditViewController, animated: true)
+      self?.presentAltTextEditViewController(selectedImageIndex)
+    }
+
+    viewObserver.didTapTagEditEntryButtonCompletion = { [weak self] in
+      self?.presentNewPostTagEditViewController()
+    }
+
+    viewObserver.didTapTagEditDoneButtonCompletion = { [weak self] in
+      self?.dismiss(animated: true)
+    }
+
+    viewObserver.didTapLocationEditButtonCompletion = { [weak self] in
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/442
+      // - Implement Display of LocationPermissionAlertPopUpView in PopUp.
+      let locationPermissionAlertViewController = UIHostingController(
+        rootView: LocationPermissionAlertPopUpView())
+      locationPermissionAlertViewController.modalPresentationStyle = .pageSheet
+      self?.present(locationPermissionAlertViewController, animated: true)
     }
   }
 
@@ -94,6 +107,20 @@ final class NewPostEditViewController: UIViewController {
     photoLibraryAccessHostingController.view.layer.opacity = 0.0
 
     dismiss(animated: true, completion: nil)
+  }
+
+  private func presentAltTextEditViewController(_ selectedImageIndex: Int) {
+    let altTextEditViewController = AltTextEditViewController(
+      selectedImageIndex: selectedImageIndex, dataSource: dataSource)
+    altTextEditViewController.modalPresentationStyle = .pageSheet
+    present(altTextEditViewController, animated: true)
+  }
+
+  private func presentNewPostTagEditViewController() {
+    let newPostTagEditViewController = UIHostingController(
+      rootView: NewPostTagEditView(viewObserver: viewObserver))
+    newPostTagEditViewController.modalPresentationStyle = .overFullScreen
+    present(newPostTagEditViewController, animated: true)
   }
 
   // MARK: - Permission Request
@@ -152,6 +179,8 @@ struct NewPostEditView: View {
     static let postButtonText = String(localized: "Post")
     static let textFieldPlaceHolderText = String(localized: "What's happening?")
     static let altButtonText = String(localized: "+Alt")
+    static let tagEditButtonText = String(localized: "Tag people")
+    static let locationEditButtonText = String(localized: "Add location")
   }
 
   private enum imageSelectionState: Int {
@@ -252,9 +281,6 @@ struct NewPostEditView: View {
 
       SelectedImagesCatalog()
         .padding(.horizontal)
-
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/395
-      // - Create Tag and Location Button in NewPostEditViewController.swift.
     }
   }
 
@@ -264,32 +290,42 @@ struct NewPostEditView: View {
     case .none:
       EmptyView()
     case .single:
-      Image(uiImage: dataSource.selectedImages[0])
-        .resizable()
-        .frame(minWidth: 0.0, maxWidth: .infinity)
-        .frame(height: LayoutConstant.singleImageHeight)
-        .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
-        .padding(.leading, LayoutConstant.singleImageLeadingPadding)
-        .overlay(alignment: .trailing) {
-          imageEditButtons(selectedImageIndex: 0)
-        }
+      VStack(alignment: .leading) {
+        Image(uiImage: dataSource.selectedImages[0])
+          .resizable()
+          .frame(minWidth: 0.0, maxWidth: .infinity)
+          .frame(height: LayoutConstant.singleImageHeight)
+          .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
+          .padding(.leading, LayoutConstant.singleImageLeadingPadding)
+          .overlay(alignment: .trailing) {
+            imageEditButtons(selectedImageIndex: 0)
+          }
+
+        TagAndLocationEditButtons()
+          .padding(.leading, LayoutConstant.singleImageLeadingPadding)
+      }
     case .multiple:
-      ScrollView(.horizontal) {
-        HStack {
-          ForEach(dataSource.selectedImages.indices, id: \.self) { index in
-            Image(uiImage: dataSource.selectedImages[index])
-              .resizable()
-              .frame(
-                width: LayoutConstant.multipleImagesWidth,
-                height: LayoutConstant.multipleImagesHeight
-              )
-              .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
-              .overlay(alignment: .trailing) {
-                imageEditButtons(selectedImageIndex: index)
-              }
-              .padding(.leading, index == 0 ? LayoutConstant.firstImageLeadingPadding : 0.0)
+      VStack(alignment: .leading) {
+        ScrollView(.horizontal) {
+          HStack {
+            ForEach(dataSource.selectedImages.indices, id: \.self) { index in
+              Image(uiImage: dataSource.selectedImages[index])
+                .resizable()
+                .frame(
+                  width: LayoutConstant.multipleImagesWidth,
+                  height: LayoutConstant.multipleImagesHeight
+                )
+                .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
+                .overlay(alignment: .trailing) {
+                  imageEditButtons(selectedImageIndex: index)
+                }
+                .padding(.leading, index == 0 ? LayoutConstant.firstImageLeadingPadding : 0.0)
+            }
           }
         }
+
+        TagAndLocationEditButtons()
+          .padding(.leading, LayoutConstant.firstImageLeadingPadding)
       }
     }
   }
@@ -348,6 +384,35 @@ struct NewPostEditView: View {
       }
     }
     .padding()
+  }
+
+  @ViewBuilder
+  private func TagAndLocationEditButtons() -> some View {
+    VStack {
+      Button {
+        viewObserver.didTapTagEditEntryButtonCompletion?()
+      } label: {
+        HStack {
+          Image(systemName: "person")
+            .foregroundStyle(.blue)
+
+          Text(LocalizedString.tagEditButtonText)
+            .foregroundStyle(.blue)
+        }
+      }
+
+      Button {
+        viewObserver.didTapLocationEditButtonCompletion?()
+      } label: {
+        HStack {
+          Image(systemName: "mappin")
+            .foregroundStyle(.gray)
+
+          Text(LocalizedString.locationEditButtonText)
+            .foregroundStyle(.gray)
+        }
+      }
+    }
   }
 }
 
