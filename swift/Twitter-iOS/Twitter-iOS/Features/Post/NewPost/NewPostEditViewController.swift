@@ -9,6 +9,7 @@ final class NewPostEditViewController: UIViewController {
   private enum LayoutConstant {
     static let edgePadding: CGFloat = 16.0
     static let permissionRequestButtonSize: CGFloat = 28.0
+    static let dimmingViewAlpha: CGFloat = 0.4
   }
 
   @ObservedObject private var dataSource = NewPostEditDataSource()
@@ -30,6 +31,17 @@ final class NewPostEditViewController: UIViewController {
     controller.didMove(toParent: self)
     return controller
   }()
+
+  private let dimmingView: UIView = {
+    let dimmingView = UIView()
+    dimmingView.translatesAutoresizingMaskIntoConstraints = false
+    dimmingView.backgroundColor = UIColor.black.withAlphaComponent(
+      LayoutConstant.dimmingViewAlpha)
+    return dimmingView
+  }()
+
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/444
+  // - Implement LocationPermissionController to Retrieve Location Settings Information.
 
   private let photoLibraryPermissionController = PhotoLibraryPermissionController()
 
@@ -93,14 +105,17 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didTapLocationEditButtonCompletion = { [weak self] in
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/442
-      // - Implement Display of LocationPermissionAlertPopUpView in PopUp.
-      let locationPermissionAlertViewController = UIHostingController(
-        rootView: LocationPermissionAlertPopUpView())
-      locationPermissionAlertViewController.modalPresentationStyle = .pageSheet
-      self?.present(locationPermissionAlertViewController, animated: true)
+      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/445
+      // - Enable Different View Transitions based on Device Location Settings.
+      self?.presentLocationAccessExplanationPopUpViewController()
+    }
+
+    viewObserver.didTapLocationSettingsTransitionButtonCompletion = { [weak self] in
+      self?.presentLocationSettingsNavigationViewController()
     }
   }
+
+  // MARK: - Methods for ViewObserver Completion
 
   private func makeTransparentAndDismiss() {
     newPostEditHostingController.view.layer.opacity = 0.0
@@ -121,6 +136,38 @@ final class NewPostEditViewController: UIViewController {
       rootView: NewPostTagEditView(viewObserver: viewObserver))
     newPostTagEditViewController.modalPresentationStyle = .overFullScreen
     present(newPostTagEditViewController, animated: true)
+  }
+
+  private func presentLocationAccessExplanationPopUpViewController() {
+    let locationAccessExplanationPopUpViewController = UIHostingController(
+      rootView: LocationAccessExplanationPopUpView(viewObserver: viewObserver))
+    locationAccessExplanationPopUpViewController.modalPresentationStyle = .overFullScreen
+    locationAccessExplanationPopUpViewController.view.backgroundColor = UIColor.clear
+    addDimmingView()
+    present(locationAccessExplanationPopUpViewController, animated: true)
+  }
+
+  private func addDimmingView() {
+    view.addSubview(dimmingView)
+
+    NSLayoutConstraint.activate([
+      dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
+      dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      dimmingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      dimmingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
+  }
+
+  private func presentLocationSettingsNavigationViewController() {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/454
+    // - Fix Unintended Dimming View Animation in NewPostEditViewController.
+
+    // Dismiss dimmingView and LocationAccessExplanationPopUpViewController first.
+    dimmingView.removeFromSuperview()
+    dismiss(animated: true)
+
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/446
+    // - Implement View Controller for Navigating to Device Location Settings.
   }
 
   // MARK: - Permission Request
