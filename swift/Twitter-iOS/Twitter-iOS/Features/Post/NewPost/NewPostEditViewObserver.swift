@@ -6,6 +6,7 @@ typealias didTapImageAltButtonCompletion = (Int) -> Void
 typealias didTapTagEditEntryButtonCompletion = () -> Void
 typealias didTapTagEditDoneButtonCompletion = () -> Void
 typealias didTapLocationEditButtonCompletion = () -> Void
+typealias didTapLocationSettingsTransitionButtonCompletion = () -> Void
 
 class NewPostEditViewObserver: ObservableObject {
   var didTapNewPostEditCancelButtonCompletion: didTapNewPostEditCancelButtonCompletion?
@@ -14,4 +15,6 @@ class NewPostEditViewObserver: ObservableObject {
   var didTapTagEditEntryButtonCompletion: didTapTagEditEntryButtonCompletion?
   var didTapTagEditDoneButtonCompletion: didTapTagEditDoneButtonCompletion?
   var didTapLocationEditButtonCompletion: didTapLocationEditButtonCompletion?
+  var didTapLocationSettingsTransitionButtonCompletion:
+    didTapLocationSettingsTransitionButtonCompletion?
 }
