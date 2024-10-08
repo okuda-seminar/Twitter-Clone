@@ -7,6 +7,9 @@ services:
       - /app/twitter/node_modules
     ports:
       - 3000:3000
+    networks:
+      - x_clone
+
   api:
     build: ./twitter/api
     command: yarn start
@@ -15,3 +18,9 @@ services:
       - /app/node_modules
     ports:
       - "3002:3002"
+    networks:
+      - x_clone
+
+networks:
+  x_clone:
+    external: true
