@@ -14,7 +14,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { FaImage } from "react-icons/fa6";
-import axios from 'axios';
+import axios from "axios";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
       const response = await axios.post("http://localhost:3002/api/posts", {
         userId: id,
         userName: name,
-        content: postState,
+        text: postState,
       });
 
       if (response.status === 201) {

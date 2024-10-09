@@ -8,8 +8,8 @@ app.use(json());
 
 let posts = [];
 
-// This is a temporary server created as a stopgap measure. 
-// It will be used temporarily while waiting for the actual server to be implemented by the backend team. 
+// This is a temporary server created as a stopgap measure.
+// It will be used temporarily while waiting for the actual server to be implemented by the backend team.
 // The plan is to delete this server in the future once it's no longer needed.
 
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/437
@@ -20,12 +20,21 @@ app.post("/api/posts", (req, res) => {
     id: Date.now().toString(),
     ...req.body,
   };
-  posts.push(newPost);
+  posts[newPost.id] = newPost;
   res.status(201).json(newPost);
 });
 
 app.get("/api/posts", (req, res) => {
-  res.json(posts);
+  res.json(Object.values(posts));
+});
+
+app.get("/api/posts/:id", (req, res) => {
+  const post = posts[req.params.id];
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404).json({ message: "Post not found" });
+  }
 });
 
 app.listen(port, () => {
