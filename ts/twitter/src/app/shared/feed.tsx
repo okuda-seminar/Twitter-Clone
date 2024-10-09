@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, VStack, Text, Avatar, Flex } from "@chakra-ui/react";
+import { Box, VStack, Text, Avatar, Flex, Link } from "@chakra-ui/react";
 
 interface Post {
   id: string;
   userId: string;
   userName: string;
-  content: string;
+  text: string;
 }
 
 const Feed: React.FC = () => {
@@ -28,13 +28,15 @@ const Feed: React.FC = () => {
   return (
     <VStack spacing={4} align="stretch">
       {posts.map((post) => (
-        <Box key={post.id} p={4} borderWidth={1} borderRadius="md">
-          <Flex>
-            <Avatar size="sm" name={post.userName} mr={2} />
-            <Text fontWeight="bold">{post.userName}</Text>
-          </Flex>
-          <Text mt={2}>{post.content}</Text>
-        </Box>
+        <Link href={`/posts/${post.id}`} key={post.id}>
+          <Box key={post.id} p={4} borderWidth={1} borderRadius="md">
+            <Flex>
+              <Avatar size="sm" name={post.userName} mr={2} />
+              <Text fontWeight="bold">{post.userName}</Text>
+            </Flex>
+            <Text mt={2}>{post.text}</Text>
+          </Box>
+        </Link>
       ))}
     </VStack>
   );
