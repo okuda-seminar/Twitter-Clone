@@ -1,11 +1,11 @@
 import Foundation
 import UIKit
 
-struct SearchedUserModel: Identifiable {
-  let id: UUID
-  let icon: UIImage?
-  let name: String
-  let userName: String
+public struct SearchedUserModel: Identifiable {
+  public let id: UUID
+  public let icon: UIImage?
+  public let name: String
+  public let userName: String
 
   public init(
     id: UUID, icon: UIImage?, name: String, userName: String
