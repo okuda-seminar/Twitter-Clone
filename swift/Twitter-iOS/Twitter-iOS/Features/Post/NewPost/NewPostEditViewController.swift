@@ -101,7 +101,25 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didTapTagEditDoneButtonCompletion = { [weak self] in
-      self?.dismiss(animated: true)
+      self?.removeTagCandUsersAndDismissTagEditView()
+    }
+
+    viewObserver.didInputTextFieldCompletion = { [weak self] in
+      let postService = InjectPostService()
+
+      DispatchQueue.global(qos: .userInitiated).async {
+        postService.fetchSearchedTagCandidateUsers { searchedUsers in
+          DispatchQueue.main.async {
+            self?.dataSource.tagCandidateUsers = searchedUsers
+          }
+        }
+      }
+    }
+
+    viewObserver.didEmptyTextFieldCompletion = { [weak self] in
+      DispatchQueue.main.async {
+        self?.dataSource.tagCandidateUsers.removeAll()
+      }
     }
 
     viewObserver.didTapLocationEditButtonCompletion = { [weak self] in
@@ -133,9 +151,14 @@ final class NewPostEditViewController: UIViewController {
 
   private func presentNewPostTagEditViewController() {
     let newPostTagEditViewController = UIHostingController(
-      rootView: NewPostTagEditView(viewObserver: viewObserver))
+      rootView: NewPostTagEditView(viewObserver: viewObserver, dataSource: dataSource))
     newPostTagEditViewController.modalPresentationStyle = .overFullScreen
     present(newPostTagEditViewController, animated: true)
+  }
+
+  private func removeTagCandUsersAndDismissTagEditView() {
+    dataSource.tagCandidateUsers.removeAll()
+    dismiss(animated: true)
   }
 
   private func presentLocationAccessExplanationPopUpViewController() {
