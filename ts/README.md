@@ -1,8 +1,14 @@
 # Web Frontend
 
 ## How to develop
-
-Run
+1. Start the backend server (in the X-Clone-Backend directory)
+```
+$ make build
+$ make up
+$ make exec_app
+$ go run ./cmd
+```
+2. Start the frontend server (in the Twitter-Clone directory)
 ```
 $ mkdir ./twitter/node_modules
 $ mkdir ./twitter/api/node_modules
