@@ -1,11 +1,11 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, VStack, Text, Avatar, Flex, Link } from "@chakra-ui/react";
 
 interface Post {
   id: string;
-  userId: string;
-  userName: string;
+  user_id: string;
   text: string;
 }
 
@@ -31,8 +31,8 @@ const Feed: React.FC = () => {
         <Link href={`/posts/${post.id}`} key={post.id}>
           <Box key={post.id} p={4} borderWidth={1} borderRadius="md">
             <Flex>
-              <Avatar size="sm" name={post.userName} mr={2} />
-              <Text fontWeight="bold">{post.userName}</Text>
+              <Avatar size="sm" name={post.user_id} mr={2} />
+              <Text fontWeight="bold">{post.user_id}</Text>
             </Flex>
             <Text mt={2}>{post.text}</Text>
           </Box>

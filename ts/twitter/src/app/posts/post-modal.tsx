@@ -14,7 +14,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { FaImage } from "react-icons/fa6";
-import axios from "axios";
+import { PostRequests } from "./post-requests";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -24,32 +24,24 @@ interface PostModalProps {
 }
 
 const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
-  const [postState, setPostState] = useState<string>("");
+  const [postText, setPostText] = useState<string>("");
 
   const textChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPostState(event.target.value);
+    setPostText(event.target.value);
   };
 
   const postSubmitHandler = async () => {
-    try {
-      const response = await axios.post("http://localhost:3002/api/posts", {
-        userId: id,
-        userName: name,
-        text: postState,
+      const res = await PostRequests({
+        user_id: "e0106457-6906-4271-9d3c-f1956a815b0a",
+        text: postText,
       });
-
-      if (response.status === 201) {
-        console.log("Post created successfully");
-        setPostState("");
-        onClose();
-      }
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
+      setPostText("");
+      onClose();
+      console.log(res);
   };
 
   const closeButttonHandler = () => {
-    setPostState("");
+    setPostText("");
   };
 
   return (
@@ -67,7 +59,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
           <Flex mt={8}>
             <Avatar size="md" name={name} />
             <Textarea
-              value={postState}
+              value={postText}
               onChange={textChangeHandler}
               placeholder="What is happening?!"
               border="none"
@@ -91,7 +83,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
               />
               <Button
                 onClick={postSubmitHandler}
-                isDisabled={postState.trim() === ""}
+                isDisabled={postText.trim() === ""}
                 bg="#1DA1F2"
                 color="white"
                 borderRadius="full"

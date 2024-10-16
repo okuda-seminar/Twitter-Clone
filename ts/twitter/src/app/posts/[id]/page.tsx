@@ -7,8 +7,7 @@ import PageLayout from "@/app/page-layout";
 
 interface Post {
   id: string;
-  userId: string;
-  userName: string;
+  user_id: string;
   text: string;
 }
 
@@ -96,9 +95,9 @@ const PostDetail: React.FC = () => {
         <PageLayout>
           <Box key={post?.id} p={8} borderWidth={1} borderRadius="md">
             <Flex>
-              <Avatar size="md" name={post?.userName} mr={2} />
+              <Avatar size="md" name={post?.user_id} mr={2} />
               <Text fontWeight="bold" fontSize="xl" mr={4}>
-                {post?.userName}
+                {post?.user_id}
               </Text>
               <Button borderRadius="full" onClick={toggleFollowState}>
                 {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/452 - Hide follow button for user's own posts in post detail page. */}
