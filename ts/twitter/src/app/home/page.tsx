@@ -1,11 +1,10 @@
-"use client";
 import PageLayout from "../page-layout";
-import Home from "./home";
+import { Home } from "./_components/home";
 
 export default function Page() {
   return (
     <PageLayout>
-      <Home/>
+      <Home />
     </PageLayout>
   );
 }

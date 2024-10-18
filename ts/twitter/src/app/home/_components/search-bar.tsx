@@ -1,16 +1,10 @@
+"use client";
+
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import React from "react";
-import { Input, InputGroup, InputLeftElement, VStack } from "@chakra-ui/react";
 import { IoIosSearch } from "react-icons/io";
 
-export const RightColumn: React.FC = () => {
-  return (
-    <VStack>
-      <SearchBar />
-    </VStack>
-  );
-};
-
-const SearchBar: React.FC = () => {
+export const SearchBar: React.FC = () => {
   return (
     <InputGroup>
       <InputLeftElement pointerEvents="none">

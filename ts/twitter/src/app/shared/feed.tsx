@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, VStack, Text, Avatar, Flex, Link } from "@chakra-ui/react";
@@ -23,7 +24,7 @@ const Feed: React.FC = () => {
     };
 
     fetchPosts();
-  }, [posts]);
+  }, []);
 
   return (
     <VStack spacing={4} align="stretch">
