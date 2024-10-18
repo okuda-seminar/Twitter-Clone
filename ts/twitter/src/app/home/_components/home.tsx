@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import {
@@ -9,9 +11,9 @@ import {
   TabPanels,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Feed from "../shared/feed";
+import Feed from "@/app/shared/feed";
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   return (
     <Tabs position="relative" variant="unstyled">
       <TabList>
@@ -44,5 +46,3 @@ const Home: React.FC = () => {
     </Tabs>
   );
 };
-
-export default Home;
