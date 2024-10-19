@@ -1,10 +1,11 @@
 "use client";
+
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import PostModal from "./post-modal";
-import PostButton from "./post-button";
-import SignInPromptModal from "./sign-in-prompt-modal";
 import { useSession } from "../auth/session-context";
+import PostButton from "./_components/post-button";
+import PostModal from "./_components/post-modal";
+import SignInPromptModal from "./_components/sign-in-prompt-modal";
 
 enum ModalState {
   Closed,

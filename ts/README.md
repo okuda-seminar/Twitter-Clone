@@ -1,17 +1,30 @@
 # Web Frontend
 
 ## How to develop
-1. Start the backend server (in the X-Clone-Backend directory)
+1. Set up environment variables (in the X-Clone-Backend directory)
+```
+$ cp .env.sample .env
+```
+
+2. Start the backend server (in the X-Clone-Backend directory)
 ```
 $ make build
 $ make up
 $ make exec_app
 $ go run ./cmd
 ```
-2. Start the frontend server (in the Twitter-Clone directory)
+
+3. Set up environment variables (in the Twitter-Clone directory)
+```
+$ cp .env.sample .env.local
+```
+If you'd like to use a specific user account, you can set the user ID in the .env.local file.
+
+4. Start the frontend server (in the Twitter-Clone directory)
 ```
 $ mkdir ./twitter/node_modules
 $ mkdir ./twitter/api/node_modules
+$ docker compose build
 $ docker compose up -d
 ```
 and see `localhost:3000` in your browser.
