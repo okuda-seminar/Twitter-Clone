@@ -9,6 +9,8 @@ services:
       - 3000:3000
     networks:
       - x_clone
+    env_file:
+      - .env.local
 
   api:
     build: ./twitter/api

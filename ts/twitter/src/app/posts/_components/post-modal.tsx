@@ -14,7 +14,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { FaImage } from "react-icons/fa6";
-import { PostRequests } from "./post-requests";
+import { createPost } from "@/lib/actions/create-post";
 
 interface PostModalProps {
   isOpen: boolean;
@@ -31,13 +31,13 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
   };
 
   const postSubmitHandler = async () => {
-      const res = await PostRequests({
-        user_id: "e0106457-6906-4271-9d3c-f1956a815b0a",
-        text: postText,
-      });
-      setPostText("");
-      onClose();
-      console.log(res);
+    const res = await createPost({
+      user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
+      text: postText,
+    });
+    setPostText("");
+    onClose();
+    console.log(res);
   };
 
   const closeButttonHandler = () => {
