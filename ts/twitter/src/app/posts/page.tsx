@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { useSession } from "../auth/session-context";
+import { useSession } from "@/lib/compoenents/session-context";
 import PostButton from "./_components/post-button";
 import PostModal from "./_components/post-modal";
 import SignInPromptModal from "./_components/sign-in-prompt-modal";

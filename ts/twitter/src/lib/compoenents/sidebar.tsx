@@ -10,14 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon, BellIcon, EmailIcon } from "@chakra-ui/icons";
 import { PiHouseFill } from "react-icons/pi";
-import { FaUser } from "react-icons/fa";
+import { FaTwitter, FaUser } from "react-icons/fa";
 import { BsSlashSquare, BsPeople } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
-import { FaTwitter } from "react-icons/fa";
 import Link from "next/link";
 import IconButtonWithLink from "./icon-button-with-link";
-import Posts from "../posts/page";
-import SignInButton from "../auth/sign-in-button";
+import Posts from "@/app/posts/page";
+import SignInbutton from "./sign-in-button";
 
 const SideBar: React.FC = () => {
   return (
@@ -98,7 +97,7 @@ const SideBar: React.FC = () => {
 
         <Posts />
         <Spacer />
-        <SignInButton />
+        <SignInbutton />
       </VStack>
     </Flex>
   );

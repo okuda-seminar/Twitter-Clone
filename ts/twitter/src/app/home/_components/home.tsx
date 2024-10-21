@@ -11,7 +11,7 @@ import {
   TabPanels,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Feed from "@/app/shared/feed";
+import Feed from "@/lib/compoenents/feed";
 
 export const Home: React.FC = () => {
   return (
