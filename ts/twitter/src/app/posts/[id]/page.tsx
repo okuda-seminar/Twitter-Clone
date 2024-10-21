@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { Box, Flex, Avatar, Text, Button } from "@chakra-ui/react";
-import PageLayout from "@/app/page-layout";
+import PageLayout from "@/lib/compoenents/page-layout";
 
 interface Post {
   id: string;

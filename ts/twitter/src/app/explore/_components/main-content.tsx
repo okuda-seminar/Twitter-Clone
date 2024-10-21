@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { IoIosSearch } from "react-icons/io";
-import Feed from "../shared/feed";
+import Feed from "@/lib/compoenents/feed";
 
 const MainContent: React.FC = () => {
   return (

@@ -1,9 +1,9 @@
 "use client";
 
 import { Divider, Flex, Box } from "@chakra-ui/react";
-import SideBar from "./shared/sidebar";
+import SideBar from "./sidebar";
 import { ReactNode } from "react";
-import { RightColumn } from "./home/_components/right-column";
+import { RightColumn } from "@/app/home/_components/right-column";
 
 interface LayoutProps {
   children: ReactNode;
