@@ -1,5 +1,7 @@
 import UIKit
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/466
+// - Polish UI of TimelineSettingsViewController.
 class TimelineSettingsViewController: UIViewController {
 
   private enum LayoutConstant {
