@@ -4,7 +4,7 @@ import React from "react";
 import { IconButton, Tooltip, Box, Button } from "@chakra-ui/react";
 import { CiLogin } from "react-icons/ci";
 import { useSession } from "./session-context";
-import MiniProfile from "@/app/user/mini-profile";
+import MiniProfile from "./mini-profile";
 
 export default function SignInbutton() {
   const { session, user, setSession } = useSession();

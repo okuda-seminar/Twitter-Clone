@@ -15,8 +15,8 @@ import { BsSlashSquare, BsPeople } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import Link from "next/link";
 import IconButtonWithLink from "./icon-button-with-link";
-import Posts from "@/app/posts/page";
 import SignInbutton from "./sign-in-button";
+import { SideBarPostButton } from "./sidebar-post-button/sidebar-post-button";
 
 const SideBar: React.FC = () => {
   return (
@@ -95,7 +95,7 @@ const SideBar: React.FC = () => {
           </Box>
         </Flex>
 
-        <Posts />
+        <SideBarPostButton />
         <Spacer />
         <SignInbutton />
       </VStack>

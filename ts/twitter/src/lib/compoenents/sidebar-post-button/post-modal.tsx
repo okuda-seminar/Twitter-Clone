@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   Button,
@@ -20,10 +21,13 @@ interface PostModalProps {
   isOpen: boolean;
   onClose: () => void;
   name: string;
-  id: string;
 }
 
-const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
+export const PostModal: React.FC<PostModalProps> = ({
+  isOpen,
+  onClose,
+  name,
+}) => {
   const [postText, setPostText] = useState<string>("");
 
   const textChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -99,4 +103,3 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, name, id }) => {
     </Modal>
   );
 };
-export default PostModal;

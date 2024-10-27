@@ -10,6 +10,9 @@ const theme = {
       light: "#FFFFFF",
       dark: "#000000",
     },
+    blue: {
+      primary: "#1DA1F2",
+    },
   },
 };
 
