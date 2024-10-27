@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Modal,
@@ -15,7 +17,7 @@ interface SignInPromptModalProps {
   onClose: () => void;
 }
 
-const SignInPromptModal: React.FC<SignInPromptModalProps> = ({
+export const SignInPromptModal: React.FC<SignInPromptModalProps> = ({
   isOpen,
   onClose,
 }) => {
@@ -33,5 +35,3 @@ const SignInPromptModal: React.FC<SignInPromptModalProps> = ({
     </Modal>
   );
 };
-
-export default SignInPromptModal;
