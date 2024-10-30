@@ -19,7 +19,7 @@ class SettingsHomeViewController: SettingsViewController {
   private let subtitleLabel: UILabel = {
     let label = UILabel()
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/464
-    // - Enable Real Username Display in subtitleLabel in SettingsHomeViewController.
+    // - Enable Real Username Display in subtitleLabel in Settings View Controllers.
 
     /// This is a placeholder username that does not need to be wrapped in LocalizedString.
     /// It should be replaced with the real username variable in the future.
@@ -146,9 +146,9 @@ struct SettingsHomeView: View {
     static let premiumCaption = String(
       localized: "Manage your subscription features including Undo post timing.")
 
-    static let timelineSettingsTitle = String(localized: "Timeline settings")
+    static let timelineSettingsTitle = String(localized: "Timeline")
     static let timelineSettingsCaption = String(
-      localized: "Configure timeline settings, reorder home screen tabs.")
+      localized: "Configure your timeline appearance.")
 
     static let privacyAndSafetyTitle = String(localized: "Privacy and safety")
     static let privacyAndSafetyCaption = String(

@@ -1,6 +1,8 @@
 import SwiftUI
 import UIKit
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/464
+// - Enable Real Username Display in subtitleLabel in Settings View Controllers.
 class NotificationsSettingsViewController: SettingsViewController {
   private enum LocalizedString {
     static let title = String(localized: "Notifications")
