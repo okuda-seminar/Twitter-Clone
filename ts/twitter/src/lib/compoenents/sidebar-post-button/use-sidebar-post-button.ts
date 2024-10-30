@@ -1,5 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { User } from "../session-context";
+import { useRouter } from "next/navigation";
 
 interface useSideBarPostButtonProps {
   session: boolean;
@@ -8,8 +9,6 @@ interface useSideBarPostButtonProps {
 
 interface useSideBarPostButtonReturn {
   handlePostButtonClick: () => void;
-  isPostModalOpen: boolean;
-  onClosePostModal: () => void;
   isSignInPromptModalOpen: boolean;
   onCloseSignInPromptModal: () => void;
 }
@@ -18,12 +17,7 @@ export const useSideBarPostButton = ({
   session,
   user,
 }: useSideBarPostButtonProps): useSideBarPostButtonReturn => {
-  const {
-    isOpen: isPostModalOpen,
-    onOpen: onOpenPostModal,
-    onClose: onClosePostModal,
-  } = useDisclosure();
-
+  const router = useRouter();
   const {
     isOpen: isSignInPromptModalOpen,
     onOpen: onOpenSignInPromptModal,
@@ -33,13 +27,11 @@ export const useSideBarPostButton = ({
   const isAuthenticated = session && user;
 
   const handlePostButtonClick = () => {
-    isAuthenticated ? onOpenPostModal() : onOpenSignInPromptModal();
+    isAuthenticated ? router.push("/compose/post") : onOpenSignInPromptModal();
   };
 
   return {
     handlePostButtonClick,
-    isPostModalOpen,
-    onClosePostModal,
     isSignInPromptModalOpen,
     onCloseSignInPromptModal,
   };
