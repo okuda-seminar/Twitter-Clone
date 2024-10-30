@@ -32,6 +32,7 @@
 		3BA1CD682C6B845900924DA5 /* NewPostEditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */; };
 		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		3BDE73E12C90376300714EE2 /* UserListsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */; };
+		3BFFDEA82CD1FF270072D369 /* TimelineSettingsHomeScreenTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
 		6540F88A2BB44D430029BA46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6540F8892BB44D430029BA46 /* Assets.xcassets */; };
@@ -50,8 +51,6 @@
 		6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8E82BC972AB0029BA46 /* NotificationsViewController.swift */; };
 		6540F8EE2BCA28070029BA46 /* CommunitiesHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8ED2BCA28070029BA46 /* CommunitiesHomeViewController.swift */; };
 		6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */; };
-		6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */; };
-		6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */; };
 		6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */; };
 		6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */; };
 		6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */; };
@@ -182,6 +181,7 @@
 		3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditDataSource.swift; sourceTree = "<group>"; };
 		3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowerRequestsPageViewController.swift; sourceTree = "<group>"; };
 		3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListsPageViewController.swift; sourceTree = "<group>"; };
+		3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsHomeScreenTabsViewController.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6540F8822BB44D430029BA46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,8 +204,6 @@
 		6540F8E82BC972AB0029BA46 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		6540F8ED2BCA28070029BA46 /* CommunitiesHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeViewController.swift; sourceTree = "<group>"; };
 		6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsViewController.swift; sourceTree = "<group>"; };
-		6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsHeaderView.swift; sourceTree = "<group>"; };
-		6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsBodyView.swift; sourceTree = "<group>"; };
 		6540F9022BD376750029BA46 /* ExploreSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsViewController.swift; sourceTree = "<group>"; };
 		6540F9042BD3769F0029BA46 /* ExploreSettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsHeaderView.swift; sourceTree = "<group>"; };
 		6540F9062BD377140029BA46 /* ExploreSettingsBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSettingsBodyView.swift; sourceTree = "<group>"; };
@@ -541,8 +539,7 @@
 		6540F9002BD3764B0029BA46 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				6540F8FD2BD29A810029BA46 /* TimelineSettingsBodyView.swift */,
-				6540F8FB2BD295480029BA46 /* TimelineSettingsHeaderView.swift */,
+				3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */,
 				6540F8F92BD294DF0029BA46 /* TimelineSettingsViewController.swift */,
 			);
 			path = Timeline;
@@ -1106,6 +1103,7 @@
 				3B7332F22C231548007F4537 /* MessagesSettingsHomeReadReceiptsSectionView.swift in Sources */,
 				658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
+				3BFFDEA82CD1FF270072D369 /* TimelineSettingsHomeScreenTabsViewController.swift in Sources */,
 				656C1BAE2C0216F600EEE575 /* NotificationsAllTabView.swift in Sources */,
 				65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */,
 				658D08912BF4FD50006C6A9E /* MessagesSettingsHomeViewController.swift in Sources */,
@@ -1149,7 +1147,6 @@
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */,
 				65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */,
-				6540F8FE2BD29A810029BA46 /* TimelineSettingsBodyView.swift in Sources */,
 				656C1BB82C0749EA00EEE575 /* CommunityFilterModel.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewPostEditViewController.swift in Sources */,
 				658D08832BECF45F006C6A9E /* AppRootViewController.swift in Sources */,
@@ -1176,7 +1173,6 @@
 				65C71B9A2C32D80D0025839C /* JobsViewController.swift in Sources */,
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
-				6540F8FC2BD295480029BA46 /* TimelineSettingsHeaderView.swift in Sources */,
 				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
 				65C6CCA82BFF60FB00B0A052 /* UserPostsTabView.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,
@@ -1383,6 +1379,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Twitter-iOS/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We want to help users include their photos in tweets.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1411,6 +1408,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Twitter-iOS/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We want to help users include their photos in tweets.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
