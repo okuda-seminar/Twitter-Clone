@@ -33,7 +33,6 @@ export async function createPost(
       );
     }
   } catch (error) {
-    console.error("Error creating post:", error);
     throw new Error("Unable to create post. Please try again later.");
   }
 }

@@ -35,7 +35,6 @@ export async function findUserById({
       throw new Error(`Failed to find user: ${res.status} ${res.statusText}`);
     }
   } catch (error) {
-    console.error("Error find user:", error);
     throw new Error("Unable to find user. Please try again later.");
   }
 }

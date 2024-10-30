@@ -31,6 +31,20 @@ and see `localhost:3000` in your browser.
 Your code change will be automatically detected and reflected to the opened app.
 If you want to run some commands like `yarn add XXX`, then you can run `docker compose exec app bash` first.
 
+## How to test
+1. Start the frontend server (in the Twitter-Clone directory)
+```
+$ mkdir ./twitter/node_modules
+$ mkdir ./twitter/api/node_modules
+$ docker compose build
+$ docker compose up -d
+```
+2. Enter the application container and run all test files
+```
+$ docker compose exec app bash
+$ yarn test
+```
+
 ## Note
 
 You need to use VSCode and install [Prettier formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
