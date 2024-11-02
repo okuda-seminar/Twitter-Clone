@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   IconButton,
@@ -18,7 +20,7 @@ import IconButtonWithLink from "./icon-button-with-link";
 import SignInbutton from "./sign-in-button";
 import { SideBarPostButton } from "./sidebar-post-button/sidebar-post-button";
 
-const SideBar: React.FC = () => {
+export const SideBar: React.FC = () => {
   return (
     <Flex>
       <VStack marginBottom="24px" align="flex-start">
@@ -102,5 +104,3 @@ const SideBar: React.FC = () => {
     </Flex>
   );
 };
-
-export default SideBar;

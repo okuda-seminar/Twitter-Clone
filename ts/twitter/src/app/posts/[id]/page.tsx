@@ -1,9 +1,9 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { Box, Flex, Avatar, Text, Button } from "@chakra-ui/react";
-import PageLayout from "@/lib/compoenents/page-layout";
 
 interface Post {
   id: string;
@@ -22,7 +22,7 @@ enum PostFetchState {
   Success,
 }
 
-const PostDetail: React.FC = () => {
+export default function Page() {
   const [post, setPost] = useState<Post | null>(null);
   const [follow, setFollow] = useState<FollowState>(FollowState.UnFollow);
   const [followDisplayText, setFollowDisplayText] = useState<string>("follow");
@@ -79,38 +79,26 @@ const PostDetail: React.FC = () => {
     case PostFetchState.Loading:
       // The page reloads due to changes in the Poststate, which results in the termination of the session about sign in.
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/412 - Maintain Sign-In State on Page Refresh.
-      return (
-        <PageLayout>
-          <Text>Loading...</Text>
-        </PageLayout>
-      );
+      return <Text>Loading...</Text>;
     case PostFetchState.Error:
-      return (
-        <PageLayout>
-          <Text>Post not found</Text>
-        </PageLayout>
-      );
+      return <Text>Post not found</Text>;
     case PostFetchState.Success:
       return (
-        <PageLayout>
-          <Box key={post?.id} p={8} borderWidth={1} borderRadius="md">
-            <Flex>
-              <Avatar size="md" name={post?.user_id} mr={2} />
-              <Text fontWeight="bold" fontSize="xl" mr={4}>
-                {post?.user_id}
-              </Text>
-              <Button borderRadius="full" onClick={toggleFollowState}>
-                {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/452 - Hide follow button for user's own posts in post detail page. */}
-                {followDisplayText}
-              </Button>
-            </Flex>
-            <Text mt={10} fontSize="xl">
-              {post?.text}
+        <Box key={post?.id} p={8} borderWidth={1} borderRadius="md">
+          <Flex>
+            <Avatar size="md" name={post?.user_id} mr={2} />
+            <Text fontWeight="bold" fontSize="xl" mr={4}>
+              {post?.user_id}
             </Text>
-          </Box>
-        </PageLayout>
+            <Button borderRadius="full" onClick={toggleFollowState}>
+              {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/452 - Hide follow button for user's own posts in post detail page. */}
+              {followDisplayText}
+            </Button>
+          </Flex>
+          <Text mt={10} fontSize="xl">
+            {post?.text}
+          </Text>
+        </Box>
       );
   }
-};
-
-export default PostDetail;
+}
