@@ -1,19 +1,16 @@
-"use client";
-
 import React from "react";
 
 import {
-  Tab,
   Tabs,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
-  useColorModeValue,
   Box,
 } from "@chakra-ui/react";
-import Feed from "@/lib/compoenents/feed";
 import { PostModal } from "./post-modal/post-modal";
+import { CustomTab } from "@/lib/components/custom-tab";
+import { TimelineFeed } from "../_components/timeline/timeline-feed"; 
 
 interface HomeProps {
   isPostModalOpen: boolean;
@@ -22,24 +19,10 @@ interface HomeProps {
 export const Home: React.FC<HomeProps> = ({ isPostModalOpen }) => {
   return (
     <Box>
-      <Tabs position="relative" variant="unstyled">
+      <Tabs position="relative" variant="unstyled" defaultIndex={1}>
         <TabList>
-          <Tab
-            width="50%"
-            _hover={{
-              background: useColorModeValue("gray.100", "transparent"),
-            }}
-          >
-            For You
-          </Tab>
-          <Tab
-            width="50%"
-            _hover={{
-              background: useColorModeValue("gray.100", "transparent"),
-            }}
-          >
-            Following
-          </Tab>
+          <CustomTab tabWidth={"50%"} message={"For you"} fontSize={"lg"} />
+          <CustomTab tabWidth={"50%"} message={"Following"} fontSize={"lg"} />
         </TabList>
         <TabIndicator
           mt="-1.5px"
@@ -49,10 +32,10 @@ export const Home: React.FC<HomeProps> = ({ isPostModalOpen }) => {
         />
         <TabPanels>
           <TabPanel>
-            <Feed />
+            <Box>Posts for you.</Box>
           </TabPanel>
           <TabPanel>
-            <p>Posts from followed users</p>
+            <TimelineFeed />
           </TabPanel>
         </TabPanels>
       </Tabs>
