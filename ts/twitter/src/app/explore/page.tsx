@@ -1,5 +1,5 @@
-import MainContent from "./_components/main-content";
+import { Explore } from "./_components/explore";
 
 export default function Page() {
-  return <MainContent />;
+  return <Explore />;
 }

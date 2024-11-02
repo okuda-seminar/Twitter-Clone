@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FaImage } from "react-icons/fa6";
 import { usePostModal } from "./use-post-modal";
-import { useSession } from "@/lib/compoenents/session-context";
+import { useSession } from "@/lib/components/session-context";
 
 interface PostModalProps {
   isOpen: boolean;
