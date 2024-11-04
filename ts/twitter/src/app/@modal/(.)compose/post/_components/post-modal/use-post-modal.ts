@@ -2,6 +2,10 @@ import { createPost } from "@/lib/actions/create-post";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+interface usePostModalProps {
+  isIntercepted: boolean;
+}
+
 interface usePostModalReturn {
   handleCloseButtonClick: () => void;
   postText: string;
@@ -10,12 +14,14 @@ interface usePostModalReturn {
   isPostButtonDisabled: boolean;
 }
 
-export const usePostModal = (): usePostModalReturn => {
+export const usePostModal = ({
+  isIntercepted,
+}: usePostModalProps): usePostModalReturn => {
   const router = useRouter();
   const [postText, setPostText] = useState<string>("");
 
   const handleCloseButtonClick = () => {
-    router.push("/home");
+    isIntercepted ? router.back() : router.push("/home");
   };
 
   const handleTextAreaChange = (

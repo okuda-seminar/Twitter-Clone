@@ -3,7 +3,7 @@ import { VStack } from "@chakra-ui/react";
 import { Home } from "../_components/home";
 import { SessionProvider } from "@/lib/components/session-context";
 import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "@/lib/actions/get-collection-of-posts-by-specific-user-and-users-they-follow";
-import { TimelinePostCard } from "../_components/timeline/timeline-post-card"; 
+import { TimelinePostCard } from "../_components/timeline/timeline-post-card";
 
 const mockPosts: GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse =
   [
@@ -42,15 +42,9 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("Home Tests", () => {
-  test("Rendering Home component without Post Modal should success", async () => {
+  test("Rendering Home should success", () => {
     waitFor(() => {
-      render(<Home isPostModalOpen={false} />, { wrapper: SessionProvider });
-    });
-  });
-
-  test("Rendering Home component with Post Modal open should success", async () => {
-    waitFor(() => {
-      render(<Home isPostModalOpen={true} />, { wrapper: SessionProvider });
+      render(<Home />, { wrapper: SessionProvider });
     });
   });
 });

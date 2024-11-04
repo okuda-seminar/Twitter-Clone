@@ -5,16 +5,20 @@ import { RightColumn } from "./right-column";
 
 interface PageLayoutProps {
   children: ReactNode;
+  modal: ReactNode;
 }
 
-export const PageLayout = ({ children }: PageLayoutProps) => {
+export const PageLayout = ({ children, modal }: PageLayoutProps) => {
   return (
     <Flex width="100%" height="100vh">
       <Flex flex="1 1 20%" justifyContent="center">
         <SideBar />
       </Flex>
       <Divider orientation="vertical" borderColor="white" />
-      <Box flex="1 1 40%">{children}</Box>
+      <Box flex="1 1 40%">
+        {modal}
+        {children}
+      </Box>
       <Divider orientation="vertical" borderColor="white" />
       <Box flex="1 1 30%">
         <RightColumn />

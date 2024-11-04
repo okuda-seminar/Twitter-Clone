@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import {
   Button,
   Modal,
@@ -19,10 +19,12 @@ import { usePostModal } from "./use-post-modal";
 import { useSession } from "@/lib/components/session-context";
 
 interface PostModalProps {
-  isOpen: boolean;
+  isIntercepted: boolean;
 }
 
-export const PostModal: React.FC<PostModalProps> = ({ isOpen }) => {
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/500
+// Disable scrolling to the top of the page when the post modal opens.
+export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
   const { user } = useSession();
   const {
     handleCloseButtonClick,
@@ -30,14 +32,19 @@ export const PostModal: React.FC<PostModalProps> = ({ isOpen }) => {
     handleTextAreaChange,
     handlePostButtonClick,
     isPostButtonDisabled,
-  } = usePostModal();
+  } = usePostModal({ isIntercepted });
+  const initialRef = useRef(null);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseButtonClick} size="xl">
+    <Modal
+      initialFocusRef={initialRef}
+      isOpen={true}
+      onClose={handleCloseButtonClick}
+      size="xl"
+    >
       <ModalOverlay />
       <ModalContent bg="black" color="white">
         <ModalCloseButton
-          onClick={handleCloseButtonClick}
           color="white"
           position="absolute"
           top="8px"
@@ -47,6 +54,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isOpen }) => {
           <Flex mt={8}>
             <Avatar size="md" name={user ? user?.name : ""} />
             <Textarea
+              ref={initialRef}
               value={postText}
               onChange={handleTextAreaChange}
               placeholder="What is happening?!"
