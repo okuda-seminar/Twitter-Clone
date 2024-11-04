@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Tabs,
   TabIndicator,
@@ -8,15 +7,10 @@ import {
   TabPanels,
   Box,
 } from "@chakra-ui/react";
-import { PostModal } from "./post-modal/post-modal";
 import { CustomTab } from "@/lib/components/custom-tab";
-import { TimelineFeed } from "../_components/timeline/timeline-feed"; 
+import { TimelineFeed } from "./timeline/timeline-feed";
 
-interface HomeProps {
-  isPostModalOpen: boolean;
-}
-
-export const Home: React.FC<HomeProps> = ({ isPostModalOpen }) => {
+export const Home: React.FC = () => {
   return (
     <Box>
       <Tabs position="relative" variant="unstyled" defaultIndex={1}>
@@ -39,8 +33,6 @@ export const Home: React.FC<HomeProps> = ({ isPostModalOpen }) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-
-      <PostModal isOpen={isPostModalOpen} />
     </Box>
   );
 };
