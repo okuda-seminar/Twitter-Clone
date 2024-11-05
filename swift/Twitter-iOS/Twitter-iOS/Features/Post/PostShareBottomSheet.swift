@@ -1,9 +1,16 @@
 import SwiftUI
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/495
+// - Refactor and Polish UI of PostShareBottomSheet.
 struct PostShareBottomSheet: View {
-  @Environment(\.dismiss) private var dismiss
-  @State private var isPresented = false
+
+  // MARK: - Public Props
+
   @Binding public var showShareSheet: Bool
+
+  // MARK: - Private Props
+
+  @Binding private(set) var isPostShareBottomSheetPresented: Bool
 
   private enum LocalizedString {
     static let title = String(localized: "Share post")
@@ -14,6 +21,8 @@ struct PostShareBottomSheet: View {
     static let gmail = String(localized: "Gmail")
     static let dismissalText = String(localized: "Cancel")
   }
+
+  // MARK: - View
 
   var body: some View {
     VStack {
@@ -44,7 +53,7 @@ struct PostShareBottomSheet: View {
         HStack(alignment: .bottom) {
           Button {
             UIPasteboard.general.string = "Copied Deep Link"
-            dismiss()
+            isPostShareBottomSheetPresented.toggle()
             let bannerController = BannerController(
               message: String(localized: "Copied to clipboard"), bannerType: .TextOnly)
             bannerController.show(on: AppRootViewController.sharedInstance)
@@ -58,7 +67,7 @@ struct PostShareBottomSheet: View {
 
           Button(
             action: {
-              dismiss()
+              isPostShareBottomSheetPresented.toggle()
               showShareSheet = true
             },
             label: {
@@ -84,7 +93,7 @@ struct PostShareBottomSheet: View {
 
         Button(
           action: {
-            dismiss()
+            isPostShareBottomSheetPresented.toggle()
           },
           label: {
             HStack {
@@ -114,5 +123,6 @@ struct PostShareBottomSheet: View {
 }
 
 #Preview {
-  PostShareBottomSheet(showShareSheet: .constant(false))
+  PostShareBottomSheet(
+    showShareSheet: .constant(false), isPostShareBottomSheetPresented: .constant(true))
 }

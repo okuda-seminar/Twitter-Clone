@@ -1,6 +1,8 @@
 import SwiftUI
 import UIKit
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/496
+// - Enable Display of Share Sheet for Deeplink Sharing in Community View.
 class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
   private enum LayoutConstant {
     static let sheetDetentRatio: CGFloat = 0.35
