@@ -12,6 +12,7 @@
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
 		3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */; };
+		3B57F5FC2CD9BEC200090887 /* CannotReplyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */; };
 		3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */; };
 		3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */; };
 		3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */; };
@@ -133,7 +134,6 @@
 		65FD4FAD2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */; };
 		65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */; };
 		65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */; };
-		65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */; };
 		65FD4FC42C2D8BB00020A02E /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */; };
 		65FD4FCF2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FCE2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift */; };
 		65FD4FDC2C3039580020A02E /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD4FDB2C3039580020A02E /* SubscriptionService.swift */; };
@@ -162,6 +162,7 @@
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
 		3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditViewObserver.swift; sourceTree = "<group>"; };
+		3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannotReplyBottomSheet.swift; sourceTree = "<group>"; };
 		3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewController.swift; sourceTree = "<group>"; };
 		3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltTextEditViewController.swift; sourceTree = "<group>"; };
 		3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewObserver.swift; sourceTree = "<group>"; };
@@ -286,7 +287,6 @@
 		65FD4FAC2C29A29E0020A02E /* CommunitiesHomeExploreTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesHomeExploreTabView.swift; sourceTree = "<group>"; };
 		65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Home.swift"; sourceTree = "<group>"; };
 		65FD4FB02C2AE5800020A02E /* HomeBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomSheetViewController.swift; sourceTree = "<group>"; };
-		65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Post.swift"; sourceTree = "<group>"; };
 		65FD4FC32C2D8BB00020A02E /* BookmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
 		65FD4FCE2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeOptionsViewController.swift; sourceTree = "<group>"; };
 		65FD4FDB2C3039580020A02E /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
@@ -447,8 +447,8 @@
 				3B5CE85B2C775841005833E1 /* NewPost */,
 				65F908482BE1273700C6C8B3 /* Permission */,
 				65FD4F512C1B17A80020A02E /* Reply */,
+				3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */,
 				6540F8BD2BB576740029BA46 /* NewPostEntrypointButtonController.swift */,
-				65FD4FB92C2C4FCA0020A02E /* NSNotification+Post.swift */,
 				65C6CCA52BFF5C9500B0A052 /* PostCellView.swift */,
 				65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */,
 				656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */,
@@ -1140,6 +1140,7 @@
 				6567CBD12BD7DDC200242716 /* UserProfileViewController.swift in Sources */,
 				3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */,
 				3BDE73E12C90376300714EE2 /* UserListsPageViewController.swift in Sources */,
+				3B57F5FC2CD9BEC200090887 /* CannotReplyBottomSheet.swift in Sources */,
 				658D087D2BEBA069006C6A9E /* SideMenuView.swift in Sources */,
 				6567CBD32BD92FA700242716 /* UserProfileIconDetailViewController.swift in Sources */,
 				3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */,
@@ -1156,7 +1157,6 @@
 				3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */,
 				65C71B9D2C32D9920025839C /* JobsTabModel.swift in Sources */,
 				65FD4F4E2C1739F30020A02E /* ReplyEditViewController.swift in Sources */,
-				65FD4FBA2C2C4FCA0020A02E /* NSNotification+Post.swift in Sources */,
 				6540F8EE2BCA28070029BA46 /* CommunitiesHomeViewController.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewPostEntrypointButtonController.swift in Sources */,
 				65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */,

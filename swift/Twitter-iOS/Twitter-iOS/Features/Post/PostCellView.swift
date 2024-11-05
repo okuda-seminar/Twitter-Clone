@@ -2,13 +2,7 @@ import SwiftUI
 
 struct PostCellView: View {
 
-  private enum LocalizedString {
-    static let unfollowButtonText = String(localized: "Unfollow")
-    static let listButtonText = String(localized: "Add/remove from Lists")
-    static let muteButtonText = String(localized: "Mute")
-    static let blockButtonText = String(localized: "Block")
-    static let reportButtonText = String(localized: "Report post")
-  }
+  // MARK: - Public Props
 
   @Binding public var showReplyEditSheet: Bool
   @Binding public var reposting: Bool
@@ -19,21 +13,34 @@ struct PostCellView: View {
   @State public var isBookmarkedByCurrentUser: Bool = false
   @State public var isRepostedByCurrentUser: Bool = false
 
+  public var postModel: PostModel
+  public var canReply: Bool = true
+
+  // MARK: - Priavte Props
+
   @Environment(\.openURL) private var openURL
   // We need to wait for dismissal completion. pendingShowShareSheet
   // will be propageted to showShareSheet after the completion.
   @State private var pendingShowShareSheet: Bool = false
   @State private var showSheet: Bool = false
 
-  public var postModel: PostModel
-  public var canReply: Bool = true
-
-  @State private var isBottomSheetPresented = false
+  @State private var isCannotReplyBottomSheetPresented: Bool = false
+  @State private var isPostShareBottomSheetPresented: Bool = false
 
   private enum LayoutConstant {
     static let userIconSize: CGFloat = 32.0
     static let initialBottomSheetHeight: CGFloat = 250.0
   }
+
+  private enum LocalizedString {
+    static let unfollowButtonText = String(localized: "Unfollow")
+    static let listButtonText = String(localized: "Add/remove from Lists")
+    static let muteButtonText = String(localized: "Mute")
+    static let blockButtonText = String(localized: "Block")
+    static let reportButtonText = String(localized: "Report post")
+  }
+
+  // MARK: - View
 
   var body: some View {
     VStack {
@@ -108,10 +115,16 @@ struct PostCellView: View {
       .buttonStyle(.plain)
       .disabled(true)
       .onTapGesture {
-        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/330
-        // - Open "You can't reply ... yet" bottom sheet when tapping disabled reply buttons in the Communities Explore tab.
-        NotificationCenter.default.post(name: .didConductForbittenReply, object: nil)
+        isCannotReplyBottomSheetPresented.toggle()
       }
+      .sheet(
+        isPresented: $isCannotReplyBottomSheetPresented,
+        content: {
+          CannotReplyBottomSheet(
+            isCannotReplyBottomSheetPresented: $isCannotReplyBottomSheetPresented
+          )
+          .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
+        })
     }
   }
 
@@ -161,7 +174,7 @@ struct PostCellView: View {
   private func ShareButton() -> some View {
     Button(
       action: {
-        isBottomSheetPresented.toggle()
+        isPostShareBottomSheetPresented.toggle()
       },
       label: {
         Image(systemName: "square.and.arrow.up")
@@ -170,15 +183,18 @@ struct PostCellView: View {
     .foregroundStyle(.primary)
     .buttonStyle(.plain)
     .sheet(
-      isPresented: $isBottomSheetPresented,
+      isPresented: $isPostShareBottomSheetPresented,
       onDismiss: {
         Task { @MainActor in
           showShareSheet = pendingShowShareSheet
         }
       },
       content: {
-        PostShareBottomSheet(showShareSheet: $pendingShowShareSheet)
-          .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
+        PostShareBottomSheet(
+          showShareSheet: $pendingShowShareSheet,
+          isPostShareBottomSheetPresented: $isPostShareBottomSheetPresented
+        )
+        .presentationDetents([.height(LayoutConstant.initialBottomSheetHeight)])
       })
   }
 
@@ -187,84 +203,85 @@ struct PostCellView: View {
     Menu {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/383
       // - Implement Appropriate Functionality for Each Menu Item in PostCellView.swift.
-      Button(
-        action: {
-
-        },
-        label: {
-          HStack {
-            Text(LocalizedString.unfollowButtonText + " @" + postModel.userName)
-            
-            Image(systemName: "person.fill.xmark")
-          }
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-
-        },
-        label: {
-          HStack {
-            Text(LocalizedString.listButtonText)
-
-            Image(systemName: "note.text.badge.plus")
-          }
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-
-        },
-        label: {
-          HStack {
-            Text(LocalizedString.muteButtonText + " @" + postModel.userName)
-
-            Image(systemName: "speaker.slash")
-          }
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-
-        },
-        label: {
-          HStack {
-            Text(LocalizedString.blockButtonText + " @" + postModel.userName)
-
-            Image(systemName: "circle.slash")
-          }
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-
-        },
-        label: {
-          HStack {
-            Text(LocalizedString.reportButtonText)
-            Image(systemName: "flag")
-          }
-        }
-      )
-      .foregroundStyle(.primary)
-      .buttonStyle(.plain)
-
+      UnfollowButton()
+      ListButton()
+      MuteButton()
+      BlockButton()
+      ReportButton()
     } label: {
       Image(systemName: "ellipsis")
         .foregroundStyle(Color(.black))
     }
+  }
+
+  @ViewBuilder
+  private func UnfollowButton() -> some View {
+    Button {
+
+    } label: {
+      HStack {
+        Text(LocalizedString.unfollowButtonText + " @" + postModel.userName)
+        Image(systemName: "person.fill.xmark")
+      }
+    }
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func ListButton() -> some View {
+    Button {
+
+    } label: {
+      HStack {
+        Text(LocalizedString.listButtonText)
+        Image(systemName: "note.text.badge.plus")
+      }
+    }
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func MuteButton() -> some View {
+    Button {
+
+    } label: {
+      HStack {
+        Text(LocalizedString.muteButtonText + " @" + postModel.userName)
+        Image(systemName: "speaker.slash")
+      }
+    }
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func BlockButton() -> some View {
+    Button {
+
+    } label: {
+      HStack {
+        Text(LocalizedString.blockButtonText + " @" + postModel.userName)
+        Image(systemName: "circle.slash")
+      }
+    }
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private func ReportButton() -> some View {
+    Button {
+
+    } label: {
+      HStack {
+        Text(LocalizedString.reportButtonText)
+        Image(systemName: "flag")
+      }
+    }
+    .foregroundStyle(.primary)
+    .buttonStyle(.plain)
   }
 }
 
