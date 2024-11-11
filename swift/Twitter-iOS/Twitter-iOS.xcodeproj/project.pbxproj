@@ -16,6 +16,7 @@
 		3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */; };
 		3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */; };
 		3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */; };
+		3B6537C82CE089A100409179 /* LocationPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6537C72CE0899700409179 /* LocationPermissionController.swift */; };
 		3B6574712C7C5F8C0069B192 /* DrawerPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 3B6574702C7C5F8C0069B192 /* DrawerPresentation */; };
 		3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */; };
 		3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */; };
@@ -166,6 +167,7 @@
 		3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewController.swift; sourceTree = "<group>"; };
 		3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltTextEditViewController.swift; sourceTree = "<group>"; };
 		3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewObserver.swift; sourceTree = "<group>"; };
+		3B6537C72CE0899700409179 /* LocationPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPermissionController.swift; sourceTree = "<group>"; };
 		3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsMentionsTabView.swift; sourceTree = "<group>"; };
 		3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewObserver.swift; sourceTree = "<group>"; };
 		3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeCallingAccessControlSectionView.swift; sourceTree = "<group>"; };
@@ -870,6 +872,7 @@
 		65F908482BE1273700C6C8B3 /* Permission */ = {
 			isa = PBXGroup;
 			children = (
+				3B6537C72CE0899700409179 /* LocationPermissionController.swift */,
 				65F908462BE11E2F00C6C8B3 /* PermissionGuideViewController.swift */,
 				65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */,
 			);
@@ -1200,6 +1203,7 @@
 				6540F8E92BC972AB0029BA46 /* NotificationsViewController.swift in Sources */,
 				65FD4F3F2C1556EB0020A02E /* UserConnectViewController.swift in Sources */,
 				6567CBD52BD9356900242716 /* UserProfileIconTransition.swift in Sources */,
+				3B6537C82CE089A100409179 /* LocationPermissionController.swift in Sources */,
 				6540F8E22BC565980029BA46 /* SearchTabView.swift in Sources */,
 				65FD4FC42C2D8BB00020A02E /* BookmarkService.swift in Sources */,
 				6540F8FA2BD294DF0029BA46 /* TimelineSettingsViewController.swift in Sources */,

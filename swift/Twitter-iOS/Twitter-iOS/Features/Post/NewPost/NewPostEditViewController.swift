@@ -4,7 +4,7 @@ import UIKit
 
 final class NewPostEditViewController: UIViewController {
 
-  // MARK: Private Props
+  // MARK: - Private Props
 
   private enum LayoutConstant {
     static let edgePadding: CGFloat = 16.0
@@ -40,16 +40,18 @@ final class NewPostEditViewController: UIViewController {
     return dimmingView
   }()
 
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/444
-  // - Implement LocationPermissionController to Retrieve Location Settings Information.
-
   private let photoLibraryPermissionController = PhotoLibraryPermissionController()
+  private let locationPermissionController = LocationPermissionController()
+
+  // MARK: - View Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
     setUpViewObserver()
   }
+
+  // MARK: - Private API
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
@@ -123,9 +125,7 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didTapLocationEditButtonCompletion = { [weak self] in
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/445
-      // - Enable Different View Transitions based on Device Location Settings.
-      self?.presentLocationAccessExplanationPopUpViewController()
+      self?.requestLocationPermission()
     }
 
     viewObserver.didTapLocationSettingsTransitionButtonCompletion = { [weak self] in
@@ -218,7 +218,31 @@ final class NewPostEditViewController: UIViewController {
       }
     }
   }
+
+  private func requestLocationPermission() {
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/445
+    // - Enable Different View Transitions based on Device Location Settings.
+    locationPermissionController.requestPermission { [weak self] status in
+      switch status {
+      case .authorizedWhenInUse:
+        print("authorizedWhenInUse")
+      case .denied:
+        self?.presentLocationAccessExplanationPopUpViewController()
+      case .notDetermined:
+        // In the future, requestWhenInUseAuthorization() must be called
+        // after dismissing the pop-up view controller in this state.
+        // This is planned to be addressed in issue #445.
+        self?.presentLocationAccessExplanationPopUpViewController()
+      case .restricted:
+        print("restricted")
+      default:
+        print("unknown")
+      }
+    }
+  }
 }
+
+// MARK: - View
 
 struct NewPostEditView: View {
 
