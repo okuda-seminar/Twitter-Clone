@@ -54,7 +54,7 @@ struct SideMenuView: View {
   private func Header() -> some View {
     Button(
       action: {
-        delegate?.didTapUserProfile()
+        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Image(systemName: "person.circle.fill")
@@ -65,7 +65,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapUserProfile()
+        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Text(userName)
@@ -76,7 +76,7 @@ struct SideMenuView: View {
     HStack {
       Button(
         action: {
-          delegate?.didTapUserFollowRelationsButton(userName: userName)
+          delegate?.userFollowRelationsButtonDidReceiveTap(userName: userName)
         },
         label: {
           Text("\(numOfFollowing) \(LocalizedString.following)")
@@ -85,7 +85,7 @@ struct SideMenuView: View {
 
       Button(
         action: {
-          delegate?.didTapUserFollowRelationsButton(userName: userName)
+          delegate?.userFollowRelationsButtonDidReceiveTap(userName: userName)
         },
         label: {
           Text("\(numOfFollowers) \(LocalizedString.followers)")
@@ -98,7 +98,7 @@ struct SideMenuView: View {
   private func MainMenu() -> some View {
     Button(
       action: {
-        delegate?.didTapUserProfile()
+        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Image(systemName: "person")
@@ -112,7 +112,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapBookmarks()
+        delegate?.bookmarksDidReceiveTap()
       },
       label: {
         Image(systemName: "bookmark")
@@ -126,7 +126,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapJobs()
+        delegate?.jobsDidReceiveTap()
       },
       label: {
         Image(systemName: "handbag")
@@ -140,7 +140,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapLists()
+        delegate?.listsDidReceiveTap()
       },
       label: {
         Image(systemName: "list.clipboard")
@@ -167,7 +167,7 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapFollowerRequests()
+        delegate?.followerRequestsDidReceiveTap()
       },
       label: {
         Image(systemName: "person.badge.plus")
@@ -181,7 +181,6 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.didTapFollowerRequests()
       },
       label: {
         Image(systemName: "bitcoinsign.circle")
@@ -206,7 +205,7 @@ struct SideMenuView: View {
       }
       .padding()
       .onTapGesture {
-        delegate?.didTapSettingsAndPrivacy()
+        delegate?.settingsAndPrivacyDidReceiveTap()
       }
 
       HStack {
@@ -231,13 +230,13 @@ struct SideMenuView: View {
 }
 
 protocol SideMenuViewDelegate: AnyObject {
-  func didTapUserProfile()
-  func didTapBookmarks()
-  func didTapJobs()
-  func didTapLists()
-  func didTapFollowerRequests()
-  func didTapSettingsAndPrivacy()
-  func didTapUserFollowRelationsButton(userName: String)
+  func userProfileDidReceiveTap()
+  func bookmarksDidReceiveTap()
+  func jobsDidReceiveTap()
+  func listsDidReceiveTap()
+  func followerRequestsDidReceiveTap()
+  func settingsAndPrivacyDidReceiveTap()
+  func userFollowRelationsButtonDidReceiveTap(userName: String)
 }
 
 private let fakeUser = createFakeUser()
