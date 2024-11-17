@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B08824C2CE992A9001BEDB1 /* MainRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */; };
 		3B20B0692C3D83E20045E904 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */; };
 		3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */; };
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
@@ -158,6 +159,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRootViewController.swift; sourceTree = "<group>"; };
 		3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTabModel.swift; sourceTree = "<group>"; };
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				6540F8802BB44D430029BA46 /* AppDelegate.swift */,
 				6540F8822BB44D430029BA46 /* SceneDelegate.swift */,
 				658D08822BECF45F006C6A9E /* AppRootViewController.swift */,
+				3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */,
 				658D087C2BEBA068006C6A9E /* SideMenuView.swift */,
 				6540F8B32BB575580029BA46 /* Features */,
 				6540F8C32BB576C00029BA46 /* SDK */,
@@ -1107,6 +1110,7 @@
 				658D088E2BF3A02D006C6A9E /* CommunityModel.swift in Sources */,
 				6540F9052BD376A00029BA46 /* ExploreSettingsHeaderView.swift in Sources */,
 				3BFFDEA82CD1FF270072D369 /* TimelineSettingsHomeScreenTabsViewController.swift in Sources */,
+				3B08824C2CE992A9001BEDB1 /* MainRootViewController.swift in Sources */,
 				656C1BAE2C0216F600EEE575 /* NotificationsAllTabView.swift in Sources */,
 				65FD4FAF2C2AE0270020A02E /* NSNotification+Home.swift in Sources */,
 				658D08912BF4FD50006C6A9E /* MessagesSettingsHomeViewController.swift in Sources */,

@@ -111,7 +111,7 @@ struct HomeTabView: View {
               if success {
                 let bannerController = BannerController(
                   message: String(format: LocalizedString.muteBannerTitle, userName))
-                bannerController.show(on: AppRootViewController.sharedInstance)
+                bannerController.show(on: MainRootViewController.sharedInstance)
               }
             }
           },
