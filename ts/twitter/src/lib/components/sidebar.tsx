@@ -18,7 +18,7 @@ import { CiCircleMore } from "react-icons/ci";
 import Link from "next/link";
 import IconButtonWithLink from "./icon-button-with-link";
 import SignInbutton from "./sign-in-button";
-import { SideBarPostButton } from "./sidebar-post-button/sidebar-post-button";
+import { SideBarPostButton } from "./sidebar-post-button";
 
 export const SideBar: React.FC = () => {
   return (
