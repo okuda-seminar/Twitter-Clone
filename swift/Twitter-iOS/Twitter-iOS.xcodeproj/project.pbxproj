@@ -18,7 +18,6 @@
 		3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */; };
 		3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */; };
 		3B6537C82CE089A100409179 /* LocationPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6537C72CE0899700409179 /* LocationPermissionController.swift */; };
-		3B6574712C7C5F8C0069B192 /* DrawerPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 3B6574702C7C5F8C0069B192 /* DrawerPresentation */; };
 		3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B68A4BA2C0ADD89009D0350 /* NotificationsMentionsTabView.swift */; };
 		3B6FB3CE2C54D6CA003EC0CF /* UserProfileViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6FB3CD2C54D6CA003EC0CF /* UserProfileViewObserver.swift */; };
 		3B7332EC2C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332E72C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift */; };
@@ -32,6 +31,8 @@
 		3B8E61792CA55F5000E72FBC /* UserAddedListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */; };
 		3B9764152CAD2308007FE8BC /* NewPostTagEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */; };
 		3B9764172CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764162CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift */; };
+		3B9AC01A2CF2C4BB0052784A /* SideMenuTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */; };
+		3B9AC0202CF2F26D0052784A /* SideMenuTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9AC01F2CF2F26D0052784A /* SideMenuTransitionAnimator.swift */; };
 		3BA1CD682C6B845900924DA5 /* NewPostEditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */; };
 		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		3BDE73E12C90376300714EE2 /* UserListsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */; };
@@ -183,6 +184,8 @@
 		3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddedListsViewController.swift; sourceTree = "<group>"; };
 		3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostTagEditView.swift; sourceTree = "<group>"; };
 		3B9764162CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccessExplanationPopUpView.swift; sourceTree = "<group>"; };
+		3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTransitionController.swift; sourceTree = "<group>"; };
+		3B9AC01F2CF2F26D0052784A /* SideMenuTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTransitionAnimator.swift; sourceTree = "<group>"; };
 		3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditDataSource.swift; sourceTree = "<group>"; };
 		3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowerRequestsPageViewController.swift; sourceTree = "<group>"; };
 		3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListsPageViewController.swift; sourceTree = "<group>"; };
@@ -301,7 +304,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B6574712C7C5F8C0069B192 /* DrawerPresentation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +362,28 @@
 			path = NewPost;
 			sourceTree = "<group>";
 		};
+		3B8434252CF939BA0093977E /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				6540F8802BB44D430029BA46 /* AppDelegate.swift */,
+				6540F8822BB44D430029BA46 /* SceneDelegate.swift */,
+				658D08822BECF45F006C6A9E /* AppRootViewController.swift */,
+				3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */,
+				3B9AC0162CF2A9700052784A /* SideMenu */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		3B9AC0162CF2A9700052784A /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				3B9AC01F2CF2F26D0052784A /* SideMenuTransitionAnimator.swift */,
+				3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */,
+				658D087C2BEBA068006C6A9E /* SideMenuView.swift */,
+			);
+			path = SideMenu;
+			sourceTree = "<group>";
+		};
 		6540F8742BB44D430029BA46 = {
 			isa = PBXGroup;
 			children = (
@@ -386,11 +410,7 @@
 				65FD4F3B2C1445DC0020A02E /* cute_bard.gif */,
 				6540F8892BB44D430029BA46 /* Assets.xcassets */,
 				6540F88E2BB44D430029BA46 /* Info.plist */,
-				6540F8802BB44D430029BA46 /* AppDelegate.swift */,
-				6540F8822BB44D430029BA46 /* SceneDelegate.swift */,
-				658D08822BECF45F006C6A9E /* AppRootViewController.swift */,
-				3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */,
-				658D087C2BEBA068006C6A9E /* SideMenuView.swift */,
+				3B8434252CF939BA0093977E /* Root */,
 				6540F8B32BB575580029BA46 /* Features */,
 				6540F8C32BB576C00029BA46 /* SDK */,
 				658D08872BEF474F006C6A9E /* Services */,
@@ -976,7 +996,6 @@
 			);
 			name = "Twitter-iOS";
 			packageProductDependencies = (
-				3B6574702C7C5F8C0069B192 /* DrawerPresentation */,
 			);
 			productName = "Twitter-iOS";
 			productReference = 6540F87D2BB44D430029BA46 /* Twitter-iOS.app */;
@@ -1051,7 +1070,6 @@
 			);
 			mainGroup = 6540F8742BB44D430029BA46;
 			packageReferences = (
-				3B65746F2C7C5F8C0069B192 /* XCRemoteSwiftPackageReference "DrawerPresentation" */,
 			);
 			productRefGroup = 6540F87E2BB44D430029BA46 /* Products */;
 			projectDirPath = "";
@@ -1187,6 +1205,7 @@
 				3BA1CD682C6B845900924DA5 /* NewPostEditDataSource.swift in Sources */,
 				65C6CCAB2C00130600B0A052 /* MessagesViewController.swift in Sources */,
 				658D08862BEE5C39006C6A9E /* DispatchQueue+Once.swift in Sources */,
+				3B9AC0202CF2F26D0052784A /* SideMenuTransitionAnimator.swift in Sources */,
 				656C1BFB2C089C1200EEE575 /* HomeTabModel.swift in Sources */,
 				3B7332EE2C23153F007F4537 /* MessagesSettingsHomeMessageFilteringSectionView.swift in Sources */,
 				658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */,
@@ -1220,6 +1239,7 @@
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */,
 				3B9764172CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift in Sources */,
+				3B9AC01A2CF2C4BB0052784A /* SideMenuTransitionController.swift in Sources */,
 				65FD4FA22C2849B30020A02E /* CommunityHomeTabModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1550,25 +1570,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3B65746F2C7C5F8C0069B192 /* XCRemoteSwiftPackageReference "DrawerPresentation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/noppefoxwolf/DrawerPresentation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.12;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3B6574702C7C5F8C0069B192 /* DrawerPresentation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B65746F2C7C5F8C0069B192 /* XCRemoteSwiftPackageReference "DrawerPresentation" */;
-			productName = DrawerPresentation;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6540F8752BB44D430029BA46 /* Project object */;
 }

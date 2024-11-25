@@ -1,10 +1,11 @@
-import DrawerPresentation
 import SwiftUI
 import UIKit
 
 class AppRootViewController: UIViewController {
 
   // MARK: - Private Props
+
+  private let sideMenuTransitionController = SideMenuTransitionController()
 
   private lazy var mainRootViewController: MainRootViewController = {
     let viewController = MainRootViewController.sharedInstance
@@ -14,17 +15,22 @@ class AppRootViewController: UIViewController {
     return viewController
   }()
 
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/502
-  // - Remove DrawerPresentation Library and Implement Simple Transition.
-  // Methods and properties related to the DrawerPresentation library are planned to be removed in the issue above.
-  private let drawerTransitionController = DrawerTransitionController()
+  private lazy var sideMenuViewController: UIHostingController = {
+    let fakeUser = injectCurrentUser()
+    let viewController = UIHostingController(
+      rootView: SideMenuView(
+        userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowers,
+        numOfFollowers: fakeUser.numOfFollowers, delegate: self))
+    viewController.modalPresentationStyle = .custom
+    viewController.transitioningDelegate = sideMenuTransitionController
+    return viewController
+  }()
 
   // MARK: - View Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
-    setUpDrawerTransitionController()
   }
 
   // MARK: - Private API
@@ -41,30 +47,16 @@ class AppRootViewController: UIViewController {
     ])
   }
 
-  private func setUpDrawerTransitionController() {
-    drawerTransitionController.addDrawerGesture(
-      to: mainRootViewController,
-      drawerViewController: { [weak self] in
-        let fakeUser = InjectCurrentUser()
-        let sideMenuViewController = UIHostingController(
-          rootView: SideMenuView(
-            userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowing,
-            numOfFollowers: fakeUser.numOfFollowers, delegate: self))
-        return sideMenuViewController
-      })
-  }
-
   // MARK: - Public API
 
-  // These methods should be managed with a custom transition animation in the future.
   public func hideSideMenu() {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/409
     // - Enable Smoother Transitions from SideMenu to Other Views.
-    self.dismiss(animated: true)
+    sideMenuViewController.dismiss(animated: true)
   }
 
   public func showSideMenu() {
-    drawerTransitionController.presentRegisteredDrawer()
+    present(sideMenuViewController, animated: true)
   }
 }
 
@@ -78,7 +70,7 @@ extension AppRootViewController: SideMenuViewDelegate {
       let selectedViewController = mainRootViewController.selectedViewController
         as? UINavigationController
     else { return }
-    let userProfileViewController = UserProfileViewController(userModel: InjectCurrentUser())
+    let userProfileViewController = UserProfileViewController(userModel: injectCurrentUser())
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 
