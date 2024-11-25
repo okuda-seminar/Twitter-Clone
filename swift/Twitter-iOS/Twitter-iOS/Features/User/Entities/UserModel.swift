@@ -68,7 +68,7 @@ private func createFakeCurrentUser() -> FakeCurrentUser {
     numOfFollowers: 0)
 }
 
-func InjectCurrentUser() -> CurrentUser {
+func injectCurrentUser() -> CurrentUser {
   if isRunningUnitTests() {
     return createFakeCurrentUser()
   }

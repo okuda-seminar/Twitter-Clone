@@ -106,7 +106,7 @@ class UserProfileViewController: UIViewController {
   @objc
   private func presentUserProfileIconDetailViewController() {
     let userProfileIconDetailViewController = UserProfileIconDetailViewController(
-      currentUser: InjectCurrentUser())
+      currentUser: injectCurrentUser())
     userProfileIconDetailViewController.modalPresentationStyle = .fullScreen
     navigationController?.delegate = self
     navigationController?.pushViewController(
