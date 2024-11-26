@@ -1,21 +1,24 @@
-import { VStack, Text } from "@chakra-ui/react";
-import { getCollectionOfPostsBySpecificUserAndUsersTheyFollow } from "@/lib/actions/get-collection-of-posts-by-specific-user-and-users-they-follow";
+"use client";
+
+import { VStack, Box } from "@chakra-ui/react";
 import { TimelinePostCard } from "./timeline-post-card";
+import { useTimelineFeed } from "./use-timeline-feed";
 
-export const TimelineFeed = async () => {
-  const posts = await getCollectionOfPostsBySpecificUserAndUsersTheyFollow({
-    user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
-  });
+export const TimelineFeed = () => {
+  const { posts, errorMessage } = useTimelineFeed();
 
-  if (!posts || posts.length === 0) {
-    return <Text>No posts found.</Text>;
+  if (errorMessage) {
+    // Handling errors that cannot be caught by error.tsx from asynchronous processing.
+    return <Box>{errorMessage}</Box>;
+  } else if (posts.length === 0) {
+    return <Box>Post not found.</Box>;
+  } else {
+    return (
+      <VStack spacing={4} align="stretch">
+        {posts.map((post) => (
+          <TimelinePostCard key={post.id} post={post} />
+        ))}
+      </VStack>
+    );
   }
-
-  return (
-    <VStack spacing={4} align="stretch">
-      {posts.map((post) => (
-        <TimelinePostCard key={post.id} post={post} />
-      ))}
-    </VStack>
-  );
 };
