@@ -1,7 +1,5 @@
-import {
-  getCollectionOfPostsBySpecificUserAndUsersTheyFollow,
-  GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse,
-} from "../get-collection-of-posts-by-specific-user-and-users-they-follow";
+import { getCollectionOfPostsBySpecificUserAndUsersTheyFollow } from "../get-collection-of-posts-by-specific-user-and-users-they-follow";
+import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "@/lib/models/post";
 
 describe("getCollectionOfPostsBySpecificUserAndUsersTheyFollow Tests", () => {
   const buildEndpoint = (user_id: string) => {

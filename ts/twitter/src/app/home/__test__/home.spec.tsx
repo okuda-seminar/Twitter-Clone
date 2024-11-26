@@ -2,7 +2,7 @@ import { render, waitFor } from "@testing-library/react";
 import { VStack } from "@chakra-ui/react";
 import { Home } from "../_components/home";
 import { SessionProvider } from "@/lib/components/session-context";
-import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "@/lib/actions/get-collection-of-posts-by-specific-user-and-users-they-follow";
+import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "@/lib/models/post";
 import { TimelinePostCard } from "../_components/timeline/timeline-post-card";
 
 const mockPosts: GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse =
