@@ -1,5 +1,7 @@
 "use server";
 
+import { err, ok, ServerActionsError, ServerActionsResult } from "./types";
+
 interface FindUserByIdBody {
   user_id: string;
 }
@@ -16,25 +18,23 @@ export interface FindUserByIdResponse {
 
 export async function findUserById({
   user_id,
-}: FindUserByIdBody): Promise<FindUserByIdResponse> {
-  try {
-    const res = await fetch(
-      `${process.env.API_BASE_URL}/api/users/${user_id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+}: FindUserByIdBody): Promise<
+  ServerActionsResult<FindUserByIdResponse, ServerActionsError>
+> {
+  const res = await fetch(`${process.env.API_BASE_URL}/api/users/${user_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    if (res.ok) {
-      const responseData: FindUserByIdResponse = await res.json();
-      return responseData;
-    } else {
-      throw new Error(`Failed to find user: ${res.status} ${res.statusText}`);
-    }
-  } catch (error) {
-    throw new Error("Unable to find user. Please try again later.");
+  if (res.ok) {
+    const data: FindUserByIdResponse = await res.json();
+    return ok(data);
+  } else {
+    return err({
+      status: res.status,
+      statusText: res.statusText,
+    });
   }
 }

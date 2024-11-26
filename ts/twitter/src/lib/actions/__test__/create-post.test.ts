@@ -1,7 +1,5 @@
 import { createPost } from "../create-post";
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/488 - Fix Jest Recognition in Local Development Environment.
-
 describe("createPost Tests", () => {
   const endpoint = `${process.env.API_BASE_URL}/api/posts`;
   const mockFetch = jest.fn();
@@ -29,7 +27,7 @@ describe("createPost Tests", () => {
       });
 
       // Assert
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ ok: true, value: mockResponse });
       expect(mockFetch).toHaveBeenCalledWith(
         endpoint,
         expect.objectContaining({
@@ -47,20 +45,30 @@ describe("createPost Tests", () => {
   });
 
   describe("Error cases", () => {
-    test("http error should be handled appropriately", async () => {
+    test("HTTP error should be handled appropriately", async () => {
       // Arrange
       mockFetch.mockResolvedValueOnce({
         ok: false,
+        status: 500,
+        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/489
+        // - Centralize Error Messages Management.
+        statusText: "Internal Server Error",
       });
 
-      // Act & Assert
-      await expect(
-        createPost({
-          user_id: "test-user",
-          text: "test post",
-        })
-        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/489 - Centralize Error Messages Management.
-      ).rejects.toThrow("Unable to create post. Please try again later.");
+      // Act
+      const result = await createPost({
+        user_id: "test-user",
+        text: "test post",
+      });
+
+      // Assert
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          status: 500,
+          statusText: "Internal Server Error",
+        },
+      });
     });
 
     test("The case where the client cannot send a request should be handled", async () => {
