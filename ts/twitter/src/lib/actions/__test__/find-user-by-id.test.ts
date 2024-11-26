@@ -32,7 +32,7 @@ describe("findUserById Tests", () => {
       });
 
       // Assert
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ ok: true, value: mockResponse });
       expect(mockFetch).toHaveBeenCalledWith(
         endpoint,
         expect.objectContaining({
@@ -46,18 +46,26 @@ describe("findUserById Tests", () => {
   });
 
   describe("Error cases", () => {
-    test("http error should be handled appropriately", async () => {
+    test("HTTP error should be handled appropriately", async () => {
       // Arrange
       mockFetch.mockResolvedValueOnce({
         ok: false,
+        status: 500,
+        statusText: "Internal Server Error",
       });
 
-      // Act & Assert
-      await expect(findUserById({ user_id: "non-existent" })).rejects.toThrow(
-        "Unable to find user. Please try again later."
-      );
-    });
+      // Act
+      const result = await findUserById({ user_id: "non-existent" });
 
+      // Assert
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          status: 500,
+          statusText: "Internal Server Error",
+        },
+      });
+    });
 
     test("The case where the client cannot send a request should be handled", async () => {
       // Act & Assert

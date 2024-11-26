@@ -31,19 +31,18 @@ export const usePostModal = ({
   };
 
   const handlePostButtonClick = async () => {
-    try {
-      const res = await createPost({
-        user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
-        text: postText,
-      });
+    const res = await createPost({
+      user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
+      text: postText,
+    });
 
-      console.log(res);
-
+    if (res.ok) {
+      console.log(res.value);
       setPostText("");
-    } catch (err) {
+    } else {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/477
       // - Display an error message to users if post creation fails.
-      console.log(err);
+      console.log(res.error);
     }
   };
 
