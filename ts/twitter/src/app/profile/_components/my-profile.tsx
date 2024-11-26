@@ -10,19 +10,20 @@ import {
   Tooltip,
   Text,
 } from "@chakra-ui/react";
-import { findUserById } from "@/lib/actions/find-user-by-id";
+import { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
 import { GoArrowLeft } from "react-icons/go";
 import { RxCalendar } from "react-icons/rx";
 import { MyProfileTab } from "./my-profile-tab";
 
-export const MyProfile: React.FC = async () => {
+interface MyProfileProps {
+  userProfile: FindUserByIdResponse;
+}
+
+export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
   const userPostCount: number = 0;
   const followingCount: number = 0;
   const followersCount: number = 0;
 
-  const userProfile = await findUserById({
-    user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
-  });
   const date = new Date(userProfile.created_at);
   const userJoinedDate = new Intl.DateTimeFormat("en-US", {
     month: "long",
