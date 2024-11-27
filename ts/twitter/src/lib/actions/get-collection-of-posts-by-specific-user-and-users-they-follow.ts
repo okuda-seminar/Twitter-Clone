@@ -1,13 +1,10 @@
 "use server";
 
-import { Post } from "../models/post";
+import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "../models/post";
 
 interface GetCollectionOfPostsBySpecificUserAndUsersTheyFollowBody {
   user_id: string;
 }
-
-export type GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse =
-  Post[];
 
 export async function getCollectionOfPostsBySpecificUserAndUsersTheyFollow({
   user_id,

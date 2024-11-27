@@ -4,3 +4,6 @@ export interface Post {
   text: string;
   created_at: string;
 }
+
+export type GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse =
+  Post[];
