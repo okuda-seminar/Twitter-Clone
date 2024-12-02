@@ -6,18 +6,19 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
   public var isPresenting: Bool = true
 
+  public var dimmingViewTapAction: (() -> Void)? = nil
+
   // MARK: - Private Props
 
   private enum LayoutConstant {
     static let sideMenuWidth: CGFloat = 300.0
-    static let overlayViewAlphaWhenPresented: CGFloat = 0.5
+    static let dimmingViewAlphaWhenPresented: CGFloat = 0.5
     static let duration: TimeInterval = 0.25
   }
 
-  private let overlayView: UIView = {
+  private let dimmingView: UIView = {
     let view = UIView()
     view.backgroundColor = .black
-    view.alpha = 0.0
     return view
   }()
 
@@ -51,23 +52,28 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
     let containerView = transitionContext.containerView
 
-    overlayView.translatesAutoresizingMaskIntoConstraints = false
+    dimmingView.translatesAutoresizingMaskIntoConstraints = false
     toView.translatesAutoresizingMaskIntoConstraints = false
 
-    containerView.addSubview(overlayView)
+    containerView.addSubview(dimmingView)
     containerView.addSubview(toView)
 
     NSLayoutConstraint.activate([
-      overlayView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-      overlayView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-      overlayView.topAnchor.constraint(equalTo: containerView.topAnchor),
-      overlayView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+      dimmingView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+      dimmingView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+      dimmingView.topAnchor.constraint(equalTo: containerView.topAnchor),
+      dimmingView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
 
       toView.topAnchor.constraint(equalTo: containerView.topAnchor),
       toView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
       toView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
       toView.widthAnchor.constraint(equalToConstant: LayoutConstant.sideMenuWidth),
     ])
+
+    dimmingView.alpha = 0.0
+
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTapAction))
+    dimmingView.addGestureRecognizer(tapGestureRecognizer)
 
     toView.frame.origin.x = -LayoutConstant.sideMenuWidth
 
@@ -76,7 +82,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       animations: { [weak self] in
         toView.frame.origin.x = 0.0
         fromView.frame.origin.x = LayoutConstant.sideMenuWidth
-        self?.overlayView.alpha = LayoutConstant.overlayViewAlphaWhenPresented
+        self?.dimmingView.alpha = LayoutConstant.dimmingViewAlphaWhenPresented
       },
       completion: { finished in
         let completed = finished && !transitionContext.transitionWasCancelled
@@ -99,11 +105,18 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       animations: { [weak self] in
         toView.frame.origin.x = 0.0
         fromView.frame.origin.x = -LayoutConstant.sideMenuWidth
-        self?.overlayView.alpha = 0.0
+        self?.dimmingView.alpha = 0.0
       },
       completion: { finished in
         let completed = finished && !transitionContext.transitionWasCancelled
         transitionContext.completeTransition(completed)
       })
+  }
+
+  // MARK: - Tap Gesture Handling
+
+  @objc
+  private func onTapAction() {
+    dimmingViewTapAction?()
   }
 }
