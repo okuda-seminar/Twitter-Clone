@@ -1,8 +1,5 @@
 import UIKit
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/509
-// - Implement Tap Gesture on OverlayView to Dismiss Side Menu.
-
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/510
 // - Implement Swipe and Pan Gesture to Enable Manual Side Menu Transition.
 
@@ -13,6 +10,7 @@ class SideMenuTransitionController: NSObject, UIViewControllerTransitioningDeleg
   func animationController(
     forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController
   ) -> (any UIViewControllerAnimatedTransitioning)? {
+    animator.dimmingViewTapAction = { [weak presented] in presented?.dismiss(animated: true) }
     animator.isPresenting = true
     return animator
   }
