@@ -2,24 +2,23 @@ import { render, waitFor } from "@testing-library/react";
 import { VStack } from "@chakra-ui/react";
 import { Home } from "../_components/home";
 import { SessionProvider } from "@/lib/components/session-context";
-import { GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse } from "@/lib/actions/get-collection-of-posts-by-specific-user-and-users-they-follow";
+import { FollowingPostsResponse } from "@/lib/actions/fetch-following-posts";
 import { TimelinePostCard } from "../_components/timeline/timeline-post-card";
 
-const mockPosts: GetCollectionOfPostsBySpecificUserAndUsersTheyFollowResponse =
-  [
-    {
-      id: "123",
-      user_id: "789",
-      text: "test text",
-      created_at: "2024-01-01",
-    },
-    {
-      id: "456",
-      user_id: "789",
-      text: "test text2",
-      created_at: "2024-01-01",
-    },
-  ];
+const mockPosts: FollowingPostsResponse = [
+  {
+    id: "123",
+    user_id: "789",
+    text: "test text",
+    created_at: "2024-01-01",
+  },
+  {
+    id: "456",
+    user_id: "789",
+    text: "test text2",
+    created_at: "2024-01-01",
+  },
+];
 
 jest.mock("../_components/timeline/timeline-feed", () => ({
   TimelineFeed: () => {
