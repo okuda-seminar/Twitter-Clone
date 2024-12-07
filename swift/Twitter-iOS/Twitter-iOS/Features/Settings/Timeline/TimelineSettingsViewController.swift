@@ -1,9 +1,6 @@
 import SwiftUI
 import UIKit
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/523
-// - Fix Bug Where UINavigationBar Does Not Appear in TimelineSettingsViewController.
-
 class TimelineSettingsViewController: UIViewController {
 
   // MARK: - Private Props
@@ -55,6 +52,7 @@ class TimelineSettingsViewController: UIViewController {
   // MARK: - Private API
 
   private func setUpSubviews() {
+    view.backgroundColor = .systemBackground
     view.addSubview(hostingController.view)
 
     let layoutGuide = view.safeAreaLayoutGuide
