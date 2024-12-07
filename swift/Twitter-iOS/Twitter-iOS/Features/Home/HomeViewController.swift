@@ -34,7 +34,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   private lazy var timelineSettingsEntryPointButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
-      title: "", style: .plain, target: self, action: #selector(presentExploreSettings))
+      title: "", style: .plain, target: self, action: #selector(presentTimelineSettings))
     button.tintColor = .black
     button.image = UIImage(systemName: "gear")
     return button
@@ -105,17 +105,21 @@ class HomeViewController: ViewControllerWithUserIconButton {
     navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))
   }
 
-  private func showTimelineSettings() {
-    let timelineSettingsViewController = TimelineSettingsViewController()
-    timelineSettingsViewController.modalPresentationStyle = .fullScreen
-    present(timelineSettingsViewController, animated: true)
-  }
-
   @objc
-  private func presentExploreSettings() {
-    let timelineSettingsViewController = TimelineSettingsViewController()
-    timelineSettingsViewController.modalPresentationStyle = .fullScreen
-    present(timelineSettingsViewController, animated: true)
+  private func presentTimelineSettings() {
+    let settingsHomeViewController = SettingsHomeViewController()
+    let presentingViewController = UINavigationController(
+      rootViewController: settingsHomeViewController)
+    let backButtonImage = UIImage(systemName: "arrow.left")
+    presentingViewController.navigationBar.backIndicatorImage = backButtonImage
+    presentingViewController.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    presentingViewController.navigationBar.tintColor = .black
+
+    settingsHomeViewController.navigationItem.backButtonDisplayMode = .minimal
+    presentingViewController.pushViewController(
+      TimelineSettingsViewController(), animated: false)
+    presentingViewController.modalPresentationStyle = .fullScreen
+    present(presentingViewController, animated: true)
   }
 
   // MARK: - UITabBarItem
