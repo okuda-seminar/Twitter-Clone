@@ -10,7 +10,10 @@ interface usePostModalReturn {
   handleCloseButtonClick: () => void;
   postText: string;
   handleTextAreaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handlePostButtonClick: () => Promise<void>;
+  handlePostButtonClick: (
+    currentMessage: string | undefined,
+    formData: FormData
+  ) => Promise<string | undefined>;
   isPostButtonDisabled: boolean;
 }
 
@@ -30,19 +33,27 @@ export const usePostModal = ({
     setPostText(event.target.value);
   };
 
-  const handlePostButtonClick = async () => {
-    const res = await createPost({
-      user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
-      text: postText,
-    });
+  // currentMessage should be passed as the first argument due to the useFormState specification.
+  const handlePostButtonClick = async (
+    currentMessage: string | undefined,
+    formData: FormData
+  ) => {
+    const message =
+      "Something went wrong, but don't fret - let's give it another shot.";
+    try {
+      const res = await createPost({
+        user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
+        text: formData.get("text") as string,
+      });
 
-    if (res.ok) {
-      console.log(res.value);
+      if (!res.ok) {
+        return message;
+      }
+
       setPostText("");
-    } else {
-      // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/477
-      // - Display an error message to users if post creation fails.
-      console.log(res.error);
+      handleCloseButtonClick();
+    } catch (error) {
+      return message;
     }
   };
 

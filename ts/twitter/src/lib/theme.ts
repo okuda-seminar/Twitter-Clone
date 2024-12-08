@@ -14,6 +14,9 @@ const theme = {
       primary: "#1DA1F2",
       primaryHover: "#1A91DA",
     },
+    error: {
+      primary: "#3D0105",
+    },
   },
 };
 
