@@ -1,12 +1,15 @@
 import SwiftUI
 import UIKit
 
+/// The root view controller of the app, responsible for managing the side menu and main content navigation.
 class AppRootViewController: UIViewController {
 
   // MARK: - Private Props
 
+  /// The controller responsible for the side menu transition animation.
   private let sideMenuTransitionController = SideMenuTransitionController()
 
+  /// The `UITabBarController` that manages the selected tab's view.
   private lazy var mainRootViewController: MainRootViewController = {
     let viewController = MainRootViewController.sharedInstance
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -15,14 +18,13 @@ class AppRootViewController: UIViewController {
     return viewController
   }()
 
+  /// The view controller responsible for displaying the side menu.
   private lazy var sideMenuViewController: UIHostingController = {
     let fakeUser = injectCurrentUser()
     let viewController = UIHostingController(
       rootView: SideMenuView(
         userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowers,
         numOfFollowers: fakeUser.numOfFollowers, delegate: self))
-    viewController.modalPresentationStyle = .custom
-    viewController.transitioningDelegate = sideMenuTransitionController
     return viewController
   }()
 
@@ -31,6 +33,7 @@ class AppRootViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+    setUpSideMenuTransition()
   }
 
   // MARK: - Private API
@@ -47,16 +50,21 @@ class AppRootViewController: UIViewController {
     ])
   }
 
+  private func setUpSideMenuTransition() {
+    sideMenuTransitionController.setUpViewControllersForSideMenuTransition(
+      parentVC: self, mainVC: mainRootViewController, sideMenuVC: sideMenuViewController)
+  }
+
   // MARK: - Public API
 
   public func hideSideMenu() {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/409
     // - Enable Smoother Transitions from SideMenu to Other Views.
-    sideMenuViewController.dismiss(animated: true)
+    sideMenuTransitionController.dismissSideMenu()
   }
 
   public func showSideMenu() {
-    present(sideMenuViewController, animated: true)
+    sideMenuTransitionController.presentSideMenu()
   }
 }
 
@@ -64,6 +72,7 @@ class AppRootViewController: UIViewController {
 
 extension AppRootViewController: SideMenuViewDelegate {
 
+  /// Pushes the user profile view controller into the navigation controller when the profile button is tapped in the side menu.
   func userProfileDidReceiveTap() {
     hideSideMenu()
     guard
@@ -74,6 +83,7 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 
+  /// Pushes the user bookmarks view controller into the navigation controller when the bookmarks button is tapped in the side menu.
   func bookmarksDidReceiveTap() {
     hideSideMenu()
     guard
@@ -84,6 +94,7 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(userBookmarksPageViewController, animated: true)
   }
 
+  /// Pushes the jobs view controller into the navigation controller when the jobs button is tapped in the side menu.
   func jobsDidReceiveTap() {
     hideSideMenu()
     guard
@@ -93,6 +104,7 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(JobsViewController(), animated: true)
   }
 
+  /// Pushes the user lists page view controller into the navigation controller when the lists button is tapped in the side menu.
   func listsDidReceiveTap() {
     hideSideMenu()
     guard
@@ -102,6 +114,7 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(UserListsPageViewController(), animated: true)
   }
 
+  /// Pushes the user follower requests page view controller into the navigation controller when the follower requests button is tapped in the side menu.
   func followerRequestsDidReceiveTap() {
     hideSideMenu()
     guard
@@ -113,6 +126,7 @@ extension AppRootViewController: SideMenuViewDelegate {
       userFollowerRequestsPageViewController, animated: true)
   }
 
+  /// Pushes the settings view controller into the navigation controller when the settings and privacy button is tapped in the side menu.
   func settingsAndPrivacyDidReceiveTap() {
     hideSideMenu()
     guard
@@ -123,6 +137,8 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(settingsViewController, animated: true)
   }
 
+  /// Pushes the user follow relations view controller into the navigation controller when the follow relations buttons are tapped in the side menu.
+  /// - Parameter userName: The username of the current user of the app.
   func userFollowRelationsButtonDidReceiveTap(userName: String) {
     hideSideMenu()
     guard
@@ -134,6 +150,7 @@ extension AppRootViewController: SideMenuViewDelegate {
   }
 }
 
+/// The view controller containing a user icon button that allows users to open the side menu by tapping the button.
 class ViewControllerWithUserIconButton: UIViewController {
 
   private var rootViewController: UIViewController {
