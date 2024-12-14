@@ -1,12 +1,19 @@
 import UIKit
 
+/// The animator that handles the presentation and dismissal transition animations of a side menu.
+/// During presentation, the side menu slides in from the left edge and moves to the right.
+/// During dismissal, the side menu slides out to the left.
 class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
   // MARK: - Public Props
 
+  /// The indicator whether the animator is presenting or dismissing the side menu.
   public var isPresenting: Bool = true
 
+  /// The action that is called when the dimming view is tapped.
   public var dimmingViewTapAction: (() -> Void)? = nil
+  /// The action that is called when the container view is panned with a gesture.
+  public var containerViewPanAction: ((_ panGesture: UIPanGestureRecognizer) -> Void)? = nil
 
   // MARK: - Private Props
 
@@ -16,11 +23,15 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
     static let duration: TimeInterval = 0.25
   }
 
+  /// The view that dims the background when the side menu is presented.
   private let dimmingView: UIView = {
     let view = UIView()
     view.backgroundColor = .black
     return view
   }()
+
+  /// The gesture recognizer that handles pan gestures on the container view to initiate and manage the side menu transition.
+  private let panGesture = UIPanGestureRecognizer()
 
   // MARK: - UIViewControllerAnimatedTransitioning
 
@@ -40,6 +51,8 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
   // MARK: - Transition Animations
 
+  /// Implements the side menu's presentation animation, sliding it in from the left with a background dimming effect.
+  /// - Parameter transitionContext: The context of the transition, containing the to/from views and other transition-related properties.
   private func presentSideMenuTransitionAnimation(
     using transitionContext: any UIViewControllerContextTransitioning
   ) {
@@ -77,6 +90,9 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
     toView.frame.origin.x = -LayoutConstant.sideMenuWidth
 
+    panGesture.addTarget(self, action: #selector(onPanAction))
+    containerView.addGestureRecognizer(panGesture)
+
     UIView.animate(
       withDuration: LayoutConstant.duration,
       animations: { [weak self] in
@@ -90,6 +106,8 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       })
   }
 
+  /// Implements the side menu's dismissal animation, sliding it out to the left and fading out the background dimming view.
+  /// - Parameter transitionContext: The context of the transition, containing the to/from views and other transition-related properties.
   private func dismissalSideMenuTransitionAnimation(
     using transitionContext: any UIViewControllerContextTransitioning
   ) {
@@ -113,10 +131,17 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       })
   }
 
-  // MARK: - Tap Gesture Handling
+  // MARK: - Gesture Handling
 
+  /// Handles tap gestures on the dimming view to trigger the dimming view tap action defined in `SideMenuTransitionController`.
   @objc
   private func onTapAction() {
     dimmingViewTapAction?()
+  }
+
+  /// Handles pan gestures on the container view to trigger the side menu pan action defined in `SideMenuTransitionController`.
+  @objc
+  private func onPanAction() {
+    containerViewPanAction?(panGesture)
   }
 }
