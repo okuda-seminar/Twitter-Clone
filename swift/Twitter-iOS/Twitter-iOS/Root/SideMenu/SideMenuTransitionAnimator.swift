@@ -7,6 +7,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
   public var isPresenting: Bool = true
 
   public var dimmingViewTapAction: (() -> Void)? = nil
+  public var containerViewPanAction: ((_ panGesture: UIPanGestureRecognizer) -> Void)? = nil
 
   // MARK: - Private Props
 
@@ -21,6 +22,8 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
     view.backgroundColor = .black
     return view
   }()
+
+  private let panGesture = UIPanGestureRecognizer()
 
   // MARK: - UIViewControllerAnimatedTransitioning
 
@@ -77,6 +80,9 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
     toView.frame.origin.x = -LayoutConstant.sideMenuWidth
 
+    panGesture.addTarget(self, action: #selector(onPanAction))
+    containerView.addGestureRecognizer(panGesture)
+
     UIView.animate(
       withDuration: LayoutConstant.duration,
       animations: { [weak self] in
@@ -113,10 +119,15 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       })
   }
 
-  // MARK: - Tap Gesture Handling
+  // MARK: - Gesture Handling
 
   @objc
   private func onTapAction() {
     dimmingViewTapAction?()
+  }
+
+  @objc
+  private func onPanAction() {
+    containerViewPanAction?(panGesture)
   }
 }
