@@ -21,8 +21,6 @@ class AppRootViewController: UIViewController {
       rootView: SideMenuView(
         userName: fakeUser.userName, numOfFollowing: fakeUser.numOfFollowers,
         numOfFollowers: fakeUser.numOfFollowers, delegate: self))
-    viewController.modalPresentationStyle = .custom
-    viewController.transitioningDelegate = sideMenuTransitionController
     return viewController
   }()
 
@@ -31,6 +29,7 @@ class AppRootViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+    setUpSideMenuTransition()
   }
 
   // MARK: - Private API
@@ -47,16 +46,21 @@ class AppRootViewController: UIViewController {
     ])
   }
 
+  private func setUpSideMenuTransition() {
+    sideMenuTransitionController.setUpViewControllersForSideMenuTransition(
+      parentVC: self, mainVC: mainRootViewController, sideMenuVC: sideMenuViewController)
+  }
+
   // MARK: - Public API
 
   public func hideSideMenu() {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/409
     // - Enable Smoother Transitions from SideMenu to Other Views.
-    sideMenuViewController.dismiss(animated: true)
+    sideMenuTransitionController.dismissSideMenu()
   }
 
   public func showSideMenu() {
-    present(sideMenuViewController, animated: true)
+    sideMenuTransitionController.presentSideMenu()
   }
 }
 
