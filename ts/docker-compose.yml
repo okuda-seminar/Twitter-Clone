@@ -12,17 +12,6 @@ services:
     env_file:
       - .env.local
 
-  api:
-    build: ./twitter/api
-    command: yarn start
-    volumes:
-      - ./twitter/api:/app
-      - /app/node_modules
-    ports:
-      - "3002:3002"
-    networks:
-      - x_clone
-
 networks:
   x_clone:
     external: true
