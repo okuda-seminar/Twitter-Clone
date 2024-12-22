@@ -9,6 +9,7 @@ services:
       - 3000:3000
     networks:
       - x_clone
+      - logging_network
     env_file:
       - .env.local
 
@@ -22,7 +23,10 @@ services:
       - "3002:3002"
     networks:
       - x_clone
+      - logging_network
 
 networks:
   x_clone:
+    external: true
+  logging_network:
     external: true
