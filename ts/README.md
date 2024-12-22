@@ -23,7 +23,6 @@ If you'd like to use a specific user account, you can set the user ID in the .en
 4. Start the frontend server (in the Twitter-Clone directory)
 ```
 $ mkdir ./twitter/node_modules
-$ mkdir ./twitter/api/node_modules
 $ docker compose build
 $ docker compose up -d
 ```
@@ -35,7 +34,6 @@ If you want to run some commands like `yarn add XXX`, then you can run `docker c
 1. Start the frontend server (in the Twitter-Clone directory)
 ```
 $ mkdir ./twitter/node_modules
-$ mkdir ./twitter/api/node_modules
 $ docker compose build
 $ docker compose up -d
 ```
