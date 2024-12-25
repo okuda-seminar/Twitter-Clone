@@ -1,9 +1,11 @@
 import UIKit
 
+/// The controller managing multiple view controllers in a tab bar, each identified by a unique tag.
 class MainRootViewController: UITabBarController {
 
   // MARK: - Public Props
 
+  /// The shared instance of `MainRootViewController`, providing global access to it.
   public static var sharedInstance = MainRootViewController()
 
   // MARK: - Private Props
@@ -31,6 +33,7 @@ class MainRootViewController: UITabBarController {
     tabBar.backgroundColor = .systemBackground
   }
 
+  /// Sets up the notification center and initializes the tab bar items with their corresponding view controllers.
   private func setUpSubviews() {
     let notificationCenter = NotificationCenter.default
 
@@ -83,11 +86,13 @@ class MainRootViewController: UITabBarController {
 
   // MARK: - NSNotification
 
+  /// Handles the tap gesture on the home tab bar item to trigger the corresponding action defined in `HomeViewController`.
   @objc
   private func didTapHomeTabBarItem() {
     selectedIndex = TabBarItemTag.home.rawValue
   }
 
+  /// Handles the long press gesture on the home tab bar item to trigger the corresponding action defined in `HomeViewController`.
   @objc
   private func didLongPressHomeTabBarItem() {
     selectedIndex = TabBarItemTag.home.rawValue
