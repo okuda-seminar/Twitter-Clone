@@ -1,8 +1,4 @@
-import SwiftUI
 import UIKit
-
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/531
-// - Enable Side Menu Access via Gesture Interaction Within ScrollView.
 
 /// The controller that manages the custom transition animations for presenting and dismissing a side menu.
 /// It also handles interactive gesture-based transitions using `UIPercentDrivenInteractiveTransition`.
@@ -22,6 +18,9 @@ class SideMenuTransitionController: NSObject {
   private var mainViewController: UIViewController? = nil
   /// The view controller of the side menu view.
   private var sideMenuViewController: UIViewController? = nil
+
+  /// The collection of gestures that can be canceled when the side menu is presented interactively.
+  private var cancellableGestures: Set<UIGestureRecognizer> = []
 
   // MARK: - Public API
 
@@ -43,6 +42,8 @@ class SideMenuTransitionController: NSObject {
     sideMenuViewController.transitioningDelegate = self
 
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+    panGesture.delegate = self
+
     mainVC.view.addGestureRecognizer(panGesture)
   }
 
@@ -72,6 +73,7 @@ class SideMenuTransitionController: NSObject {
     case .began:
       interactiveTransition = UIPercentDrivenInteractiveTransition()
       interactiveTransition?.completionCurve = .linear
+      cancellableGestures.forEach { $0.state = .cancelled }
       presentSideMenu()
     case .changed:
       guard let gestureView = gesture.view else { return }
@@ -84,10 +86,13 @@ class SideMenuTransitionController: NSObject {
       } else {
         interactiveTransition?.cancel()
       }
+      cancellableGestures.removeAll()
       interactiveTransition = nil
     case .cancelled:
+      cancellableGestures.removeAll()
       cancelInteractiveTransition()
     case .failed:
+      cancellableGestures.removeAll()
       cancelInteractiveTransition()
     default:
       break
@@ -192,5 +197,38 @@ extension SideMenuTransitionController: UIViewControllerTransitioningDelegate {
   private func cancelInteractiveTransition() {
     interactiveTransition?.cancel()
     interactiveTransition = nil
+  }
+}
+
+extension SideMenuTransitionController: UIGestureRecognizerDelegate {
+
+  /// Determines whether the pan gesture recognizer should recognize the gesture simultaneously with another gesture recognizer,
+  /// based on whether the other recognizer's view is a scroll view and its content offset.
+  ///
+  /// - Parameters:
+  ///   - gestureRecognizer: The pan gesture recognizer used for triggering the side menu transition.
+  ///   - otherGestureRecognizer: Another gesture recognizer that may conflict with the pan gesture recognizer.
+  /// - Returns: A Boolean value indicating whether the gestures should be recognized simultaneously.
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+  ) -> Bool {
+    guard let scrollView = otherGestureRecognizer.view as? UIScrollView else { return false }
+
+    cancellableGestures.insert(otherGestureRecognizer)
+    let isAtLeftEdge: Bool = scrollView.contentOffset.x <= 0
+    return isAtLeftEdge
+  }
+
+  /// Determines whether the pan gesture recognizer should begin, based on the velocity of the gesture.
+  ///
+  /// - Parameter gestureRecognizer: The pan gesture recognizer used for triggering the side menu transition.
+  /// - Returns: A Boolean value indicating whether the gesture should begin.
+  func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+
+    let velocity = panGesture.velocity(in: panGesture.view)
+    let isHorizontalPanToRight = velocity.x > 0 && velocity.x > abs(velocity.y)
+    return isHorizontalPanToRight
   }
 }
