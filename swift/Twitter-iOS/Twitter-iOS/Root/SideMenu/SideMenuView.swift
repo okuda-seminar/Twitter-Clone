@@ -54,7 +54,13 @@ struct SideMenuView: View {
   private func Header() -> some View {
     Button(
       action: {
-        delegate?.userProfileDidReceiveTap()
+        //         Current Implementation
+        Task {
+          await delegate?.userProfileDidReceiveTap()
+        }
+
+        // Other Implementations
+        //        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Image(systemName: "person.circle.fill")
@@ -65,7 +71,13 @@ struct SideMenuView: View {
 
     Button(
       action: {
-        delegate?.userProfileDidReceiveTap()
+        // Current Implementation
+        Task {
+          await delegate?.userProfileDidReceiveTap()
+        }
+
+        // Other Implementations
+        //        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Text(userName)
@@ -98,7 +110,13 @@ struct SideMenuView: View {
   private func MainMenu() -> some View {
     Button(
       action: {
-        delegate?.userProfileDidReceiveTap()
+        // Current Implementation
+        Task {
+          await delegate?.userProfileDidReceiveTap()
+        }
+
+        // Other Implementations
+        //        delegate?.userProfileDidReceiveTap()
       },
       label: {
         Image(systemName: "person")
@@ -230,7 +248,11 @@ struct SideMenuView: View {
 }
 
 protocol SideMenuViewDelegate: AnyObject {
-  func userProfileDidReceiveTap()
+  // Current Implementation
+  func userProfileDidReceiveTap() async
+
+  // Other Implementations
+  // func userProfileDidReceiveTap()
   func bookmarksDidReceiveTap()
   func jobsDidReceiveTap()
   func listsDidReceiveTap()

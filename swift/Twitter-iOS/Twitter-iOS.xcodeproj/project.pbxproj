@@ -29,6 +29,8 @@
 		3B7332F42C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */; };
 		3B861EC72C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */; };
 		3B8E61792CA55F5000E72FBC /* UserAddedListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */; };
+		3B93F5812D212F6E0086E20D /* UINavigationController+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B93F5802D212F520086E20D /* UINavigationController+Completion.swift */; };
+		3B93F5832D21339D0086E20D /* UIViewController+ClassName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B93F5822D2133970086E20D /* UIViewController+ClassName.swift */; };
 		3B9764152CAD2308007FE8BC /* NewPostTagEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */; };
 		3B9764172CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9764162CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift */; };
 		3B9AC01A2CF2C4BB0052784A /* SideMenuTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */; };
@@ -182,6 +184,8 @@
 		3B7332F32C231550007F4537 /* MessagesSettingsHomeRelayCallsControlSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesSettingsHomeRelayCallsControlSectionView.swift; sourceTree = "<group>"; };
 		3B861EC62C4EA830009A1BE2 /* BlockedNewCommunityCreationBottomSheetViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedNewCommunityCreationBottomSheetViewObserver.swift; sourceTree = "<group>"; };
 		3B8E61782CA55F5000E72FBC /* UserAddedListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddedListsViewController.swift; sourceTree = "<group>"; };
+		3B93F5802D212F520086E20D /* UINavigationController+Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Completion.swift"; sourceTree = "<group>"; };
+		3B93F5822D2133970086E20D /* UIViewController+ClassName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ClassName.swift"; sourceTree = "<group>"; };
 		3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostTagEditView.swift; sourceTree = "<group>"; };
 		3B9764162CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAccessExplanationPopUpView.swift; sourceTree = "<group>"; };
 		3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTransitionController.swift; sourceTree = "<group>"; };
@@ -722,6 +726,8 @@
 		658D08842BEE5C12006C6A9E /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				3B93F5822D2133970086E20D /* UIViewController+ClassName.swift */,
+				3B93F5802D212F520086E20D /* UINavigationController+Completion.swift */,
 				658D08852BEE5C39006C6A9E /* DispatchQueue+Once.swift */,
 				65FD4F482C15D8920020A02E /* DependencyInjection.swift */,
 			);
@@ -1192,6 +1198,7 @@
 				6540F9092BD37EB00029BA46 /* BlockedNewCommunityCreationBottomSheetViewController.swift in Sources */,
 				65C71BC52C3823070025839C /* SearchInputViewObserver.swift in Sources */,
 				65C6CC242BF9836D00B0A052 /* NSNotification+Banner.swift in Sources */,
+				3B93F5812D212F6E0086E20D /* UINavigationController+Completion.swift in Sources */,
 				656C1BA52C00C41500EEE575 /* UserFollowRelationsViewController.swift in Sources */,
 				65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */,
 				656C1BB42C05EEE600EEE575 /* SearchTabModel.swift in Sources */,
@@ -1236,6 +1243,7 @@
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
 				3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */,
 				65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */,
+				3B93F5832D21339D0086E20D /* UIViewController+ClassName.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */,
 				3B9764172CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift in Sources */,
