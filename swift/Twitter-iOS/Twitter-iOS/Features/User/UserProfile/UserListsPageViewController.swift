@@ -35,11 +35,27 @@ class UserListsPageViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     setUpNavigationAndBackground()
+    print("\(className) viewWillAppear")
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    print("\(className) viewDidAppear")
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    print("\(className) viewDidDisappear")
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    print("\(className) viewWillDisappear")
   }
 
   private func setUpNavigationAndBackground() {

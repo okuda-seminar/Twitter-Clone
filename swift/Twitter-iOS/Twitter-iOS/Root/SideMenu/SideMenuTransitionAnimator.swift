@@ -103,6 +103,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       completion: { finished in
         let completed = finished && !transitionContext.transitionWasCancelled
         transitionContext.completeTransition(completed)
+        print("presentation animation completed\n")
       })
   }
 
@@ -121,6 +122,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
     UIView.animate(
       withDuration: LayoutConstant.duration,
       animations: { [weak self] in
+        print("dismissal animation started\n")
         toView.frame.origin.x = 0.0
         fromView.frame.origin.x = -LayoutConstant.sideMenuWidth
         self?.dimmingView.alpha = 0.0
@@ -128,6 +130,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       completion: { finished in
         let completed = finished && !transitionContext.transitionWasCancelled
         transitionContext.completeTransition(completed)
+        print("dismissal animation completed\n")
       })
   }
 

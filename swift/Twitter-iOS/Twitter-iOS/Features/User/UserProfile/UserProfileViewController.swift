@@ -60,6 +60,10 @@ class UserProfileViewController: UIViewController {
     return controller
   }()
 
+  private var timeWhenViewWillAppear = Date()
+  private var timeWhenViewIsAppearing = Date()
+  private var timeWhenViewDidAppear = Date()
+
   // MARK: - Public API
 
   public init(userModel: UserModel? = nil) {
@@ -77,6 +81,38 @@ class UserProfileViewController: UIViewController {
     super.viewDidLoad()
     setUpSubviews()
     setUpViewObserver()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    timeWhenViewWillAppear = Date()
+    print("\(className) viewWillAppear: 0s")
+  }
+
+  override func viewIsAppearing(_ animated: Bool) {
+    super.viewIsAppearing(animated)
+    timeWhenViewIsAppearing = Date()
+    print(
+      "\(className) viewIsAppearing: \(timeWhenViewIsAppearing.timeIntervalSince(timeWhenViewWillAppear))s"
+    )
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    timeWhenViewDidAppear = Date()
+    print(
+      "\(className) viewDidAppear: \(timeWhenViewDidAppear.timeIntervalSince(timeWhenViewWillAppear))"
+    )
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    print("\(className) viewWillDisappear")
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    print("\(className) viewDidDisappear")
   }
 
   // MARK: Private API
@@ -156,6 +192,7 @@ struct UserProfileView: View {
   @State private var titleOffset: CGFloat = 0.0
   @State private var activeTab: UserProfileTabModel.Tab = .posts
   @State private var tabToScroll: UserProfileTabModel.Tab?
+  @State private var isUserProfileTabsViewScrollEnabled: Bool = false
 
   private enum LayoutConstant {
     static let borderOffsetToSwitch: CGFloat = 80.0
@@ -187,6 +224,11 @@ struct UserProfileView: View {
           .zIndex(-scrollOffset > LayoutConstant.borderOffsetToSwitch ? 0 : 1)
         TabBar()
         Tabs()
+      }
+    }
+    .onChange(of: scrollOffset) { oldValue, newValue in
+      if -newValue > LayoutConstant.borderOffsetToSwitch {
+        isUserProfileTabsViewScrollEnabled = true
       }
     }
   }
@@ -246,8 +288,10 @@ struct UserProfileView: View {
     ScrollView(.horizontal) {
       LazyHStack(spacing: 0) {
         ForEach(tabs) { tab in
-          UserPostsTabView()
-            .frame(width: UIScreen.main.bounds.width)
+          UserPostsTabViewRepresentable(isScrollEnabled: $isUserProfileTabsViewScrollEnabled)
+            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+          //          UserPostsTabView()
+          //            .frame(width: UIScreen.main.bounds.width)
         }
       }
       .scrollTargetLayout()

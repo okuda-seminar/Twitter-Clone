@@ -53,12 +53,24 @@ class SideMenuTransitionController: NSObject {
     else {
       return
     }
-    parentViewController.present(sideMenuViewController, animated: true)
+    let start = Date()
+    parentViewController.present(sideMenuViewController, animated: true) {
+      let end = Date()
+      let elapsedTime = end.timeIntervalSince(start)
+      print("sideMenu presentation time: ", elapsedTime)
+      print("present method completed")
+    }
   }
 
   public func dismissSideMenu() {
     guard let sideMenuViewController = sideMenuViewController else { return }
-    sideMenuViewController.dismiss(animated: true)
+    let start = Date()
+    sideMenuViewController.dismiss(animated: true) {
+      let end = Date()
+      let elapsedTime = end.timeIntervalSince(start)
+      print("sideMenu dismissal time: ", elapsedTime)
+      print("dismiss method completed")
+    }
   }
 
   // MARK: - Gesture Handling
@@ -176,7 +188,7 @@ extension SideMenuTransitionController: UIViewControllerTransitioningDelegate {
   private func setUpInteractiveTransitionForDismissal(forPresented presented: UIViewController?) {
     interactiveTransition = UIPercentDrivenInteractiveTransition()
     interactiveTransition?.completionCurve = .linear
-    presented?.dismiss(animated: true)
+    dismissSideMenu()
   }
 
   /// Determines whether the interactive transition should be completed or canceled

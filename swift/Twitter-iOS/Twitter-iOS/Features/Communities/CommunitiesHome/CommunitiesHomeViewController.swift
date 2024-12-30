@@ -90,7 +90,11 @@ class CommunitiesHomeViewController: ViewControllerWithUserIconButton {
 
   @objc
   private func pushCommunitiesSearchViewController() {
-    navigationController?.pushViewController(CommunitiesSearchViewController(), animated: true)
+    navigationController?.pushViewController(
+      CommunitiesSearchViewController(), animated: true,
+      completion: {
+        print("push completed")
+      })
   }
 }
 
