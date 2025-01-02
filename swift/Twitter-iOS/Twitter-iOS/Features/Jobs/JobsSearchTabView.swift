@@ -12,16 +12,45 @@ struct JobsSearchTabView: View {
 
   private enum LayoutConstant {
     static let searchButtonHeight: CGFloat = 44.0
+    static let firstDefaultSearchQueryTopPadding: CGFloat = 10.0
   }
 
   private enum LocalizedString {
-    static let search = String(localized: "Search")
+    static let searchButtonText = String(localized: "Search jobs")
+    static let defaultSearchQueryListTitle = String(localized: "Try searching for")
+    static let softwareEngineerQuery = String(localized: "Software Engineer")
+    static let productManagerQuery = String(localized: "Product Manager")
+    static let designerQuery = String(localized: "Designer")
+    static let marketingManagerQuery = String(localized: "Marketing Manager")
+    static let accountExecutiveQuery = String(localized: "Account Executive")
+    static let accountManagerQuery = String(localized: "Account Manager")
+    static let projectManagerQuery = String(localized: "Project Manager")
+    static let businessAnalystQuery = String(localized: "Business Analyst")
+    static let customerSupportQuery = String(localized: "Customer Support")
+    static let talentAcquisitionSpecialistQuery = String(localized: "Talent Acquisition Specialist")
   }
+
+  private let defaultSearchQueries: [String] = [
+    LocalizedString.softwareEngineerQuery,
+    LocalizedString.productManagerQuery,
+    LocalizedString.designerQuery,
+    LocalizedString.marketingManagerQuery,
+    LocalizedString.accountExecutiveQuery,
+    LocalizedString.accountManagerQuery,
+    LocalizedString.projectManagerQuery,
+    LocalizedString.businessAnalystQuery,
+    LocalizedString.customerSupportQuery,
+    LocalizedString.talentAcquisitionSpecialistQuery,
+  ]
+
+  // MARK: View
 
   var body: some View {
     VStack {
       SearchButton()
+      DefaultSearchQueryList()
     }
+    .padding(.vertical)
   }
 
   @ViewBuilder
@@ -37,9 +66,8 @@ struct JobsSearchTabView: View {
       label: {
         Spacer()
         Image(systemName: "magnifyingglass")
-        Text(LocalizedString.search)
-          .padding(.top)
-          .padding(.bottom)
+        Text(LocalizedString.searchButtonText)
+          .padding(.vertical)
         Spacer()
       }
     )
@@ -47,9 +75,46 @@ struct JobsSearchTabView: View {
     .background(Color(uiColor: .brandedLightGrayBackground))
     .frame(height: LayoutConstant.searchButtonHeight)
     .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.searchButtonHeight / 2))
-    .padding(.leading)
+    .padding(.horizontal)
     .padding(.bottom)
-    .padding(.trailing)
+  }
+
+  @ViewBuilder
+  private func DefaultSearchQueryList() -> some View {
+    VStack(alignment: .leading) {
+      Text(LocalizedString.defaultSearchQueryListTitle)
+        .foregroundStyle(.gray)
+        .padding(.leading)
+
+      ScrollView {
+        VStack {
+          ForEach(defaultSearchQueries.indices, id: \.self) { index in
+            DefaultSearchQueryRow(defaultSearchQueries[index])
+              .padding(.top, index == 0 ? LayoutConstant.firstDefaultSearchQueryTopPadding : 0.0)
+              .onTapGesture {
+                // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/537
+                // - Implement Job Search Results Page for Default Search Queries in JobsSearchTabView.
+              }
+          }
+        }
+        .background(Color(uiColor: .brandedLightGrayBackground))
+      }
+    }
+  }
+
+  @ViewBuilder
+  private func DefaultSearchQueryRow(_ queryText: String) -> some View {
+    VStack {
+      HStack {
+        Text(queryText)
+        Spacer()
+        Image(systemName: "arrow.up.left")
+      }
+      .padding(.horizontal)
+
+      Divider()
+        .padding(.leading)
+    }
   }
 }
 
