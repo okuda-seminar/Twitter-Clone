@@ -19,11 +19,11 @@ jest.mock("react-dom", () => {
 });
 
 describe("Post Modal Tests", () => {
-  test("Rendering intercepted Post Modal should success", () => {
+  test("Rendering intercepted Post Modal should succeed", () => {
     render(<PostModal isIntercepted={true} />, { wrapper: SessionProvider });
   });
 
-  test("Rendering non-intercepted Post Modal should success", () => {
+  test("Rendering non-intercepted Post Modal should succeed", () => {
     render(<PostModal isIntercepted={false} />, { wrapper: SessionProvider });
   });
 
