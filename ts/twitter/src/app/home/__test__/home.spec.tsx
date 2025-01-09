@@ -43,7 +43,7 @@ jest.mock("next/navigation", () => ({
 describe("Home Tests", () => {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/522
   // - Fix test descriptions in home.spec.tsx and post-modal.tsx.
-  test("Rendering Home should success", () => {
+  test("Rendering Home should succeed", () => {
     waitFor(() => {
       render(<Home />, { wrapper: SessionProvider });
     });
