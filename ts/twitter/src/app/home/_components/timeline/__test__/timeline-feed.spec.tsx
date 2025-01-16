@@ -19,16 +19,28 @@ describe("Timeline Feed Tests", () => {
     jest.clearAllMocks();
   });
 
-  test("Displays posts in timeline when SSE message is received", () => {
+  test("Displays initial posts in timeline when TimelineAccessed event is received", () => {
     render(<TimelineFeed />);
 
     act(() => {
       const messageHandler = mockEventSource.onmessage;
-      messageHandler({ data: JSON.stringify(mockPosts) });
+      messageHandler({ data: JSON.stringify(mockPosts[0]) });
     });
 
-    expect(screen.getByText(mockPosts[0].user_id)).toBeInTheDocument();
-    expect(screen.getByText(mockPosts[0].text)).toBeInTheDocument();
+    expect(screen.getByText(mockPosts[0].posts[0].user_id)).toBeInTheDocument();
+    expect(screen.getByText(mockPosts[0].posts[0].text)).toBeInTheDocument();
+  });
+
+  test("Adds new post to timeline when PostCreated event is received", () => {
+    render(<TimelineFeed />);
+
+    act(() => {
+      const messageHandler = mockEventSource.onmessage;
+      messageHandler({ data: JSON.stringify(mockPosts[1]) });
+    });
+
+    expect(screen.getByText(mockPosts[1].posts[0].user_id)).toBeInTheDocument();
+    expect(screen.getByText(mockPosts[1].posts[0].text)).toBeInTheDocument();
   });
 
   test("Displays 'post not found.' when there are no posts", () => {
