@@ -21,7 +21,7 @@ export async function fetchFollowingPosts({
 }: FollowingPostsBody): Promise<FollowingPostsResponse> {
   try {
     const res = await fetch(
-      `${process.env.API_BASE_URL}/api/users/${user_id}/timelines/reverse_chronological`,
+      `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${user_id}/timelines/reverse_chronological`,
       {
         method: "GET",
         headers: {

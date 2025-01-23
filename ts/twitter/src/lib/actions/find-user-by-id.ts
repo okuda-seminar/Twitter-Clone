@@ -21,12 +21,15 @@ export async function findUserById({
 }: FindUserByIdBody): Promise<
   ServerActionsResult<FindUserByIdResponse, ServerActionsError>
 > {
-  const res = await fetch(`${process.env.API_BASE_URL}/api/users/${user_id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (res.ok) {
     const data: FindUserByIdResponse = await res.json();
