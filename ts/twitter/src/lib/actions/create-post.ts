@@ -17,13 +17,16 @@ interface CreatePostResponse {
 export async function createPost(
   body: CreatePostBody
 ): Promise<ServerActionsResult<CreatePostResponse, ServerActionsError>> {
-  const res = await fetch(`${process.env.API_BASE_URL}/api/posts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/posts`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   if (res.ok) {
     const data: CreatePostResponse = await res.json();

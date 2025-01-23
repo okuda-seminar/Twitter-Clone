@@ -16,37 +16,38 @@ $ go run ./cmd
 
 3. Set up environment variables (in the Twitter-Clone directory)
 ```
+$ cd ts/twitter
 $ cp .env.sample .env.local
 ```
 If you'd like to use a specific user account, you can set the user ID in the .env.local file.
 
 4. Start the frontend server (in the Twitter-Clone directory)
 ```
-$ mkdir ./twitter/node_modules
-$ docker compose build
-$ docker compose up -d
+$ cd twitter
+$ chmod +x setup.sh
+$ ./setup.sh
+$ yarn dev
 ```
 and see `localhost:3000` in your browser.
 Your code change will be automatically detected and reflected to the opened app.
-If you want to run some commands like `yarn add XXX`, then you can run `docker compose exec app bash` first.
 
 ## How to test
-1. Start the frontend server (in the Twitter-Clone directory)
 ```
-$ mkdir ./twitter/node_modules
-$ docker compose build
-$ docker compose up -d
-```
-2. Enter the application container and run all test files
-```
-$ docker compose exec app bash
+$ cd twitter
 $ yarn test
 ```
+
 
 ## Note
 
 You need to use VSCode and install [Prettier formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode).
 For consistent readability, you can refer to [Google's style guide](https://google.github.io/styleguide/tsguide.html).
+We don't use Docker for two main reasons:
+
+- File I/O overhead, especially on Docker for MacOS, significantly impacts development experience
+- Network configuration complexity when integrating with services in separate Docker Compose networks
+
+Our frontend toolchain performs efficiently without the Docker virtualization layer.
 
 ## Discussion Points
 
