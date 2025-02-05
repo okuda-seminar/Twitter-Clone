@@ -1,8 +1,8 @@
-import { TimelineEventResponse, TimelineEventType } from "../use-timeline-feed";
+import { TimelineEventResponse } from "../timeline-feed-service";
 
 export const mockPosts: TimelineEventResponse[] = [
   {
-    event_type: TimelineEventType.TimelineAccessed,
+    event_type: "TimelineAccessed",
     posts: [
       {
         id: "post-123",
@@ -13,7 +13,7 @@ export const mockPosts: TimelineEventResponse[] = [
     ],
   },
   {
-    event_type: TimelineEventType.PostCreated,
+    event_type: "PostCreated",
     posts: [
       {
         id: "post-123",
