@@ -37,11 +37,11 @@ struct BannerView: View {
         DismissalButton()
       }
     }
-    .background(Color(uiColor: .branededLightBlue2))
+    .background(Color(uiColor: .brandedLightBlue2))
     .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.edgeCornerRadius))
     .overlay(
       RoundedRectangle(cornerRadius: LayoutConstant.edgeCornerRadius)
-        .stroke(Color(uiColor: .branededLightBlue))
+        .stroke(Color(uiColor: .brandedLightBlue))
     )
     .padding()
   }
