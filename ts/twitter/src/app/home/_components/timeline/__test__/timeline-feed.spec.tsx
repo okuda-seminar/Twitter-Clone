@@ -2,70 +2,64 @@ import { render, screen, act } from "@testing-library/react";
 import { TimelineFeed } from "../timeline-feed";
 import { mockPosts } from "../__mocks__/post-data";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
+import { createTimelineFeedService } from "../timeline-feed-service";
+import { FakeTimelineFeedService } from "../__fake__/fake-timeline-feed-service";
 
-describe("Timeline Feed Tests", () => {
-  let mockEventSource: any;
+describe("TimelineFeed", () => {
+  let service: FakeTimelineFeedService;
 
   beforeEach(() => {
-    mockEventSource = {
-      close: jest.fn(),
-    };
-
-    // @ts-ignore
-    global.EventSource = jest.fn(() => mockEventSource);
+    service = createTimelineFeedService() as FakeTimelineFeedService;
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("Displays initial posts in timeline when TimelineAccessed event is received", () => {
+  it("should display initial posts when timeline is accessed", async () => {
     render(<TimelineFeed />);
 
-    act(() => {
-      const messageHandler = mockEventSource.onmessage;
-      messageHandler({ data: JSON.stringify(mockPosts[0]) });
+    await act(async () => {
+      service.simulateMessage(mockPosts[0]);
     });
 
     expect(screen.getByText(mockPosts[0].posts[0].user_id)).toBeInTheDocument();
     expect(screen.getByText(mockPosts[0].posts[0].text)).toBeInTheDocument();
   });
 
-  test("Adds new post to timeline when PostCreated event is received", () => {
+  it("should add new post when post created event is received", async () => {
     render(<TimelineFeed />);
 
-    act(() => {
-      const messageHandler = mockEventSource.onmessage;
-      messageHandler({ data: JSON.stringify(mockPosts[1]) });
+    await act(async () => {
+      service.simulateMessage(mockPosts[1]);
     });
 
     expect(screen.getByText(mockPosts[1].posts[0].user_id)).toBeInTheDocument();
     expect(screen.getByText(mockPosts[1].posts[0].text)).toBeInTheDocument();
   });
 
-  test("Displays 'post not found.' when there are no posts", () => {
+  it("should display empty state message when no posts exist", () => {
     render(<TimelineFeed />);
+
+    service.simulateMessage({
+      event_type: "TimelineAccessed",
+      posts: [],
+    });
 
     expect(screen.getByText("Post not found.")).toBeInTheDocument();
   });
 
-  test("Displays error message when SSE connection fails due to invalid URL", () => {
+  it("should display server error when connection fails", async () => {
     render(<TimelineFeed />);
 
-    act(() => {
-      const errorHandler = mockEventSource.onerror;
-      errorHandler();
+    await act(async () => {
+      service.simulateError(ERROR_MESSAGES.SERVER_ERROR);
     });
 
     expect(screen.getByText(ERROR_MESSAGES.SERVER_ERROR)).toBeInTheDocument();
   });
 
-  test("Displays error message when SSE message contains invalid JSON data", () => {
+  it("should display error message when receiving invalid data", async () => {
     render(<TimelineFeed />);
 
-    act(() => {
-      const messageHandler = mockEventSource.onmessage;
-      messageHandler({ data: "invalid json data{}" });
+    await act(async () => {
+      service.simulateError(ERROR_MESSAGES.INVALID_DATA);
     });
 
     expect(screen.getByText(ERROR_MESSAGES.INVALID_DATA)).toBeInTheDocument();
