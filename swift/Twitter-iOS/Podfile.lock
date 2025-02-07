@@ -1,0 +1,20 @@
+PODS:
+  - TwitterProfile (1.0.1)
+  - XLPagerTabStrip (9.1.0)
+
+DEPENDENCIES:
+  - TwitterProfile
+  - XLPagerTabStrip
+
+SPEC REPOS:
+  trunk:
+    - TwitterProfile
+    - XLPagerTabStrip
+
+SPEC CHECKSUMS:
+  TwitterProfile: 104d0588d1c510a6c7841e3c24a48adda024159d
+  XLPagerTabStrip: 27f3bfe23c53b4251c6481b06b1c289458a3fc1d
+
+PODFILE CHECKSUM: af7926f9501d36571831131858deee93695a643d
+
+COCOAPODS: 1.16.2
