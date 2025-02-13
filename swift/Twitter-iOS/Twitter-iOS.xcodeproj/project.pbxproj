@@ -14,6 +14,7 @@
 		3B3ADDCF2D4F6F9D00934445 /* UserProfileTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */; };
 		3B3ADDD12D508D6800934445 /* UserPostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */; };
 		3B3ADDD72D52F36E00934445 /* UserProfileTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDD62D52F36E00934445 /* UserProfileTabsViewController.swift */; };
+		3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
 		3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */; };
 		3B57F5FC2CD9BEC200090887 /* CannotReplyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */; };
@@ -175,6 +176,7 @@
 		3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTabViewController.swift; sourceTree = "<group>"; };
 		3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3B3ADDD62D52F36E00934445 /* UserProfileTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTabsViewController.swift; sourceTree = "<group>"; };
+		3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderViewController.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
 		3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditViewObserver.swift; sourceTree = "<group>"; };
 		3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannotReplyBottomSheet.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 				3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */,
 				65C6CCA72BFF60FB00B0A052 /* UserPostsTabView.swift */,
 				656C1BF72C07619700EEE575 /* UserProfileBannerView.swift */,
+				3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */,
 				6567CBD22BD92FA700242716 /* UserProfileIconDetailViewController.swift */,
 				6567CBD42BD9356900242716 /* UserProfileIconTransition.swift */,
 				3B3ADDD62D52F36E00934445 /* UserProfileTabsViewController.swift */,
@@ -1354,6 +1357,7 @@
 				65C71B9A2C32D80D0025839C /* JobsViewController.swift in Sources */,
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
+				3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */,
 				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
 				65C6CCA82BFF60FB00B0A052 /* UserPostsTabView.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,
