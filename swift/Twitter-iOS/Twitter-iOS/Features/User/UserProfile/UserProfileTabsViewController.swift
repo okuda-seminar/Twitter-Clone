@@ -3,6 +3,9 @@ import TwitterProfile
 import UIKit
 import XLPagerTabStrip
 
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/576
+// - Reimplement User Profile Tabs View Without Third Party Libraries.
+
 /// The view controller that manages tabs in the user profile view.
 class UserProfileTabsViewController: ButtonBarPagerTabStripViewController, PagerAwareProtocol {
 
