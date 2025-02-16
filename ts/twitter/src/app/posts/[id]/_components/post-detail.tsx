@@ -1,8 +1,8 @@
 "use client";
 
+import type { Post } from "@/lib/models/post";
+import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { Box, Flex, Avatar, Text, Button } from "@chakra-ui/react";
-import { Post } from "@/lib/models/post";
 import { mockPost } from "../mocks/post";
 
 export const PostDetail = () => {

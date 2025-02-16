@@ -1,6 +1,6 @@
 import { findUserById } from "@/lib/actions/find-user-by-id";
-import { MyProfile } from "./_components/my-profile";
 import { Box } from "@chakra-ui/react";
+import { MyProfile } from "./_components/my-profile";
 
 export default async function Page() {
   const res = await findUserById({

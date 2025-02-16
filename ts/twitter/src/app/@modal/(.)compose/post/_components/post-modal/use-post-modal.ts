@@ -2,24 +2,24 @@ import { createPost } from "@/lib/actions/create-post";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface usePostModalProps {
+interface UsePostModalProps {
   isIntercepted: boolean;
 }
 
-interface usePostModalReturn {
+interface UsePostModalReturn {
   handleCloseButtonClick: () => void;
   postText: string;
   handleTextAreaChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handlePostButtonClick: (
     currentMessage: string | undefined,
-    formData: FormData
+    formData: FormData,
   ) => Promise<string | undefined>;
   isPostButtonDisabled: boolean;
 }
 
 export const usePostModal = ({
   isIntercepted,
-}: usePostModalProps): usePostModalReturn => {
+}: UsePostModalProps): UsePostModalReturn => {
   const router = useRouter();
   const [postText, setPostText] = useState<string>("");
 
@@ -28,7 +28,7 @@ export const usePostModal = ({
   };
 
   const handleTextAreaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setPostText(event.target.value);
   };
@@ -36,7 +36,7 @@ export const usePostModal = ({
   // currentMessage should be passed as the first argument due to the useFormState specification.
   const handlePostButtonClick = async (
     currentMessage: string | undefined,
-    formData: FormData
+    formData: FormData,
   ) => {
     const message =
       "Something went wrong, but don't fret - let's give it another shot.";

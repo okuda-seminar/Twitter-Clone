@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
 import { SettingsButton } from "@/lib/components/settings-button";
+import { Box, Flex } from "@chakra-ui/react";
+import type React from "react";
 import { NotificationsTabBar } from "./notifications-tab-bar";
 
 export const Notifications: React.FC = () => {

@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect } from "react";
-import { FollowingPostsResponse } from "@/lib/actions/fetch-following-posts";
+import type { FollowingPostsResponse } from "@/lib/actions/fetch-following-posts";
+import { useEffect, useRef, useState } from "react";
 import {
+  type TimelineFeedService,
   createTimelineFeedService,
-  TimelineFeedService,
 } from "./timeline-feed-service";
 
 interface useTimelineFeedReturn {
@@ -40,7 +40,7 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
       },
       (error) => {
         setErrorMessage(error);
-      }
+      },
     );
 
     return () => {

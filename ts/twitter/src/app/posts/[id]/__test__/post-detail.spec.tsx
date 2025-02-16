@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { PostDetail } from "../_components/post-detail";
 
 describe("Post Detail Tests", () => {
@@ -18,7 +18,7 @@ describe("Post Detail Tests", () => {
 
     fireEvent.click(followButton);
     expect(
-      screen.getByRole("button", { name: "Following" })
+      screen.getByRole("button", { name: "Following" }),
     ).toBeInTheDocument();
   });
 
@@ -28,7 +28,7 @@ describe("Post Detail Tests", () => {
 
     fireEvent.click(followButton);
     expect(
-      screen.getByRole("button", { name: "Following" })
+      screen.getByRole("button", { name: "Following" }),
     ).toBeInTheDocument();
 
     fireEvent.click(followButton);

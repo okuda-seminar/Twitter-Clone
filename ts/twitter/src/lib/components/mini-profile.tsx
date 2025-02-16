@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, VStack, Flex, Avatar } from "@chakra-ui/react";
+import { Avatar, Box, Flex, VStack } from "@chakra-ui/react";
+import type React from "react";
 
 interface User {
   name: string;
@@ -10,7 +10,7 @@ interface MiniProfileProps {
   user: User;
 }
 
-const MiniProfile: React.FC<MiniProfileProps> = ({ user }) => {
+export const MiniProfile: React.FC<MiniProfileProps> = ({ user }) => {
   return (
     <Flex alignSelf="flex-start" mx={1}>
       <Avatar size="md" name={user.name} />
@@ -21,4 +21,3 @@ const MiniProfile: React.FC<MiniProfileProps> = ({ user }) => {
     </Flex>
   );
 };
-export default MiniProfile;

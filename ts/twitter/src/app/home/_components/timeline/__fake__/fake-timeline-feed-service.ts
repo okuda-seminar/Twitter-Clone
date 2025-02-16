@@ -1,6 +1,6 @@
-import {
-  TimelineFeedService,
+import type {
   TimelineEventResponse,
+  TimelineFeedService,
 } from "../timeline-feed-service";
 
 export class FakeTimelineFeedService implements TimelineFeedService {
@@ -11,7 +11,7 @@ export class FakeTimelineFeedService implements TimelineFeedService {
   connect(
     url: string,
     handleResponse: (response: TimelineEventResponse) => void,
-    handleError: (message: string) => void
+    handleError: (message: string) => void,
   ): void {
     this.handleResponse = handleResponse;
     this.handleError = handleError;

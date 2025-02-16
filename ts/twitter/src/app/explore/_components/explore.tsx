@@ -1,5 +1,5 @@
-import React from "react";
 import { VStack } from "@chakra-ui/react";
+import type React from "react";
 import { SearchBar } from "./search-bar";
 import { SearchTabBar } from "./search-tab-bar";
 

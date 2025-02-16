@@ -40,7 +40,7 @@ describe("findUserById Tests", () => {
           headers: {
             "Content-Type": "application/json",
           },
-        })
+        }),
       );
     });
   });
@@ -72,7 +72,7 @@ describe("findUserById Tests", () => {
       await expect(
         findUserById({
           user_id: "test-user",
-        })
+        }),
       ).rejects.toThrow();
     });
   });

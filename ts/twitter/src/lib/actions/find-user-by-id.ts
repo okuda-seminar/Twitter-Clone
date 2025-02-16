@@ -1,6 +1,11 @@
 "use server";
 
-import { err, ok, ServerActionsError, ServerActionsResult } from "./types";
+import {
+  type ServerActionsError,
+  type ServerActionsResult,
+  err,
+  ok,
+} from "./types";
 
 interface FindUserByIdBody {
   user_id: string;
@@ -28,16 +33,16 @@ export async function findUserById({
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 
   if (res.ok) {
     const data: FindUserByIdResponse = await res.json();
     return ok(data);
-  } else {
-    return err({
-      status: res.status,
-      statusText: res.statusText,
-    });
   }
+
+  return err({
+    status: res.status,
+    statusText: res.statusText,
+  });
 }

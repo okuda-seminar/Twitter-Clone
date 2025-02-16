@@ -1,21 +1,23 @@
 "use client";
-import React from "react";
+
 import {
   Divider,
   Tab,
-  Tabs,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
+  Tabs,
   useColorModeValue,
 } from "@chakra-ui/react";
+import type React from "react";
 
 export const MyProfileTab: React.FC = () => {
   return (
     <Tabs position="relative" variant="unstyled" width="100%">
       <TabList width="100%" color="gray">
-        {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/471 - Refactor My Profile Tab to Create Custom Component and Implement Light Mode Support. */}
+        {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/471
+        - Refactor My Profile Tab to Create Custom Component and Implement Light Mode Support. */}
         <Tab
           flex={1}
           _hover={{ background: useColorModeValue("gray.100", "transparent") }}

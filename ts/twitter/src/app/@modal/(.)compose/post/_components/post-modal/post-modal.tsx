@@ -1,24 +1,25 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useSession } from "@/lib/components/session-context";
 import {
+  Avatar,
+  Box,
+  Flex,
+  IconButton,
   Modal,
-  ModalOverlay,
-  ModalContent,
   ModalBody,
   ModalCloseButton,
-  Textarea,
-  Flex,
-  Box,
-  IconButton,
-  Avatar,
+  ModalContent,
+  ModalOverlay,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
-import { FaImage } from "react-icons/fa6";
-import { usePostModal } from "./use-post-modal";
-import { useSession } from "@/lib/components/session-context";
-import { PostButton } from "../post-button/post-button";
+import type React from "react";
+import { useRef } from "react";
 import { useFormState } from "react-dom";
+import { FaImage } from "react-icons/fa6";
+import { PostButton } from "../post-button/post-button";
+import { usePostModal } from "./use-post-modal";
 
 interface PostModalProps {
   isIntercepted: boolean;

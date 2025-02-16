@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { Tab, useColorModeValue } from "@chakra-ui/react";
+import type React from "react";
 
 interface CustomTabProps {
   tabWidth: string;

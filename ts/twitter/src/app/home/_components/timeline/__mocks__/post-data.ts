@@ -1,4 +1,4 @@
-import { TimelineEventResponse } from "../timeline-feed-service";
+import type { TimelineEventResponse } from "../timeline-feed-service";
 
 export const mockPosts: TimelineEventResponse[] = [
   {

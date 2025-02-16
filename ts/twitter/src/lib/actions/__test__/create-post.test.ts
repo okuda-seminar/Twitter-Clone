@@ -39,7 +39,7 @@ describe("createPost Tests", () => {
             user_id: "test-user",
             text: "test post",
           }),
-        })
+        }),
       );
     });
   });
@@ -77,7 +77,7 @@ describe("createPost Tests", () => {
         createPost({
           user_id: "test-user",
           text: "test post",
-        })
+        }),
       ).rejects.toThrow();
     });
   });

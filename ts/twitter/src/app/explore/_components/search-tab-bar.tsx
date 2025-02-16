@@ -1,12 +1,12 @@
-import React from "react";
+import { CustomTab } from "@/lib/components/custom-tab";
 import {
-  Tabs,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import { CustomTab } from "@/lib/components/custom-tab";
+import type React from "react";
 
 export const SearchTabBar: React.FC = () => {
   return (

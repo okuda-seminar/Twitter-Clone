@@ -1,13 +1,13 @@
-import React from "react";
+import { CustomTab } from "@/lib/components/custom-tab";
 import {
-  Tabs,
+  Box,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
-  Box,
+  Tabs,
 } from "@chakra-ui/react";
-import { CustomTab } from "@/lib/components/custom-tab";
+import type React from "react";
 import { TimelineFeed } from "./timeline/timeline-feed";
 
 export const Home: React.FC = () => {

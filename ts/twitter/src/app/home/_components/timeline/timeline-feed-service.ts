@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
-import { Post } from "@/lib/models/post";
+import type { Post } from "@/lib/models/post";
 import { FakeTimelineFeedService } from "./__fake__/fake-timeline-feed-service";
 
 export type TimelineEventResponse =
@@ -26,7 +26,7 @@ export interface TimelineFeedService {
   connect(
     url: string,
     handleResponse: (response: TimelineEventResponse) => void,
-    handleError: (message: string) => void
+    handleError: (message: string) => void,
   ): void;
   disconnect(): void;
 }
@@ -50,7 +50,7 @@ export class SseTimelineFeedServicel implements TimelineFeedService {
   connect(
     url: string,
     handleResponse: (response: TimelineEventResponse) => void,
-    handleError: (message: string) => void
+    handleError: (message: string) => void,
   ): void {
     if (this.eventSource) return;
 

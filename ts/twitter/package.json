@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint-format": "biome check --write",
     "test": "jest"
   },
   "dependencies": {
@@ -30,12 +30,11 @@
     "react-icons": "^5.2.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.5",
     "typescript": "^5"
   }
 }

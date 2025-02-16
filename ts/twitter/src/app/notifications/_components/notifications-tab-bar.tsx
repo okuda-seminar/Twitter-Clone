@@ -1,16 +1,16 @@
-import React from "react";
+import { CustomTab } from "@/lib/components/custom-tab";
 import {
-  Tabs,
+  Divider,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
-  Divider,
+  Tabs,
 } from "@chakra-ui/react";
-import { CustomTab } from "@/lib/components/custom-tab";
+import type React from "react";
 import { NotificationsAllView } from "./notifications-all-view";
-import { NotificationsVerifiedView } from "./notifications-verified-view";
 import { NotificationsMentionsView } from "./notifications-mentions-view";
+import { NotificationsVerifiedView } from "./notifications-verified-view";
 
 export const NotificationsTabBar: React.FC = () => {
   return (
