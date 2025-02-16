@@ -8,7 +8,7 @@
  * Note: The content types may be expanded in the future.
  */
 
-import { Post } from "../models/post";
+import type { Post } from "../models/post";
 
 interface FollowingPostsBody {
   user_id: string;
@@ -29,15 +29,14 @@ export async function fetchFollowingPosts({
         },
 
         cache: "no-store",
-      }
+      },
     );
 
     if (res.ok) {
       const responseData: FollowingPostsResponse = await res.json();
       return responseData;
-    } else {
-      throw new Error(`Failed to find post: ${res.status} ${res.statusText}`);
     }
+    throw new Error(`Failed to find post: ${res.status} ${res.statusText}`);
   } catch (error) {
     throw new Error("Unable to find post. Please try again later.");
   }

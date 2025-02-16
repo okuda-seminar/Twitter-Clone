@@ -1,16 +1,16 @@
-import React from "react";
+import type { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
 import {
-  Box,
-  VStack,
-  Flex,
   Avatar,
-  IconButton,
+  Box,
   Button,
   Divider,
-  Tooltip,
+  Flex,
+  IconButton,
   Text,
+  Tooltip,
+  VStack,
 } from "@chakra-ui/react";
-import { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
+import type React from "react";
 import { GoArrowLeft } from "react-icons/go";
 import { RxCalendar } from "react-icons/rx";
 import { MyProfileTab } from "./my-profile-tab";
@@ -51,7 +51,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
       </Flex>
       <Divider />
       <Flex mx="8px">
-        <Avatar size="xl" mx="8px" name={userProfile.username}></Avatar>
+        <Avatar size="xl" mx="8px" name={userProfile.username} />
         <Button borderRadius="full" marginLeft="auto">
           EditProfile
         </Button>

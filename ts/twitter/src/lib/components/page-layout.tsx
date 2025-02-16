@@ -1,7 +1,7 @@
-import { Divider, Flex, Box } from "@chakra-ui/react";
-import { SideBar } from "./sidebar";
-import { ReactNode } from "react";
+import { Box, Divider, Flex } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import { RightColumn } from "./right-column";
+import { SideBar } from "./sidebar";
 
 interface PageLayoutProps {
   children: ReactNode;

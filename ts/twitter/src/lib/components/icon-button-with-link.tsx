@@ -1,6 +1,6 @@
-import React from "react";
-import { IconButton, Tooltip, Flex, Box, Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
+import type React from "react";
 
 interface Props {
   url: string;
@@ -9,7 +9,7 @@ interface Props {
   icon: React.ReactElement;
 }
 
-const IconButtonWithLink: React.FC<Props> = (props) => {
+export const IconButtonWithLink: React.FC<Props> = (props) => {
   return (
     <Link href={props.url}>
       <Flex alignItems="center">
@@ -26,5 +26,3 @@ const IconButtonWithLink: React.FC<Props> = (props) => {
     </Link>
   );
 };
-
-export default IconButtonWithLink;

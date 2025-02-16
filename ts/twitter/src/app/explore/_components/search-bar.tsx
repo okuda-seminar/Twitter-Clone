@@ -1,5 +1,5 @@
-import React from "react";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import type React from "react";
 import { IoIosSearch } from "react-icons/io";
 
 export const SearchBar: React.FC = () => {

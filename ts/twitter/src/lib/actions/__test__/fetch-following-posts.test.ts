@@ -1,6 +1,6 @@
 import {
+  type FollowingPostsResponse,
   fetchFollowingPosts,
-  FollowingPostsResponse,
 } from "../fetch-following-posts";
 
 describe("fetch following posts Tests", () => {
@@ -42,7 +42,7 @@ describe("fetch following posts Tests", () => {
           headers: {
             "Content-Type": "application/json",
           },
-        })
+        }),
       );
     });
   });
@@ -58,7 +58,7 @@ describe("fetch following posts Tests", () => {
       await expect(
         fetchFollowingPosts({
           user_id: "non-existent",
-        })
+        }),
       ).rejects.toThrow("Unable to find post. Please try again later.");
     });
 
@@ -67,7 +67,7 @@ describe("fetch following posts Tests", () => {
       await expect(
         fetchFollowingPosts({
           user_id: "test-user",
-        })
+        }),
       ).rejects.toThrow();
     });
   });

@@ -1,5 +1,5 @@
-import { Box, Text, Avatar, Flex } from "@chakra-ui/react";
-import { Post } from "@/lib/models/post";
+import type { Post } from "@/lib/models/post";
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 
 interface TimelinePostCardProps {
   post: Post;

@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
-import NextLink from "next/link";
 import { Box, Button, IconButton, Link, Tooltip } from "@chakra-ui/react";
+import NextLink from "next/link";
+import type React from "react";
 import { FaFeather } from "react-icons/fa";
 import { useSession } from "./session-context";
 

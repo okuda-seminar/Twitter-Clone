@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/lib/components/providers";
-import { ColorModeScript } from "@chakra-ui/react";
-import theme from "@/lib/theme";
-import { SessionProvider } from "@/lib/components/session-context";
 import { PageLayout } from "@/lib/components/page-layout";
+import { Providers } from "@/lib/components/providers";
+import { SessionProvider } from "@/lib/components/session-context";
+import theme from "@/lib/theme";
+import { ColorModeScript } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 

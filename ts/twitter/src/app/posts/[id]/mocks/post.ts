@@ -1,4 +1,4 @@
-import { Post } from "@/lib/models/post";
+import type { Post } from "@/lib/models/post";
 
 export const mockPost: Post = {
   id: "123",

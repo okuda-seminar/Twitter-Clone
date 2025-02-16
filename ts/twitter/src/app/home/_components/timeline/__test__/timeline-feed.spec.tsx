@@ -1,9 +1,9 @@
-import { render, screen, act } from "@testing-library/react";
-import { TimelineFeed } from "../timeline-feed";
-import { mockPosts } from "../__mocks__/post-data";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
+import { act, render, screen } from "@testing-library/react";
+import type { FakeTimelineFeedService } from "../__fake__/fake-timeline-feed-service";
+import { mockPosts } from "../__mocks__/post-data";
+import { TimelineFeed } from "../timeline-feed";
 import { createTimelineFeedService } from "../timeline-feed-service";
-import { FakeTimelineFeedService } from "../__fake__/fake-timeline-feed-service";
 
 describe("TimelineFeed", () => {
   let service: FakeTimelineFeedService;

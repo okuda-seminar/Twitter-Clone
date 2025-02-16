@@ -1,8 +1,8 @@
-import React from "react";
 import { IconButton, Tooltip } from "@chakra-ui/react";
+import type React from "react";
 import { IoIosSettings } from "react-icons/io";
 
-export const SettingsButton = () => {
+export const SettingsButton: React.FC = () => {
   return (
     <Tooltip label="Settings" placement="bottom" size="sm">
       <IconButton

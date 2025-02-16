@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
-import { IconButton, Tooltip, Box, Button } from "@chakra-ui/react";
+import { Box, Button, IconButton, Tooltip } from "@chakra-ui/react";
+import type React from "react";
 import { CiLogin } from "react-icons/ci";
+import { MiniProfile } from "./mini-profile";
 import { useSession } from "./session-context";
-import MiniProfile from "./mini-profile";
 
-export default function SignInbutton() {
+export const SignInbutton: React.FC = () => {
   const { session, user, setSession } = useSession();
 
   const sessionHandler = () => {
@@ -47,4 +47,4 @@ export default function SignInbutton() {
       )}
     </Box>
   );
-}
+};

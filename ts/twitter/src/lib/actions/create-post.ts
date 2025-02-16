@@ -1,6 +1,11 @@
 "use server";
 
-import { ok, err, ServerActionsResult, ServerActionsError } from "./types";
+import {
+  type ServerActionsError,
+  type ServerActionsResult,
+  err,
+  ok,
+} from "./types";
 
 interface CreatePostBody {
   user_id: string;
@@ -15,7 +20,7 @@ interface CreatePostResponse {
 }
 
 export async function createPost(
-  body: CreatePostBody
+  body: CreatePostBody,
 ): Promise<ServerActionsResult<CreatePostResponse, ServerActionsError>> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/posts`,
@@ -25,16 +30,16 @@ export async function createPost(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }
+    },
   );
 
   if (res.ok) {
     const data: CreatePostResponse = await res.json();
     return ok(data);
-  } else {
-    return err({
-      status: res.status,
-      statusText: res.statusText,
-    });
   }
+
+  return err({
+    status: res.status,
+    statusText: res.statusText,
+  });
 }

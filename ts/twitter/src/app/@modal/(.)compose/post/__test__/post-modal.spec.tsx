@@ -1,6 +1,6 @@
+import { SessionProvider } from "@/lib/components/session-context";
 import { render, screen } from "@testing-library/react";
 import { PostModal } from "../_components/post-modal/post-modal";
-import { SessionProvider } from "@/lib/components/session-context";
 
 jest.mock("next/navigation", () => ({
   useRouter() {
