@@ -7,7 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint-format": "biome check --write",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "imports": {
+    "#src/lib/actions/*": {
+      "storybook": "./src/lib/actions/*.mock.ts",
+      "default": "./src/lib/actions/*.ts"
+    }
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -32,11 +40,21 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@chromatic-com/storybook": "^3.2.4",
+    "@storybook/addon-essentials": "^8.5.8",
+    "@storybook/addon-interactions": "^8.5.8",
+    "@storybook/addon-onboarding": "^8.5.8",
+    "@storybook/addon-themes": "^8.5.8",
+    "@storybook/blocks": "^8.5.8",
+    "@storybook/nextjs": "^8.5.8",
+    "@storybook/react": "^8.5.8",
+    "@storybook/test": "^8.5.8",
     "@types/amqplib": "^0.10.6",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "storybook": "^8.5.8",
     "typescript": "^5"
   }
 }

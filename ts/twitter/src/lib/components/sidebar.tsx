@@ -16,7 +16,7 @@ import { BsPeople, BsSlashSquare } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import { FaTwitter, FaUser } from "react-icons/fa";
 import { PiHouseFill } from "react-icons/pi";
-import { IconButtonWithLink } from "./icon-button-with-link";
+import { IconButtonWithLink } from "./icon-button-with-link/icon-button-with-link";
 import { SideBarPostButton } from "./sidebar-post-button";
 import { SignInbutton } from "./sign-in-button";
 

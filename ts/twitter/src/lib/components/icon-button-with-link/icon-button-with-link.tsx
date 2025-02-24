@@ -2,25 +2,30 @@ import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
 
-interface Props {
+interface IconButtonWithLinkProps {
   url: string;
   tooltipText: string;
   ariaLabel: string;
   icon: React.ReactElement;
 }
 
-export const IconButtonWithLink: React.FC<Props> = (props) => {
+export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
+  url,
+  tooltipText,
+  ariaLabel,
+  icon,
+}) => {
   return (
-    <Link href={props.url}>
+    <Link href={url}>
       <Flex alignItems="center">
-        <Tooltip label={props.tooltipText} placement="bottom">
+        <Tooltip label={tooltipText} placement="bottom">
           <Box display={{ base: "inline", xl: "none" }}>
-            <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4} />
+            <IconButton aria-label={ariaLabel} icon={icon} mx={4} />
           </Box>
         </Tooltip>
         <Box display={{ base: "none", xl: "flex" }}>
-          <IconButton aria-label={props.ariaLabel} icon={props.icon} mx={4} />
-          <Text fontWeight="bold">{props.ariaLabel}</Text>
+          <IconButton aria-label={ariaLabel} icon={icon} mx={4} />
+          <Text fontWeight="bold">{ariaLabel}</Text>
         </Box>
       </Flex>
     </Link>
