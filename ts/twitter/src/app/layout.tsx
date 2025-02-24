@@ -4,8 +4,6 @@ import "./globals.css";
 import { PageLayout } from "@/lib/components/page-layout";
 import { Providers } from "@/lib/components/providers";
 import { SessionProvider } from "@/lib/components/session-context";
-import theme from "@/lib/theme";
-import { ColorModeScript } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +22,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Providers>
           <SessionProvider>
             <PageLayout modal={modal}>{children}</PageLayout>

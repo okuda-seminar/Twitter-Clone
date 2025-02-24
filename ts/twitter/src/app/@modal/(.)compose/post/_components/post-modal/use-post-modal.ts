@@ -1,6 +1,6 @@
-import { createPost } from "@/lib/actions/create-post";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createPost } from "#src/lib/actions/create-post";
 
 interface UsePostModalProps {
   isIntercepted: boolean;
