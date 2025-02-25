@@ -2,7 +2,16 @@ import amqp from "amqplib";
 
 export class RabbitMqLogger {
   private static readonly QUEUE_NAME = "logs";
-  async sendLog(eventName: string, objectId: string): Promise<void> {
+
+  async sendInteractionLog(objectId: string): Promise<void> {
+    await this.sendLog("interaction", objectId);
+  }
+
+  async sendImpressionLog(objectId: string): Promise<void> {
+    await this.sendLog("impression", objectId);
+  }
+
+  private async sendLog(eventName: string, objectId: string): Promise<void> {
     let connection: amqp.Connection | undefined = undefined;
     let channel: amqp.Channel | undefined = undefined;
 
@@ -30,6 +39,7 @@ export class RabbitMqLogger {
         Buffer.from(JSON.stringify(logMessage)),
         { persistent: true },
       );
+
       console.log(`Log sent: ${JSON.stringify(logMessage)}`);
     } catch (error) {
       console.error("Failed to send log:", error);

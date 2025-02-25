@@ -22,7 +22,7 @@ describe("RabbitMqLogger", () => {
     getMock = jest.fn().mockResolvedValue({
       content: Buffer.from(
         JSON.stringify({
-          eventType: "click",
+          eventType: "interaction",
           objectId: "12345",
           createdAt: new Date(),
         }),
@@ -51,17 +51,31 @@ describe("RabbitMqLogger", () => {
     jest.clearAllMocks();
   });
 
-  it("should send a structured JSON log with auto-generated created_at to logs queue", async () => {
+  it("should send a interaction log to the logs queue", async () => {
     const objectId = "98765";
-    const eventName = "click";
 
-    await expect(logger.sendLog(eventName, objectId)).resolves.not.toThrow();
-    expect(sendToQueueMock).toHaveBeenCalled();
+    await expect(logger.sendInteractionLog(objectId)).resolves.not.toThrow();
+    expect(sendToQueueMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Buffer),
+      { persistent: true },
+    );
   });
 
-  it("should send multiple logs independently to logs queue", async () => {
-    await expect(logger.sendLog("click", "12345")).resolves.not.toThrow();
-    await expect(logger.sendLog("impression", "23456")).resolves.not.toThrow();
+  it("should send an impression log to the logs queue", async () => {
+    const objectId = "54321";
+
+    await expect(logger.sendImpressionLog(objectId)).resolves.not.toThrow();
+    expect(sendToQueueMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Buffer),
+      { persistent: true },
+    );
+  });
+
+  it("should send multiple logs independently", async () => {
+    await expect(logger.sendInteractionLog("12345")).resolves.not.toThrow();
+    await expect(logger.sendImpressionLog("23456")).resolves.not.toThrow();
 
     expect(sendToQueueMock).toHaveBeenCalledTimes(2);
   });
@@ -86,7 +100,7 @@ describe("RabbitMqLogger", () => {
     );
 
     const errorLogger = new RabbitMqLogger();
-    await expect(errorLogger.sendLog("click", "12345")).rejects.toThrow(
+    await expect(errorLogger.sendInteractionLog("12345")).rejects.toThrow(
       "Connection failed",
     );
   });
