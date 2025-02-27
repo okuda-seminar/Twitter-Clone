@@ -44,7 +44,7 @@ export interface TimelineFeedService {
  * - disconnect(): Closes the SSE connection and cleans up resources.
  *   Should be called when the timeline feed is no longer needed.
  */
-export class SseTimelineFeedServicel implements TimelineFeedService {
+export class SseTimelineFeedService implements TimelineFeedService {
   private eventSource: EventSource | null = null;
 
   connect(
@@ -87,5 +87,5 @@ export const createTimelineFeedService = (): TimelineFeedService => {
     }
     return testInstance;
   }
-  return new SseTimelineFeedServicel();
+  return new SseTimelineFeedService();
 };
