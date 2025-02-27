@@ -1,3 +1,4 @@
+import { STATUS_TEXT } from "@/lib/constants/error-messages";
 import { createPost } from "../create-post";
 
 describe("createPost Tests", () => {
@@ -50,9 +51,7 @@ describe("createPost Tests", () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
-        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/489
-        // - Centralize Error Messages Management.
-        statusText: "Internal Server Error",
+        statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
       });
 
       // Act
@@ -66,7 +65,7 @@ describe("createPost Tests", () => {
         ok: false,
         error: {
           status: 500,
-          statusText: "Internal Server Error",
+          statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
         },
       });
     });
