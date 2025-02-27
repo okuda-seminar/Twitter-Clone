@@ -1,3 +1,4 @@
+import { STATUS_TEXT } from "@/lib/constants/error-messages";
 import { findUserById } from "../find-user-by-id";
 
 describe("findUserById Tests", () => {
@@ -51,7 +52,7 @@ describe("findUserById Tests", () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
-        statusText: "Internal Server Error",
+        statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
       });
 
       // Act
@@ -62,7 +63,7 @@ describe("findUserById Tests", () => {
         ok: false,
         error: {
           status: 500,
-          statusText: "Internal Server Error",
+          statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
         },
       });
     });

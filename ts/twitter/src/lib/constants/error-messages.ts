@@ -3,3 +3,7 @@ export const ERROR_MESSAGES = {
   INVALID_DATA: "Invalid data received.",
   CONNECTION_ERROR: "Connection error occurred.",
 } as const;
+
+export const STATUS_TEXT = {
+  INTERNAL_SERVER_ERROR: "Internal Server Error",
+} as const;
