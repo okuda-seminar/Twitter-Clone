@@ -1,5 +1,6 @@
 import { createPost } from "@/lib/actions/create-post.mock";
 import { err, ok } from "@/lib/actions/types";
+import { ERROR_MESSAGES, STATUS_TEXT } from "@/lib/constants/error-messages";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, screen, userEvent, within } from "@storybook/test";
 import { PostModal } from "./post-modal";
@@ -31,7 +32,7 @@ export const ErrorForm: Story = {
     createPost.mockImplementation(async () => {
       return err({
         status: 500,
-        statusText: "Internal Server Error",
+        statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
       });
     });
   },
@@ -45,9 +46,7 @@ export const ErrorForm: Story = {
     await userEvent.click(canvas.getByTestId("post-button"));
 
     await expect(
-      canvas.getByText(
-        "Something went wrong, but don't fret - let's give it another shot.",
-      ),
+      canvas.getByText(ERROR_MESSAGES.POST_CREATION_ERROR),
     ).toBeInTheDocument();
   },
 };

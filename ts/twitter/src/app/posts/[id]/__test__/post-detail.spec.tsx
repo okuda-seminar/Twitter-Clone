@@ -2,17 +2,17 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { PostDetail } from "../_components/post-detail";
 
 describe("Post Detail Tests", () => {
-  test("Rendering PostDetail should succeed", () => {
+  it("should successfully render PostDetail", () => {
     render(<PostDetail />);
   });
 
-  test(`"Follow" button displays in initial render`, () => {
+  it(`should display "Follow" button in initial render`, () => {
     render(<PostDetail />);
     const followButton = screen.getByRole("button", { name: "Follow" });
     expect(followButton).toBeInTheDocument();
   });
 
-  test(`Button text changes to "Following" after clicking "Follow" button`, () => {
+  it(`should change the button text to "Following" after clicking "Follow" button`, () => {
     render(<PostDetail />);
     const followButton = screen.getByRole("button");
 
@@ -22,7 +22,7 @@ describe("Post Detail Tests", () => {
     ).toBeInTheDocument();
   });
 
-  test(`Button text changes to "Follow" after clicking "Following" button`, () => {
+  it(`should change the button text to "Follow" after clicking "Following" button`, () => {
     render(<PostDetail />);
     const followButton = screen.getByRole("button");
 

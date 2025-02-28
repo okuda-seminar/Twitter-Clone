@@ -1,11 +1,11 @@
-import type { FollowingPostsResponse } from "@/lib/actions/fetch-following-posts";
 import { SessionProvider } from "@/lib/components/session-context";
+import type { Post } from "@/lib/models/post";
 import { VStack } from "@chakra-ui/react";
 import { render, waitFor } from "@testing-library/react";
 import { Home } from "../_components/home";
 import { TimelinePostCard } from "../_components/timeline/timeline-post-card";
 
-const mockPosts: FollowingPostsResponse = [
+const mockPosts: Post[] = [
   {
     id: "123",
     user_id: "789",
@@ -20,7 +20,7 @@ const mockPosts: FollowingPostsResponse = [
   },
 ];
 
-jest.mock("../_components/timeline/timeline-feed", () => ({
+vi.mock("../_components/timeline/timeline-feed", () => ({
   TimelineFeed: () => {
     return (
       <VStack spacing={4} align="stretch">
@@ -32,10 +32,10 @@ jest.mock("../_components/timeline/timeline-feed", () => ({
   },
 }));
 
-jest.mock("next/navigation", () => ({
+vi.mock("next/navigation", () => ({
   useRouter() {
     return {
-      push: jest.fn(),
+      push: vi.fn(),
     };
   },
 }));
