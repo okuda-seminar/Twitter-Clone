@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createPost } from "#src/lib/actions/create-post";
@@ -38,8 +39,6 @@ export const usePostModal = ({
     currentMessage: string | undefined,
     formData: FormData,
   ) => {
-    const message =
-      "Something went wrong, but don't fret - let's give it another shot.";
     try {
       const res = await createPost({
         user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
@@ -47,13 +46,13 @@ export const usePostModal = ({
       });
 
       if (!res.ok) {
-        return message;
+        return ERROR_MESSAGES.POST_CREATION_ERROR;
       }
 
       setPostText("");
       handleCloseButtonClick();
     } catch (error) {
-      return message;
+      return ERROR_MESSAGES.POST_CREATION_ERROR;
     }
   };
 

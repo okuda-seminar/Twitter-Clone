@@ -16,7 +16,11 @@ const meta: Meta<typeof IconButtonWithLink> = {
 export default meta;
 type Story = StoryObj<typeof IconButtonWithLink>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  parameters: {
+    viewport: { defaultViewport: "xl" },
+  },
+};
 
 export const Small: Story = {
   parameters: {
