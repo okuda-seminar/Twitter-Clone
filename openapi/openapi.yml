@@ -1,0 +1,42 @@
+openapi: 3.1.0
+info:
+  title: X-Clone
+  version: 1.0.0
+servers:
+  - url: "http://localhost:80"
+paths:
+  /api/users:
+    $ref: ./paths/users.yml
+  /api/posts:
+    $ref: ./paths/posts.yml
+  /api/posts/reposts:
+    $ref: ./paths/reposts.yml
+  /api/posts/reposts/{user_id}/{post_id}:
+    $ref: ./paths/delete_reposts.yml
+  /api/users/{id}/timelines/reverse_chronological:
+    $ref: ./paths/reverse_chronological_timeline_posts.yml
+  /api/users/{id}/posts:
+    $ref: ./paths/user_posts.yml
+  /api/users/{userID}:
+    $ref: ./paths/find_user_by_id.yml
+  
+components:
+  schemas:
+    CreateUserRequest:
+      $ref: ./components/requests/create_user_request.yml
+    CreateUserResponse:
+      $ref: ./components/responses/create_user_response.yml
+    CreatePostRequest:
+      $ref: ./components/requests/create_post_request.yml
+    CreatePostResponse:
+      $ref: ./components/responses/create_post_response.yml
+    CreateRepostRequest:
+      $ref: ./components/requests/create_repost_request.yml
+    GetReverseChronologicalHomeTimelineResponse:
+      $ref: ./components/responses/get_reverse_chronological_home_timeline_response.yml
+    GetReverseChronologicalHomeTimelineExample:
+      $ref: ./components/examples/get_reverse_chronological_home_timeline_example.yml
+    GetUserPostsTimelineResponse:
+      $ref: ./components/responses/get_user_posts_timeline_response.yml
+    FindUserByIDResponse:
+      $ref: ./components/responses/find_user_by_id_response.yml
