@@ -1,6 +1,7 @@
 allow-prefix:
-  - "[Infra]"
-  - "[CI/CD]"
-  - "[iOS]"
-  - "[Go]"
-  - "[TS]"
+  - '[Auth]'
+  - '[Infra]'
+  - '[CI/CD]'
+  - '[iOS]'
+  - '[Go]'
+  - '[TS]'
