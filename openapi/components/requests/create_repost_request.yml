@@ -1,0 +1,10 @@
+type: object
+title: CreateRepostRequest
+required:
+  - post_id
+  - user_id
+properties:
+  post_id:
+    type: string
+  user_id:
+    type: string

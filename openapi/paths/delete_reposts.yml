@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Deletes a repost.
+  parameters:
+    - in: path
+      name: post_id
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: user_id
+      schema:
+        type: string
+      required: true
+  operationId: DeleteRepost
+  responses:
+    "204":
+      description: A repost was deleted successfully.
+    "404":
+      description: The specified repost was not found.
+    "500":
+      description: Unexpected error occurred.

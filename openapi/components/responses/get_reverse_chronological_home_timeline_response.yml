@@ -1,0 +1,28 @@
+type: object
+title: GetReverseChronologicalHomeTimelineResponse
+properties:
+  data:
+    type: object
+    required:
+      - event_type
+      - posts
+    properties:
+      event_type:
+        type: string
+      posts:
+        type: object
+        required:
+          - id
+          - user_id
+          - text
+          - created_at
+        properties:
+          id:
+            type: string
+          user_id:
+            type: string
+          text:
+            type: string
+          created_at:
+            type: string
+            format: date-time

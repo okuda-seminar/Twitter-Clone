@@ -1,0 +1,17 @@
+type: object
+title: CreatePostResponse
+required:
+  - id
+  - user_id
+  - text
+  - created_at
+properties:
+  id:
+    type: string
+  user_id:
+    type: string
+  text:
+    type: string
+  created_at:
+    type: string
+    format: date-time

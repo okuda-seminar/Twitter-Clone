@@ -1,0 +1,43 @@
+services:
+  x_postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres.Dockerfile
+    image: ${PG_IMAGE_NAME}
+    container_name: ${PG_CONTAINER_NAME}
+    ports:
+      - ${PGPORT}:${PGPORT}
+    env_file:
+      - .env
+    volumes:
+      - ./db/data/:/var/lib/postgresql/data/
+    networks:
+      - x_clone
+
+  x_app:
+    depends_on:
+      - x_postgres
+    build:
+      context: .
+      dockerfile: ./docker/app.Dockerfile
+    image: ${APP_IMAGE_NAME}
+    container_name: ${APP_CONTAINER_NAME}
+    command: >
+      /bin/bash -c
+      "bash ./scripts/wait_for_postgres.sh && 
+      migrate -database ${PGURL} -path ./db/migrations up &&
+      /bin/bash"
+    tty: true
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/app
+    networks:
+      - x_clone
+
+networks:
+  x_clone:
+    name: x_clone
+    driver: bridge
