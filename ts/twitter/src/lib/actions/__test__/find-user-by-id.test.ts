@@ -1,41 +1,45 @@
 import { STATUS_TEXT } from "@/lib/constants/error-messages";
 import { findUserById } from "../find-user-by-id";
 
-describe("findUserById Tests", () => {
-  const buildEndpoint = (user_id: string) => {
-    return `${process.env.API_BASE_URL}/api/users/${user_id}`;
-  };
-  const mockFetch = jest.fn();
-  global.fetch = mockFetch;
+describe("findUserById API Tests", () => {
+  const mockFetch = vi.fn();
+  vi.stubGlobal("fetch", mockFetch);
 
-  describe("Success cases", () => {
-    test("User data should be returned when finding a user by ID succeeds", async () => {
+  const request = {
+    user_id: "623f9799-e816-418b-9e5e-09ad043653fb",
+  };
+
+  const API_ENDPOINT = `${process.env.API_BASE_URL}/api/users/${request.user_id}`;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe("Successful requests", () => {
+    it("should return user data when a user is successfully found by ID", async () => {
       // Arrange
-      const user_id = "123";
-      const endpoint = buildEndpoint(user_id);
-      const mockResponse = {
-        id: "123",
+      const response = {
+        id: request.user_id,
         username: "test",
         display_name: "test",
         bio: "test",
         is_private: false,
-        created_at: "2024-01-01",
-        updated_at: "2024-01-01",
+        created_at: "2024-01-01T00:00:00Z",
+        updated_at: "2024-01-01T00:00:00Z",
       };
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse,
+        json: async () => response,
       });
 
       // Act
-      const result = await findUserById({
-        user_id,
-      });
+      const result = await findUserById(request);
 
       // Assert
-      expect(result).toEqual({ ok: true, value: mockResponse });
+      expect(result).toEqual({ ok: true, value: response });
       expect(mockFetch).toHaveBeenCalledWith(
-        endpoint,
+        API_ENDPOINT,
         expect.objectContaining({
           method: "GET",
           headers: {
@@ -47,34 +51,36 @@ describe("findUserById Tests", () => {
   });
 
   describe("Error cases", () => {
-    test("HTTP error should be handled appropriately", async () => {
+    it("should return an error when the API responds with an error", async () => {
       // Arrange
-      mockFetch.mockResolvedValueOnce({
+      const response = {
         ok: false,
         status: 500,
         statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
-      });
+      };
+
+      mockFetch.mockResolvedValueOnce(response);
 
       // Act
-      const result = await findUserById({ user_id: "non-existent" });
+      const result = await findUserById(request);
 
       // Assert
       expect(result).toEqual({
         ok: false,
         error: {
-          status: 500,
-          statusText: STATUS_TEXT.INTERNAL_SERVER_ERROR,
+          status: response.status,
+          statusText: response.statusText,
         },
       });
     });
 
-    test("The case where the client cannot send a request should be handled", async () => {
+    it("should throw an error when the request cannot be sent due to unexpected reasons", async () => {
+      // Arrange
+      const errorMessage = "Network error";
+      mockFetch.mockRejectedValueOnce(new Error(errorMessage));
+
       // Act & Assert
-      await expect(
-        findUserById({
-          user_id: "test-user",
-        }),
-      ).rejects.toThrow();
+      await expect(findUserById(request)).rejects.toThrow(errorMessage);
     });
   });
 });

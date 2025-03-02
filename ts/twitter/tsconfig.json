@@ -19,7 +19,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vitest/globals"]
   },
   "include": [
     "next-env.d.ts",
@@ -28,5 +29,5 @@
     ".next/types/**/*.ts",
     ".storybook/*.tsx"
   ],
-  "exclude": ["node_modules", "./cypress.config.ts", "cypress"]
+  "exclude": ["node_modules"]
 }

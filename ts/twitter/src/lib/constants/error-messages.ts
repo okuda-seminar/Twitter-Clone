@@ -2,6 +2,8 @@ export const ERROR_MESSAGES = {
   SERVER_ERROR: "A server error occurred.",
   INVALID_DATA: "Invalid data received.",
   CONNECTION_ERROR: "Connection error occurred.",
+  POST_CREATION_ERROR:
+    "Something went wrong, but don't fret - let's give it another shot.",
 } as const;
 
 export const STATUS_TEXT = {
