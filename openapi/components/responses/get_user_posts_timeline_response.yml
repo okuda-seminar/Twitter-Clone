@@ -1,0 +1,28 @@
+type: array
+title: GetUserPostsTimelineResponse
+items:
+  type: object
+  required:
+    - id
+    - user_id
+    - text
+    - created_at
+  properties:
+    id:
+      type: string
+    user_id:
+      type: string
+    text:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+example:
+  - id: "b579c6df-4faf-418b-ba44-e7eab8860c6f"
+    user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
+    text: "A sample post"
+    created_at: "2024-09-29T10:20:30Z"
+  - id: "d8f91b8b-208c-4fe6-b1a0-75ca01ece67c"
+    user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
+    text: "A same user post"
+    created_at: "2024-09-29T11:20:30Z"

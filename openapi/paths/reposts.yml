@@ -1,0 +1,17 @@
+post:
+  tags:
+    - X-Clone
+  summary: Creates a new repost.
+  operationId: CreateRepost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../openapi.yml#/components/schemas/CreateRepostRequest
+  responses:
+    "201":
+      description: A repost was created successfully.
+    "400":
+      description: The request body is invalid.
+    "500":
+      description: Unexpected error occurred.

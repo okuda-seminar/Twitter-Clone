@@ -1,0 +1,27 @@
+post:
+  tags:
+    - X-Clone
+  summary: User login
+  description: Authenticates a user and returns a JWT token.
+  operationId: Login
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/requests/login_request.yml
+  responses:
+    '200':
+      description: Successfully authenticated
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/login_response.yml
+    '400':
+      description: The request body is invalid.
+    '401':
+      description: Invalid password.
+    '404':
+      description: Use not found.
+    '500':
+      description: Unexpected error occurred.

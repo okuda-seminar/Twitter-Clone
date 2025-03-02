@@ -1,0 +1,20 @@
+get:
+  tags:
+    - X-Clone
+  summary: Get a collection of posts by the specified user.
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+      required: true
+  operationId: GetUserPostsTimeline
+  responses:
+    "200":
+      description: A collection of posts by the specified user.
+      content:
+        application/json:
+          schema:
+            $ref: ../openapi.yml#/components/schemas/GetUserPostsTimelineResponse
+    "500":
+      description: Unexpected error occurred.

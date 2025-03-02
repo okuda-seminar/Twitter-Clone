@@ -1,0 +1,23 @@
+post:
+  tags:
+    - X-Clone
+  summary: Creates a new user.
+  operationId: CreateUser
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../openapi.yml#/components/schemas/CreateUserRequest
+  responses:
+    "201":
+      description: A user object.
+      content:
+        application/json:
+          schema:
+            $ref: ../openapi.yml#/components/schemas/CreateUserResponse
+    "400":
+      description: The request body is invalid.
+    "409":
+      description: The specified username has already existed.
+    "500":
+      description: Unexpected error occurred.

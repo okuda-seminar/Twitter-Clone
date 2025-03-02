@@ -1,0 +1,2 @@
+ALTER TABLE users
+DROP CONSTRAINT IF EXISTS password_not_empty;

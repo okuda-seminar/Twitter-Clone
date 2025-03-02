@@ -1,0 +1,5 @@
+# Environments
+.env
+
+# Postgres data
+db/data
