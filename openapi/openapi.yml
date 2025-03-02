@@ -3,7 +3,7 @@ info:
   title: X-Clone
   version: 1.0.0
 servers:
-  - url: "http://localhost:80"
+  - url: 'http://localhost:80'
 paths:
   /api/users:
     $ref: ./paths/users.yml
@@ -19,7 +19,9 @@ paths:
     $ref: ./paths/user_posts.yml
   /api/users/{userID}:
     $ref: ./paths/find_user_by_id.yml
-  
+  /api/login:
+    $ref: ./paths/login.yml
+
 components:
   schemas:
     CreateUserRequest:
@@ -40,3 +42,7 @@ components:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
     FindUserByIDResponse:
       $ref: ./components/responses/find_user_by_id_response.yml
+    LoginRequest:
+      $ref: ./components/requests/login_request.yml
+    LoginResponse:
+      $ref: ./components/responses/login_response.yml

@@ -1,4 +1,4 @@
 package: openapi
 generate:
   models: true
-output: gen/models.gen.go
+output: openapi/models.gen.go

@@ -82,6 +82,29 @@ type GetUserPostsTimelineResponse = []struct {
 	UserId    string    `json:"user_id"`
 }
 
+// LoginRequest defines model for login_request.
+type LoginRequest struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
+// LoginResponse defines model for login_response.
+type LoginResponse struct {
+	Token string `json:"token"`
+	User  struct {
+		Bio         string    `json:"bio"`
+		CreatedAt   time.Time `json:"created_at"`
+		DisplayName string    `json:"display_name"`
+		Id          string    `json:"id"`
+		IsPrivate   bool      `json:"is_private"`
+		UpdatedAt   time.Time `json:"updated_at"`
+		Username    string    `json:"username"`
+	} `json:"user"`
+}
+
+// LoginJSONRequestBody defines body for Login for application/json ContentType.
+type LoginJSONRequestBody = LoginRequest
+
 // CreatePostJSONRequestBody defines body for CreatePost for application/json ContentType.
 type CreatePostJSONRequestBody = CreatePostRequest
 

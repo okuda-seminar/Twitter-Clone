@@ -15,6 +15,7 @@ var _ openapi.ServerInterface = (*Server)(nil)
 // [Server] satisfies [ServerInterface] defined in gen/server.gen.go.
 type Server struct {
 	handlers.CreateUserHandler
+	handlers.LoginHandler
 	handlers.FindUserByIDHandler
 	handlers.CreatePostHandler
 	handlers.CreateRepostHandler
@@ -26,6 +27,7 @@ type Server struct {
 func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entities.TimelineEvent, authService *services.AuthService) Server {
 	return Server{
 		CreateUserHandler:                          handlers.NewCreateUserHandler(db, authService),
+		LoginHandler:                               handlers.NewLoginHandler(db, authService),
 		FindUserByIDHandler:                        handlers.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handlers.NewCreatePostHandler(db, mu, usersChan),
 		CreateRepostHandler:                        handlers.NewCreateRepostHandler(db, mu, usersChan),
