@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"time"
-	"x-clone-backend/internal/app/errors"
+	domainerrors "x-clone-backend/internal/app/errors"
 	"x-clone-backend/internal/domain/entities"
 	"x-clone-backend/internal/domain/repositories"
 
@@ -90,7 +90,7 @@ func (r *UsersRepository) DeleteUser(tx *sql.Tx, userID string) error {
 		return err
 	}
 	if count != 1 {
-		return errors.ErrUserNotFound
+		return domainerrors.ErrUserNotFound
 	}
 
 	return nil
@@ -171,7 +171,7 @@ func (r *UsersRepository) UnlikePost(tx *sql.Tx, userID string, postID string) e
 		return err
 	}
 	if count != 1 {
-		return errors.ErrLikeNotFound
+		return domainerrors.ErrLikeNotFound
 	}
 
 	return nil
@@ -206,7 +206,7 @@ func (r *UsersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID st
 		return err
 	}
 	if count != 1 {
-		return errors.ErrFollowshipNotFound
+		return domainerrors.ErrFollowshipNotFound
 	}
 
 	return nil
@@ -241,7 +241,7 @@ func (r *UsersRepository) UnmuteUser(tx *sql.Tx, sourceUserID, targetUserID stri
 		return err
 	}
 	if count != 1 {
-		return errors.ErrMuteNotFound
+		return domainerrors.ErrMuteNotFound
 	}
 
 	return nil
@@ -279,7 +279,7 @@ func (r *UsersRepository) UnblockUser(tx *sql.Tx, sourceUserID, targetUserID str
 		return err
 	}
 	if count != 1 {
-		return errors.ErrBlockNotFound
+		return domainerrors.ErrBlockNotFound
 	}
 
 	return nil

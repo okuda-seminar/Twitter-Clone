@@ -76,6 +76,7 @@ type HandlersTestSuite struct {
 	db                             *sql.DB
 	resource                       *dockertest.Resource
 	getSpecificUserPostsUsecase    usecases.GetSpecificUserPostsUsecase
+	loginUseCase                   usecases.LoginUseCase
 	getUserAndFolloweePostsUsecase usecases.GetUserAndFolloweePostsUsecase
 	usersRepository                repositories.UsersRepositoryInterface
 	createUserUsecase              usecases.CreateUserUsecase
@@ -121,9 +122,13 @@ func (s *HandlersTestSuite) SetupTest() {
 		log.Fatalln(err)
 	}
 
+	secretKey := "test_secret_key"
+	s.authService = services.NewAuthService(secretKey)
+
 	// Set up usecases.
 	postsRepository := infrastructure.NewPostsRepository(s.db)
 	s.getSpecificUserPostsUsecase = usecases.NewGetSpecificUserPostsUsecase(postsRepository)
+	s.loginUseCase = usecases.NewLoginUseCase(s.usersRepository, s.authService)
 	s.getUserAndFolloweePostsUsecase = usecases.NewGetUserAndFolloweePostsUsecase(postsRepository)
 
 	s.usersRepository = infrastructure.NewUsersRepository(s.db)
@@ -132,9 +137,6 @@ func (s *HandlersTestSuite) SetupTest() {
 	s.unlikePostUsecase = usecases.NewUnlikePostUsecase(s.usersRepository)
 	s.followUserUsecase = usecases.NewFollowUserUsecase(s.usersRepository)
 	s.muteUserUsecase = usecases.NewMuteUserUsecase(s.usersRepository)
-
-	secretKey := "test_secret_key"
-	s.authService = services.NewAuthService(secretKey)
 
 	s.mu = sync.Mutex{}
 	s.userChannels = make(map[string]chan entities.TimelineEvent)
