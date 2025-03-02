@@ -39,5 +39,5 @@ bundle-openapi:
 
 generate-code-from-openapi: start
 	make bundle-openapi
-	docker compose exec ${APP_SERVER_NAME} oapi-codegen -config ./config/oapi_server_config.yml ./internal/infrastructure/openapi/bundle/bundled-openapi.yml
-	docker compose exec ${APP_SERVER_NAME} oapi-codegen -config ./config/oapi_models_config.yml ./internal/infrastructure/openapi/bundle/bundled-openapi.yml
+	docker compose exec ${APP_SERVER_NAME} oapi-codegen -config ./config/oapi_server_config.yml openapi/bundle/bundled-openapi.yml
+	docker compose exec ${APP_SERVER_NAME} oapi-codegen -config ./config/oapi_models_config.yml openapi/bundle/bundled-openapi.yml

@@ -14,6 +14,9 @@ import (
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
+	// User login
+	// (POST /api/login)
+	Login(w http.ResponseWriter, r *http.Request)
 	// Creates a new post.
 	// (POST /api/posts)
 	CreatePost(w http.ResponseWriter, r *http.Request)
@@ -45,6 +48,20 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// Login operation middleware
+func (siw *ServerInterfaceWrapper) Login(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.Login(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
 
 // CreatePost operation middleware
 func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Request) {
@@ -317,6 +334,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.Login)
 	m.HandleFunc("POST "+options.BaseURL+"/api/posts", wrapper.CreatePost)
 	m.HandleFunc("POST "+options.BaseURL+"/api/posts/reposts", wrapper.CreateRepost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/posts/reposts/{user_id}/{post_id}", wrapper.DeleteRepost)
