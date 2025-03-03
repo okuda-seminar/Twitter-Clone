@@ -63,9 +63,8 @@ Our frontend toolchain performs efficiently without the Docker virtualization la
   - [GraphQL Client Architecture Recommendation 社外版](https://engineering.mercari.com/blog/entry/20221215-graphql-client-architecture-recommendation/)
 - [ ] Localization
   - [React の多言語化 (i18n) 対応 - Format.JS vs react-i18next](https://blogs.jp.infragistics.com/entry/react-localization-libraries)
-- [x] Jest
-- [x] Cypress
-  - [メルペイフロントエンドのテスト自動化方針](https://engineering.mercari.com/blog/entry/20211208-test-automation-policy-in-merpay-frontend/)
+- [x] Vitest
+- [x] Storybook
 - [ ] WebView
   - [メルカリアプリのWebView向けWebアプリケーションの開発を支えるモック技術](https://engineering.mercari.com/blog/entry/2019-12-21-000000/)
 

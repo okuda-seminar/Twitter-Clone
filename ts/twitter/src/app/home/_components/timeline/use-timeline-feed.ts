@@ -1,4 +1,4 @@
-import type { FollowingPostsResponse } from "@/lib/actions/fetch-following-posts";
+import type { Post } from "@/lib/models/post";
 import { useEffect, useRef, useState } from "react";
 import {
   type TimelineFeedService,
@@ -7,11 +7,11 @@ import {
 
 interface useTimelineFeedReturn {
   errorMessage: string | null;
-  posts: FollowingPostsResponse;
+  posts: Post[];
 }
 
 export const useTimelineFeed = (): useTimelineFeedReturn => {
-  const [posts, setPosts] = useState<FollowingPostsResponse>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timelineFeedServiceRef = useRef<TimelineFeedService | null>(null);
 

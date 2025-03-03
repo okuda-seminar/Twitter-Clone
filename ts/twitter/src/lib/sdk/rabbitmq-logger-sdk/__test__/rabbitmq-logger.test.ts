@@ -1,25 +1,25 @@
 import amqp from "amqplib";
 import { RabbitMqLogger } from "../rabbitmq-logger";
 
-jest.mock("amqplib");
+vi.mock("amqplib");
 
 describe("RabbitMqLogger", () => {
   let logger: RabbitMqLogger;
-  let connectMock: jest.Mock;
-  let createChannelMock: jest.Mock;
-  let assertQueueMock: jest.Mock;
-  let sendToQueueMock: jest.Mock;
-  let getMock: jest.Mock;
-  let closeMock: jest.Mock;
+  let connectMock: ReturnType<typeof vi.fn>;
+  let createChannelMock: ReturnType<typeof vi.fn>;
+  let assertQueueMock: ReturnType<typeof vi.fn>;
+  let sendToQueueMock: ReturnType<typeof vi.fn>;
+  let getMock: ReturnType<typeof vi.fn>;
+  let closeMock: ReturnType<typeof vi.fn>;
 
   beforeAll(() => {
     process.env.NEXT_PUBLIC_RABBITMQ_URL = "amqp://mock-rabbitmq";
   });
 
   beforeEach(() => {
-    sendToQueueMock = jest.fn();
-    assertQueueMock = jest.fn();
-    getMock = jest.fn().mockResolvedValue({
+    sendToQueueMock = vi.fn();
+    assertQueueMock = vi.fn();
+    getMock = vi.fn().mockResolvedValue({
       content: Buffer.from(
         JSON.stringify({
           eventType: "interaction",
@@ -28,27 +28,27 @@ describe("RabbitMqLogger", () => {
         }),
       ),
     });
-    closeMock = jest.fn();
+    closeMock = vi.fn();
 
-    createChannelMock = jest.fn().mockResolvedValue({
+    createChannelMock = vi.fn().mockResolvedValue({
       assertQueue: assertQueueMock,
       sendToQueue: sendToQueueMock,
       get: getMock,
       close: closeMock,
     });
 
-    connectMock = jest.fn().mockResolvedValue({
+    connectMock = vi.fn().mockResolvedValue({
       createChannel: createChannelMock,
       close: closeMock,
     });
 
-    (amqp.connect as jest.Mock).mockImplementation(connectMock);
+    (amqp.connect as ReturnType<typeof vi.fn>).mockImplementation(connectMock);
 
     logger = new RabbitMqLogger();
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should send a interaction log to the logs queue", async () => {
@@ -95,7 +95,7 @@ describe("RabbitMqLogger", () => {
   });
 
   it("should throw an error if RabbitMQ is unreachable", async () => {
-    (amqp.connect as jest.Mock).mockRejectedValue(
+    (amqp.connect as ReturnType<typeof vi.fn>).mockRejectedValue(
       new Error("Connection failed"),
     );
 
