@@ -20,24 +20,27 @@ type ServerInterface interface {
 	// Creates a new post.
 	// (POST /api/posts)
 	CreatePost(w http.ResponseWriter, r *http.Request)
-	// Creates a new repost.
-	// (POST /api/posts/reposts)
-	CreateRepost(w http.ResponseWriter, r *http.Request)
-	// Deletes a repost.
-	// (DELETE /api/posts/reposts/{user_id}/{post_id})
-	DeleteRepost(w http.ResponseWriter, r *http.Request, userId string, postId string)
 	// Creates a new user.
 	// (POST /api/users)
 	CreateUser(w http.ResponseWriter, r *http.Request)
 	// Get a collection of posts by the specified user.
 	// (GET /api/users/{id}/posts)
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
+	// Creates a new quote repost.
+	// (POST /api/users/{id}/quote_reposts)
+	CreateQuoteRepost(w http.ResponseWriter, r *http.Request, id string)
+	// Creates a new repost.
+	// (POST /api/users/{id}/reposts)
+	CreateRepost(w http.ResponseWriter, r *http.Request, id string)
 	// Get a collection of posts by the specified user and users they follow.
 	// (GET /api/users/{id}/timelines/reverse_chronological)
 	GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Find user by ID.
 	// (GET /api/users/{userID})
 	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
+	// Deletes a repost.
+	// (DELETE /api/users/{user_id}/reposts/{post_id})
+	DeleteRepost(w http.ResponseWriter, r *http.Request, userId string, postId string)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -77,54 +80,6 @@ func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Req
 	handler.ServeHTTP(w, r)
 }
 
-// CreateRepost operation middleware
-func (siw *ServerInterfaceWrapper) CreateRepost(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreateRepost(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// DeleteRepost operation middleware
-func (siw *ServerInterfaceWrapper) DeleteRepost(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-
-	// ------------- Path parameter "user_id" -------------
-	var userId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "user_id", r.PathValue("user_id"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "user_id", Err: err})
-		return
-	}
-
-	// ------------- Path parameter "post_id" -------------
-	var postId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "post_id", r.PathValue("post_id"), &postId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "post_id", Err: err})
-		return
-	}
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.DeleteRepost(w, r, userId, postId)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
 // CreateUser operation middleware
 func (siw *ServerInterfaceWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 
@@ -155,6 +110,56 @@ func (siw *ServerInterfaceWrapper) GetUserPostsTimeline(w http.ResponseWriter, r
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetUserPostsTimeline(w, r, id)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateQuoteRepost operation middleware
+func (siw *ServerInterfaceWrapper) CreateQuoteRepost(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateQuoteRepost(w, r, id)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateRepost operation middleware
+func (siw *ServerInterfaceWrapper) CreateRepost(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateRepost(w, r, id)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -205,6 +210,40 @@ func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.FindUserByID(w, r, userID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteRepost operation middleware
+func (siw *ServerInterfaceWrapper) DeleteRepost(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "user_id" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "user_id", r.PathValue("user_id"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "user_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "post_id" -------------
+	var postId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "post_id", r.PathValue("post_id"), &postId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "post_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteRepost(w, r, userId, postId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -336,12 +375,13 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 
 	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.Login)
 	m.HandleFunc("POST "+options.BaseURL+"/api/posts", wrapper.CreatePost)
-	m.HandleFunc("POST "+options.BaseURL+"/api/posts/reposts", wrapper.CreateRepost)
-	m.HandleFunc("DELETE "+options.BaseURL+"/api/posts/reposts/{user_id}/{post_id}", wrapper.DeleteRepost)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users", wrapper.CreateUser)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/posts", wrapper.GetUserPostsTimeline)
+	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
+	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{userID}", wrapper.FindUserByID)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 
 	return m
 }

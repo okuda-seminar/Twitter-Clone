@@ -12,6 +12,7 @@ TimelineAccessedExample:
           user_id: "b5f17c90-a719-4660-9ac0-225723c6850d"
           text: "example text1"
           created_at: "2024-11-06T04:12:10.766452Z"
+      reposts: null
 PostCreatedExample:
   summary: Example of a PostCreated event
   value:
@@ -22,6 +23,7 @@ PostCreatedExample:
           user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
           text: "example text"
           created_at: "2024-12-11T13:30:31.764714Z"
+      reposts: null
 PostDeletedExample:
   summary: Example of a PostDeleted event
   value:
@@ -32,3 +34,40 @@ PostDeletedExample:
           user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
           text: "example text"
           created_at: "2024-12-11T13:30:31.764714Z"
+      reposts: null
+RepostCreatedExample:
+  summary: Example of a RepostCreated event
+  value:
+    data:
+      event_type: "RepostCreated"
+      posts: null
+      reposts:
+        - id: "f0171b80-b643-43ed-8734-479ae3ce9ced"
+          parent_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: ""
+          created_at: "2025-02-23T13:32:04.36153Z"
+RepostDeletedExample:
+  summary: Example of a RepostDeleted event
+  value:
+    data:
+      event_type: "RepostDeleted"
+      posts: null
+      reposts:
+        - id: "f0171b80-b643-43ed-8734-479ae3ce9ced"
+          parent_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: ""
+          created_at: "2025-02-23T13:32:04.36153Z"
+QuoteRepostCreatedExample:
+  summary: Example of a QuoteRepostCreated event
+  value:
+    data:
+      event_type: "QuoteRepostCreated"
+      posts: null
+      reposts:
+        - id: "f6630f25-c971-446f-bf9b-e68c4ad03770"
+          parent_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: "example text"
+          created_at: "2025-02-23T13:32:04.36153Z"

@@ -1,26 +1,26 @@
 post:
   tags:
     - X-Clone
-  summary: Creates a new repost.
+  summary: Creates a new quote repost.
   parameters:
     - in: path
       name: id
       schema:
         type: string
       required: true
-  operationId: CreateRepost
+  operationId: CreateQuoteRepost
   requestBody:
     content:
       application/json:
         schema:
-          $ref: ../openapi.yml#/components/schemas/CreateRepostRequest
+          $ref: ../openapi.yml#/components/schemas/CreateQuoteRepostRequest
   responses:
     "201":
-      description: A repost object.
+      description: A quote repost object.
       content:
         application/json:
           schema:
-            $ref: ../openapi.yml#/components/schemas/CreateRepostResponse
+            $ref: ../openapi.yml#/components/schemas/CreateQuoteRepostResponse
     "400":
       description: The request body is invalid.
     "500":

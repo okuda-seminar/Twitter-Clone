@@ -14,6 +14,11 @@ delete:
         type: string
       required: true
   operationId: DeleteRepost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../openapi.yml#/components/schemas/DeleteRepostRequest
   responses:
     "204":
       description: A repost was deleted successfully.

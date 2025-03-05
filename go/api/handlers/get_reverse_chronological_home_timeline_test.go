@@ -24,6 +24,8 @@ func (s *HandlersTestSuite) TestGetReverseChronologicalHomeTimeline() {
 	s.newTestFollow(user3ID, user2ID)
 	user5ID := s.newTestUser(`{ "username": "test5", "display_name": "test5", "password": "securepassword" }`)
 	post2ID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test5" }`, user5ID))
+	repostID := s.newTestRepost(user5ID, post2ID)
+	quoteRepostID := s.newTestQuoteRepost(user5ID, post2ID)
 
 	tests := []struct {
 		name          string
@@ -61,7 +63,17 @@ func (s *HandlersTestSuite) TestGetReverseChronologicalHomeTimeline() {
 			expectedCount: 2,
 		},
 		{
+			name:          "get a target user post and a quote repost notification during timeline access",
+			userID:        user5ID,
+			expectedCount: 2,
+		},
+		{
 			name:          "get posts and reposts deleted during timeline access",
+			userID:        user5ID,
+			expectedCount: 2,
+		},
+		{
+			name:          "get posts and quote reposts deleted during timeline access",
 			userID:        user5ID,
 			expectedCount: 2,
 		},
@@ -89,6 +101,7 @@ func (s *HandlersTestSuite) TestGetReverseChronologicalHomeTimeline() {
 			getReverseChronologicalHomeTimelineHandler.GetReverseChronologicalHomeTimeline(rr, req, test.userID)
 		}()
 		var posts []entities.Post
+		var reposts []entities.Repost
 		if test.name == "get posts already posted and posts posted during timeline access" {
 			time.Sleep(100 * time.Millisecond)
 			_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test5" }`, test.userID))
@@ -98,11 +111,18 @@ func (s *HandlersTestSuite) TestGetReverseChronologicalHomeTimeline() {
 			s.newTestDeletePost(post1ID)
 		}
 		if test.name == "get a target user post and a repost notification during timeline access" {
-			s.newTestRepost(user5ID, post2ID)
+			_ = s.newTestRepost(user5ID, post2ID)
+		}
+		if test.name == "get a target user post and a quote repost notification during timeline access" {
+			_ = s.newTestQuoteRepost(user5ID, post2ID)
 		}
 		if test.name == "get posts and reposts deleted during timeline access" {
 			time.Sleep(100 * time.Millisecond)
-			s.newTestDeleteRepost(user5ID, post2ID)
+			s.newTestDeleteRepost(user5ID, post2ID, repostID)
+		}
+		if test.name == "get posts and quote reposts deleted during timeline access" {
+			time.Sleep(100 * time.Millisecond)
+			s.newTestDeleteRepost(user5ID, post2ID, quoteRepostID)
 		}
 
 		wg.Wait()
@@ -121,11 +141,14 @@ func (s *HandlersTestSuite) TestGetReverseChronologicalHomeTimeline() {
 				for _, post := range timelineEvent.Posts {
 					posts = append(posts, *post)
 				}
+				for _, repost := range timelineEvent.Reposts {
+					reposts = append(reposts, *repost)
+				}
 			}
 		}
 
-		if len(posts) != test.expectedCount {
-			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
+		if len(posts)+len(reposts) != test.expectedCount {
+			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got posts: %d, reposts: %d", test.name, test.expectedCount, len(posts), len(reposts))
 		}
 	}
 }

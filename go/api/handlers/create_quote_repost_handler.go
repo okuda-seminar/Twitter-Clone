@@ -10,29 +10,29 @@ import (
 	"sync"
 	"time"
 	"x-clone-backend/internal/domain/entities"
-	"x-clone-backend/openapi"
+	openapi "x-clone-backend/openapi"
 
 	"github.com/google/uuid"
 )
 
-type CreateRepostHandler struct {
+type CreateQuoteRepostHandler struct {
 	db        *sql.DB
 	mu        *sync.Mutex
 	usersChan *map[string]chan entities.TimelineEvent
 }
 
-func NewCreateRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entities.TimelineEvent) CreateRepostHandler {
-	return CreateRepostHandler{
+func NewCreateQuoteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entities.TimelineEvent) CreateQuoteRepostHandler {
+	return CreateQuoteRepostHandler{
 		db:        db,
 		mu:        mu,
 		usersChan: usersChan,
 	}
 }
 
-// CreateRepost creates a new repost with the specified post_id and user_id,
+// CreateQuoteRepost creates a new quote repost with the specified post_id and user_id,
 // then, inserts it into reposts table.
-func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Request, userIDStr string) {
-	var body openapi.CreateRepostRequest
+func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *http.Request, userIDStr string) {
+	var body openapi.CreateQuoteRepostRequest
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
@@ -54,7 +54,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 	}
 
 	query := `
-		SELECT
+		SELECT 
 			r.id IS NOT NULL AS is_parent_repost
 		FROM users u
 		LEFT JOIN reposts r ON r.id = $2
@@ -73,9 +73,9 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 	}
 
 	if isParentRepost {
-		query = `INSERT INTO reposts (user_id, parent_repost_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
+		query = `INSERT INTO reposts (user_id, parent_repost_id, is_quote, text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
 	} else {
-		query = `INSERT INTO reposts (user_id, parent_post_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
+		query = `INSERT INTO reposts (user_id, parent_post_id, is_quote, text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
 	}
 
 	var (
@@ -83,25 +83,25 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 		createdAt time.Time
 	)
 
-	text := ""
+	isQuote := true
 
-	err = h.db.QueryRow(query, userID, PostID, text).Scan(&id, &createdAt)
+	err = h.db.QueryRow(query, userID, PostID, isQuote, body.Text).Scan(&id, &createdAt)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not create a repost."), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintln("Could not create a quote repost."), http.StatusInternalServerError)
 		return
 	}
 
-	repost := entities.Repost{
+	quoteRepost := entities.Repost{
 		ID:        id,
 		ParentID:  PostID,
 		UserID:    userID,
-		Text:      text,
+		Text:      body.Text,
 		CreatedAt: createdAt,
 	}
 
 	go func(userID uuid.UUID, userChan *map[string]chan entities.TimelineEvent) {
-		var reposts []*entities.Repost
-		reposts = append(reposts, &repost)
+		var quoteReposts []*entities.Repost
+		quoteReposts = append(quoteReposts, &quoteRepost)
 		query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
 		rows, err := h.db.Query(query, userID.String())
 		if err != nil {
@@ -123,7 +123,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 		for _, id := range ids {
 			h.mu.Lock()
 			if userChan, ok := (*h.usersChan)[id.String()]; ok {
-				userChan <- entities.TimelineEvent{EventType: entities.RepostCreated, Reposts: reposts}
+				userChan <- entities.TimelineEvent{EventType: entities.QuoteRepostCreated, Reposts: quoteReposts}
 			}
 			h.mu.Unlock()
 		}
@@ -134,7 +134,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 	w.WriteHeader(http.StatusCreated)
 
 	encoder := json.NewEncoder(w)
-	err = encoder.Encode(&repost)
+	err = encoder.Encode(&quoteRepost)
 	if err != nil {
 		http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
 		return

@@ -1,0 +1,7 @@
+type: object
+title: DeleteRepostRequest
+required:
+  - repost_id
+properties:
+  repost_id:
+    type: string
