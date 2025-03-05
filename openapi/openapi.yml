@@ -9,10 +9,12 @@ paths:
     $ref: ./paths/users.yml
   /api/posts:
     $ref: ./paths/posts.yml
-  /api/posts/reposts:
+  /api/users/{id}/reposts:
     $ref: ./paths/reposts.yml
-  /api/posts/reposts/{user_id}/{post_id}:
+  /api/users/{user_id}/reposts/{post_id}:
     $ref: ./paths/delete_reposts.yml
+  /api/users/{id}/quote_reposts:
+    $ref: ./paths/quote_reposts.yml
   /api/users/{id}/timelines/reverse_chronological:
     $ref: ./paths/reverse_chronological_timeline_posts.yml
   /api/users/{id}/posts:
@@ -34,6 +36,14 @@ components:
       $ref: ./components/responses/create_post_response.yml
     CreateRepostRequest:
       $ref: ./components/requests/create_repost_request.yml
+    CreateRepostResponse:
+      $ref: ./components/responses/create_repost_response.yml
+    CreateQuoteRepostRequest:
+      $ref: ./components/requests/create_quote_repost_request.yml
+    CreateQuoteRepostResponse:
+      $ref: ./components/responses/create_quote_repost_response.yml
+    DeleteRepostRequest:
+      $ref: ./components/requests/delete_repost_request.yml
     GetReverseChronologicalHomeTimelineResponse:
       $ref: ./components/responses/get_reverse_chronological_home_timeline_response.yml
     GetReverseChronologicalHomeTimelineExample:

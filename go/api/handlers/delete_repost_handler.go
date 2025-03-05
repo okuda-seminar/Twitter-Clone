@@ -2,11 +2,15 @@ package handlers
 
 import (
 	"database/sql"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"sync"
+	"time"
 	"x-clone-backend/internal/domain/entities"
+	"x-clone-backend/openapi"
 
 	"github.com/google/uuid"
 )
@@ -27,43 +31,63 @@ func NewDeleteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]ch
 
 // DeleteRepost deletes a repost with the specified post ID.
 // If the post doesn't exist, it returns 404 error.
-func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Request, userID string, postID string) {
-	query := `DELETE FROM reposts WHERE post_id = $1 AND user_id = $2`
+func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Request, userIDStr string, parentIDStr string) {
+	var body openapi.DeleteRepostRequest
 
-	res, err := h.db.Exec(query, postID, userID)
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not delete a repost: (user id: %s, post id: %s)\n", userID, postID), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintln("Request body was invalid."), http.StatusBadRequest)
 		return
 	}
 
-	cnt, err := res.RowsAffected()
+	RepostID, err := uuid.Parse(body.RepostId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not delete a repost: (user id: %s, post id: %s)\n", userID, postID), http.StatusInternalServerError)
-		return
-	}
-	if cnt != 1 {
-		http.Error(w, fmt.Sprintf("No row found to delete: (user id: %s, post id: %s)\n", userID, postID), http.StatusNotFound)
+		http.Error(w, fmt.Sprintf("Could not parse a RepostId (ID: %s)\n", body.RepostId), http.StatusBadRequest)
 		return
 	}
 
-	var post entities.Post
+	query := `DELETE FROM reposts WHERE id = $1 RETURNING text, created_at`
 
-	query = `SELECT user_id, text, created_at FROM posts WHERE id=$1`
-	err = h.db.QueryRow(query, postID).Scan(&post.UserID, &post.Text, &post.CreatedAt)
+	var (
+		text      string
+		createdAt time.Time
+	)
+
+	err = h.db.QueryRow(query, RepostID).Scan(&text, &createdAt)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not fetch the original post for repost."), http.StatusInternalServerError)
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			http.Error(w, fmt.Sprintf("No row found to delete: (repost id: %s)\n", RepostID), http.StatusNotFound)
+		default:
+			http.Error(w, fmt.Sprintf("Could not delete a repost: (repost id: %s)\n", RepostID), http.StatusInternalServerError)
+		}
 		return
 	}
 
-	post.ID, err = uuid.Parse(postID)
+	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse a postID (ID: %s)\n", postID), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("Could not parse a userID (ID: %s)\n", userIDStr), http.StatusBadRequest)
 		return
+	}
+
+	parentID, err := uuid.Parse(parentIDStr)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Could not parse a parentID (ID: %s)\n", parentIDStr), http.StatusBadRequest)
+		return
+	}
+
+	repost := entities.Repost{
+		ID:        RepostID,
+		ParentID:  parentID,
+		UserID:    userID,
+		Text:      text,
+		CreatedAt: createdAt,
 	}
 
 	go func(userID uuid.UUID, usersChan *map[string]chan entities.TimelineEvent) {
-		var posts []*entities.Post
-		posts = append(posts, &post)
+		var reposts []*entities.Repost
+		reposts = append(reposts, &repost)
 		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
 		rows, err := h.db.Query(query, userID.String())
 		if err != nil {
@@ -85,11 +109,11 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 		for _, id := range ids {
 			h.mu.Lock()
 			if userChan, ok := (*usersChan)[id.String()]; ok {
-				userChan <- entities.TimelineEvent{EventType: entities.RepostDeleted, Posts: posts}
+				userChan <- entities.TimelineEvent{EventType: entities.RepostDeleted, Reposts: reposts}
 			}
 			h.mu.Unlock()
 		}
-	}(post.UserID, h.usersChan)
+	}(userID, h.usersChan)
 
 	w.WriteHeader(http.StatusNoContent)
 }

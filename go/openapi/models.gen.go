@@ -21,10 +21,33 @@ type CreatePostResponse struct {
 	UserId    string    `json:"user_id"`
 }
 
+// CreateQuoteRepostRequest defines model for create_quote_repost_request.
+type CreateQuoteRepostRequest struct {
+	PostId string `json:"post_id"`
+	Text   string `json:"text"`
+}
+
+// CreateQuoteRepostResponse defines model for create_quote_repost_response.
+type CreateQuoteRepostResponse struct {
+	CreatedAt time.Time `json:"created_at"`
+	Id        string    `json:"id"`
+	ParentId  string    `json:"parent_id"`
+	Text      string    `json:"text"`
+	UserId    string    `json:"user_id"`
+}
+
 // CreateRepostRequest defines model for create_repost_request.
 type CreateRepostRequest struct {
 	PostId string `json:"post_id"`
-	UserId string `json:"user_id"`
+}
+
+// CreateRepostResponse defines model for create_repost_response.
+type CreateRepostResponse struct {
+	CreatedAt time.Time `json:"created_at"`
+	Id        string    `json:"id"`
+	ParentId  string    `json:"parent_id"`
+	Text      string    `json:"text"`
+	UserId    string    `json:"user_id"`
 }
 
 // CreateUserRequest defines model for create_user_request.
@@ -50,6 +73,11 @@ type CreateUserResponse struct {
 	} `json:"user"`
 }
 
+// DeleteRepostRequest defines model for delete_repost_request.
+type DeleteRepostRequest struct {
+	RepostId string `json:"repost_id"`
+}
+
 // FindUserByIdResponse defines model for find_user_by_id_response.
 type FindUserByIdResponse struct {
 	Bio         string    `json:"bio"`
@@ -71,6 +99,13 @@ type GetReverseChronologicalHomeTimelineResponse struct {
 			Text      string    `json:"text"`
 			UserId    string    `json:"user_id"`
 		} `json:"posts"`
+		Reposts struct {
+			CreatedAt time.Time `json:"created_at"`
+			Id        string    `json:"id"`
+			ParentId  string    `json:"parent_id"`
+			Text      string    `json:"text"`
+			UserId    string    `json:"user_id"`
+		} `json:"reposts"`
 	} `json:"data,omitempty"`
 }
 
@@ -108,8 +143,14 @@ type LoginJSONRequestBody = LoginRequest
 // CreatePostJSONRequestBody defines body for CreatePost for application/json ContentType.
 type CreatePostJSONRequestBody = CreatePostRequest
 
+// CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
+type CreateUserJSONRequestBody = CreateUserRequest
+
+// CreateQuoteRepostJSONRequestBody defines body for CreateQuoteRepost for application/json ContentType.
+type CreateQuoteRepostJSONRequestBody = CreateQuoteRepostRequest
+
 // CreateRepostJSONRequestBody defines body for CreateRepost for application/json ContentType.
 type CreateRepostJSONRequestBody = CreateRepostRequest
 
-// CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
-type CreateUserJSONRequestBody = CreateUserRequest
+// DeleteRepostJSONRequestBody defines body for DeleteRepost for application/json ContentType.
+type DeleteRepostJSONRequestBody = DeleteRepostRequest

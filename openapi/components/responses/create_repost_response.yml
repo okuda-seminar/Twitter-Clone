@@ -1,0 +1,20 @@
+type: object
+title: CreateRepostResponse
+required:
+  - id
+  - parent_id
+  - user_id
+  - text
+  - created_at
+properties:
+  id:
+    type: string
+  parent_id:
+    type: string
+  user_id:
+    type: string
+  text:
+    type: string
+  created_at:
+    type: string
+    format: date-time

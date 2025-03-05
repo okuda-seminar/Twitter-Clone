@@ -254,27 +254,51 @@ func (s *HandlersTestSuite) TestCreateMuting() {
 	}
 }
 
-func (s *HandlersTestSuite) newTestRepost(userID, postID string) {
+func (s *HandlersTestSuite) newTestRepost(userID, postID string) string {
 	req := httptest.NewRequest(
 		"POST",
-		"/api/posts/reposts",
-		strings.NewReader(fmt.Sprintf(`{ "post_id": "%s", "user_id": "%s" }`, postID, userID)),
+		fmt.Sprintf("/api/users/%s/reposts", userID),
+		strings.NewReader(fmt.Sprintf(`{ "post_id": "%s" }`, postID)),
 	)
 	rr := httptest.NewRecorder()
 
 	createRepostHandler := NewCreateRepostHandler(s.db, &s.mu, &s.userChannels)
-	createRepostHandler.CreateRepost(rr, req)
+	createRepostHandler.CreateRepost(rr, req, userID)
+
+	var repost entities.Repost
+	_ = json.NewDecoder(rr.Body).Decode(&repost)
+	repostID := repost.ID.String()
+	return repostID
 }
 
-func (s *HandlersTestSuite) newTestDeleteRepost(userID string, postID string) {
-	req := httptest.NewRequest("DELETE", "/api/posts/reposts/{user_id}/{post_id}", nil)
-	req.SetPathValue("user_id", userID)
-	req.SetPathValue("post_id", postID)
+func (s *HandlersTestSuite) newTestDeleteRepost(userID string, postID string, repostID string) {
+	req := httptest.NewRequest(
+		"DELETE",
+		fmt.Sprintf("/api/users/%s/reposts/%s", userID, postID),
+		strings.NewReader(fmt.Sprintf(`{ "repost_id": "%s" }`, repostID)),
+	)
 
 	rr := httptest.NewRecorder()
 
 	deleteRepostHandler := NewDeleteRepostHandler(s.db, &s.mu, &s.userChannels)
 	deleteRepostHandler.DeleteRepost(rr, req, userID, postID)
+}
+
+func (s *HandlersTestSuite) newTestQuoteRepost(userID, postID string) string {
+	req := httptest.NewRequest(
+		"POST",
+		fmt.Sprintf("/api/users/%s/quote_reposts", userID),
+		strings.NewReader(fmt.Sprintf(`{ "post_id": "%s", "text": "test" }`, postID)),
+	)
+	rr := httptest.NewRecorder()
+
+	createRepostHandler := NewCreateQuoteRepostHandler(s.db, &s.mu, &s.userChannels)
+	createRepostHandler.CreateQuoteRepost(rr, req, userID)
+
+	var repost entities.Repost
+	_ = json.NewDecoder(rr.Body).Decode(&repost)
+	repostID := repost.ID.String()
+	return repostID
 }
 
 func (s *HandlersTestSuite) newTestUser(body string) string {

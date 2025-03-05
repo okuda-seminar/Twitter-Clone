@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *HandlersTestSuite) TestCreateRepost() {
+func (s *HandlersTestSuite) TestCreateQuoteRepost() {
 	userID := s.newTestUser(`{ "username": "test", "display_name": "test", "password": "securepassword" }`)
 	postID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test" }`, userID))
 	repostID := s.newTestQuoteRepost(userID, postID)
@@ -21,39 +21,39 @@ func (s *HandlersTestSuite) TestCreateRepost() {
 		expectedCode int
 	}{
 		{
-			name:         "create repost from a post",
+			name:         "create quote repost from a post",
 			userID:       userID,
-			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
+			body:         fmt.Sprintf(`{ "post_id": "%s", "text": "test" }`, postID),
 			expectedCode: http.StatusCreated,
 		},
 		{
-			name:         "create repost from a quote repost",
+			name:         "create quote repost from a quote repost",
 			userID:       userID,
-			body:         fmt.Sprintf(`{ "post_id": "%s" }`, repostID),
+			body:         fmt.Sprintf(`{ "post_id": "%s", "text": "test" }`, repostID),
 			expectedCode: http.StatusCreated,
 		},
 		{
 			name:         "invalid JSON body",
 			userID:       userID,
-			body:         fmt.Sprintf(`{ "post_id": "%s }`, postID),
+			body:         fmt.Sprintf(`{ "post_id": "%s, "text": "test" }`, postID),
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "invalid body",
 			userID:       userID,
-			body:         "{}",
+			body:         `{"text": "test"}`,
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "non-existent user id",
 			userID:       uuid.New().String(),
-			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
+			body:         fmt.Sprintf(`{ "post_id": "%s", "text": "test" }`, postID),
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "non-existent post id",
 			userID:       userID,
-			body:         fmt.Sprintf(`{ "post_id": "%s" }`, uuid.New()),
+			body:         fmt.Sprintf(`{ "post_id": "%s", "text": "test" }`, uuid.New()),
 			expectedCode: http.StatusInternalServerError,
 		},
 	}
@@ -61,13 +61,13 @@ func (s *HandlersTestSuite) TestCreateRepost() {
 	for _, test := range tests {
 		req := httptest.NewRequest(
 			"POST",
-			fmt.Sprintf("/api/users/%s/reposts", test.userID),
+			fmt.Sprintf("/api/users/%s/quote_reposts", test.userID),
 			strings.NewReader(test.body),
 		)
 		rr := httptest.NewRecorder()
 
-		createRepostHandler := NewCreateRepostHandler(s.db, &s.mu, &s.userChannels)
-		createRepostHandler.CreateRepost(rr, req, test.userID)
+		createRepostHandler := NewCreateQuoteRepostHandler(s.db, &s.mu, &s.userChannels)
+		createRepostHandler.CreateQuoteRepost(rr, req, test.userID)
 
 		if rr.Code != test.expectedCode {
 			s.T().Errorf("%s: wrong code returned; expected %d, but got %d", test.name, test.expectedCode, rr.Code)

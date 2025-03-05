@@ -19,6 +19,7 @@ type Server struct {
 	handlers.FindUserByIDHandler
 	handlers.CreatePostHandler
 	handlers.CreateRepostHandler
+	handlers.CreateQuoteRepostHandler
 	handlers.DeleteRepostHandler
 	handlers.GetUserPostsTimelineHandler
 	handlers.GetReverseChronologicalHomeTimelineHandler
@@ -31,6 +32,7 @@ func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entities.T
 		FindUserByIDHandler:                        handlers.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handlers.NewCreatePostHandler(db, mu, usersChan),
 		CreateRepostHandler:                        handlers.NewCreateRepostHandler(db, mu, usersChan),
+		CreateQuoteRepostHandler:                   handlers.NewCreateQuoteRepostHandler(db, mu, usersChan),
 		DeleteRepostHandler:                        handlers.NewDeleteRepostHandler(db, mu, usersChan),
 		GetUserPostsTimelineHandler:                handlers.NewGetUserPostsTimelineHandler(db),
 		GetReverseChronologicalHomeTimelineHandler: handlers.NewGetReverseChronologicalHomeTimelineHandler(db, mu, usersChan),
