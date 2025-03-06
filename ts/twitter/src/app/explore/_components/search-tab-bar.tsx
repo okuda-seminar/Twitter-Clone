@@ -1,26 +1,34 @@
-import { CustomTab } from "@/lib/components/custom-tab";
+"use client";
 import {
+  Tab,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import type React from "react";
 
 export const SearchTabBar: React.FC = () => {
+  const tabItems = ["For you", "Trending", "News", "Sports", "Entertainment"];
+
   return (
-    <Tabs position="relative" variant="unstyled">
-      <TabList>
-        <CustomTab tabWidth={"100px"} message={"For you"} fontSize={"sm"} />
-        <CustomTab tabWidth={"100px"} message={"Trending"} fontSize={"sm"} />
-        <CustomTab tabWidth={"100px"} message={"News"} fontSize={"sm"} />
-        <CustomTab tabWidth={"100px"} message={"Sports"} fontSize={"sm"} />
-        <CustomTab
-          tabWidth={"100px"}
-          message={"Entertainment"}
-          fontSize={"xs"}
-        />
+    <Tabs position="relative" variant="unstyled" width="100%">
+      <TabList display="flex" width="100%" justifyContent="space-between">
+        {tabItems.map((item) => (
+          <Tab
+            key={item}
+            flex="1"
+            textAlign="center"
+            _hover={{
+              background: useColorModeValue("gray.100", "transparent"),
+            }}
+            fontSize={"sm"}
+          >
+            {item}
+          </Tab>
+        ))}
       </TabList>
       <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
       <TabPanels>

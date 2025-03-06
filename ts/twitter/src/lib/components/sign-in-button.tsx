@@ -3,7 +3,7 @@
 import { Box, Button, IconButton, Tooltip } from "@chakra-ui/react";
 import type React from "react";
 import { CiLogin } from "react-icons/ci";
-import { MiniProfile } from "./mini-profile";
+import { MiniProfile } from "./mini-profile/mini-profile";
 import { useSession } from "./session-context";
 
 export const SignInbutton: React.FC = () => {

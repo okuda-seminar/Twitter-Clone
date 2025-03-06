@@ -1,22 +1,36 @@
-import { CustomTab } from "@/lib/components/custom-tab";
+"use client";
 import {
   Box,
+  Tab,
   TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import type React from "react";
 import { TimelineFeed } from "./timeline/timeline-feed";
 
 export const Home: React.FC = () => {
+  const tabItems = ["For you", "Following"];
   return (
     <Box>
-      <Tabs position="relative" variant="unstyled" defaultIndex={1}>
-        <TabList>
-          <CustomTab tabWidth={"50%"} message={"For you"} fontSize={"lg"} />
-          <CustomTab tabWidth={"50%"} message={"Following"} fontSize={"lg"} />
+      <Tabs position="relative" variant="unstyled" width="100%">
+        <TabList display="flex" width="100%" justifyContent="space-between">
+          {tabItems.map((item) => (
+            <Tab
+              key={item}
+              flex="1"
+              textAlign="center"
+              _hover={{
+                background: useColorModeValue("gray.100", "transparent"),
+              }}
+              fontSize={"lg"}
+            >
+              {item}
+            </Tab>
+          ))}
         </TabList>
         <TabIndicator
           mt="-1.5px"

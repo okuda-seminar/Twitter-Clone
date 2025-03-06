@@ -16,11 +16,55 @@ import { BsPeople, BsSlashSquare } from "react-icons/bs";
 import { CiCircleMore } from "react-icons/ci";
 import { FaTwitter, FaUser } from "react-icons/fa";
 import { PiHouseFill } from "react-icons/pi";
-import { IconButtonWithLink } from "./icon-button-with-link/icon-button-with-link";
-import { SideBarPostButton } from "./sidebar-post-button";
-import { SignInbutton } from "./sign-in-button";
+import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
+import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
+import { SignInbutton } from "../sign-in-button";
 
 export const SideBar: React.FC = () => {
+  const sidebarItems = [
+    {
+      url: "/home",
+      tooltipText: "Home",
+      ariaLabel: "Home",
+      icon: <PiHouseFill />,
+    },
+    {
+      url: "/explore",
+      tooltipText: "Explore",
+      ariaLabel: "Explore",
+      icon: <SearchIcon />,
+    },
+    {
+      url: "/notifications",
+      tooltipText: "Notifications",
+      ariaLabel: "Notifications",
+      icon: <BellIcon />,
+    },
+    {
+      url: "/message",
+      tooltipText: "Message",
+      ariaLabel: "Message",
+      icon: <EmailIcon />,
+    },
+    {
+      url: "/groc",
+      tooltipText: "Groc",
+      ariaLabel: "Groc",
+      icon: <BsSlashSquare />,
+    },
+    {
+      url: "/community",
+      tooltipText: "Community",
+      ariaLabel: "Community",
+      icon: <BsPeople />,
+    },
+    {
+      url: "/profile",
+      tooltipText: "Profile",
+      ariaLabel: "Profile",
+      icon: <FaUser />,
+    },
+  ];
   return (
     <Flex>
       <VStack marginBottom="24px" align="flex-start">
@@ -36,55 +80,15 @@ export const SideBar: React.FC = () => {
             </Flex>
           </Tooltip>
         </Link>
-
-        <IconButtonWithLink
-          url={"/home"}
-          tooltipText={"Home"}
-          ariaLabel={"Home"}
-          icon={<PiHouseFill />}
-        />
-
-        <IconButtonWithLink
-          url={"/explore"}
-          tooltipText={"Explore"}
-          ariaLabel={"Explore"}
-          icon={<SearchIcon />}
-        />
-
-        <IconButtonWithLink
-          url={"/notifications"}
-          tooltipText={"Notifications"}
-          ariaLabel={"Notifications"}
-          icon={<BellIcon />}
-        />
-
-        <IconButtonWithLink
-          url={"/message"}
-          tooltipText={"Message"}
-          ariaLabel={"Message"}
-          icon={<EmailIcon />}
-        />
-
-        <IconButtonWithLink
-          url={"/groc"}
-          tooltipText={"Groc"}
-          ariaLabel={"Groc"}
-          icon={<BsSlashSquare />}
-        />
-
-        <IconButtonWithLink
-          url={"/community"}
-          tooltipText={"Community"}
-          ariaLabel={"Community"}
-          icon={<BsPeople />}
-        />
-
-        <IconButtonWithLink
-          url={"/profile"}
-          tooltipText={"Profile"}
-          ariaLabel={"Profile"}
-          icon={<FaUser />}
-        />
+        {sidebarItems.map((item) => (
+          <IconButtonWithLink
+            key={item.url}
+            url={item.url}
+            tooltipText={item.tooltipText}
+            ariaLabel={item.ariaLabel}
+            icon={item.icon}
+          />
+        ))}
         <Flex>
           <Tooltip label="More" placement="bottom">
             <Box display={{ base: "inline", xl: "none" }}>
