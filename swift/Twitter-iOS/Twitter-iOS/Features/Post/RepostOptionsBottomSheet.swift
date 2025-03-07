@@ -17,7 +17,7 @@ struct RepostOptionsBottomSheet: View {
       Button(
         action: {
           if let postModel {
-            let postService = InjectPostService()
+            let postService = injectPostService()
             postService.repost(postModelId: postModel.id)
           }
           dismiss()
