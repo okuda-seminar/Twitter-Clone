@@ -26,7 +26,7 @@ class FakeFollowService: FollowService {
   }
 }
 
-func InjectFollowService() -> FollowService {
+func injectFollowService() -> FollowService {
   if isRunningUnitTests() {
     return FakeFollowService.sharedInstance
   }

@@ -107,7 +107,7 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didInputTextFieldCompletion = { [weak self] in
-      let postService = InjectPostService()
+      let postService = injectPostService()
 
       DispatchQueue.global(qos: .userInitiated).async {
         postService.fetchSearchedTagCandidateUsers { searchedUsers in

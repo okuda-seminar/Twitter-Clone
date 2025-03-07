@@ -8,7 +8,7 @@ class SubscribeOptionsViewController: UIViewController {
   }
 
   private lazy var hostingController: UIHostingController = {
-    let prices = InjectSubscriptionService().fetchPrices()
+    let prices = injectSubscriptionService().fetchPrices()
     let controller = UIHostingController(rootView: SubscribeOptionsView(prices: prices))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
@@ -90,5 +90,5 @@ struct SubscribeOptionsView: View {
 }
 
 #Preview {
-  SubscribeOptionsView(prices: InjectSubscriptionService().fetchPrices())
+  SubscribeOptionsView(prices: injectSubscriptionService().fetchPrices())
 }

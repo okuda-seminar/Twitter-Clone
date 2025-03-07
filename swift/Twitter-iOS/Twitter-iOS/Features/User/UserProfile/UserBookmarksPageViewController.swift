@@ -9,7 +9,7 @@ class UserBookmarksPageViewController: UIViewController {
   }
 
   private lazy var bookmarkHostingController: UIHostingController = {
-    let bookmarkedPosts = InjectBookmarkService().fetchCurrentBookmarks()
+    let bookmarkedPosts = injectBookmarkService().fetchCurrentBookmarks()
     let controller = UIHostingController(rootView: BookmarkView(bookmarkedPosts: bookmarkedPosts))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
