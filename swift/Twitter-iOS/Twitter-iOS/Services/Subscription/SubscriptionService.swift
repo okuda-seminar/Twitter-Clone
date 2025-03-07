@@ -20,6 +20,6 @@ class SubscriptionServiceImplementation: SubscriptionService {
   }
 }
 
-func InjectSubscriptionService() -> SubscriptionService {
+func injectSubscriptionService() -> SubscriptionService {
   return SubscriptionServiceImplementation.shared
 }

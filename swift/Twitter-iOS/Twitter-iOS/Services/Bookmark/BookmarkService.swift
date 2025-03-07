@@ -16,6 +16,6 @@ private class BookmarkServiceImplementation: BookmarkService {
   }
 }
 
-func InjectBookmarkService() -> BookmarkService {
+func injectBookmarkService() -> BookmarkService {
   return BookmarkServiceImplementation.shared
 }

@@ -10,6 +10,7 @@
 		3B08824C2CE992A9001BEDB1 /* MainRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */; };
 		3B20B0692C3D83E20045E904 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */; };
 		3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */; };
+		3B2AE47A2D841D35009F4601 /* TimelineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2AE4792D841D2D009F4601 /* TimelineService.swift */; };
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
 		3B3ADDCF2D4F6F9D00934445 /* UserProfileTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */; };
 		3B3ADDD12D508D6800934445 /* UserPostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */; };
@@ -17,6 +18,8 @@
 		3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
 		3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */; };
+		3B4F6E932D77ED9D008521CA /* TimelineSSEDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F6E922D77ED9D008521CA /* TimelineSSEDataModel.swift */; };
+		3B4F6E952D77EDB9008521CA /* TimelineSSEPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F6E942D77EDB9008521CA /* TimelineSSEPostModel.swift */; };
 		3B57F5FC2CD9BEC200090887 /* CannotReplyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */; };
 		3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */; };
 		3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */; };
@@ -172,6 +175,7 @@
 		3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRootViewController.swift; sourceTree = "<group>"; };
 		3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTabModel.swift; sourceTree = "<group>"; };
+		3B2AE4792D841D2D009F4601 /* TimelineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineService.swift; sourceTree = "<group>"; };
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
 		3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTabViewController.swift; sourceTree = "<group>"; };
 		3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 		3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderViewController.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
 		3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditViewObserver.swift; sourceTree = "<group>"; };
+		3B4F6E922D77ED9D008521CA /* TimelineSSEDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSSEDataModel.swift; sourceTree = "<group>"; };
+		3B4F6E942D77EDB9008521CA /* TimelineSSEPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSSEPostModel.swift; sourceTree = "<group>"; };
 		3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannotReplyBottomSheet.swift; sourceTree = "<group>"; };
 		3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewController.swift; sourceTree = "<group>"; };
 		3B5CE8512C74D683005833E1 /* AltTextEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltTextEditViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +361,14 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		3B2AE47D2D84F7D0009F4601 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				65FD4F9F2C25B3D70020A02E /* PostService.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
 		3B4CD12C2C2457700071C69F /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +382,15 @@
 				658D08902BF4FD50006C6A9E /* MessagesSettingsHomeViewController.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		3B4F6E912D77ED8E008521CA /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				3B4F6E922D77ED9D008521CA /* TimelineSSEDataModel.swift */,
+				3B4F6E942D77EDB9008521CA /* TimelineSSEPostModel.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		3B5CE85B2C775841005833E1 /* NewPost */ = {
@@ -775,9 +798,10 @@
 			children = (
 				65FD4FC22C2D8B9B0020A02E /* Bookmark */,
 				65FD4F4A2C15E13F0020A02E /* Follow */,
-				65FD4F9E2C25B3BA0020A02E /* Post */,
+				3B2AE47D2D84F7D0009F4601 /* Post */,
 				65C71BB02C357C100025839C /* Search */,
 				65FD4FDA2C3039450020A02E /* Subscription */,
+				65FD4F9E2C25B3BA0020A02E /* Timeline */,
 				658D08882BEF4798006C6A9E /* User */,
 			);
 			path = Services;
@@ -989,12 +1013,13 @@
 			path = Reply;
 			sourceTree = "<group>";
 		};
-		65FD4F9E2C25B3BA0020A02E /* Post */ = {
+		65FD4F9E2C25B3BA0020A02E /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				65FD4F9F2C25B3D70020A02E /* PostService.swift */,
+				3B4F6E912D77ED8E008521CA /* Entities */,
+				3B2AE4792D841D2D009F4601 /* TimelineService.swift */,
 			);
-			path = Post;
+			path = Timeline;
 			sourceTree = "<group>";
 		};
 		65FD4FC22C2D8B9B0020A02E /* Bookmark */ = {
@@ -1330,6 +1355,7 @@
 				658D089A2BF63058006C6A9E /* NotificationsSettingsViewController.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
 				3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */,
+				3B4F6E952D77EDB9008521CA /* TimelineSSEPostModel.swift in Sources */,
 				65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */,
 				656C1BB82C0749EA00EEE575 /* CommunityFilterModel.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewPostEditViewController.swift in Sources */,
@@ -1376,8 +1402,10 @@
 				6540F8E02BC564CB0029BA46 /* TopicModel.swift in Sources */,
 				3B20B0692C3D83E20045E904 /* SearchResultViewController.swift in Sources */,
 				65FD4F572C1C7A330020A02E /* ReplyOriginalPostView.swift in Sources */,
+				3B4F6E932D77ED9D008521CA /* TimelineSSEDataModel.swift in Sources */,
 				65F908472BE11E2F00C6C8B3 /* PermissionGuideViewController.swift in Sources */,
 				3B7332ED2C23153F007F4537 /* MessagesSettingsHomeEnableCallingSectionView.swift in Sources */,
+				3B2AE47A2D841D35009F4601 /* TimelineService.swift in Sources */,
 				65FD4F4C2C15E1520020A02E /* FollowService.swift in Sources */,
 				3B7332EC2C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift in Sources */,
 				65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */,
