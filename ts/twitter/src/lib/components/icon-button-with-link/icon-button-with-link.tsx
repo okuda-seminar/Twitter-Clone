@@ -1,5 +1,5 @@
-import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
-import Link from "next/link";
+import { Flex, IconButton, Link, Text, Tooltip } from "@chakra-ui/react";
+import NextLink from "next/link";
 import type React from "react";
 
 interface IconButtonWithLinkProps {
@@ -16,17 +16,22 @@ export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
   icon,
 }) => {
   return (
-    <Link href={url}>
-      <Flex alignItems="center">
-        <Tooltip label={tooltipText} placement="bottom">
-          <Box display={{ base: "inline", xl: "none" }}>
-            <IconButton aria-label={ariaLabel} icon={icon} mx={4} />
-          </Box>
+    <Link as={NextLink} href={url} w="100%">
+      <Flex alignItems="center" p="12px">
+        <Tooltip
+          label={tooltipText}
+          placement="bottom"
+          display={{ base: "inline", xl: "none" }}
+        >
+          <IconButton aria-label={ariaLabel} icon={icon} />
         </Tooltip>
-        <Box display={{ base: "none", xl: "flex" }}>
-          <IconButton aria-label={ariaLabel} icon={icon} mx={4} />
-          <Text fontWeight="bold">{ariaLabel}</Text>
-        </Box>
+        <Text
+          fontWeight="bold"
+          ml="20px"
+          display={{ base: "none", xl: "flex" }}
+        >
+          {ariaLabel}
+        </Text>
       </Flex>
     </Link>
   );

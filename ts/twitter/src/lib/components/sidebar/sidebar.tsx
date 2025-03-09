@@ -2,7 +2,6 @@
 
 import { BellIcon, EmailIcon, SearchIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Flex,
   IconButton,
   Spacer,
@@ -80,6 +79,7 @@ export const SideBar: React.FC = () => {
             </Flex>
           </Tooltip>
         </Link>
+
         {sidebarItems.map((item) => (
           <IconButtonWithLink
             key={item.url}
@@ -89,16 +89,22 @@ export const SideBar: React.FC = () => {
             icon={item.icon}
           />
         ))}
-        <Flex>
-          <Tooltip label="More" placement="bottom">
-            <Box display={{ base: "inline", xl: "none" }}>
-              <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
-            </Box>
+
+        <Flex alignItems="center" p="12px">
+          <Tooltip
+            label="More"
+            placement="bottom"
+            display={{ base: "inline", xl: "none" }}
+          >
+            <IconButton aria-label="More" icon={<CiCircleMore />} />
           </Tooltip>
-          <Box display={{ base: "none", xl: "flex" }}>
-            <IconButton aria-label="More" icon={<CiCircleMore />} mx={4} />
-            <Text fontWeight="bold">More</Text>
-          </Box>
+          <Text
+            fontWeight="bold"
+            ml="20px"
+            display={{ base: "none", xl: "flex" }}
+          >
+            More
+          </Text>
         </Flex>
 
         <SideBarPostButton />
