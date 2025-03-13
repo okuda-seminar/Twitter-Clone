@@ -5,7 +5,7 @@ import {
   createTimelineFeedService,
 } from "./timeline-feed-service";
 
-interface useTimelineFeedReturn {
+export interface useTimelineFeedReturn {
   errorMessage: string | null;
   posts: Post[];
 }
