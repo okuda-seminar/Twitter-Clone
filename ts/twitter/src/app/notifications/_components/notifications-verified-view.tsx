@@ -2,7 +2,7 @@ import { Text, VStack } from "@chakra-ui/react";
 
 export function NotificationsVerifiedView() {
   return (
-    <VStack spacing={6} p={8} textAlign="center" alignItems="center">
+    <VStack spacing={4} p={8} textAlign="center" alignItems="center">
       <Text fontSize="3xl" fontWeight="bold" lineHeight="shorter">
         Nothing to see here — yet
       </Text>

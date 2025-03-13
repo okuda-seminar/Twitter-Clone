@@ -2,11 +2,12 @@
 
 import { Box, VStack } from "@chakra-ui/react";
 import { TimelinePostCard } from "./timeline-post-card";
-import { useTimelineFeed } from "./use-timeline-feed";
+import type { useTimelineFeedReturn } from "./use-timeline-feed";
 
-export const TimelineFeed = () => {
-  const { posts, errorMessage } = useTimelineFeed();
-
+export const TimelineFeed = ({
+  posts,
+  errorMessage,
+}: useTimelineFeedReturn) => {
   if (errorMessage) {
     // Handling errors that cannot be caught by error.tsx from asynchronous processing.
     return <Box>{errorMessage}</Box>;
