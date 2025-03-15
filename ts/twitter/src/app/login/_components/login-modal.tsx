@@ -8,26 +8,29 @@ import { PasswordModal } from "./password-modal";
 
 export const LoginModal: React.FC = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [username, setUsername] = useState("");
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = (enteredUsername: string) => {
+    setUsername(enteredUsername);
     setShowPasswordModal(true);
   };
 
   return (
     <Flex align="center" justify="center" minH="100vh">
       <Box
-        width="600px"
-        height="650px"
+        width="400px"
         bg="black"
         borderRadius="md"
+        p={6}
+        color="white"
         display="flex"
-        justifyContent="center"
-        alignItems="center"
+        flexDirection="column"
+        gap={6}
       >
         {!showPasswordModal ? (
           <AccountModal onNext={handleNextButtonClick} />
         ) : (
-          <PasswordModal />
+          <PasswordModal username={username} />
         )}
       </Box>
     </Flex>
