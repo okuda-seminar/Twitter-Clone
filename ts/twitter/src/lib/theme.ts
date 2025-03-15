@@ -13,6 +13,7 @@ const theme = {
     blue: {
       primary: "#1DA1F2",
       primaryHover: "#1A91DA",
+      secondary: "#3182CE",
     },
     error: {
       primary: "#3D0105",
