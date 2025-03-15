@@ -1,0 +1,40 @@
+"use server";
+
+import type { LoginFormValue } from "@/lib/models/login-form-types";
+import type { User } from "@/lib/models/user";
+import {
+  type ServerActionsError,
+  type ServerActionsResult,
+  err,
+  ok,
+} from "./types";
+
+interface LoginResponse {
+  token: string;
+  user: User;
+}
+
+export async function login(
+  body: LoginFormValue,
+): Promise<ServerActionsResult<LoginResponse, ServerActionsError>> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    },
+  );
+
+  if (res.ok) {
+    const data: LoginResponse = await res.json();
+    return ok(data);
+  }
+
+  return err({
+    status: res.status,
+    statusText: res.statusText,
+  });
+}
