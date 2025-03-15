@@ -11,7 +11,7 @@ const theme = {
       dark: "#000000",
     },
     blue: {
-      primary: "#1DA1F2",
+      primary: "#1D9BF0",
       primaryHover: "#1A91DA",
     },
     error: {
