@@ -8,7 +8,7 @@ class UserFollowerRequestsPageViewController: UIViewController {
   }
 
   private lazy var hostingController: UIHostingController = {
-    let followService = InjectFollowService()
+    let followService = injectFollowService()
     let controller = UIHostingController(
       rootView: UserFollowerRequestsView(
         followerRequestingUsers: followService.followerRequestingUsers()))

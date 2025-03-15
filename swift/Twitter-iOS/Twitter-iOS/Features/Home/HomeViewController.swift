@@ -2,8 +2,10 @@ import SafariServices
 import SwiftUI
 import UIKit
 
+/// The view controller responsible for displaying the home view of the app.
 class HomeViewController: ViewControllerWithUserIconButton {
 
+  /// The overlay view for the tab bar item that manages gesture recognizers.
   public lazy var tabBarItemOverlayView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -16,14 +18,26 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return view
   }()
 
+  /// The set of constant values used for layout configurations.
   private enum LayoutConstant {
     static let homeTabSelectionHeight = 48.0
     static let edgePadding = 16.0
   }
 
+  /// The flag indicating whether the bottom sheet should be opened.
   private var shouldOpenBottomSheet = false
+
+  /// The flag whether this view has appeared.
   private var didAppear = false
 
+  /// The service class to handle timeline-related operations.
+  private lazy var timelineService = injectTimelineService()
+
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/595
+  // - Implement Login Functionality to Remove Hardcoded Temporary ID.
+  private let temporaryID: String = ProcessInfo.processInfo.environment["TEMPORARY_ID"] ?? ""
+
+  /// The profile icon button of the current user.
   private lazy var profileIconButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(showSideMenu))
@@ -32,6 +46,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return button
   }()
 
+  /// The button that navigates to the timeline settings view.
   private lazy var timelineSettingsEntryPointButton: UIBarButtonItem = {
     let button = UIBarButtonItem(
       title: "", style: .plain, target: self, action: #selector(presentTimelineSettings))
@@ -40,6 +55,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return button
   }()
 
+  /// The button that navigates to the new post edit view.
   private lazy var newPostEntryPointButtonController: NewPostEntrypointButtonController = {
     let viewController = NewPostEntrypointButtonController()
     viewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -48,6 +64,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     return viewController
   }()
 
+  /// The hosting controller that embeds the SwiftUI home view.
   private lazy var hostingController: UIHostingController = {
     let controller = UIHostingController(rootView: HomeView(delegate: self))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -63,19 +80,44 @@ class HomeViewController: ViewControllerWithUserIconButton {
     setUpSubviews()
   }
 
+  /// Opens the bottom sheet if necessary and starts listening to the SSE connection after the view appears.
+  ///
+  /// - Parameter animated: The boolean value indicating whether the view will appear with the animation.
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     didAppear = true
     openBottomSheetIfNeeded()
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/584
+    // - Implement Real Time UI Updates for Fetched Posts with SSE.
+    timelineService.startListeningToTimelineSSE(id: temporaryID) { result in
+      switch result {
+      case .success((let eventType, let posts)):
+        switch eventType {
+        case .timelineAccessed:
+          print("TimelineAccessed: ", posts.map { $0.bodyText })
+        case .postCreated:
+          print("PostCreated: ", posts.map { $0.bodyText })
+        case .postDeleted:
+          print("PostDeleted: ", posts.map { $0.bodyText })
+        }
+      case .failure(let error):
+        print("Failed to receive SSE event:", error)
+      }
+    }
   }
 
+  /// Stops listening to the SSE connection when the view disappears.
+  ///
+  /// - Parameter animated: The boolean value indicating whether the view disappears with the animation.
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     didAppear = false
+    timelineService.stopListeningToTimelineSSE()
   }
 
   // MARK: - Private API
 
+  /// Sets up the subviews and their constraints.
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
     view.addSubview(hostingController.view)
@@ -105,6 +147,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))
   }
 
+  /// Presents the timeline settings view modally.
   @objc
   private func presentTimelineSettings() {
     let settingsHomeViewController = SettingsHomeViewController()
@@ -124,11 +167,13 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   // MARK: - UITabBarItem
 
+  /// Handles a tap gesture on the home tab bar item.
   @objc
   private func didTapUITabBarItem() {
     NotificationCenter.default.post(name: .didTapHomeTabBarItem, object: nil)
   }
 
+  /// Handles a long-press gesture on the home tab bar item.
   @objc
   private func didLongPressUITabBarItem() {
     shouldOpenBottomSheet = true
@@ -139,6 +184,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     NotificationCenter.default.post(name: .didLongPressHomeTabBarItem, object: nil)
   }
 
+  /// Opens the bottom sheet modally when the home tab bar item is long-pressed.
   private func openBottomSheetIfNeeded() {
     guard shouldOpenBottomSheet else { return }
     let viewControllerToPresent = HomeBottomSheetViewController()
@@ -151,18 +197,24 @@ class HomeViewController: ViewControllerWithUserIconButton {
 }
 
 extension HomeViewController: HomeViewDelegate {
+
+  /// Presents the post-sharing sheet modally.
   func showShareSheet() {
     let activityViewController = UIActivityViewController(
       activityItems: ["Deeplink"], applicationActivities: nil)
     self.present(activityViewController, animated: true)
   }
 
+  /// Presents the reply editing sheet modally for editing a post reply.
   func showReplyEditSheet() {
     let replyEditViewController = ReplyEditViewController(originalPostModel: createFakePostModel())
     replyEditViewController.modalPresentationStyle = .fullScreen
     self.present(replyEditViewController, animated: true)
   }
 
+  /// Presents the web page in a Safari view controller modally.
+  ///
+  /// - Parameter url: The url of the webpage to be presented.
   func openWebPage(url: URL?) {
     guard let url else { return }
     let webViewController = SFSafariViewController(url: url)
@@ -171,6 +223,7 @@ extension HomeViewController: HomeViewDelegate {
   }
 }
 
+/// The SwiftUI view of the home view.
 struct HomeView: View {
   public weak var delegate: HomeViewDelegate?
 
@@ -234,8 +287,7 @@ struct HomeView: View {
         Spacer()
       }
     }
-    .padding(.top)
-    .padding(.bottom)
+    .padding(.vertical)
     .overlay(alignment: .bottom) {
       ZStack {
         Divider()
