@@ -1,6 +1,7 @@
 import SafariServices
 import SwiftUI
 import UIKit
+import os
 
 /// The view controller responsible for displaying the home view of the app.
 class HomeViewController: ViewControllerWithUserIconButton {
@@ -20,8 +21,31 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   /// The set of constant values used for layout configurations.
   private enum LayoutConstant {
-    static let homeTabSelectionHeight = 48.0
-    static let edgePadding = 16.0
+    static let homeTabSelectionHeight: CGFloat = 48.0
+    static let edgePadding: CGFloat = 16.0
+    static let newPostsInsertIndex: Int = 0
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/614
+    // - Fetch Posts for 'For You' Tab in HomeViewController from Backend Server.
+    // Remove this once posts for the "For You" tab can be fetched.
+    static let forYouTabPostsCount: Int = 30
+  }
+
+  /// The set of localized strings.
+  private enum LocalizedString {
+    static let invalidURLErrorTitle = String(localized: "Invalid URL Error")
+    static let invalidURLErrorMessage = String(
+      localized: "The server URL is invalid. Please try again later or contact support.")
+    static let invalidURLErrorCloseButtonTitle = String(localized: "OK")
+    static let dataProcessingErrorTitle = String(localized: "Data Error")
+    static let dataProcessingErrorMessage = String(
+      localized:
+        "The data from the server could not be processed. Please try again later or contact support."
+    )
+    static let dataProcessingErrorCloseButtonTitle = String(localized: "OK")
+    static let unknownErrorTitle = String(localized: "Unknown Error")
+    static let unknownErrorMessage = String(
+      localized: "An unknown error occurred. Please try again later or contact support.")
+    static let unknownErrorCloseButtonTitle = String(localized: "OK")
   }
 
   /// The flag indicating whether the bottom sheet should be opened.
@@ -32,6 +56,12 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   /// The service class to handle timeline-related operations.
   private lazy var timelineService = injectTimelineService()
+
+  /// The data source that provides post models for the timeline.
+  private let postsDataSource = TimelinePostsDataSource()
+
+  /// The logger for storing error and debug messages.
+  private let logger = Logger(subsystem: "Swift.Twitter-iOS", category: "HomeViewController")
 
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/595
   // - Implement Login Functionality to Remove Hardcoded Temporary ID.
@@ -66,7 +96,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   /// The hosting controller that embeds the SwiftUI home view.
   private lazy var hostingController: UIHostingController = {
-    let controller = UIHostingController(rootView: HomeView(delegate: self))
+    let controller = UIHostingController(
+      rootView: HomeView(delegate: self, postsDataSource: postsDataSource))
     controller.view.translatesAutoresizingMaskIntoConstraints = false
     addChild(controller)
     controller.didMove(toParent: self)
@@ -87,21 +118,24 @@ class HomeViewController: ViewControllerWithUserIconButton {
     super.viewDidAppear(animated)
     didAppear = true
     openBottomSheetIfNeeded()
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/584
-    // - Implement Real Time UI Updates for Fetched Posts with SSE.
-    timelineService.startListeningToTimelineSSE(id: temporaryID) { result in
+
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/614
+    // - Fetch Posts for 'For You' Tab in HomeViewController from Backend Server.
+    // Replace this with operations that fetch real data from the backend server in the future.
+    loadDataForForYouTab()
+
+    timelineService.startListeningToTimelineSSE(id: temporaryID) { [weak self] result in
+      guard let strongSelf = self else { return }
+
       switch result {
       case .success((let eventType, let posts)):
-        switch eventType {
-        case .timelineAccessed:
-          print("TimelineAccessed: ", posts.map { $0.bodyText })
-        case .postCreated:
-          print("PostCreated: ", posts.map { $0.bodyText })
-        case .postDeleted:
-          print("PostDeleted: ", posts.map { $0.bodyText })
-        }
+        strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
       case .failure(let error):
-        print("Failed to receive SSE event:", error)
+        guard let timelineServiceError = error as? TimelineServiceError else {
+          strongSelf.handleUnknownError(error: error)
+          return
+        }
+        strongSelf.handleTimelineServiceError(error: timelineServiceError)
       }
     }
   }
@@ -145,6 +179,77 @@ class HomeViewController: ViewControllerWithUserIconButton {
     navigationItem.leftBarButtonItems = [profileIconButton]
     navigationItem.rightBarButtonItems = [timelineSettingsEntryPointButton]
     navigationItem.titleView = UIImageView(image: UIImage(systemName: "apple.logo"))
+  }
+
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/614
+  // - Fetch Posts for 'For You' Tab in HomeViewController from Backend Server.
+  /// Loads posts data for "For You" tab.
+  private func loadDataForForYouTab() {
+    postsDataSource.forYouTabPostModels = []
+    for _ in 0..<LayoutConstant.forYouTabPostsCount {
+      postsDataSource.forYouTabPostModels.append(createFakePostModel())
+    }
+  }
+
+  /// Handles timeline events received from the SSE connection.
+  ///
+  /// - Parameters:
+  ///   - eventType: The type of timeline SSE event.
+  ///   - posts: The posts received from the event.
+  private func handleTimelineSSEEvent(eventType: TimelineSSEEventType, posts: [PostModel]) {
+    switch eventType {
+    case .timelineAccessed:
+      postsDataSource.followingTabPostModels = posts
+    case .postCreated:
+      postsDataSource.followingTabPostModels.insert(
+        contentsOf: posts, at: LayoutConstant.newPostsInsertIndex)
+    case .postDeleted:
+      let deletedPostIDs = Set(posts.map { $0.id })
+      postsDataSource.followingTabPostModels.removeAll { deletedPostIDs.contains($0.id) }
+    }
+  }
+
+  /// Handles errors from timeline SSE events.
+  ///
+  /// - Parameter error: The error from the timeline SSE events.
+  private func handleTimelineServiceError(error: TimelineServiceError) {
+    switch error {
+    case .invalidURLError:
+      logger.error("URL for Timeline SSE was invalid: \(error)")
+      presentErrorAlert(
+        title: LocalizedString.invalidURLErrorTitle,
+        message: LocalizedString.invalidURLErrorMessage,
+        closeButtonTitle: LocalizedString.invalidURLErrorCloseButtonTitle)
+    case .dataProcessingError:
+      logger.error("Couldn't process the data from Timeline SSE: \(error)")
+      presentErrorAlert(
+        title: LocalizedString.dataProcessingErrorTitle,
+        message: LocalizedString.dataProcessingErrorMessage,
+        closeButtonTitle: LocalizedString.dataProcessingErrorCloseButtonTitle)
+    }
+  }
+
+  /// Handles unknown errors occurring when connecting to the SSE connection.
+  ///
+  /// - Parameter error: The unknown error that occurred.
+  private func handleUnknownError(error: Error) {
+    logger.error("An unknown error occurred while connecting to the Timeline SSE: \(error)")
+    logger.error("Error details: \(error.localizedDescription)")
+    presentErrorAlert(
+      title: LocalizedString.unknownErrorTitle, message: LocalizedString.unknownErrorMessage,
+      closeButtonTitle: LocalizedString.unknownErrorCloseButtonTitle)
+  }
+
+  /// Presents the alert pop up message with description.
+  ///
+  /// - Parameters:
+  ///   - title: The title of the alert.
+  ///   - message: The message of the alert.
+  ///   - closeButtonTitle: The title of the close button of the alert.
+  private func presentErrorAlert(title: String, message: String, closeButtonTitle: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: closeButtonTitle, style: .default))
+    self.present(alertController, animated: true)
   }
 
   /// Presents the timeline settings view modally.
@@ -227,6 +332,8 @@ extension HomeViewController: HomeViewDelegate {
 struct HomeView: View {
   public weak var delegate: HomeViewDelegate?
 
+  @ObservedObject private(set) var postsDataSource: TimelinePostsDataSource
+
   @State private var activeTabModel: HomeTabModel.Tab = .forYou
   @State private var tabToScroll: HomeTabModel.Tab?
 
@@ -241,13 +348,20 @@ struct HomeView: View {
     .init(id: .following),
   ]
 
+  private enum LayoutConstant {
+    static let homeViewVStackSpacing: CGFloat = 0.0
+    static let tabsHStackSpacing: CGFloat = 0.0
+    static let repostOptionsBottomSheetHeight: CGFloat = 200.0
+  }
+
   // Need to define init to avoid a compile error.
-  init(delegate: HomeViewDelegate? = nil) {
+  init(delegate: HomeViewDelegate? = nil, postsDataSource: TimelinePostsDataSource) {
     self.delegate = delegate
+    self.postsDataSource = postsDataSource
   }
 
   var body: some View {
-    VStack(spacing: 0) {
+    VStack(spacing: LayoutConstant.homeViewVStackSpacing) {
       TabBar()
       Tabs()
       Spacer()
@@ -298,14 +412,16 @@ struct HomeView: View {
   @ViewBuilder
   private func Tabs() -> some View {
     ScrollView(.horizontal) {
-      LazyHStack(spacing: 0) {
+      LazyHStack(spacing: LayoutConstant.tabsHStackSpacing) {
         ForEach(tabModels) { tabModel in
           HomeTabView(
             showReplyEditSheet: $showReplyEditSheet,
             reposting: $reposting,
             postToRepost: $postToRepost,
             showShareSheet: $showShareSheet,
-            urlStrToOpen: $urlStrToOpen
+            urlStrToOpen: $urlStrToOpen,
+            postModels: tabModel.id == .following
+              ? $postsDataSource.followingTabPostModels : $postsDataSource.forYouTabPostModels
           )
           .frame(width: UIScreen.main.bounds.width)
         }
@@ -331,7 +447,7 @@ struct HomeView: View {
     }
     .sheet(isPresented: $reposting) {
       RepostOptionsBottomSheet(postModel: $postToRepost)
-        .presentationDetents([.height(200), .medium])
+        .presentationDetents([.height(LayoutConstant.repostOptionsBottomSheetHeight), .medium])
     }
   }
 }
@@ -343,5 +459,5 @@ protocol HomeViewDelegate: AnyObject {
 }
 
 #Preview {
-  HomeView()
+  HomeView(postsDataSource: createFakeTimelinePostsDataSource())
 }

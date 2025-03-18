@@ -6,14 +6,17 @@ public typealias didStartListeningToTimelineSSECompletion = (
 ) -> Void
 
 /// The enum to represent the errors in TimelineService.
-private enum TimelineServiceError: Error {
-  case invalidURL
+public enum TimelineServiceError: Error {
+  case invalidURLError
   case dataProcessingError
 }
 
-/// The service class to handle timeline-related operations.
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/612
 // - Implement Unit Tests for TimelineService.
+
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/615
+// - Implement Reconnection Logic for SSE Connection in TimelineService.
+/// The service class to handle timeline-related operations.
 public final class TimelineService: NSObject {
 
   // MARK: - Public Props
@@ -51,7 +54,7 @@ public final class TimelineService: NSObject {
       let url = URL(
         string: "\(TimelineService.baseURL)/api/users/\(id)/timelines/reverse_chronological")
     else {
-      completion(.failure(TimelineServiceError.invalidURL))
+      completion(.failure(TimelineServiceError.invalidURLError))
       return
     }
 
