@@ -1,0 +1,13 @@
+{
+  "go.formatTool": "goimports",
+  "gopls": {
+    "formatting.local": "x-clone-backend"
+  },
+  "go.lintFlags": ["--fast"],
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  }
+}

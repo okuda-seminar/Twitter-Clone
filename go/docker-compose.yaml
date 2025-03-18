@@ -34,7 +34,7 @@ services:
       - .env
     volumes:
       - ./:/go/src/app
-      - ../openapi/bundle:/go/src/app/openapi/bundle
+      - ../openapi/bundle:/go/src/app/internal/openapi/bundle
     networks:
       - x_clone
 
