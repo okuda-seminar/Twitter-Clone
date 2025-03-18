@@ -6,14 +6,7 @@ struct HomeTabView: View {
   @Binding public var postToRepost: PostModel?
   @Binding public var showShareSheet: Bool
   @Binding public var urlStrToOpen: String
-
-  @State private var postModels: [PostModel] = {
-    var models: [PostModel] = []
-    for _ in 0..<20 {
-      models.append(createFakePostModel())
-    }
-    return models
-  }()
+  @Binding public var postModels: [PostModel]
 
   @State private var isMuteAlertPresented = false
 
@@ -131,6 +124,7 @@ struct HomeTabView: View {
     reposting: .constant(false),
     postToRepost: .constant(nil),
     showShareSheet: .constant(false),
-    urlStrToOpen: .constant("")
+    urlStrToOpen: .constant(""),
+    postModels: .constant(createFakeTimelinePostsDataSource().followingTabPostModels)
   )
 }
