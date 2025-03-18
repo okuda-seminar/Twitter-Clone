@@ -11,6 +11,7 @@
 		3B20B0692C3D83E20045E904 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */; };
 		3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */; };
 		3B2AE47A2D841D35009F4601 /* TimelineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2AE4792D841D2D009F4601 /* TimelineService.swift */; };
+		3B2AE4962D87F17B009F4601 /* TimelinePostsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2AE4952D87F17B009F4601 /* TimelinePostsDataSource.swift */; };
 		3B30345E2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */; };
 		3B3ADDCF2D4F6F9D00934445 /* UserProfileTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */; };
 		3B3ADDD12D508D6800934445 /* UserPostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */; };
@@ -176,6 +177,7 @@
 		3B20B0682C3D83E20045E904 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		3B20B06E2C3D89A70045E904 /* SearchResultTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTabModel.swift; sourceTree = "<group>"; };
 		3B2AE4792D841D2D009F4601 /* TimelineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineService.swift; sourceTree = "<group>"; };
+		3B2AE4952D87F17B009F4601 /* TimelinePostsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelinePostsDataSource.swift; sourceTree = "<group>"; };
 		3B30345D2C1D3B2400FF1C5E /* NotificationsVerifiedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVerifiedTabView.swift; sourceTree = "<group>"; };
 		3B3ADDCE2D4F6F9D00934445 /* UserProfileTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTabViewController.swift; sourceTree = "<group>"; };
 		3B3ADDD02D508D6800934445 /* UserPostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 				656C1BFC2C08A16C00EEE575 /* HomeTabView.swift */,
 				6540F8CA2BB57A8B0029BA46 /* HomeViewController.swift */,
 				65FD4FAE2C2AE0270020A02E /* NSNotification+Home.swift */,
+				3B2AE4952D87F17B009F4601 /* TimelinePostsDataSource.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1342,6 +1345,7 @@
 				3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */,
 				65FD4FDC2C3039580020A02E /* SubscriptionService.swift in Sources */,
 				65C6CC272BFB70E400B0A052 /* UIViewController+Settings.swift in Sources */,
+				3B2AE4962D87F17B009F4601 /* TimelinePostsDataSource.swift in Sources */,
 				65C6CC2D2BFCC51F00B0A052 /* CGFloat+Rect.swift in Sources */,
 				65C6CC202BF9625E00B0A052 /* BannerView.swift in Sources */,
 				65C71BA62C342EC90025839C /* JobsSearchTabView.swift in Sources */,
