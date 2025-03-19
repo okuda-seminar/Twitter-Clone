@@ -1,7 +1,7 @@
 get:
   tags:
     - X-Clone
-  summary: Get a collection of posts by the specified user.
+  summary: Get a collection of posts or timelineitems by the specified user.
   parameters:
     - in: path
       name: id
@@ -11,7 +11,7 @@ get:
   operationId: GetUserPostsTimeline
   responses:
     "200":
-      description: A collection of posts by the specified user.
+      description: A collection of posts or timelineitems by the specified user.
       content:
         application/json:
           schema:

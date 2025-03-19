@@ -1,17 +1,42 @@
-type: object
 title: CreatePostResponse
-required:
-  - id
-  - user_id
-  - text
-  - created_at
-properties:
-  id:
-    type: string
-  user_id:
-    type: string
-  text:
-    type: string
-  created_at:
-    type: string
-    format: date-time
+oneOf:
+  - type: object
+    title: CreatePostResponsePosts
+    description: Response when creating a post (old schema).
+    required:
+      - id
+      - user_id
+      - text
+      - created_at
+    properties:
+      id:
+        type: string
+      user_id:
+        type: string
+      text:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+
+  - type: object
+    title: CreatePostResponseTimelineItems
+    description: Response when creating a timeline item (new schema).
+    required:
+      - type
+      - id
+      - author_id
+      - text
+      - created_at
+    properties:
+      type:
+        type: string
+      id:
+        type: string
+      author_id:
+        type: string
+      text:
+        type: string
+      created_at:
+        type: string
+        format: date-time

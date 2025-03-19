@@ -7,7 +7,7 @@ import (
 func TestTimelineFeatureFlag(t *testing.T) {
 	t.Run("Default value (false)", func(t *testing.T) {
 		t.Cleanup(func() {
-			resetTimelineFeatureFlag()
+			ResetTimelineFeatureFlag()
 		})
 		if TimelineFeatureFlag().UseNewSchema {
 			t.Error("Expected UseNewSchema to be false, but got true")
@@ -16,9 +16,9 @@ func TestTimelineFeatureFlag(t *testing.T) {
 
 	t.Run("Environment variable set to true", func(t *testing.T) {
 		t.Cleanup(func() {
-			resetTimelineFeatureFlag()
+			ResetTimelineFeatureFlag()
 		})
-		t.Setenv(useNewSchemaEnvKey, "true")
+		t.Setenv(UseNewSchemaEnvKey, "true")
 		if !TimelineFeatureFlag().UseNewSchema {
 			t.Error("Expected UseNewSchema to be true, but got false")
 		}
@@ -26,9 +26,9 @@ func TestTimelineFeatureFlag(t *testing.T) {
 
 	t.Run("Environment variable set to false", func(t *testing.T) {
 		t.Cleanup(func() {
-			resetTimelineFeatureFlag()
+			ResetTimelineFeatureFlag()
 		})
-		t.Setenv(useNewSchemaEnvKey, "false")
+		t.Setenv(UseNewSchemaEnvKey, "false")
 		if TimelineFeatureFlag().UseNewSchema {
 			t.Error("Expected UseNewSchema to be false, but got true")
 		}

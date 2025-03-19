@@ -14,6 +14,7 @@ import (
 
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/value"
+	"x-clone-backend/internal/lib/featureflag"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -49,73 +50,145 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	query := `DELETE FROM reposts WHERE id = $1 RETURNING text, created_at`
+	if featureflag.TimelineFeatureFlag().UseNewSchema {
+		query := `DELETE FROM timelineitems WHERE id = $1 RETURNING type, text, created_at`
 
-	var (
-		text      string
-		createdAt time.Time
-	)
+		var (
+			postType  string
+			text      string
+			createdAt time.Time
+		)
 
-	err = h.db.QueryRow(query, RepostID).Scan(&text, &createdAt)
-	if err != nil {
-		switch {
-		case errors.Is(err, sql.ErrNoRows):
-			http.Error(w, fmt.Sprintf("No row found to delete: (repost id: %s)\n", RepostID), http.StatusNotFound)
-		default:
-			http.Error(w, fmt.Sprintf("Could not delete a repost: (repost id: %s)\n", RepostID), http.StatusInternalServerError)
-		}
-		return
-	}
-
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse a userID (ID: %s)\n", userIDStr), http.StatusBadRequest)
-		return
-	}
-
-	parentID, err := uuid.Parse(parentIDStr)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse a parentID (ID: %s)\n", parentIDStr), http.StatusBadRequest)
-		return
-	}
-
-	repost := entity.Repost{
-		ID:        RepostID,
-		ParentID:  parentID,
-		UserID:    userID,
-		Text:      text,
-		CreatedAt: createdAt,
-	}
-
-	go func(userID uuid.UUID, usersChan *map[string]chan value.TimelineEvent) {
-		var reposts []*entity.Repost
-		reposts = append(reposts, &repost)
-		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-		rows, err := h.db.Query(query, userID.String())
+		err = h.db.QueryRow(query, RepostID).Scan(&postType, &text, &createdAt)
 		if err != nil {
-			log.Fatalln(err)
+			switch {
+			case errors.Is(err, sql.ErrNoRows):
+				http.Error(w, fmt.Sprintf("No row found to delete: (repost id: %s)\n", RepostID), http.StatusNotFound)
+			default:
+				http.Error(w, fmt.Sprintf("Could not delete a repost: (repost id: %s)\n", RepostID), http.StatusInternalServerError)
+			}
 			return
 		}
 
-		var ids []uuid.UUID
-		for rows.Next() {
-			var id uuid.UUID
-			if err := rows.Scan(&id); err != nil {
+		userID, err := uuid.Parse(userIDStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Could not parse a userID (ID: %s)\n", userIDStr), http.StatusBadRequest)
+			return
+		}
+
+		parentID, err := uuid.Parse(parentIDStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Could not parse a parentID (ID: %s)\n", parentIDStr), http.StatusBadRequest)
+			return
+		}
+
+		timelineitem := entity.TimelineItem{
+			Type:         postType,
+			ID:           RepostID,
+			AuthorID:     userID,
+			ParentPostID: uuid.NullUUID{UUID: parentID, Valid: true},
+			Text:         text,
+			CreatedAt:    createdAt,
+		}
+
+		go func(userID uuid.UUID, usersChan *map[string]chan value.TimelineEvent) {
+			var timelineitems []*entity.TimelineItem
+			timelineitems = append(timelineitems, &timelineitem)
+			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+			rows, err := h.db.Query(query, userID.String())
+			if err != nil {
 				log.Fatalln(err)
 				return
 			}
 
-			ids = append(ids, id)
-		}
-		ids = append(ids, userID)
-		for _, id := range ids {
-			h.mu.Lock()
-			if userChan, ok := (*usersChan)[id.String()]; ok {
-				userChan <- value.TimelineEvent{EventType: value.RepostDeleted, Reposts: reposts}
+			var ids []uuid.UUID
+			for rows.Next() {
+				var id uuid.UUID
+				if err := rows.Scan(&id); err != nil {
+					log.Fatalln(err)
+					return
+				}
+
+				ids = append(ids, id)
 			}
-			h.mu.Unlock()
+			ids = append(ids, userID)
+			for _, id := range ids {
+				h.mu.Lock()
+				if userChan, ok := (*usersChan)[id.String()]; ok {
+					userChan <- value.TimelineEvent{EventType: value.RepostDeleted, TimelineItems: timelineitems}
+				}
+				h.mu.Unlock()
+			}
+		}(userID, h.usersChan)
+	} else {
+		query := `DELETE FROM reposts WHERE id = $1 RETURNING text, created_at`
+
+		var (
+			text      string
+			createdAt time.Time
+		)
+
+		err = h.db.QueryRow(query, RepostID).Scan(&text, &createdAt)
+		if err != nil {
+			switch {
+			case errors.Is(err, sql.ErrNoRows):
+				http.Error(w, fmt.Sprintf("No row found to delete: (repost id: %s)\n", RepostID), http.StatusNotFound)
+			default:
+				http.Error(w, fmt.Sprintf("Could not delete a repost: (repost id: %s)\n", RepostID), http.StatusInternalServerError)
+			}
+			return
 		}
-	}(userID, h.usersChan)
+
+		userID, err := uuid.Parse(userIDStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Could not parse a userID (ID: %s)\n", userIDStr), http.StatusBadRequest)
+			return
+		}
+
+		parentID, err := uuid.Parse(parentIDStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Could not parse a parentID (ID: %s)\n", parentIDStr), http.StatusBadRequest)
+			return
+		}
+
+		repost := entity.Repost{
+			ID:        RepostID,
+			ParentID:  parentID,
+			UserID:    userID,
+			Text:      text,
+			CreatedAt: createdAt,
+		}
+
+		go func(userID uuid.UUID, usersChan *map[string]chan value.TimelineEvent) {
+			var reposts []*entity.Repost
+			reposts = append(reposts, &repost)
+			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+			rows, err := h.db.Query(query, userID.String())
+			if err != nil {
+				log.Fatalln(err)
+				return
+			}
+
+			var ids []uuid.UUID
+			for rows.Next() {
+				var id uuid.UUID
+				if err := rows.Scan(&id); err != nil {
+					log.Fatalln(err)
+					return
+				}
+
+				ids = append(ids, id)
+			}
+			ids = append(ids, userID)
+			for _, id := range ids {
+				h.mu.Lock()
+				if userChan, ok := (*usersChan)[id.String()]; ok {
+					userChan <- value.TimelineEvent{EventType: value.RepostDeleted, Reposts: reposts}
+				}
+				h.mu.Unlock()
+			}
+		}(userID, h.usersChan)
+	}
 
 	w.WriteHeader(http.StatusNoContent)
 }

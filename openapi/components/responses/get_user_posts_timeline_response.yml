@@ -1,28 +1,72 @@
-type: array
 title: GetUserPostsTimelineResponse
-items:
-  type: object
-  required:
-    - id
-    - user_id
-    - text
-    - created_at
-  properties:
-    id:
-      type: string
-    user_id:
-      type: string
-    text:
-      type: string
-    created_at:
-      type: string
-      format: date-time
-example:
-  - id: "b579c6df-4faf-418b-ba44-e7eab8860c6f"
-    user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
-    text: "A sample post"
-    created_at: "2024-09-29T10:20:30Z"
-  - id: "d8f91b8b-208c-4fe6-b1a0-75ca01ece67c"
-    user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
-    text: "A same user post"
-    created_at: "2024-09-29T11:20:30Z"
+oneOf:
+  - type: array
+    title: UserPostsResponse
+    description: Response when fetching user posts (old schema).
+    items:
+      type: object
+      required:
+        - id
+        - user_id
+        - text
+        - created_at
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    example:
+      - id: "b579c6df-4faf-418b-ba44-e7eab8860c6f"
+        user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
+        text: "A sample post"
+        created_at: "2024-09-29T10:20:30Z"
+      - id: "d8f91b8b-208c-4fe6-b1a0-75ca01ece67c"
+        user_id: "f019a863-923e-4155-bcd1-a964035d65d0"
+        text: "A same user post"
+        created_at: "2024-09-29T11:20:30Z"
+
+  - type: array
+    title: TimelineItemsResponse
+    description: Response when fetching timeline items (new schema).
+    items:
+      type: object
+      required:
+        - type
+        - id
+        - author_id
+        - text
+        - created_at
+      properties:
+        type:
+          type: string
+          enum: [post, repost, quoteRepost]
+        id:
+          type: string
+        author_id:
+          type: string
+        parent_post_id:
+          type: string
+          nullable: true
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    example:
+      - type: "post"
+        id: "5b21ca67-64c5-488e-8bc7-739c1a43d41b"
+        author_id: "a1c1f2b5-4e9f-4fdd-9f3e-df1bb79c1b6d"
+        parent_post_id: null
+        text: "A timeline post"
+        created_at: "2024-09-29T12:30:00Z"
+      - type: "repost"
+        id: "a567fcb4-9d2e-4d48-9e36-b1e733e7eb0a"
+        author_id: "a1c1f2b5-4e9f-4fdd-9f3e-df1bb79c1b6d"
+        parent_post_id: "5b21ca67-64c5-488e-8bc7-739c1a43d41b"
+        text: ""
+        created_at: "2024-09-29T13:00:00Z"
