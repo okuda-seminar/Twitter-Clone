@@ -1,5 +1,5 @@
-import { Providers } from "@/lib/components/providers";
 import { SessionProvider } from "@/lib/components/session-context";
+import { Provider } from "@/lib/components/ui/provider";
 import type { Preview } from "@storybook/react";
 
 const preview: Preview = {
@@ -43,11 +43,11 @@ const preview: Preview = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Providers>
+      <Provider>
         <SessionProvider>
           <Story />
         </SessionProvider>
-      </Providers>
+      </Provider>
     ),
   ],
 };

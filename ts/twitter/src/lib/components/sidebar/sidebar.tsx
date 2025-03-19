@@ -6,8 +6,8 @@ import {
   IconButton,
   Spacer,
   Text,
-  Tooltip,
   VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
@@ -18,48 +18,50 @@ import { PiHouseFill } from "react-icons/pi";
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
 import { SignInbutton } from "../sign-in-button";
+import { Tooltip } from "../ui/tooltip";
 
 export const SideBar: React.FC = () => {
+  const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
   const sidebarItems = [
     {
       url: "/home",
-      tooltipText: "Home",
+      tooltipContent: "Home",
       ariaLabel: "Home",
       icon: <PiHouseFill />,
     },
     {
       url: "/explore",
-      tooltipText: "Explore",
+      tooltipContent: "Explore",
       ariaLabel: "Explore",
       icon: <SearchIcon />,
     },
     {
       url: "/notifications",
-      tooltipText: "Notifications",
+      tooltipContent: "Notifications",
       ariaLabel: "Notifications",
       icon: <BellIcon />,
     },
     {
       url: "/message",
-      tooltipText: "Message",
+      tooltipContent: "Message",
       ariaLabel: "Message",
       icon: <EmailIcon />,
     },
     {
       url: "/groc",
-      tooltipText: "Groc",
+      tooltipContent: "Groc",
       ariaLabel: "Groc",
       icon: <BsSlashSquare />,
     },
     {
       url: "/community",
-      tooltipText: "Community",
+      tooltipContent: "Community",
       ariaLabel: "Community",
       icon: <BsPeople />,
     },
     {
       url: "/profile",
-      tooltipText: "Profile",
+      tooltipContent: "Profile",
       ariaLabel: "Profile",
       icon: <FaUser />,
     },
@@ -68,14 +70,17 @@ export const SideBar: React.FC = () => {
     <Flex>
       <VStack marginBottom="24px" align="flex-start">
         <Link href="/home">
-          <Tooltip label="twitter" placement="bottom">
+          <Tooltip content="twitter" positioning={{ placement: "bottom" }}>
             <Flex alignItems="center">
               <IconButton
                 aria-label="Twitter"
                 borderRadius="full"
-                icon={<FaTwitter />}
-                mx={4}
-              />
+                mx={3}
+                color="white"
+                bg="black"
+              >
+                <FaTwitter />
+              </IconButton>
             </Flex>
           </Tooltip>
         </Link>
@@ -84,7 +89,7 @@ export const SideBar: React.FC = () => {
           <IconButtonWithLink
             key={item.url}
             url={item.url}
-            tooltipText={item.tooltipText}
+            tooltipContent={item.tooltipContent}
             ariaLabel={item.ariaLabel}
             icon={item.icon}
           />
@@ -92,11 +97,13 @@ export const SideBar: React.FC = () => {
 
         <Flex alignItems="center" p="12px">
           <Tooltip
-            label="More"
-            placement="bottom"
-            display={{ base: "inline", xl: "none" }}
+            content="More"
+            positioning={{ placement: "bottom" }}
+            disabled={isTooltipDisabled}
           >
-            <IconButton aria-label="More" icon={<CiCircleMore />} />
+            <IconButton aria-label="More" color="white" bg="black">
+              <CiCircleMore />
+            </IconButton>
           </Tooltip>
           <Text
             fontWeight="bold"
