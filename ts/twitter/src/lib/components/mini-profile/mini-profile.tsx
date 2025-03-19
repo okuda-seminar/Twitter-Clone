@@ -8,7 +8,10 @@ interface MiniProfileProps {
 export const MiniProfile: React.FC<MiniProfileProps> = ({ user }) => {
   return (
     <Flex alignSelf="flex-start" mx={1}>
-      <Avatar size="md" name={user.displayName} />
+      <Avatar.Root size="xl">
+        <Avatar.Fallback name={user.displayName} />
+        <Avatar.Image />
+      </Avatar.Root>
       <VStack mx={1}>
         <Box>{user.displayName}</Box>
         <Box>(ID: {user.id})</Box>

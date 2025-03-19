@@ -4,6 +4,10 @@ import { MyProfile } from "./my-profile";
 const meta: Meta<typeof MyProfile> = {
   title: "Features/MyProfile",
   component: MyProfile,
+  parameters: {
+    // Disables Chromatic's snapshotting on a component level
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export default meta;

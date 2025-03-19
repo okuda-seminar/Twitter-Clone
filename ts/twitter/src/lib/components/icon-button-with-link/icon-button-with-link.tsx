@@ -1,38 +1,50 @@
-import { Flex, IconButton, Link, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Link as ChakraLink,
+  Flex,
+  IconButton,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import type React from "react";
+import { Tooltip } from "../ui/tooltip";
 
 interface IconButtonWithLinkProps {
   url: string;
-  tooltipText: string;
+  tooltipContent: string;
   ariaLabel: string;
   icon: React.ReactElement;
 }
 
 export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
   url,
-  tooltipText,
+  tooltipContent,
   ariaLabel,
   icon,
 }) => {
+  const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
   return (
-    <Link as={NextLink} href={url} w="100%">
-      <Flex alignItems="center" p="12px">
-        <Tooltip
-          label={tooltipText}
-          placement="bottom"
-          display={{ base: "inline", xl: "none" }}
-        >
-          <IconButton aria-label={ariaLabel} icon={icon} />
-        </Tooltip>
-        <Text
-          fontWeight="bold"
-          ml="20px"
-          display={{ base: "none", xl: "flex" }}
-        >
-          {ariaLabel}
-        </Text>
-      </Flex>
-    </Link>
+    <ChakraLink asChild>
+      <NextLink href={url}>
+        <Flex alignItems="center" p="12px" w="100%">
+          <Tooltip
+            content={tooltipContent}
+            positioning={{ placement: "bottom" }}
+            disabled={isTooltipDisabled}
+          >
+            <IconButton aria-label={ariaLabel} color="white" bg="black">
+              {icon}
+            </IconButton>
+          </Tooltip>
+          <Text
+            fontWeight="bold"
+            ml="20px"
+            display={{ base: "none", xl: "flex" }}
+          >
+            {ariaLabel}
+          </Text>
+        </Flex>
+      </NextLink>
+    </ChakraLink>
   );
 };

@@ -1,11 +1,12 @@
 "use client";
 
-import { Box, Button, IconButton, Tooltip } from "@chakra-ui/react";
+import { Box, Button, IconButton } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { CiLogin } from "react-icons/ci";
 import { useAuth } from "./auth-context";
 import { MiniProfile } from "./mini-profile/mini-profile";
+import { Tooltip } from "./ui/tooltip";
 
 export const SignInbutton: React.FC = () => {
   const { user } = useAuth();
@@ -36,16 +37,17 @@ export const SignInbutton: React.FC = () => {
               Sign In
             </Button>
           </Box>
-          <Tooltip label={"SignIn"} placement="bottom">
+          <Tooltip content="SignIn" positioning={{ placement: "bottom" }}>
             <Box display={{ base: "inline", xl: "none" }}>
               <IconButton
                 onClick={dummyHandleSignIn}
                 bg="#1DA1F2"
                 aria-label={"SignIn"}
-                icon={<CiLogin />}
-                mx={4}
+                mx={3}
                 borderRadius="full"
-              />
+              >
+                <CiLogin />
+              </IconButton>
             </Box>
           </Tooltip>
         </Box>

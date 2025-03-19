@@ -7,7 +7,7 @@ const meta: Meta<typeof IconButtonWithLink> = {
   component: IconButtonWithLink,
   args: {
     url: "/home",
-    tooltipText: "Home",
+    tooltipContent: "Home",
     ariaLabel: "Home",
     icon: <PiHouseFill />,
   },
