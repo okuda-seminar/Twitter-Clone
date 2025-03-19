@@ -92,9 +92,8 @@ func (s *handlerTestSuite) TestGetReverseChronologicalHomeTimeline() {
 		).WithContext(ctx)
 		req.SetPathValue("id", test.userID)
 
-		getReverseChronologicalHomeTimelineHandler := NewGetReverseChronologicalHomeTimelineHandler(s.db, &s.mu, &s.userChannels)
+		getReverseChronologicalHomeTimelineHandler := NewGetReverseChronologicalHomeTimelineHandler(s.db, &s.mu, &s.userChannels, s.connected)
 
-		// GetReverseChronologicalHomeTimeline(rr, req, s.getUserAndFolloweePostsUsecase, &s.mu, &s.userChannels)
 		var wg sync.WaitGroup
 
 		wg.Add(1)
@@ -104,6 +103,11 @@ func (s *handlerTestSuite) TestGetReverseChronologicalHomeTimeline() {
 		}()
 		var posts []entity.Post
 		var reposts []entity.Repost
+
+		// This channel indicates that the httptest client has successfully connected to the handler.
+		// Wait here to ensure that the connection is established before triggering timeline updates.
+		<-s.connected
+
 		if test.name == "get posts already posted and posts posted during timeline access" {
 			time.Sleep(100 * time.Millisecond)
 			_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test5" }`, test.userID))

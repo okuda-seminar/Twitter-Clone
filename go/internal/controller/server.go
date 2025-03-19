@@ -35,6 +35,6 @@ func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.Time
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, mu, usersChan),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, mu, usersChan),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
-		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, mu, usersChan),
+		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, mu, usersChan, make(chan struct{}, 1)),
 	}
 }

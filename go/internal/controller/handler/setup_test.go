@@ -88,6 +88,7 @@ type handlerTestSuite struct {
 	muteUserUsecase                usecase.MuteUserUsecase
 	userChannels                   map[string]chan value.TimelineEvent
 	mu                             sync.Mutex
+	connected                      chan struct{}
 }
 
 // SetupTest runs before each test in the suite.
@@ -141,6 +142,8 @@ func (s *handlerTestSuite) SetupTest() {
 
 	s.mu = sync.Mutex{}
 	s.userChannels = make(map[string]chan value.TimelineEvent)
+
+	s.connected = make(chan struct{})
 
 	m.Up()
 }
