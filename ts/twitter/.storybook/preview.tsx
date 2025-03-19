@@ -1,5 +1,5 @@
 import { AuthProvider } from "@/lib/components/auth-context";
-import { Providers } from "@/lib/components/providers";
+import { Provider } from "@/lib/components/ui/provider";
 import type { Preview } from "@storybook/react";
 
 const preview: Preview = {
@@ -43,11 +43,11 @@ const preview: Preview = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Providers>
+      <Provider>
         <AuthProvider>
           <Story />
         </AuthProvider>
-      </Providers>
+      </Provider>
     ),
   ],
 };

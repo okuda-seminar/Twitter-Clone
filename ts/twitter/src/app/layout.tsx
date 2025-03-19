@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/components/auth-context";
 import { PageLayout } from "@/lib/components/page-layout";
-import { Providers } from "@/lib/components/providers";
+import { Provider } from "@/lib/components/ui/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,11 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <Provider>
           <AuthProvider>
             <PageLayout modal={modal}>{children}</PageLayout>
-          </AuthProvider>
-        </Providers>
+            </AuthProvider>
+        </Provider>
       </body>
     </html>
   );
