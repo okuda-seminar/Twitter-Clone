@@ -19,9 +19,10 @@ type GetReverseChronologicalHomeTimelineHandler struct {
 	mu                             *sync.Mutex
 	usersChan                      *map[string]chan value.TimelineEvent
 	getUserAndFolloweePostsUsecase usecase.GetUserAndFolloweePostsUsecase
+	connected                      chan struct{}
 }
 
-func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent) GetReverseChronologicalHomeTimelineHandler {
+func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent, connected chan struct{}) GetReverseChronologicalHomeTimelineHandler {
 	postsRepository := persistence.NewPostsRepository(db)
 	getUserAndFolloweePostsUsecase := interactor.NewGetUserAndFolloweePostsUsecase(postsRepository)
 	return GetReverseChronologicalHomeTimelineHandler{
@@ -29,6 +30,7 @@ func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, mu *sync.Mutex, u
 		mu:                             mu,
 		usersChan:                      usersChan,
 		getUserAndFolloweePostsUsecase: getUserAndFolloweePostsUsecase,
+		connected:                      connected,
 	}
 }
 
@@ -48,6 +50,7 @@ func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHome
 	h.mu.Unlock()
 
 	userChan <- value.TimelineEvent{EventType: value.TimelineAccessed, Posts: posts}
+	h.connected <- struct{}{}
 
 	flusher, _ := w.(http.Flusher)
 	w.Header().Set("Content-Type", "text/event-stream")
@@ -56,6 +59,8 @@ func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHome
 
 	for {
 		select {
+		case <-h.connected:
+			continue
 		case event := <-userChan:
 			jsonData, err := json.Marshal(event)
 			if err != nil {
