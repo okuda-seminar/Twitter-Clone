@@ -10,7 +10,7 @@ type timelineFeatureFlag struct {
 }
 
 const (
-	useNewSchemaEnvKey = "USE_NEW_SCHEMA"
+	UseNewSchemaEnvKey = "USE_NEW_SCHEMA"
 )
 
 var (
@@ -21,15 +21,15 @@ var (
 func TimelineFeatureFlag() *timelineFeatureFlag {
 	once.Do(func() {
 		timelineFeatureFlagInstance = &timelineFeatureFlag{
-			UseNewSchema: booleanFlag(false, useNewSchemaEnvKey),
+			UseNewSchema: booleanFlag(false, UseNewSchemaEnvKey),
 		}
 	})
 	return timelineFeatureFlagInstance
 }
 
-// resetTimelineFeatureFlag resets the timeline feature flag singleton instance and the sync.Once.
+// ResetTimelineFeatureFlag resets the timeline feature flag singleton instance and the sync.Once.
 // This is primarily used for testing purposes to ensure a clean state between tests.
-func resetTimelineFeatureFlag() {
+func ResetTimelineFeatureFlag() {
 	once = sync.Once{}
 	timelineFeatureFlagInstance = nil
 }

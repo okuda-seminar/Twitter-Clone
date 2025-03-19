@@ -77,8 +77,10 @@ type handlerTestSuite struct {
 	db                             *sql.DB
 	resource                       *dockertest.Resource
 	getSpecificUserPostsUsecase    usecase.GetSpecificUserPostsUsecase
+	specificUserPostsUsecase       usecase.SpecificUserPostsUsecase
 	loginUseCase                   usecase.LoginUsecase
 	getUserAndFolloweePostsUsecase usecase.GetUserAndFolloweePostsUsecase
+	userAndFolloweePostsUsecase    usecase.UserAndFolloweePostsUsecase
 	usersRepository                repository.UsersRepository
 	createUserUsecase              usecase.CreateUserUsecase
 	authService                    *service.AuthService
@@ -132,6 +134,10 @@ func (s *handlerTestSuite) SetupTest() {
 	s.getSpecificUserPostsUsecase = interactor.NewGetSpecificUserPostsUsecase(postsRepository)
 	s.loginUseCase = interactor.NewLoginUseCase(s.usersRepository, s.authService)
 	s.getUserAndFolloweePostsUsecase = interactor.NewGetUserAndFolloweePostsUsecase(postsRepository)
+
+	timelineitemsRepository := persistence.NewTimelineitemsRepository(s.db)
+	s.specificUserPostsUsecase = interactor.NewSpecificUserPostsUsecase(timelineitemsRepository)
+	s.userAndFolloweePostsUsecase = interactor.NewUserAndFolloweePostsUsecase(timelineitemsRepository)
 
 	s.usersRepository = persistence.NewUsersRepository(s.db)
 	s.createUserUsecase = interactor.NewCreateUserUsecase(s.usersRepository)
