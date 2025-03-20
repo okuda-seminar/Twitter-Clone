@@ -38,11 +38,12 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/525
   // - Replace useFormState with useActionState after upgrading React to v19.
   const [message, formAction] = useFormState(handlePostButtonClick, undefined);
-  const initialRef = useRef(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  if (textAreaRef.current) textAreaRef.current.focus();
 
   return (
     <Modal
-      initialFocusRef={initialRef}
+      initialFocusRef={textAreaRef}
       isOpen={true}
       onClose={handleCloseButtonClick}
       size="xl"
@@ -74,7 +75,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
               <Textarea
                 data-testid="text"
                 name="text"
-                ref={initialRef}
+                ref={textAreaRef}
                 value={postText}
                 onChange={handleTextAreaChange}
                 placeholder="What is happening?!"
