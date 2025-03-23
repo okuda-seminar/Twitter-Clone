@@ -1,3 +1,4 @@
+import { useSession } from "@/lib/components/session-context";
 import type { Post } from "@/lib/models/post";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -12,11 +13,17 @@ export interface useTimelineFeedReturn {
 
 export const useTimelineFeed = (): useTimelineFeedReturn => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const { user } = useSession();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timelineFeedServiceRef = useRef<TimelineFeedService | null>(null);
 
   useEffect(() => {
-    const url: string = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${process.env.NEXT_PUBLIC_USER_ID}/timelines/reverse_chronological`;
+    if (!user?.id) {
+      setErrorMessage("User not logged in");
+      return;
+    }
+
+    const url: string = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${user.id}/timelines/reverse_chronological`;
     if (!timelineFeedServiceRef.current) {
       timelineFeedServiceRef.current = createTimelineFeedService();
     }
@@ -46,7 +53,7 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
     return () => {
       timelineFeedServiceRef.current?.disconnect();
     };
-  }, []);
+  }, [user]);
 
   return {
     errorMessage,

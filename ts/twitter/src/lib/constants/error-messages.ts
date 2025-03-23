@@ -1,4 +1,5 @@
 export const ERROR_MESSAGES = {
+  USER_NOT_LOGGED_IN: "User not logged in.",
   SERVER_ERROR: "A server error occurred.",
   INVALID_DATA: "Invalid data received.",
   CONNECTION_ERROR: "Connection error occurred.",

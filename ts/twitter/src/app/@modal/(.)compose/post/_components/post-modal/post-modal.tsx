@@ -71,7 +71,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
               </Text>
             )}
             <Flex mt={8}>
-              <Avatar size="md" name={user ? user?.name : ""} />
+              <Avatar size="md" name={user ? user?.displayName : ""} />
               <Textarea
                 data-testid="text"
                 name="text"

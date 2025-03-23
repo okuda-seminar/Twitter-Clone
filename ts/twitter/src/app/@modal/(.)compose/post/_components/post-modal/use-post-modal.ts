@@ -1,3 +1,4 @@
+import { useSession } from "@/lib/components/session-context";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,6 +23,7 @@ export const usePostModal = ({
   isIntercepted,
 }: UsePostModalProps): UsePostModalReturn => {
   const router = useRouter();
+  const { user } = useSession();
   const [postText, setPostText] = useState<string>("");
 
   const handleCloseButtonClick = () => {
@@ -40,8 +42,12 @@ export const usePostModal = ({
     formData: FormData,
   ) => {
     try {
+      if (!user?.id) {
+        return ERROR_MESSAGES.USER_NOT_LOGGED_IN;
+      }
+
       const res = await createPost({
-        user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
+        user_id: user.id,
         text: formData.get("text") as string,
       });
 
