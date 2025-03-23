@@ -1,10 +1,12 @@
+import { createPost } from "@/lib/actions/create-post";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
+import type { User } from "@/lib/models/user";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createPost } from "#src/lib/actions/create-post";
 
 interface UsePostModalProps {
   isIntercepted: boolean;
+  user: User | undefined;
 }
 
 interface UsePostModalReturn {
@@ -20,6 +22,7 @@ interface UsePostModalReturn {
 
 export const usePostModal = ({
   isIntercepted,
+  user,
 }: UsePostModalProps): UsePostModalReturn => {
   const router = useRouter();
   const [postText, setPostText] = useState<string>("");
@@ -41,7 +44,8 @@ export const usePostModal = ({
   ) => {
     try {
       const res = await createPost({
-        user_id: `${process.env.NEXT_PUBLIC_USER_ID}`,
+        // biome-ignore lint/style/noNonNullAssertion: user is guaranteed to exist in this context.
+        user_id: user!.id,
         text: formData.get("text") as string,
       });
 

@@ -1,27 +1,32 @@
 "use client";
 
 import { Box, Button, IconButton, Tooltip } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import type React from "react";
 import { CiLogin } from "react-icons/ci";
+import { useAuth } from "./auth-context";
 import { MiniProfile } from "./mini-profile/mini-profile";
-import { useSession } from "./session-context";
 
 export const SignInbutton: React.FC = () => {
-  const { session, user, setSession } = useSession();
+  const { user } = useAuth();
+  const router = useRouter();
 
-  const sessionHandler = () => {
-    setSession(true);
+  // This is a temporary sign-in handler.
+  // When clicked, it redirects the user to the login page.
+  // In the future, this will be replaced with a real authentication flow.
+  const dummyHandleSignIn = () => {
+    router.push("/login");
   };
 
   return (
     <Box>
-      {session && user ? (
+      {user ? (
         <MiniProfile user={user} />
       ) : (
         <Box>
           <Box display={{ base: "none", xl: "inline" }}>
             <Button
-              onClick={sessionHandler}
+              onClick={dummyHandleSignIn}
               bg="#1DA1F2"
               color="white"
               width="200px"
@@ -34,7 +39,7 @@ export const SignInbutton: React.FC = () => {
           <Tooltip label={"SignIn"} placement="bottom">
             <Box display={{ base: "inline", xl: "none" }}>
               <IconButton
-                onClick={sessionHandler}
+                onClick={dummyHandleSignIn}
                 bg="#1DA1F2"
                 aria-label={"SignIn"}
                 icon={<CiLogin />}

@@ -1,4 +1,5 @@
 import { login } from "@/lib/actions/login";
+import { useAuth } from "@/lib/components/auth-context";
 import { useRouter } from "next/navigation";
 
 interface UsePasswordModalReturn {
@@ -10,6 +11,7 @@ interface UsePasswordModalReturn {
 
 export const usePasswordModal = (): UsePasswordModalReturn => {
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const handleLoginAction = async (
     prevState: string | undefined,
@@ -24,6 +26,7 @@ export const usePasswordModal = (): UsePasswordModalReturn => {
       if (!result.ok) {
         return `Login failed: ${result.error.statusText}`;
       }
+      setUser(result.value.user);
 
       router.push("/home");
     } catch (error: unknown) {
