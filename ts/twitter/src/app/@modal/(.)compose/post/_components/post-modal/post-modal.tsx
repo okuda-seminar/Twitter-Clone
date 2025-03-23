@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/components/session-context";
+import { useAuth } from "@/lib/components/auth-context";
 import {
   Avatar,
   Box,
@@ -26,14 +26,17 @@ interface PostModalProps {
 }
 
 export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
-  const { user } = useSession();
+  const { user } = useAuth();
   const {
     handleCloseButtonClick,
     postText,
     handleTextAreaChange,
     handlePostButtonClick,
     isPostButtonDisabled,
-  } = usePostModal({ isIntercepted });
+  } = usePostModal({
+    isIntercepted,
+    user,
+  });
 
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/525
   // - Replace useFormState with useActionState after upgrading React to v19.
@@ -71,7 +74,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
               </Text>
             )}
             <Flex mt={8}>
-              <Avatar size="md" name={user ? user?.name : ""} />
+              <Avatar size="md" name={user ? user?.displayName : ""} />
               <Textarea
                 data-testid="text"
                 name="text"

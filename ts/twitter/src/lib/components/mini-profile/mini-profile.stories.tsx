@@ -6,8 +6,13 @@ const meta: Meta<typeof MiniProfile> = {
   component: MiniProfile,
   args: {
     user: {
-      name: "Test User",
       id: "test123",
+      username: "testuser",
+      displayName: "Test User",
+      bio: "",
+      isPrivate: false,
+      createdAt: "2025-01-01T00:00:00Z",
+      updatedAt: "2025-01-15T12:30:45Z",
     },
   },
 };
