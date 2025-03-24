@@ -58,6 +58,10 @@ func (r *usersRepository) CreateUser(tx *sql.Tx, username, displayName, password
 		err = r.db.QueryRow(query, username, displayName, password, "", false).Scan(&id, &createdAt, &updatedAt)
 	}
 	if err != nil {
+		if IsUniqueViolationError(err) {
+			return entity.User{}, repository.ErrUniqueViolation
+		}
+
 		return entity.User{}, err
 	}
 
@@ -285,3 +289,5 @@ func (r *usersRepository) UnblockUser(tx *sql.Tx, sourceUserID, targetUserID str
 
 	return nil
 }
+
+func (r *usersRepository) SetCreateUserError(err error) {}

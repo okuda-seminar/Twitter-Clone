@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+
 	"x-clone-backend/internal/domain/entity"
 
 	"github.com/google/uuid"
@@ -22,4 +23,6 @@ type UsersRepository interface {
 	UnmuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	BlockUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	UnblockUser(tx *sql.Tx, sourceUserID, targetUserID string) error
+
+	SetCreateUserError(err error)
 }
