@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -56,7 +57,7 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var code int
 
-		if persistence.IsUniqueViolationError(err) {
+		if errors.Is(err, usecase.ErrUserAlreadyExists) {
 			code = http.StatusConflict
 		} else {
 			code = http.StatusInternalServerError
