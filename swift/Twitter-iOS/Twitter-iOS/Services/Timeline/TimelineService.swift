@@ -42,6 +42,13 @@ public final class TimelineService: NSObject {
 
   // MARK: - Public API
 
+  public init(urlSession: URLSession? = nil) {
+    super.init()
+    if let injectedSession = urlSession {
+      self.timelineSSESession = injectedSession
+    }
+  }
+
   /// Starts listening to the Server-sent events connection for timeline-related updates for the user with the given id.
   ///
   /// - Parameters:
@@ -50,6 +57,8 @@ public final class TimelineService: NSObject {
   public func startListeningToTimelineSSE(
     id: String, completion: @escaping didStartListeningToTimelineSSECompletion
   ) {
+    // TODO:
+    // - Implement URL Validation for Services.
     guard
       let url = URL(
         string: "\(TimelineService.baseURL)/api/users/\(id)/timelines/reverse_chronological")
@@ -59,7 +68,11 @@ public final class TimelineService: NSObject {
     }
 
     let request = configureRequest(url: url)
-    timelineSSESession = configureSession()
+
+    if timelineSSESession == nil {
+      timelineSSESession = configureSession()
+    }
+
     timelineSSETask = timelineSSESession?.dataTask(with: request)
     timelineSSECompletion = { result in
       completion(result)
@@ -118,10 +131,8 @@ public final class TimelineService: NSObject {
       eventString.hasPrefix(eventField)
       ? String(eventString.dropFirst(eventField.count)) : eventString
 
-    guard let eventJsonData = cleanedEventString.data(using: .utf8) else {
-      completion(.failure(TimelineServiceError.dataProcessingError))
-      return
-    }
+    // Safe to unwrap. Every valid Swift String is guaranteed to be a valid Unicode string, including an empty string.
+    let eventJsonData = cleanedEventString.data(using: .utf8)!
 
     do {
       let decodedEventData = try JSONDecoder().decode(
