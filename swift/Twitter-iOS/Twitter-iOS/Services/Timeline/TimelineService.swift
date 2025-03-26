@@ -17,7 +17,7 @@ public enum TimelineServiceError: Error {
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/615
 // - Implement Reconnection Logic for SSE Connection in TimelineService.
 /// The service class to handle timeline-related operations.
-public final class TimelineService: NSObject {
+public final class TimelineService: NSObject, TimelineServiceProtocol {
 
   // MARK: - Public Props
 
@@ -170,4 +170,11 @@ extension TimelineService: URLSessionDataDelegate {
 /// - Returns: The singleton instance of TimelineService.
 public func injectTimelineService() -> TimelineService {
   return TimelineService.shared
+}
+
+/// The Protocol for Dependency Injection of TimelineService.
+protocol TimelineServiceProtocol {
+  func startListeningToTimelineSSE(
+    id: String, completion: @escaping didStartListeningToTimelineSSECompletion)
+  func stopListeningToTimelineSSE()
 }

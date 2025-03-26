@@ -6,6 +6,8 @@ import os
 /// The view controller responsible for displaying the home view of the app.
 class HomeViewController: ViewControllerWithUserIconButton {
 
+  // MARK: - Public Props
+
   /// The overlay view for the tab bar item that manages gesture recognizers.
   public lazy var tabBarItemOverlayView: UIView = {
     let view = UIView()
@@ -18,6 +20,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
     view.addGestureRecognizer(tapGestureRecognizer)
     return view
   }()
+
+  // MARK: - Private Props
 
   /// The set of constant values used for layout configurations.
   private enum LayoutConstant {
@@ -55,10 +59,10 @@ class HomeViewController: ViewControllerWithUserIconButton {
   private var didAppear = false
 
   /// The service class to handle timeline-related operations.
-  private lazy var timelineService = injectTimelineService()
+  private let timelineService: TimelineServiceProtocol
 
   /// The data source that provides post models for the timeline.
-  private let postsDataSource = TimelinePostsDataSource()
+  private let postsDataSource: TimelinePostsDataSource
 
   /// The logger for storing error and debug messages.
   private let logger = Logger(subsystem: "Swift.Twitter-iOS", category: "HomeViewController")
@@ -147,6 +151,21 @@ class HomeViewController: ViewControllerWithUserIconButton {
     super.viewDidDisappear(animated)
     didAppear = false
     timelineService.stopListeningToTimelineSSE()
+  }
+
+  // MARK: - Public API
+
+  public init(
+    timelineService: TimelineServiceProtocol = injectTimelineService(),
+    postsDataSource: TimelinePostsDataSource = TimelinePostsDataSource()
+  ) {
+    self.timelineService = timelineService
+    self.postsDataSource = postsDataSource
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Private API

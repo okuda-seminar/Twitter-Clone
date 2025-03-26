@@ -9,6 +9,16 @@ public struct PostModel: Identifiable {
   let isRepostedByCurrentUser: Bool
 }
 
+extension PostModel: Equatable {
+  public static func == (lhs: PostModel, rhs: PostModel) -> Bool {
+    return lhs.id == rhs.id
+      && lhs.bodyText == rhs.bodyText
+      && lhs.userIcon == rhs.userIcon
+      && lhs.userName == rhs.userName
+      && lhs.isRepostedByCurrentUser == rhs.isRepostedByCurrentUser
+  }
+}
+
 /// Create a fake post model for preview and testing purposes.
 ///
 /// - Returns: The PostModel instance with sample data.
