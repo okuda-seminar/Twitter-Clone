@@ -19,8 +19,8 @@ import (
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/application/usecase/interactor"
+	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
-	"x-clone-backend/internal/domain/value"
 	"x-clone-backend/internal/infrastructure/persistence"
 )
 
@@ -88,7 +88,7 @@ type handlerTestSuite struct {
 	unlikePostUsecase              usecase.UnlikePostUsecase
 	followUserUsecase              usecase.FollowUserUsecase
 	muteUserUsecase                usecase.MuteUserUsecase
-	userChannels                   map[string]chan value.TimelineEvent
+	userChannels                   map[string]chan entity.TimelineEvent
 	mu                             sync.Mutex
 	connected                      chan struct{}
 }
@@ -147,7 +147,7 @@ func (s *handlerTestSuite) SetupTest() {
 	s.muteUserUsecase = interactor.NewMuteUserUsecase(s.usersRepository)
 
 	s.mu = sync.Mutex{}
-	s.userChannels = make(map[string]chan value.TimelineEvent)
+	s.userChannels = make(map[string]chan entity.TimelineEvent)
 
 	s.connected = make(chan struct{})
 

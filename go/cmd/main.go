@@ -13,7 +13,7 @@ import (
 	"x-clone-backend/internal/controller"
 	"x-clone-backend/internal/controller/handler"
 	"x-clone-backend/internal/controller/middleware"
-	"x-clone-backend/internal/domain/value"
+	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
@@ -30,7 +30,7 @@ func main() {
 	}
 	defer db.Close()
 
-	var userChannels = make(map[string]chan value.TimelineEvent)
+	var userChannels = make(map[string]chan entity.TimelineEvent)
 	var mu sync.Mutex
 
 	authService := service.NewAuthService(secretKey)

@@ -71,3 +71,81 @@ QuoteRepostCreatedExample:
           user_id: "146241a4-dee8-465a-a7ce-662438dfff83"
           text: "example text"
           created_at: "2025-02-23T13:32:04.36153Z"
+TimelineAccessedUseNewSchemaExample:
+  summary: Example of a TimelineAccessed event using the new schema
+  value:
+    data:
+      event_type: "TimelineAccessed"
+      timelineitems:
+        - type: "post"
+          id: "b9e2f19b-7ed9-4bbb-ab1b-6b0f55ef5675"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: "example text"
+          created_at: "2024-11-12T14:33:42.978924Z"
+        - type: "repost"
+          id: "f0171b80-b643-43ed-8734-479ae3ce9ced"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          parent_post_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          created_at: "2025-02-23T13:32:04.36153Z"
+        - type: "quoteRepost"
+          id: "86efc081-accf-46d6-b78f-4ffd4449afcd"
+          author_id: "b5f17c90-a719-4660-9ac0-225723c6850d"
+          parent_post_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          text: "example text"
+          created_at: "2024-11-06T04:12:10.766452Z"
+PostCreatedUseNewSchemaExample:
+  summary: Example of a PostCreated event using the new schema
+  value:
+    data:
+      event_type: "PostCreated"
+      timelineitems:
+        - type: "post"
+          id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: "example text"
+          created_at: "2024-12-11T13:30:31.764714Z"
+PostDeletedUseNewSchemaExample:
+  summary: Example of a PostDeleted event using the new schema
+  value:
+    data:
+      event_type: "PostDeleted"
+      timelineitems:
+        - type: "post"
+          id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          text: "example text"
+          created_at: "2024-12-11T13:30:31.764714Z"
+RepostCreatedUseNewSchemaExample:
+  summary: Example of a RepostCreated event using the new schema
+  value:
+    data:
+      event_type: "RepostCreated"
+      timelineitems:
+        - type: "repost"
+          id: "f0171b80-b643-43ed-8734-479ae3ce9ced"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          parent_post_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          created_at: "2025-02-23T13:32:04.36153Z"
+RepostDeletedUseNewSchemaExample:
+  summary: Example of a RepostDeleted event using the new schema
+  value:
+    data:
+      event_type: "RepostDeleted"
+      timelineitems:
+        - type: "repost"
+          id: "f0171b80-b643-43ed-8734-479ae3ce9ced"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          parent_post_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          created_at: "2025-02-23T13:32:04.36153Z"
+QuoteRepostCreatedUseNewSchemaExample:
+  summary: Example of a QuoteRepostCreated event using the new schema
+  value:
+    data:
+      event_type: "QuoteRepostCreated"
+      timelineitems:
+        - type: "quoteRepost"
+          id: "f6630f25-c971-446f-bf9b-e68c4ad03770"
+          author_id: "146241a4-dee8-465a-a7ce-662438dfff83"
+          parent_post_id: "02c46e42-9c77-4d66-b535-a77274008b3c"
+          text: "example text"
+          created_at: "2025-02-23T13:32:04.36153Z"

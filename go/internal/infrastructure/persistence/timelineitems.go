@@ -6,6 +6,7 @@ import (
 
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
+	"x-clone-backend/internal/domain/value"
 
 	"github.com/google/uuid"
 )
@@ -33,7 +34,7 @@ func (r *timelineitemsRepository) SpecificUserPosts(userID string) ([]*entity.Ti
 			id             uuid.UUID
 			postType       string
 			author_id      uuid.UUID
-			parent_post_id uuid.NullUUID
+			parent_post_id value.NullUUID
 			text           string
 			created_at     time.Time
 		)
@@ -76,7 +77,7 @@ func (r *timelineitemsRepository) UserAndFolloweePosts(userID string) ([]*entity
 			id             uuid.UUID
 			postType       string
 			author_id      uuid.UUID
-			parent_post_id uuid.NullUUID
+			parent_post_id value.NullUUID
 			text           string
 			created_at     time.Time
 		)
