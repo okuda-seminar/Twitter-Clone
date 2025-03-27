@@ -1,13 +1,13 @@
 import type { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
+import { Tooltip } from "@/lib/components/ui/tooltip";
 import {
   Avatar,
   Box,
   Button,
-  Divider,
   Flex,
   IconButton,
   Text,
-  Tooltip,
   VStack,
 } from "@chakra-ui/react";
 import type React from "react";
@@ -32,52 +32,74 @@ export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
 
   return (
     <VStack align="stretch">
-      <Flex mx="4px" gap="4">
-        <Tooltip label="Back" placement="bottom" fontSize="xs">
-          <IconButton
-            mt="5px"
-            bg="transparent"
-            borderRadius="full"
-            aria-label="arrow"
-            icon={<GoArrowLeft />}
-          />
-        </Tooltip>
-        <Box mt="5px">
-          <Text fontSize="lg">{userProfile.display_name}</Text>
-          <Text fontSize="xs" color="gray">
-            {userPostCount} post
-          </Text>
+      <Box divideY="1px">
+        <Box>
+          <Flex mx="4px" gap="4">
+            <Tooltip content="Back" positioning={{ placement: "bottom" }}>
+              <IconButton
+                mt="5px"
+                bg="transparent"
+                borderRadius="full"
+                aria-label="arrow"
+                color={useColorModeValue("black", "white")}
+              >
+                <GoArrowLeft />
+              </IconButton>
+            </Tooltip>
+            <Box mt="5px">
+              <Text fontSize="lg">{userProfile.display_name}</Text>
+              <Text fontSize="xs" color="gray">
+                {userPostCount} post
+              </Text>
+            </Box>
+          </Flex>
         </Box>
-      </Flex>
-      <Divider />
-      <Flex mx="8px">
-        <Avatar size="xl" mx="8px" name={userProfile.username} />
-        <Button borderRadius="full" marginLeft="auto">
-          EditProfile
-        </Button>
-      </Flex>
-      <Flex direction="column">
-        <Box fontSize="2xl" mt="2px" mx="24px">
-          {userProfile.display_name}
+        <Box>
+          <Flex mx="8px" my="8px">
+            <Avatar.Root w="96px" h="96px">
+              <Avatar.Fallback
+                name={userProfile.username}
+                mx="8px"
+                fontSize="36px"
+              />
+              <Avatar.Image />
+            </Avatar.Root>
+            <Button
+              borderRadius="full"
+              marginLeft="auto"
+              bg="gray.200"
+              color="black"
+              fontSize="md"
+              _hover={{ bg: "gray.300" }}
+            >
+              EditProfile
+            </Button>
+          </Flex>
+          <Flex direction="column">
+            <Box fontSize="2xl" mt="2px" mx="24px">
+              {userProfile.display_name}
+            </Box>
+            <Box fontSize="sm" color="gray" mx="24px">
+              @{userProfile.username}
+            </Box>
+          </Flex>
+          <Flex alignItems="center" color="gray" mx="24px" gap="2">
+            <RxCalendar />
+            <Box fontSize="sm">Joined {userJoinedDate}</Box>
+          </Flex>
+          <Flex fontSize="sm" mx="24px" gap="4">
+            <Flex gap="1">
+              <Box>{followingCount}</Box>
+              <Box color="gray">Following</Box>
+            </Flex>
+            <Flex gap="1">
+              <Box>{followersCount}</Box>
+              <Box color="gray">Followers</Box>
+            </Flex>
+          </Flex>
         </Box>
-        <Box fontSize="sm" color="gray" mx="24px">
-          @{userProfile.username}
-        </Box>
-      </Flex>
-      <Flex alignItems="center" color="gray" mx="24px" gap="2">
-        <RxCalendar />
-        <Box fontSize="sm">Joined {userJoinedDate}</Box>
-      </Flex>
-      <Flex fontSize="sm" mx="24px" gap="4">
-        <Flex gap="1">
-          <Box>{followingCount}</Box>
-          <Box color="gray">Following</Box>
-        </Flex>
-        <Flex gap="1">
-          <Box>{followersCount}</Box>
-          <Box color="gray">Followers</Box>
-        </Flex>
-      </Flex>
+      </Box>
+
       <MyProfileTab />
     </VStack>
   );

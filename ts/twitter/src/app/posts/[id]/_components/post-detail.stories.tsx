@@ -5,10 +5,6 @@ import { PostDetail } from "./post-detail";
 const meta: Meta<typeof PostDetail> = {
   title: "Features/PostDetail",
   component: PostDetail,
-  parameters: {
-    // Disables Chromatic's snapshotting on a component level
-    chromatic: { disableSnapshot: true },
-  },
 };
 
 export default meta;
