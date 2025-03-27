@@ -21,10 +21,10 @@ import (
 type CreateRepostHandler struct {
 	db        *sql.DB
 	mu        *sync.Mutex
-	usersChan *map[string]chan value.TimelineEvent
+	usersChan *map[string]chan entity.TimelineEvent
 }
 
-func NewCreateRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent) CreateRepostHandler {
+func NewCreateRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) CreateRepostHandler {
 	return CreateRepostHandler{
 		db:        db,
 		mu:        mu,
@@ -77,12 +77,12 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 			Type:         postType,
 			ID:           id,
 			AuthorID:     userID,
-			ParentPostID: uuid.NullUUID{UUID: PostID, Valid: true},
+			ParentPostID: value.NullUUID{UUID: PostID, Valid: true},
 			Text:         text,
 			CreatedAt:    createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var reposts []*entity.TimelineItem
 			reposts = append(reposts, &repost)
 			query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
@@ -106,7 +106,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.RepostCreated, TimelineItems: reposts}
+					userChan <- entity.TimelineEvent{EventType: entity.RepostCreated, TimelineItems: reposts}
 				}
 				h.mu.Unlock()
 			}
@@ -169,7 +169,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 			CreatedAt: createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var reposts []*entity.Repost
 			reposts = append(reposts, &repost)
 			query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
@@ -193,7 +193,7 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.RepostCreated, Reposts: reposts}
+					userChan <- entity.TimelineEvent{EventType: entity.RepostCreated, Reposts: reposts}
 				}
 				h.mu.Unlock()
 			}

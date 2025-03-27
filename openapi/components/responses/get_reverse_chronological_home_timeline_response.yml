@@ -2,48 +2,80 @@ type: object
 title: GetReverseChronologicalHomeTimelineResponse
 properties:
   data:
-    type: object
-    required:
-      - event_type
-      - posts
-      - reposts
-    properties:
-      event_type:
-        type: string
-      posts:
-        type: object
+    oneOf:
+      - type: object
+        title: GetReverseChronologicalHomeTimelineResponseUseOldSchema
         required:
-          - id
-          - user_id
-          - text
-          - created_at
+          - event_type
+          - posts
+          - reposts
         properties:
-          id:
+          event_type:
             type: string
-          user_id:
-            type: string
-          text:
-            type: string
-          created_at:
-            type: string
-            format: date-time
-      reposts:
-        type: object
+          posts:
+            type: object
+            required:
+              - id
+              - user_id
+              - text
+              - created_at
+            properties:
+              id:
+                type: string
+              user_id:
+                type: string
+              text:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+          reposts:
+            type: object
+            required:
+              - id
+              - parent_id
+              - user_id
+              - text
+              - created_at
+            properties:
+              id:
+                type: string
+              parent_id:
+                type: string
+              user_id:
+                type: string
+              text:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+
+      - type: object
+        title: GetReverseChronologicalHomeTimelineResponseUseNewSchema
         required:
-          - id
-          - parent_id
-          - user_id
-          - text
-          - created_at
+          - event_type
+          - timelineitems
         properties:
-          id:
+          event_type:
             type: string
-          parent_id:
-            type: string
-          user_id:
-            type: string
-          text:
-            type: string
-          created_at:
-            type: string
-            format: date-time
+          timelineitems:
+            type: object
+            required:
+              - type
+              - id
+              - author_id
+              - created_at
+            properties:
+              type:
+                type: string
+              id:
+                type: string
+              author_id:
+                type: string
+              parent_post_id:
+                type: string
+              text:
+                type: string
+              created_at:
+                type: string
+                format: date-time

@@ -21,10 +21,10 @@ import (
 type DeleteRepostHandler struct {
 	db        *sql.DB
 	mu        *sync.Mutex
-	usersChan *map[string]chan value.TimelineEvent
+	usersChan *map[string]chan entity.TimelineEvent
 }
 
-func NewDeleteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent) DeleteRepostHandler {
+func NewDeleteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) DeleteRepostHandler {
 	return DeleteRepostHandler{
 		db:        db,
 		mu:        mu,
@@ -86,12 +86,12 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 			Type:         postType,
 			ID:           RepostID,
 			AuthorID:     userID,
-			ParentPostID: uuid.NullUUID{UUID: parentID, Valid: true},
+			ParentPostID: value.NullUUID{UUID: parentID, Valid: true},
 			Text:         text,
 			CreatedAt:    createdAt,
 		}
 
-		go func(userID uuid.UUID, usersChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, usersChan *map[string]chan entity.TimelineEvent) {
 			var timelineitems []*entity.TimelineItem
 			timelineitems = append(timelineitems, &timelineitem)
 			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
@@ -115,7 +115,7 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.RepostDeleted, TimelineItems: timelineitems}
+					userChan <- entity.TimelineEvent{EventType: entity.RepostDeleted, TimelineItems: timelineitems}
 				}
 				h.mu.Unlock()
 			}
@@ -159,7 +159,7 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 			CreatedAt: createdAt,
 		}
 
-		go func(userID uuid.UUID, usersChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, usersChan *map[string]chan entity.TimelineEvent) {
 			var reposts []*entity.Repost
 			reposts = append(reposts, &repost)
 			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
@@ -183,7 +183,7 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.RepostDeleted, Reposts: reposts}
+					userChan <- entity.TimelineEvent{EventType: entity.RepostDeleted, Reposts: reposts}
 				}
 				h.mu.Unlock()
 			}

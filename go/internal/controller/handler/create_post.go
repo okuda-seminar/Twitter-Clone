@@ -19,10 +19,10 @@ import (
 type CreatePostHandler struct {
 	db        *sql.DB
 	mu        *sync.Mutex
-	usersChan *map[string]chan value.TimelineEvent
+	usersChan *map[string]chan entity.TimelineEvent
 }
 
-func NewCreatePostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent) CreatePostHandler {
+func NewCreatePostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) CreatePostHandler {
 	return CreatePostHandler{
 		db:        db,
 		mu:        mu,
@@ -65,12 +65,12 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 			Type:         postType,
 			ID:           id,
 			AuthorID:     body.UserID,
-			ParentPostID: uuid.NullUUID{},
+			ParentPostID: value.NullUUID{},
 			Text:         body.Text,
 			CreatedAt:    createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var posts []*entity.TimelineItem
 			posts = append(posts, &post)
 			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
@@ -94,7 +94,7 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.PostCreated, TimelineItems: posts}
+					userChan <- entity.TimelineEvent{EventType: entity.PostCreated, TimelineItems: posts}
 				}
 				h.mu.Unlock()
 			}
@@ -131,7 +131,7 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 			CreatedAt: createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var posts []*entity.Post
 			posts = append(posts, &post)
 			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
@@ -155,7 +155,7 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.PostCreated, Posts: posts}
+					userChan <- entity.TimelineEvent{EventType: entity.PostCreated, Posts: posts}
 				}
 				h.mu.Unlock()
 			}

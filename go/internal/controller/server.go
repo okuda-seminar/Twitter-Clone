@@ -6,7 +6,7 @@ import (
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/controller/handler"
-	"x-clone-backend/internal/domain/value"
+	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -25,7 +25,7 @@ type Server struct {
 	handler.GetReverseChronologicalHomeTimelineHandler
 }
 
-func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent, authService *service.AuthService) Server {
+func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, authService *service.AuthService) Server {
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
 		LoginHandler:                               handler.NewLoginHandler(db, authService),

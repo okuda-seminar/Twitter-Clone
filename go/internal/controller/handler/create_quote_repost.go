@@ -21,10 +21,10 @@ import (
 type CreateQuoteRepostHandler struct {
 	db        *sql.DB
 	mu        *sync.Mutex
-	usersChan *map[string]chan value.TimelineEvent
+	usersChan *map[string]chan entity.TimelineEvent
 }
 
-func NewCreateQuoteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan value.TimelineEvent) CreateQuoteRepostHandler {
+func NewCreateQuoteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) CreateQuoteRepostHandler {
 	return CreateQuoteRepostHandler{
 		db:        db,
 		mu:        mu,
@@ -76,12 +76,12 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 			Type:         postType,
 			ID:           id,
 			AuthorID:     userID,
-			ParentPostID: uuid.NullUUID{UUID: PostID, Valid: true},
+			ParentPostID: value.NullUUID{UUID: PostID, Valid: true},
 			Text:         body.Text,
 			CreatedAt:    createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var quoteReposts []*entity.TimelineItem
 			quoteReposts = append(quoteReposts, &quoteRepost)
 			query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
@@ -105,7 +105,7 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.QuoteRepostCreated, TimelineItems: quoteReposts}
+					userChan <- entity.TimelineEvent{EventType: entity.QuoteRepostCreated, TimelineItems: quoteReposts}
 				}
 				h.mu.Unlock()
 			}
@@ -168,7 +168,7 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 			CreatedAt: createdAt,
 		}
 
-		go func(userID uuid.UUID, userChan *map[string]chan value.TimelineEvent) {
+		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
 			var quoteReposts []*entity.Repost
 			quoteReposts = append(quoteReposts, &quoteRepost)
 			query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
@@ -192,7 +192,7 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 			for _, id := range ids {
 				h.mu.Lock()
 				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- value.TimelineEvent{EventType: value.QuoteRepostCreated, Reposts: quoteReposts}
+					userChan <- entity.TimelineEvent{EventType: entity.QuoteRepostCreated, Reposts: quoteReposts}
 				}
 				h.mu.Unlock()
 			}

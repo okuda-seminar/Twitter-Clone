@@ -30,7 +30,6 @@ oneOf:
       - id
       - author_id
       - parent_post_id
-      - text
       - created_at
     properties:
       type:
@@ -40,8 +39,6 @@ oneOf:
       author_id:
         type: string
       parent_post_id:
-        type: string
-      text:
         type: string
       created_at:
         type: string
