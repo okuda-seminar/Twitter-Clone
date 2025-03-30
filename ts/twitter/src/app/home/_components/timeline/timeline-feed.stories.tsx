@@ -12,16 +12,18 @@ type Story = StoryObj<typeof TimelineFeed>;
 
 export const Primary: Story = {
   args: {
-    posts: [
+    timelineItems: [
       {
+        type: "post",
         id: "123",
-        user_id: "test",
+        author_id: "test",
         text: "test post",
         created_at: "2024-01-01T00:00:00Z",
       },
       {
+        type: "post",
         id: "123",
-        user_id: "test",
+        author_id: "test",
         text: "test post 2",
         created_at: "2024-01-01T00:00:00Z",
       },
@@ -32,14 +34,14 @@ export const Primary: Story = {
 
 export const ServerError: Story = {
   args: {
-    posts: [],
+    timelineItems: [],
     errorMessage: ERROR_MESSAGES.SERVER_ERROR,
   },
 };
 
 export const EmptyPosts: Story = {
   args: {
-    posts: [],
+    timelineItems: [],
     errorMessage: null,
   },
 };

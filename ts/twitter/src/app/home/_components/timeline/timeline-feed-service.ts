@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
-import type { Post } from "@/lib/models/post";
+import type { TimelineItem } from "@/lib/models/post";
 import { FakeTimelineFeedService } from "./__fake__/fake-timeline-feed-service";
 
 export type TimelineEventResponse =
@@ -9,17 +9,17 @@ export type TimelineEventResponse =
 
 interface TimelineAccessedResponse {
   event_type: "TimelineAccessed";
-  posts: Post[];
+  timeline_items: TimelineItem[];
 }
 
 interface PostCreatedResponse {
   event_type: "PostCreated";
-  posts: Post[];
+  timeline_items: TimelineItem[];
 }
 
 interface PostDeletedResponse {
   event_type: "PostDeleted";
-  posts: Post[];
+  timeline_items: TimelineItem[];
 }
 
 export interface TimelineFeedService {

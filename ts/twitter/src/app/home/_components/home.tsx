@@ -14,7 +14,7 @@ import { TimelineFeed } from "./timeline/timeline-feed";
 import { useTimelineFeed } from "./timeline/use-timeline-feed";
 
 export const Home: React.FC = () => {
-  const { posts, errorMessage } = useTimelineFeed();
+  const { timelineItems, errorMessage } = useTimelineFeed();
   const tabItems = ["For you", "Following"];
   return (
     <Box>
@@ -45,7 +45,10 @@ export const Home: React.FC = () => {
             <Box>Posts for you.</Box>
           </TabPanel>
           <TabPanel>
-            <TimelineFeed posts={posts} errorMessage={errorMessage} />
+            <TimelineFeed
+              timelineItems={timelineItems}
+              errorMessage={errorMessage}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

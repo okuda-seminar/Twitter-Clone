@@ -5,21 +5,21 @@ import { TimelinePostCard } from "./timeline-post-card";
 import type { useTimelineFeedReturn } from "./use-timeline-feed";
 
 export const TimelineFeed = ({
-  posts,
+  timelineItems,
   errorMessage,
 }: useTimelineFeedReturn) => {
   if (errorMessage) {
     // Handling errors that cannot be caught by error.tsx from asynchronous processing.
     return <Box>{errorMessage}</Box>;
   }
-  if (posts.length === 0) {
+  if (timelineItems.length === 0) {
     return <Box>Post not found.</Box>;
   }
 
   return (
     <VStack spacing={4} align="stretch">
-      {posts.map((post) => (
-        <TimelinePostCard key={post.id} post={post} />
+      {timelineItems.map((timelineItem) => (
+        <TimelinePostCard key={timelineItem.id} timelineItem={timelineItem} />
       ))}
     </VStack>
   );

@@ -1,5 +1,5 @@
 import { useAuth } from "@/lib/components/auth-context";
-import type { Post } from "@/lib/models/post";
+import type { TimelineItem } from "@/lib/models/post";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -9,12 +9,12 @@ import {
 
 export interface useTimelineFeedReturn {
   errorMessage: string | null;
-  posts: Post[];
+  timelineItems: TimelineItem[];
 }
 
 export const useTimelineFeed = (): useTimelineFeedReturn => {
   const router = useRouter();
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
   const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timelineFeedServiceRef = useRef<TimelineFeedService | null>(null);
@@ -32,14 +32,20 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
 
     timelineFeedServiceRef.current.connect(
       url,
-      (newPosts) => {
-        switch (newPosts.event_type) {
+      (newTimelineItems) => {
+        switch (newTimelineItems.event_type) {
           case "TimelineAccessed":
           case "PostCreated":
-            if (!newPosts.posts || newPosts.posts.length === 0) {
+            if (
+              !newTimelineItems.timeline_items ||
+              newTimelineItems.timeline_items.length === 0
+            ) {
               return;
             }
-            setPosts((prevPosts) => [...newPosts.posts, ...prevPosts]);
+            setTimelineItems((prevTimelineItems) => [
+              ...newTimelineItems.timeline_items,
+              ...prevTimelineItems,
+            ]);
             break;
           case "PostDeleted":
             // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/540
@@ -59,6 +65,6 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
 
   return {
     errorMessage,
-    posts,
+    timelineItems,
   };
 };
