@@ -13,9 +13,9 @@ export const PostDetail = () => {
   return (
     <Box key={post.id} p={8} borderWidth={1} borderRadius="md">
       <Flex>
-        <Avatar size="md" name={post.user_id} mr={2} />
+        <Avatar size="md" name={post.author_id} mr={2} />
         <Text fontWeight="bold" fontSize="xl" mr={4} mt={2}>
-          {post.user_id}
+          {post.author_id}
         </Text>
         <Button borderRadius="full" onClick={toggleFollowState}>
           {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/452 

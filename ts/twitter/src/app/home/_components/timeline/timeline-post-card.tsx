@@ -1,20 +1,24 @@
-import type { Post } from "@/lib/models/post";
+import type { TimelineItem } from "@/lib/models/post";
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 
 interface TimelinePostCardProps {
-  post: Post;
+  timelineItem: TimelineItem;
 }
 
-export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({ post }) => {
+export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
+  timelineItem,
+}) => {
   return (
-    <Box key={post.id} p={4} borderWidth={1} borderRadius="md">
+    <Box key={timelineItem.id} p={4} borderWidth={1} borderRadius="md">
       <Flex>
-        <Avatar size="sm" name={post.user_id} mr={2} />
+        <Avatar size="sm" name={timelineItem.author_id} mr={2} />
         <Text size="sm" fontWeight="bold">
-          {post.user_id}
+          {timelineItem.author_id}
         </Text>
       </Flex>
-      <Text mt={2}>{post.text}</Text>
+      {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/640
+      - Implement dedicated components for each type of timeline item. */}
+      {timelineItem.type === "post" && <Text mt={2}>{timelineItem.text}</Text>}
     </Box>
   );
 };
