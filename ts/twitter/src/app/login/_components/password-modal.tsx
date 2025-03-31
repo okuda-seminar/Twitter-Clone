@@ -1,13 +1,13 @@
 "use client";
 
-import type { LoginFormValue } from "@/lib/models/login-form-types";
+import type { LoginBody } from "@/lib/actions/login";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import { useFormState } from "react-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { usePasswordModal } from "./use-password-modal";
 
 interface PasswordModalProps {
-  loginFormValue: LoginFormValue;
+  loginFormValue: LoginBody;
   handleBackButtonClick: () => void;
   handlePasswordChange: (password: string) => void;
 }
