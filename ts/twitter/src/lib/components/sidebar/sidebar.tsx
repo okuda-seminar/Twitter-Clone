@@ -1,6 +1,5 @@
 "use client";
 
-import { BellIcon, EmailIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Flex,
   IconButton,
@@ -12,8 +11,10 @@ import {
 import Link from "next/link";
 import type React from "react";
 import { BsPeople, BsSlashSquare } from "react-icons/bs";
-import { CiCircleMore } from "react-icons/ci";
+import { CiBellOn, CiCircleMore } from "react-icons/ci";
 import { FaTwitter, FaUser } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
+import { MdEmail } from "react-icons/md";
 import { PiHouseFill } from "react-icons/pi";
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
@@ -33,19 +34,19 @@ export const SideBar: React.FC = () => {
       url: "/explore",
       tooltipContent: "Explore",
       ariaLabel: "Explore",
-      icon: <SearchIcon />,
+      icon: <IoSearch />,
     },
     {
       url: "/notifications",
       tooltipContent: "Notifications",
       ariaLabel: "Notifications",
-      icon: <BellIcon />,
+      icon: <CiBellOn />,
     },
     {
       url: "/message",
       tooltipContent: "Message",
       ariaLabel: "Message",
-      icon: <EmailIcon />,
+      icon: <MdEmail />,
     },
     {
       url: "/groc",

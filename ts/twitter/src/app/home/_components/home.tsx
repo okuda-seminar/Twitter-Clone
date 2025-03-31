@@ -1,14 +1,5 @@
 "use client";
-import {
-  Box,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Tabs } from "@chakra-ui/react";
 import type React from "react";
 import { TimelineFeed } from "./timeline/timeline-feed";
 import { useTimelineFeed } from "./timeline/use-timeline-feed";
@@ -17,41 +8,40 @@ export const Home: React.FC = () => {
   const { timelineItems, errorMessage } = useTimelineFeed();
   const tabItems = ["For you", "Following"];
   return (
-    <Box>
-      <Tabs position="relative" variant="unstyled" width="100%">
-        <TabList display="flex" width="100%" justifyContent="space-between">
-          {tabItems.map((item) => (
-            <Tab
-              key={item}
-              flex="1"
-              textAlign="center"
-              _hover={{
-                background: useColorModeValue("gray.100", "transparent"),
-              }}
-              fontSize={"lg"}
-            >
-              {item}
-            </Tab>
-          ))}
-        </TabList>
-        <TabIndicator
-          mt="-1.5px"
+    <Tabs.Root position="relative" width="100%" defaultValue="For you">
+      <Tabs.List display="flex" width="100%" justifyContent="space-between">
+        {tabItems.map((item) => (
+          <Tabs.Trigger
+            key={item}
+            value={item}
+            flex="1"
+            justifyContent="center"
+            _hover={{
+              background: { base: "colors.gray.100", _dark: "transparent" },
+            }}
+            fontSize={"lg"}
+          >
+            {item}
+          </Tabs.Trigger>
+        ))}
+        <Tabs.Indicator
+          bottom="0"
+          position="absolute"
           height="2px"
           bg="blue.500"
           borderRadius="1px"
+          zIndex="1"
         />
-        <TabPanels>
-          <TabPanel>
-            <Box>Posts for you.</Box>
-          </TabPanel>
-          <TabPanel>
-            <TimelineFeed
-              timelineItems={timelineItems}
-              errorMessage={errorMessage}
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
+      </Tabs.List>
+      <Tabs.Content value="For you">
+        <Box>Posts for you.</Box>
+      </Tabs.Content>
+      <Tabs.Content value="Following">
+        <TimelineFeed
+          timelineItems={timelineItems}
+          errorMessage={errorMessage}
+        />
+      </Tabs.Content>
+    </Tabs.Root>
   );
 };

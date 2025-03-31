@@ -1,53 +1,53 @@
 "use client";
-import {
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
+import { Tabs } from "@chakra-ui/react";
 import type React from "react";
 
 export const SearchTabBar: React.FC = () => {
   const tabItems = ["For you", "Trending", "News", "Sports", "Entertainment"];
 
   return (
-    <Tabs position="relative" variant="unstyled" width="100%">
-      <TabList display="flex" width="100%" justifyContent="space-between">
+    <Tabs.Root position="relative" width="100%" defaultValue="For you">
+      <Tabs.List display="flex" width="100%" justifyContent="space-between">
         {tabItems.map((item) => (
-          <Tab
+          <Tabs.Trigger
             key={item}
+            value={item}
             flex="1"
-            textAlign="center"
+            justifyContent="center"
             _hover={{
-              background: useColorModeValue("gray.100", "transparent"),
+              background: { base: "colors.gray.100", _dark: "transparent" },
             }}
             fontSize={"sm"}
+            _selected={{ color: useColorModeValue("black", "white") }}
           >
             {item}
-          </Tab>
+          </Tabs.Trigger>
         ))}
-      </TabList>
-      <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
-      <TabPanels>
-        <TabPanel>
-          <p>posts for you</p>
-        </TabPanel>
-        <TabPanel>
-          <p>trending</p>
-        </TabPanel>
-        <TabPanel>
-          <p>news</p>
-        </TabPanel>
-        <TabPanel>
-          <p>sports</p>
-        </TabPanel>
-        <TabPanel>
-          <p>entertainment</p>
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+        <Tabs.Indicator
+          bottom="0"
+          position="absolute"
+          height="2px"
+          bg="blue.500"
+          borderRadius="1px"
+          zIndex="1"
+        />
+      </Tabs.List>
+      <Tabs.Content value="For you">
+        <p>posts for you</p>
+      </Tabs.Content>
+      <Tabs.Content value="Trending">
+        <p>trending</p>
+      </Tabs.Content>
+      <Tabs.Content value="News">
+        <p>news</p>
+      </Tabs.Content>
+      <Tabs.Content value="Sports">
+        <p>sports</p>
+      </Tabs.Content>
+      <Tabs.Content value="Entertainment">
+        <p>entertainment</p>
+      </Tabs.Content>
+    </Tabs.Root>
   );
 };
