@@ -9,10 +9,6 @@ const meta: Meta<typeof PostModal> = {
   title: "Features/PostModal",
   component: PostModal,
   tags: ["!autodocs"],
-  parameters: {
-    // Disables Chromatic's snapshotting on a component level
-    chromatic: { disableSnapshot: true },
-  },
 };
 
 export default meta;

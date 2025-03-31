@@ -11,8 +11,10 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
   return (
     <Box key={timelineItem.id} p={4} borderWidth={1} borderRadius="md">
       <Flex>
-        <Avatar size="sm" name={timelineItem.author_id} mr={2} />
-        <Text size="sm" fontWeight="bold">
+        <Avatar.Root size="sm" mr={2}>
+          <Avatar.Fallback name={timelineItem.author_id} />
+        </Avatar.Root>
+        <Text fontSize="sm" fontWeight="bold">
           {timelineItem.author_id}
         </Text>
       </Flex>

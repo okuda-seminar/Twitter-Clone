@@ -14,7 +14,7 @@ export const PostButton = ({ isDisabled }: PostButtonProps) => {
     <Button
       data-testid="post-button"
       type="submit"
-      isDisabled={isDisabled || pending}
+      disabled={isDisabled || pending}
       bg="blue.primary"
       color="white"
       borderRadius="full"
