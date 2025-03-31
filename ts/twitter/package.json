@@ -14,8 +14,11 @@
     "chromatic": "chromatic"
   },
   "imports": {
+    "#src/lib/actions/mocks/*": {
+      "default": "./src/lib/actions/mocks/*.ts"
+    },
     "#src/lib/actions/*": {
-      "storybook": "./src/lib/actions/*.mock.ts",
+      "storybook": "./src/lib/actions/mocks/*.mock.ts",
       "default": "./src/lib/actions/*.ts"
     }
   },

@@ -1,8 +1,8 @@
-import { createPost } from "@/lib/actions/create-post.mock";
 import { err, ok } from "@/lib/actions/types";
 import { ERROR_MESSAGES, STATUS_TEXT } from "@/lib/constants/error-messages";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, screen, userEvent, within } from "@storybook/test";
+import { createPost } from "#src/lib/actions/mocks/create-post.mock";
 import { PostModal } from "./post-modal";
 
 const meta: Meta<typeof PostModal> = {

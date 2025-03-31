@@ -4,6 +4,8 @@ export const ERROR_MESSAGES = {
   CONNECTION_ERROR: "Connection error occurred.",
   POST_CREATION_ERROR:
     "Something went wrong, but don't fret - let's give it another shot.",
+  SIGNUP_ERROR: "Something went wrong with signup. Please try again.",
+  UNKNOWN_ERROR: "An unknown error occurred.",
 } as const;
 
 export const STATUS_TEXT = {

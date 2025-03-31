@@ -1,8 +1,8 @@
-import { createPost } from "@/lib/actions/create-post";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
 import type { User } from "@/lib/models/user";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createPost } from "#src/lib/actions/create-post";
 
 interface UsePostModalProps {
   isIntercepted: boolean;

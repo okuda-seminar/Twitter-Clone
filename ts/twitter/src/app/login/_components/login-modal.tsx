@@ -1,6 +1,6 @@
 "use client";
 
-import type { LoginFormValue } from "@/lib/models/login-form-types";
+import type { LoginBody } from "@/lib/actions/login";
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import type React from "react";
@@ -9,7 +9,7 @@ import { PasswordModal } from "./password-modal";
 
 export const LoginModal: React.FC = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [loginFormValue, setLoginFormValue] = useState<LoginFormValue>({
+  const [loginFormValue, setLoginFormValue] = useState<LoginBody>({
     username: "",
     password: "",
   });

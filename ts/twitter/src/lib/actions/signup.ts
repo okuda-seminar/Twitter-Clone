@@ -8,27 +8,32 @@ import {
   ok,
 } from "./types";
 
-export interface LoginBody {
+export interface SignupBody {
+  displayName: string;
   username: string;
   password: string;
 }
 
-interface LoginResponse {
+interface SignupResponse {
   token: string;
   user: User;
 }
 
-export async function login(
-  body: LoginBody,
-): Promise<ServerActionsResult<LoginResponse, ServerActionsError>> {
+export async function signup(
+  body: SignupBody,
+): Promise<ServerActionsResult<SignupResponse, ServerActionsError>> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/login`,
+    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        display_name: body.displayName,
+        username: body.username,
+        password: body.password,
+      }),
     },
   );
 
@@ -38,6 +43,8 @@ export async function login(
     const apiData = await res.json();
     const { user: apiUser, token } = apiData;
 
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/648
+    // - Switch the login and signup response fields to camel case.
     const user: User = {
       id: apiUser.id,
       username: apiUser.username,
