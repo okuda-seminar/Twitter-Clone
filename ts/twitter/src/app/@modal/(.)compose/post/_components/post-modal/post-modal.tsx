@@ -4,13 +4,9 @@ import { useSession } from "@/lib/components/session-context";
 import {
   Avatar,
   Box,
+  Dialog,
   Flex,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -18,6 +14,7 @@ import type React from "react";
 import { useRef } from "react";
 import { useFormState } from "react-dom";
 import { FaImage } from "react-icons/fa6";
+import { RxCross2 } from "react-icons/rx";
 import { PostButton } from "../post-button/post-button";
 import { usePostModal } from "./use-post-modal";
 
@@ -41,21 +38,38 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
   const initialRef = useRef(null);
 
   return (
-    <Modal
-      initialFocusRef={initialRef}
-      isOpen={true}
-      onClose={handleCloseButtonClick}
-      size="xl"
+    <Dialog.Root
+      initialFocusEl={() => initialRef.current}
+      open={true}
+      size="md"
+      onInteractOutside={(event) => {
+        handleCloseButtonClick();
+      }}
     >
-      <ModalOverlay />
-      <ModalContent bg="black" color="white">
-        <ModalCloseButton
+      <Dialog.Backdrop />
+      <Dialog.Content
+        bg="black"
+        color="white"
+        w="400px"
+        minW="550px"
+        top="50px"
+      >
+        <Dialog.CloseTrigger
           color="white"
           position="absolute"
           top="8px"
+          right="auto"
           left="8px"
-        />
-        <ModalBody pt="53px" pb={4}>
+          onClick={handleCloseButtonClick}
+          borderRadius="full"
+          p={2}
+          _hover={{
+            background: "gray.500",
+          }}
+        >
+          <RxCross2 size={20} />
+        </Dialog.CloseTrigger>
+        <Dialog.Body pt="30px" pb={4}>
           <form action={formAction}>
             {message !== undefined && (
               <Text
@@ -70,7 +84,9 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
               </Text>
             )}
             <Flex mt={8}>
-              <Avatar size="md" name={user ? user?.name : ""} />
+              <Avatar.Root size="md" mr={3}>
+                <Avatar.Fallback name={user ? user?.name : ""} />
+              </Avatar.Root>
               <Textarea
                 data-testid="text"
                 name="text"
@@ -90,19 +106,20 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
                 <IconButton
                   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/407
                   // - Enhance Post Functionality: Add Image Attachment Feature.
-                  icon={<FaImage />}
                   aria-label="Add image"
                   variant="ghost"
                   color="blue.400"
                   borderRadius="full"
                   _hover={{ bg: "whiteAlpha.200" }}
-                />
+                >
+                  <FaImage />
+                </IconButton>
                 <PostButton isDisabled={isPostButtonDisabled} />
               </Flex>
             </Box>
           </form>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </Dialog.Body>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 };

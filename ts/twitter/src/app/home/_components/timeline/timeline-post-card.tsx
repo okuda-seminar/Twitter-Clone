@@ -9,8 +9,10 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({ post }) => {
   return (
     <Box key={post.id} p={4} borderWidth={1} borderRadius="md">
       <Flex>
-        <Avatar size="sm" name={post.user_id} mr={2} />
-        <Text size="sm" fontWeight="bold">
+        <Avatar.Root size="sm" mr={2}>
+          <Avatar.Fallback name={post.user_id} />
+        </Avatar.Root>
+        <Text fontSize="sm" fontWeight="bold">
           {post.user_id}
         </Text>
       </Flex>

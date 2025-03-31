@@ -17,7 +17,7 @@ export const TimelineFeed = ({
   }
 
   return (
-    <VStack spacing={4} align="stretch">
+    <VStack gap={4} align="stretch">
       {posts.map((post) => (
         <TimelinePostCard key={post.id} post={post} />
       ))}

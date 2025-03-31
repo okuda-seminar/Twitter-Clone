@@ -1,14 +1,5 @@
 "use client";
-import {
-  Divider,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Tabs } from "@chakra-ui/react";
 import type React from "react";
 import { NotificationsAllView } from "./notifications-all-view";
 import { NotificationsMentionsView } from "./notifications-mentions-view";
@@ -18,35 +9,40 @@ export const NotificationsTabBar: React.FC = () => {
   const tabItems = ["All", "Verified", "Mentions"];
 
   return (
-    <Tabs position="relative" variant="unstyled" width="100%">
-      <TabList display="flex" width="100%" justifyContent="space-between">
+    <Tabs.Root position="relative" width="100%" defaultValue="All">
+      <Tabs.List display="flex" width="100%">
         {tabItems.map((item) => (
-          <Tab
+          <Tabs.Trigger
             key={item}
+            value={item}
             flex="1"
-            textAlign="center"
+            justifyContent="center"
             _hover={{
-              background: useColorModeValue("gray.100", "transparent"),
+              background: { base: "colors.gray.100", _dark: "transparent" },
             }}
             fontSize={"lg"}
           >
             {item}
-          </Tab>
+          </Tabs.Trigger>
         ))}
-      </TabList>
-      <Divider />
-      <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
-      <TabPanels>
-        <TabPanel>
-          <NotificationsAllView />
-        </TabPanel>
-        <TabPanel>
-          <NotificationsVerifiedView />
-        </TabPanel>
-        <TabPanel>
-          <NotificationsMentionsView />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+        <Tabs.Indicator
+          bottom="0"
+          position="absolute"
+          height="2px"
+          bg="blue.500"
+          borderRadius="1px"
+          zIndex="1"
+        />
+      </Tabs.List>
+      <Tabs.Content value="All">
+        <NotificationsAllView />
+      </Tabs.Content>
+      <Tabs.Content value="Verified">
+        <NotificationsVerifiedView />
+      </Tabs.Content>
+      <Tabs.Content value="Mentions">
+        <NotificationsMentionsView />
+      </Tabs.Content>
+    </Tabs.Root>
   );
 };

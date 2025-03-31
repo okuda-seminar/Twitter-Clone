@@ -1,4 +1,6 @@
-import { Box, Flex, IconButton, Tooltip } from "@chakra-ui/react";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
+import { Tooltip } from "@/lib/components/ui/tooltip";
+import { Box, Flex, IconButton } from "@chakra-ui/react";
 import type React from "react";
 import { IoIosSettings } from "react-icons/io";
 import { NotificationsTabBar } from "./notifications-tab-bar";
@@ -10,16 +12,18 @@ export const Notifications: React.FC = () => {
         <Box mx="12px" mt="8px" gap="4" fontSize="lg">
           Notifications
         </Box>
-        <Tooltip label="Settings" placement="bottom" size="sm">
+        <Tooltip content="Settings" positioning={{ placement: "bottom" }}>
           <IconButton
             bg="transparent"
+            color={useColorModeValue("black", "white")}
             aria-label="Settings"
-            icon={<IoIosSettings />}
-            mx={4}
+            mx={2}
             size="lg"
             borderRadius="full"
             ml="auto"
-          />
+          >
+            <IoIosSettings />
+          </IconButton>
         </Tooltip>
       </Flex>
       <NotificationsTabBar />

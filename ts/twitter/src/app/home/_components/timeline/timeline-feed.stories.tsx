@@ -5,10 +5,6 @@ import { TimelineFeed } from "./timeline-feed";
 const meta: Meta<typeof TimelineFeed> = {
   title: "Features/TimelineFeed",
   component: TimelineFeed,
-  parameters: {
-    // Disables Chromatic's snapshotting on a component level
-    chromatic: { disableSnapshot: true },
-  },
 };
 
 export default meta;

@@ -1,3 +1,5 @@
+"use client";
+
 import type { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tooltip } from "@/lib/components/ui/tooltip";
