@@ -1,6 +1,8 @@
 package interactor
 
 import (
+	"errors"
+
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -15,5 +17,9 @@ func NewDeleteUserUsecase(usersRepository repository.UsersRepository) usecase.De
 
 func (p *deleteUserUsecase) DeleteUser(userID string) error {
 	err := p.usersRepository.DeleteUser(nil, userID)
+	if errors.Is(err, repository.ErrRecordNotFound) {
+		return usecase.ErrUserNotFound
+	}
+
 	return err
 }

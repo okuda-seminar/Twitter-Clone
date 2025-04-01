@@ -45,7 +45,7 @@ func (h *LoginHandler) Login(w http.ResponseWriter, r *http.Request) {
 	user, token, err := h.loginUseCase.Login(body.Username, body.Password)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrUserNotFound):
+		case errors.Is(err, usecase.ErrUserNotFound):
 			http.Error(w, err.Error(), http.StatusNotFound)
 		case errors.Is(err, domain.ErrInvalidCredentials):
 			http.Error(w, err.Error(), http.StatusUnauthorized)

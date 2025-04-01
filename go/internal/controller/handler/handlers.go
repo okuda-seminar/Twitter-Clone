@@ -13,7 +13,6 @@ import (
 	"github.com/google/uuid"
 
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/domain"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/lib/featureflag"
 )
@@ -28,7 +27,7 @@ func DeleteUserByID(w http.ResponseWriter, r *http.Request, u usecase.DeleteUser
 	err := u.DeleteUser(userID)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrUserNotFound):
+		case errors.Is(err, usecase.ErrUserNotFound):
 			http.Error(w, fmt.Sprintf("No row found to delete (ID: %s)\n", userID), http.StatusNotFound)
 		default:
 			http.Error(w, fmt.Sprintf("Could not delete a user (ID: %s)\n", userID), http.StatusInternalServerError)
@@ -186,7 +185,7 @@ func UnlikePost(w http.ResponseWriter, r *http.Request, u usecase.UnlikePostUsec
 	err := u.UnlikePost(userID, postID)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrLikeNotFound):
+		case errors.Is(err, usecase.ErrLikeNotFound):
 			http.Error(w, "No row found to delete", http.StatusNotFound)
 		default:
 			http.Error(w, fmt.Sprintf("Could not delete a like: %v", err), http.StatusInternalServerError)
@@ -225,7 +224,7 @@ func DeleteFollowship(w http.ResponseWriter, r *http.Request, u usecase.Unfollow
 	err := u.UnfollowUser(sourceUserID, targetUserID)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrFollowshipNotFound):
+		case errors.Is(err, usecase.ErrFollowshipNotFound):
 			http.Error(w, "No row found to delete", http.StatusNotFound)
 		default:
 			http.Error(w, "Could not delete followship.", http.StatusInternalServerError)
@@ -264,7 +263,7 @@ func DeleteMuting(w http.ResponseWriter, r *http.Request, u usecase.UnmuteUserUs
 	err := u.UnmuteUser(sourceUserID, targetUserID)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrMuteNotFound):
+		case errors.Is(err, usecase.ErrMuteNotFound):
 			http.Error(w, "No row found to delete", http.StatusNotFound)
 		default:
 			http.Error(w, "Could not delete mute.", http.StatusInternalServerError)
@@ -304,7 +303,7 @@ func DeleteBlocking(w http.ResponseWriter, r *http.Request, u usecase.UnblockUse
 	err := u.UnblockUser(sourceUserID, targetUserID)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrBlockNotFound):
+		case errors.Is(err, usecase.ErrBlockNotFound):
 			http.Error(w, "No row found to delete", http.StatusNotFound)
 		default:
 			http.Error(w, "Could not delete blocking.", http.StatusInternalServerError)

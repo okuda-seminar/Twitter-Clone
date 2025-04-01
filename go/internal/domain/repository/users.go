@@ -13,7 +13,7 @@ type UsersRepository interface {
 
 	CreateUser(tx *sql.Tx, username, displayName, password string) (entity.User, error)
 	DeleteUser(tx *sql.Tx, userID string) error
-	GetSpecificUser(tx *sql.Tx, userID string) (entity.User, error)
+	UserByUserID(tx *sql.Tx, userID string) (entity.User, error)
 	UserByUsername(tx *sql.Tx, userName string) (entity.User, error)
 	LikePost(tx *sql.Tx, userID string, postID uuid.UUID) error
 	UnlikePost(tx *sql.Tx, userID string, postID string) error
@@ -24,5 +24,6 @@ type UsersRepository interface {
 	BlockUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	UnblockUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 
-	SetCreateUserError(err error)
+	SetError(key string, err error)
+	ClearError(key string)
 }
