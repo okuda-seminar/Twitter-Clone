@@ -15,7 +15,7 @@ func NewGetSpecificUserUsecase(usersRepository repository.UsersRepository) useca
 }
 
 func (p *getSpecificUserUsecase) GetSpecificUser(userID string) (entity.User, error) {
-	user, err := p.usersRepository.GetSpecificUser(nil, userID)
+	user, err := p.usersRepository.UserByUserID(nil, userID)
 	if err != nil {
 		return entity.User{}, err
 	}

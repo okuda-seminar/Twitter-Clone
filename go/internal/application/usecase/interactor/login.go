@@ -1,6 +1,8 @@
 package interactor
 
 import (
+	"errors"
+
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain"
@@ -23,7 +25,10 @@ func NewLoginUseCase(usersRepository repository.UsersRepository, authService *se
 func (p *loginUsecase) Login(username, password string) (entity.User, string, error) {
 	user, err := p.usersRepository.UserByUsername(nil, username)
 	if err != nil {
-		return entity.User{}, "", domain.ErrUserNotFound
+		if errors.Is(err, repository.ErrRecordNotFound) {
+			return entity.User{}, "", usecase.ErrUserNotFound
+		}
+		return entity.User{}, "", err
 	}
 
 	if !p.authService.VerifyPassword(user.Password, password) {

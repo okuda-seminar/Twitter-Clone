@@ -1,6 +1,8 @@
 package interactor
 
 import (
+	"errors"
+
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -15,5 +17,9 @@ func NewUnblockUserUsecase(usersRepository repository.UsersRepository) usecase.U
 
 func (p *unblockUserUsecase) UnblockUser(sourceUserID, targetUserID string) error {
 	err := p.usersRepository.UnblockUser(nil, sourceUserID, targetUserID)
+	if errors.Is(err, repository.ErrRecordNotFound) {
+		return usecase.ErrBlockNotFound
+	}
+
 	return err
 }

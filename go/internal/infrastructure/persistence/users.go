@@ -2,11 +2,11 @@ package persistence
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 
-	"x-clone-backend/internal/domain"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -95,13 +95,13 @@ func (r *usersRepository) DeleteUser(tx *sql.Tx, userID string) error {
 		return err
 	}
 	if count != 1 {
-		return domain.ErrUserNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	return nil
 }
 
-func (r *usersRepository) GetSpecificUser(tx *sql.Tx, userID string) (entity.User, error) {
+func (r *usersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.User, error) {
 	query := `SELECT * FROM users WHERE id = $1`
 	var row *sql.Row
 	if tx != nil {
@@ -121,6 +121,10 @@ func (r *usersRepository) GetSpecificUser(tx *sql.Tx, userID string) (entity.Use
 		&user.UpdatedAt,
 		&user.Password,
 	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return entity.User{}, repository.ErrRecordNotFound
+	}
+
 	return user, err
 }
 
@@ -144,6 +148,10 @@ func (r *usersRepository) UserByUsername(tx *sql.Tx, username string) (entity.Us
 		&user.UpdatedAt,
 		&user.Password,
 	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return entity.User{}, repository.ErrRecordNotFound
+	}
+
 	return user, err
 }
 
@@ -176,7 +184,7 @@ func (r *usersRepository) UnlikePost(tx *sql.Tx, userID string, postID string) e
 		return err
 	}
 	if count != 1 {
-		return domain.ErrLikeNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	return nil
@@ -211,7 +219,7 @@ func (r *usersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID st
 		return err
 	}
 	if count != 1 {
-		return domain.ErrFollowshipNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	return nil
@@ -246,7 +254,7 @@ func (r *usersRepository) UnmuteUser(tx *sql.Tx, sourceUserID, targetUserID stri
 		return err
 	}
 	if count != 1 {
-		return domain.ErrMuteNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	return nil
@@ -284,10 +292,11 @@ func (r *usersRepository) UnblockUser(tx *sql.Tx, sourceUserID, targetUserID str
 		return err
 	}
 	if count != 1 {
-		return domain.ErrBlockNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	return nil
 }
 
-func (r *usersRepository) SetCreateUserError(err error) {}
+func (r *usersRepository) SetError(key string, err error) {}
+func (r *usersRepository) ClearError(key string)          {}
