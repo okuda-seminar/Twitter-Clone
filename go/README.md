@@ -67,6 +67,44 @@ This will generate two SQL files: one for the up migration and one for the down 
 
 Write the SQL statements in the generated files. For example, to create a new table, add the SQL to the up migration file.
 
+
+## OpenAPI
+### Why We Use OpenAPI
+OpenAPI standardizes API definitions, ensuring consistency and enabling automation in code generation, documentation, and validation. It simplifies integration with external tools and services while reducing manual effort in maintaining API specifications.
+
+### Sample Commits
+You can refer to the following commits as examples of how to add and implement new APIs using OpenAPI:
+- [[Go] Implement Login Handler and Usecase for User Authentication](https://github.com/okuda-seminar/Twitter-Clone/pull/592/commits/088a88adada6369c26856c84cc0402ab49a4d3ca)
+- [[Go] Implement reposts using a naive approach](https://github.com/okuda-seminar/Twitter-Clone/pull/593/commits/6ba778cc7a6e75cbc2282ca3de18a80a8d83b6ac)
+
+### How to Add a New API
+1. Define the New API in OpenAPI YAML<br />
+    To add a new API, modify the OpenAPI schema files inside the `openapi` directory at the project root. Define the new endpoint, including request parameters, response structure, and possible error cases.
+
+2. Re-bundle the OpenAPI Schema<br />
+    The Twitter-Clone project uses `redocly` inside a Docker container to bundle the OpenAPI schema. To bundle the schema, run:
+    ```sh
+    make bundle-openapi
+    ```
+
+### Implementation Flow
+1. Generate Go Code<br />
+    To generate Go code from the OpenAPI schema, the project uses the `oapi-codegen` tool. Run:
+    ```sh
+    make generate-code-from-openapi
+    ```
+    This generates the necessary Go files (`models.gen.go` and `server.gen.go`) based on the OpenAPI definitions.
+
+2. Implement the API Logic<br />
+    1. Create a new handler in `internal/controller/handler`.
+    2. Implement the logic for processing requests and returning responses.
+    3. Register the handler with the router by embedding it into the `Server` struct in `internal/controller/server.go`.
+
+### View API Documentation in a Browser
+After bundling, you can view the API documentation in your browser:
+1. Visit [ReDoc](https://redocly.github.io/redoc/).
+2. Upload `bundled-openapi.yml` from `Twitter-Clone/openapi/bundle`.
+
 ## Discussion Points
 - [ ] Monolith vs Modular Monolith vs Microservices
 - [X] Mocking Database vs Running it with Docker
