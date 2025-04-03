@@ -15,7 +15,7 @@ export const PostDetail = () => {
     <Box key={post.id} p={8} borderWidth={1} borderRadius="md">
       <Flex>
         <Avatar.Root size="md">
-          <Avatar.Fallback name={post.author_id} mr={2}/>
+          <Avatar.Fallback name={post.author_id} mr={2} />
           <Avatar.Image />
         </Avatar.Root>
         <Flex flex="1" alignItems="center" ml={2}>
