@@ -10,7 +10,7 @@ interface PageLayoutProps {
 
 export const PageLayout = ({ children, modal }: PageLayoutProps) => {
   return (
-    <Flex width="100%" height="100vh" divideY="2px">
+    <Flex width="100%" height="100vh" divideX="1px" divideColor="gray">
       <Flex flex="1 1 20%" justifyContent="center">
         <SideBar />
       </Flex>

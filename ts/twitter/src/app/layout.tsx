@@ -25,7 +25,7 @@ export default function RootLayout({
         <Provider>
           <AuthProvider>
             <PageLayout modal={modal}>{children}</PageLayout>
-            </AuthProvider>
+          </AuthProvider>
         </Provider>
       </body>
     </html>

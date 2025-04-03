@@ -14,7 +14,7 @@ export const MiniProfile: React.FC<MiniProfileProps> = ({ user }) => {
       </Avatar.Root>
       <VStack mx={1}>
         <Box>{user.displayName}</Box>
-        <Box>(ID: {user.id})</Box>
+        <Box>(ID: @{user.username})</Box>
       </VStack>
     </Flex>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import { Box, Flex, IconButton } from "@chakra-ui/react";

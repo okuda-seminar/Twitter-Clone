@@ -17,19 +17,19 @@ export const SideBarPostButton: React.FC = () => {
   return (
     <Box>
       <Box display={{ base: "none", xl: "inline" }}>
-          <ChakraLink asChild>
-            <NextLink href="/compose/post" scroll={false}>
-              <Button
-                bg="blue.primary"
-                color="white"
-                width="200px"
-                size="lg"
-                borderRadius="full"
-              >
-                Post
-              </Button>
-            </NextLink>
-          </ChakraLink>
+        <ChakraLink asChild>
+          <NextLink href="/compose/post" scroll={false}>
+            <Button
+              bg="blue.primary"
+              color="white"
+              width="200px"
+              size="lg"
+              borderRadius="full"
+            >
+              Post
+            </Button>
+          </NextLink>
+        </ChakraLink>
       </Box>
       <Tooltip content="Post" positioning={{ placement: "bottom" }}>
         <Box display={{ base: "inline", xl: "none" }}>
