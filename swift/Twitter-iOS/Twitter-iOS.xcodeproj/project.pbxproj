@@ -45,6 +45,8 @@
 		3BCFFC882C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCFFC872C08B3D000C4AE50 /* UserFollowerRequestsPageViewController.swift */; };
 		3BDE73E12C90376300714EE2 /* UserListsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */; };
 		3BFFDEA82CD1FF270072D369 /* TimelineSettingsHomeScreenTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */; };
+		6517C9212DA0F95E001EC9B6 /* DraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9202DA0F957001EC9B6 /* DraftService.swift */; };
+		6517C9232DA0FFD4001EC9B6 /* DraftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9222DA0FFCD001EC9B6 /* DraftModel.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
 		6540F88A2BB44D430029BA46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6540F8892BB44D430029BA46 /* Assets.xcassets */; };
@@ -212,6 +214,8 @@
 		3BDE73E02C90376300714EE2 /* UserListsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListsPageViewController.swift; sourceTree = "<group>"; };
 		3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSettingsHomeScreenTabsViewController.swift; sourceTree = "<group>"; };
 		5D3BEB330A75788FEFBC9C6C /* Pods-Twitter-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Twitter-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Twitter-iOSTests/Pods-Twitter-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6517C9202DA0F957001EC9B6 /* DraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftService.swift; sourceTree = "<group>"; };
+		6517C9222DA0FFCD001EC9B6 /* DraftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftModel.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6540F8822BB44D430029BA46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -366,6 +370,9 @@
 		3B2AE47D2D84F7D0009F4601 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				6517C9222DA0FFCD001EC9B6 /* DraftModel.swift */,
+				6517C9202DA0F957001EC9B6 /* DraftService.swift */,
+				6540F8B92BB575FF0029BA46 /* PostModel.swift */,
 				65FD4F9F2C25B3D70020A02E /* PostService.swift */,
 			);
 			path = Post;
@@ -532,7 +539,6 @@
 		6540F8B82BB575E80029BA46 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				65C6CCA32BFF5C2400B0A052 /* Entities */,
 				3B5CE85B2C775841005833E1 /* NewPost */,
 				65F908482BE1273700C6C8B3 /* Permission */,
 				65FD4F512C1B17A80020A02E /* Reply */,
@@ -876,14 +882,6 @@
 				658D087E2BEBA774006C6A9E /* UserModel.swift */,
 				65C6CCA12BFE22EA00B0A052 /* UserProfileTabModel.swift */,
 				656C1BA62C00C59900EEE575 /* UserFollowRelationsTabModel.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		65C6CCA32BFF5C2400B0A052 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				6540F8B92BB575FF0029BA46 /* PostModel.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -1412,6 +1410,7 @@
 				3B2AE47A2D841D35009F4601 /* TimelineService.swift in Sources */,
 				65FD4F4C2C15E1520020A02E /* FollowService.swift in Sources */,
 				3B7332EC2C23153F007F4537 /* MessagesSettingsHomeCallingAccessControlSectionView.swift in Sources */,
+				6517C9232DA0FFD4001EC9B6 /* DraftModel.swift in Sources */,
 				65FD4F472C155F930020A02E /* UserConnectWhoToFollowView.swift in Sources */,
 				65C6CC2B2BFCC30C00B0A052 /* RectKey.swift in Sources */,
 				658D08972BF62B91006C6A9E /* SettingsHomeViewController.swift in Sources */,
@@ -1425,6 +1424,7 @@
 				3B8E61792CA55F5000E72FBC /* UserAddedListsViewController.swift in Sources */,
 				65C6CCAF2C00136700B0A052 /* NewMessageEntrypointButtonController.swift in Sources */,
 				656C1BAB2C020D2000EEE575 /* NotificationsTabModel.swift in Sources */,
+				6517C9212DA0F95E001EC9B6 /* DraftService.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
 				3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */,
 				65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */,

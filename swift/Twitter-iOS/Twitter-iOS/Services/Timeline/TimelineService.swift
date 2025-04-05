@@ -145,7 +145,9 @@ public final class TimelineService: NSObject {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/611
       // - Add Robust Error Handling for Timeline SSE Processing.
       print(error.localizedDescription)
-      completion(.failure(TimelineServiceError.dataProcessingError))
+      DispatchQueue.main.async {
+        completion(.failure(TimelineServiceError.dataProcessingError))
+      }
     }
   }
 }

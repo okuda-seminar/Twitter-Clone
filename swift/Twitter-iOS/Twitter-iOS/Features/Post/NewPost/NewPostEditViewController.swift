@@ -328,6 +328,8 @@ struct NewPostEditView: View {
         action: {
           // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/337
           // - Add Post Functionality to POST Button in NewPostEditViewController.swift.
+          let draftService = injectDraftService()
+          draftService.save(draft: DraftModel(text: $dataSource.postText.wrappedValue))
         },
         label: {
           Text(LocalizedString.draftsButtonText)
