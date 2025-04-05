@@ -47,6 +47,9 @@
 		3BFFDEA82CD1FF270072D369 /* TimelineSettingsHomeScreenTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFFDEA72CD1FF190072D369 /* TimelineSettingsHomeScreenTabsViewController.swift */; };
 		6517C9212DA0F95E001EC9B6 /* DraftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9202DA0F957001EC9B6 /* DraftService.swift */; };
 		6517C9232DA0FFD4001EC9B6 /* DraftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9222DA0FFCD001EC9B6 /* DraftModel.swift */; };
+		6517C9262DA10B9B001EC9B6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9252DA10B93001EC9B6 /* AuthService.swift */; };
+		6517C9282DA10BF1001EC9B6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9272DA10BEB001EC9B6 /* SignUpViewController.swift */; };
+		6517C92A2DA11183001EC9B6 /* UserAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9292DA1117A001EC9B6 /* UserAccountModel.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
 		6540F88A2BB44D430029BA46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6540F8892BB44D430029BA46 /* Assets.xcassets */; };
@@ -216,6 +219,9 @@
 		5D3BEB330A75788FEFBC9C6C /* Pods-Twitter-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Twitter-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Twitter-iOSTests/Pods-Twitter-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6517C9202DA0F957001EC9B6 /* DraftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftService.swift; sourceTree = "<group>"; };
 		6517C9222DA0FFCD001EC9B6 /* DraftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftModel.swift; sourceTree = "<group>"; };
+		6517C9252DA10B93001EC9B6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		6517C9272DA10BEB001EC9B6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		6517C9292DA1117A001EC9B6 /* UserAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountModel.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6540F8822BB44D430029BA46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -424,6 +430,7 @@
 				6540F8822BB44D430029BA46 /* SceneDelegate.swift */,
 				658D08822BECF45F006C6A9E /* AppRootViewController.swift */,
 				3B08824B2CE992A4001BEDB1 /* MainRootViewController.swift */,
+				6517C9272DA10BEB001EC9B6 /* SignUpViewController.swift */,
 				3B9AC0162CF2A9700052784A /* SideMenu */,
 			);
 			path = Root;
@@ -450,6 +457,15 @@
 				0E327026BCBDF49EF46A1CC6 /* Pods-Twitter-iOSTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		6517C9242DA10B8A001EC9B6 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				6517C9292DA1117A001EC9B6 /* UserAccountModel.swift */,
+				6517C9252DA10B93001EC9B6 /* AuthService.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		6540F8742BB44D430029BA46 = {
@@ -805,6 +821,7 @@
 		658D08872BEF474F006C6A9E /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				6517C9242DA10B8A001EC9B6 /* Auth */,
 				65FD4FC22C2D8B9B0020A02E /* Bookmark */,
 				65FD4F4A2C15E13F0020A02E /* Follow */,
 				3B2AE47D2D84F7D0009F4601 /* Post */,
@@ -1387,6 +1404,7 @@
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */,
 				658D08742BE8C3A6006C6A9E /* UIColor+Core.swift in Sources */,
+				6517C92A2DA11183001EC9B6 /* UserAccountModel.swift in Sources */,
 				65C6CCA82BFF60FB00B0A052 /* UserPostsTabView.swift in Sources */,
 				65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */,
 				65C71BA82C3434510025839C /* JobsSearchInputSheetView.swift in Sources */,
@@ -1426,8 +1444,10 @@
 				656C1BAB2C020D2000EEE575 /* NotificationsTabModel.swift in Sources */,
 				6517C9212DA0F95E001EC9B6 /* DraftService.swift in Sources */,
 				6540F8DE2BC564A50029BA46 /* SearchTopicCellView.swift in Sources */,
+				6517C9262DA10B9B001EC9B6 /* AuthService.swift in Sources */,
 				3B20B06F2C3D89A70045E904 /* SearchResultTabModel.swift in Sources */,
 				65FD4FA02C25B3D70020A02E /* PostService.swift in Sources */,
+				6517C9282DA10BF1001EC9B6 /* SignUpViewController.swift in Sources */,
 				65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */,
 				65FD4F372C11E10E0020A02E /* UserFollowingTabView.swift in Sources */,
 				3B9764172CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift in Sources */,

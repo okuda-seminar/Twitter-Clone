@@ -36,7 +36,13 @@ class AppRootViewController: UIViewController {
     setUpSideMenuTransition()
   }
 
-  // MARK: - Private API
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/658 - Polish Sign up navigation.
+    showSignUpViewIfNeeded()
+  }
+
+  // MARK: - View Lifecycle
 
   private func setUpSubviews() {
     view.backgroundColor = .systemBackground
@@ -65,6 +71,16 @@ class AppRootViewController: UIViewController {
 
   public func showSideMenu() {
     sideMenuTransitionController.presentSideMenu()
+  }
+
+  // MARK: - Auth
+
+  private func showSignUpViewIfNeeded() {
+    if !injectAuthService().isAuthenticated {
+      let signUpViewController = SignUpViewController()
+      signUpViewController.modalPresentationStyle = .fullScreen
+      present(signUpViewController, animated: false)
+    }
   }
 }
 
