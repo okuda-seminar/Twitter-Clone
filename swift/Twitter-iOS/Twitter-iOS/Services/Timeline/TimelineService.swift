@@ -2,7 +2,7 @@ import Foundation
 
 /// The completion typealias for the startListeningToTimelineSSE method.
 public typealias didStartListeningToTimelineSSECompletion = (
-  Result<(TimelineSSEEventType, [PostModel]), Error>
+  Result<(TimelineEventType, [PostModel]), Error>
 ) -> Void
 
 /// The enum to represent the errors in TimelineService.
@@ -47,7 +47,7 @@ public final class TimelineService: NSObject {
   /// - Parameters:
   ///   - id: The id of the user whose timeline updates will be received.
   ///   - completion: The closure to be called with the result of the timeline event results.
-  public func startListeningToTimelineSSE(
+  public func startListeningToTimelineEvents(
     id: String, completion: @escaping didStartListeningToTimelineSSECompletion
   ) {
     guard
@@ -69,7 +69,7 @@ public final class TimelineService: NSObject {
   }
 
   /// Stops listening to the Server-sent events connection for timeline-related updates.
-  public func stopListeningToTimelineSSE() {
+  public func stopListeningToTimelineEvents() {
     timelineSSETask?.cancel()
     timelineSSESession?.invalidateAndCancel()
     timelineSSETask = nil
@@ -111,12 +111,11 @@ public final class TimelineService: NSObject {
       completion(.failure(TimelineServiceError.dataProcessingError))
       return
     }
-
     // Remove the "data:" event field prefix.
     let eventField: String = "data:"
     let cleanedEventString =
-      eventString.hasPrefix(eventField)
-      ? String(eventString.dropFirst(eventField.count)) : eventString
+    eventString.hasPrefix(eventField)
+    ? String(eventString.dropFirst(eventField.count)) : eventString
 
     guard let eventJsonData = cleanedEventString.data(using: .utf8) else {
       completion(.failure(TimelineServiceError.dataProcessingError))
@@ -125,11 +124,9 @@ public final class TimelineService: NSObject {
 
     do {
       let decodedEventData = try JSONDecoder().decode(
-        TimelineSSEDataModel.self, from: eventJsonData)
+        TimelineEventModel.self, from: eventJsonData)
 
-      let posts = decodedEventData.posts.map {
-        convertTimelinePostResponseToPostModel(postResponse: $0)
-      }
+      let posts = decodedEventData.timelineItems.compactMap { $0.postModel?.clientPostModel }
 
       DispatchQueue.main.async {
         switch decodedEventData.eventType {
@@ -139,6 +136,12 @@ public final class TimelineService: NSObject {
           completion(.success((.postCreated, posts)))
         case .postDeleted:
           completion(.success((.postDeleted, posts)))
+        case .RepostCreated:
+          completion(.success((.RepostCreated, [])))
+        case .RepostDeleted:
+          completion(.success((.RepostDeleted, [])))
+        case .QuoteRepostCreated:
+          completion(.success((.QuoteRepostCreated, [])))
         }
       }
     } catch {

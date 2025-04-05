@@ -109,6 +109,9 @@ class HomeViewController: ViewControllerWithUserIconButton {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
+
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(refreshTimeline), name: .authServiceDidChangeAuthenticationState, object: nil)
   }
 
   /// Opens the bottom sheet if necessary and starts listening to the SSE connection after the view appears.
@@ -123,21 +126,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
     // - Fetch Posts for 'For You' Tab in HomeViewController from Backend Server.
     // Replace this with operations that fetch real data from the backend server in the future.
     loadDataForForYouTab()
-
-    timelineService.startListeningToTimelineSSE(id: temporaryID) { [weak self] result in
-      guard let strongSelf = self else { return }
-
-      switch result {
-      case .success((let eventType, let posts)):
-        strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
-      case .failure(let error):
-        guard let timelineServiceError = error as? TimelineServiceError else {
-          strongSelf.handleUnknownError(error: error)
-          return
-        }
-        strongSelf.handleTimelineServiceError(error: timelineServiceError)
-      }
-    }
+    refreshTimeline()
   }
 
   /// Stops listening to the SSE connection when the view disappears.
@@ -146,7 +135,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     didAppear = false
-    timelineService.stopListeningToTimelineSSE()
+    timelineService.stopListeningToTimelineEvents()
   }
 
   // MARK: - Private API
@@ -191,12 +180,33 @@ class HomeViewController: ViewControllerWithUserIconButton {
     }
   }
 
+  // MARK: - Timeline
+
+  @objc private func refreshTimeline() {
+    timelineService.stopListeningToTimelineEvents()
+
+    timelineService.startListeningToTimelineEvents(id: injectAuthService().currentUser.id.uuidString) { [weak self] result in
+      guard let strongSelf = self else { return }
+
+      switch result {
+      case .success((let eventType, let posts)):
+        strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
+      case .failure(let error):
+        guard let timelineServiceError = error as? TimelineServiceError else {
+          strongSelf.handleUnknownError(error: error)
+          return
+        }
+        strongSelf.handleTimelineServiceError(error: timelineServiceError)
+      }
+    }
+  }
+
   /// Handles timeline events received from the SSE connection.
   ///
   /// - Parameters:
   ///   - eventType: The type of timeline SSE event.
   ///   - posts: The posts received from the event.
-  private func handleTimelineSSEEvent(eventType: TimelineSSEEventType, posts: [PostModel]) {
+  private func handleTimelineSSEEvent(eventType: TimelineEventType, posts: [PostModel]) {
     switch eventType {
     case .timelineAccessed:
       postsDataSource.followingTabPostModels = posts
@@ -206,6 +216,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
     case .postDeleted:
       let deletedPostIDs = Set(posts.map { $0.id })
       postsDataSource.followingTabPostModels.removeAll { deletedPostIDs.contains($0.id) }
+    default:
+      return
     }
   }
 
