@@ -7,6 +7,7 @@ public func injectDraftService() -> DraftServiceProtocol {
 
 public protocol DraftServiceProtocol {
   func save(draft: DraftModel)
+  var drafts: [DraftModel] { get }
 }
 
 final class DraftService: DraftServiceProtocol {
@@ -15,20 +16,25 @@ final class DraftService: DraftServiceProtocol {
 
   public static let shared = DraftService()
 
+  public var drafts: [DraftModel] = []
+
   // MARK: - Private Props
 
-  private static let draftKey = "com.x-clone.postService.draftKey"
+  private static let savedDraftsKey = "com.x-clone.draftService.savedDrafts"
 
   private let logger = os.Logger(subsystem: "com.x-clone", category: "draftService")
 
   // MARK: - Public APIs
 
+  public init() {
+    loadDraftModels(key: DraftService.savedDraftsKey)
+  }
+
   /// Add a new PostModel to existing the draft models and  save the updated ones.
   public func save(draft: DraftModel) {
-    var draftModels = loadDraftModels(key: Self.draftKey)
-    draftModels.append(draft)
-    print(draftModels)
-    saveDraftModels(draftModels, key: Self.draftKey)
+    loadDraftModels(key: Self.savedDraftsKey)
+    drafts.append(draft)
+    saveDraftModels(drafts, key: Self.savedDraftsKey)
   }
 
   /// Save PostModel array to UserDefaults (as before)
@@ -43,18 +49,17 @@ final class DraftService: DraftServiceProtocol {
   }
 
   /// Load PostModel array from UserDefaults (as before)
-  private func loadDraftModels(key: String) -> [DraftModel] {
+  private func loadDraftModels(key: String) {
     guard let data = UserDefaults.standard.data(forKey: key) else {
-      return []
+      return
     }
 
     let decoder = JSONDecoder()
     do {
-      let draftModels = try decoder.decode([DraftModel].self, from: data)
-      return draftModels
+      drafts = try decoder.decode([DraftModel].self, from: data)
     } catch {
       logger.error("Failed to decode PostModel array: \(error)")
-      return []
+      return
     }
   }
 }

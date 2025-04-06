@@ -1,4 +1,3 @@
-import PhotosUI
 import SwiftUI
 import UIKit
 
@@ -85,7 +84,7 @@ final class NewPostEditViewController: UIViewController {
 
   private func setUpViewObserver() {
     viewObserver.didTapNewPostEditCancelButtonCompletion = { [weak self] in
-      self?.makeTransparentAndDismiss()
+      self?.askToSaveDraftIfNeeded()
     }
 
     viewObserver.didTapImageEditButtonCompletion = { [weak self] in
@@ -131,11 +130,23 @@ final class NewPostEditViewController: UIViewController {
     viewObserver.didTapLocationSettingsTransitionButtonCompletion = { [weak self] in
       self?.presentLocationSettingsNavigationViewController()
     }
+
+    viewObserver.didTapDraftsButtonCompletion = { [weak self] in
+      let viewController = DraftsViewController()
+      self?.present(viewController, animated: true)
+    }
   }
 
   // MARK: - Methods for ViewObserver Completion
 
-  private func makeTransparentAndDismiss() {
+  private func askToSaveDraftIfNeeded() {
+    guard !dataSource.postText.isEmpty else {
+      dismissAfterCleaningUp()
+      return
+    }
+  }
+
+  private func dismissAfterCleaningUp() {
     newPostEditHostingController.view.layer.opacity = 0.0
     photoLibraryAccessHostingController.view.layer.opacity = 0.0
 
@@ -240,310 +251,4 @@ final class NewPostEditViewController: UIViewController {
       }
     }
   }
-}
-
-// MARK: - View
-
-struct NewPostEditView: View {
-
-  // MARK: - Private Props
-
-  private enum LayoutConstant {
-    static let userIconSize: CGFloat = 32.0
-    static let postButtonSize: CGFloat = 40.0
-    static let postButtonRadius: CGFloat = 20.0
-    static let textFieldTopPadding: CGFloat = 5.0
-    static let singleImageHeight: CGFloat = 450.0
-    static let singleImageLeadingPadding: CGFloat = 40.0
-    static let multipleImagesWidth: CGFloat = 130.0
-    static let multipleImagesHeight: CGFloat = 190.0
-    static let firstImageLeadingPadding: CGFloat = 40.0
-    static let imageCornerRadius: CGFloat = 10.0
-    static let imageEditButtonsOpacity: CGFloat = 0.7
-    static let deleteButtonSize: CGFloat = 30.0
-    static let brushButtonSize: CGFloat = 30.0
-    static let altButtonWidth: CGFloat = 45.0
-    static let altButtonHeight: CGFloat = 30.0
-    static let altButtonCornerRadius: CGFloat = 15.0
-  }
-
-  private enum LocalizedString {
-    static let cancelButtonText = String(localized: "Cancel")
-    static let draftsButtonText = String(localized: "Drafts")
-    static let postButtonText = String(localized: "Post")
-    static let textFieldPlaceHolderText = String(localized: "What's happening?")
-    static let altButtonText = String(localized: "+Alt")
-    static let tagEditButtonText = String(localized: "Tag people")
-    static let locationEditButtonText = String(localized: "Add location")
-  }
-
-  private enum imageSelectionState: Int {
-    case none
-    case single
-    case multiple
-  }
-
-  private var currentImageSelectionState: imageSelectionState {
-    switch dataSource.selectedImages.count {
-    case 0:
-      return .none
-    case 1:
-      return .single
-    default:
-      return .multiple
-    }
-  }
-
-  @ObservedObject private(set) var dataSource: NewPostEditDataSource
-  @ObservedObject private(set) var viewObserver: NewPostEditViewObserver
-
-  private var isPostButtonDisabled: Bool {
-    dataSource.postText.isEmpty
-  }
-
-  var body: some View {
-    VStack {
-      Header()
-      InputField()
-    }
-    Spacer()
-  }
-
-  @ViewBuilder
-  private func Header() -> some View {
-    HStack {
-      Button(
-        action: {
-          viewObserver.didTapNewPostEditCancelButtonCompletion?()
-        },
-        label: {
-          Text(LocalizedString.cancelButtonText)
-            .underline()
-            .foregroundStyle(.black)
-        })
-
-      Spacer()
-
-      Button(
-        action: {
-          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/337
-          // - Add Post Functionality to POST Button in NewPostEditViewController.swift.
-          let draftService = injectDraftService()
-          draftService.save(draft: DraftModel(text: $dataSource.postText.wrappedValue))
-        },
-        label: {
-          Text(LocalizedString.draftsButtonText)
-            .underline()
-        })
-
-      Button(
-        action: {
-          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/338
-          // - Add Making Post Drafts Functionality to Drafts Button in NewPostEditViewController.swift.
-        },
-        label: {
-          Text(LocalizedString.postButtonText)
-            .foregroundStyle(.white)
-            .underline()
-            .padding()
-        }
-      )
-      .background(Color(.blue))
-      .frame(height: LayoutConstant.postButtonSize)
-      .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.postButtonRadius))
-      .opacity(isPostButtonDisabled ? 0.5 : 1.0)
-      .disabled(isPostButtonDisabled)
-    }
-    .padding(.horizontal)
-  }
-
-  @ViewBuilder
-  private func InputField() -> some View {
-    VStack(alignment: .leading) {
-      HStack(alignment: .top) {
-        Image(systemName: "person.circle.fill")
-          .resizable()
-          .scaledToFit()
-          .frame(width: LayoutConstant.userIconSize, height: LayoutConstant.userIconSize)
-
-        TextField(
-          LocalizedString.textFieldPlaceHolderText,
-          text: $dataSource.postText,
-          axis: .vertical
-        )
-        .padding(.top, LayoutConstant.textFieldTopPadding)
-      }
-      .padding(.horizontal)
-
-      SelectedImagesCatalog()
-        .padding(.horizontal)
-    }
-  }
-
-  @ViewBuilder
-  private func SelectedImagesCatalog() -> some View {
-    switch currentImageSelectionState {
-    case .none:
-      EmptyView()
-    case .single:
-      VStack(alignment: .leading) {
-        Image(uiImage: dataSource.selectedImages[0])
-          .resizable()
-          .frame(minWidth: 0.0, maxWidth: .infinity)
-          .frame(height: LayoutConstant.singleImageHeight)
-          .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
-          .padding(.leading, LayoutConstant.singleImageLeadingPadding)
-          .overlay(alignment: .trailing) {
-            imageEditButtons(selectedImageIndex: 0)
-          }
-
-        TagAndLocationEditButtons()
-          .padding(.leading, LayoutConstant.singleImageLeadingPadding)
-      }
-    case .multiple:
-      VStack(alignment: .leading) {
-        ScrollView(.horizontal) {
-          HStack {
-            ForEach(dataSource.selectedImages.indices, id: \.self) { index in
-              Image(uiImage: dataSource.selectedImages[index])
-                .resizable()
-                .frame(
-                  width: LayoutConstant.multipleImagesWidth,
-                  height: LayoutConstant.multipleImagesHeight
-                )
-                .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.imageCornerRadius))
-                .overlay(alignment: .trailing) {
-                  imageEditButtons(selectedImageIndex: index)
-                }
-                .padding(.leading, index == 0 ? LayoutConstant.firstImageLeadingPadding : 0.0)
-            }
-          }
-        }
-
-        TagAndLocationEditButtons()
-          .padding(.leading, LayoutConstant.firstImageLeadingPadding)
-      }
-    }
-  }
-
-  @ViewBuilder
-  private func imageEditButtons(selectedImageIndex: Int) -> some View {
-    VStack(alignment: .trailing) {
-      Button {
-        // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/402
-        // - Add Delete Image Functionality to Cancel Button in NewPostEditViewController.swift.
-      } label: {
-        Image(systemName: "xmark")
-          .foregroundStyle(.white)
-          .background(
-            Circle()
-              .fill(Color.black)
-              .frame(
-                width: LayoutConstant.deleteButtonSize, height: LayoutConstant.deleteButtonSize
-              )
-              .opacity(LayoutConstant.imageEditButtonsOpacity)
-          )
-      }
-
-      Spacer()
-
-      HStack {
-        Button {
-          viewObserver.didTapImageAltButtonCompletion?(selectedImageIndex)
-        } label: {
-          Text(LocalizedString.altButtonText)
-            .font(.headline)
-            .foregroundStyle(.white)
-            .background(
-              RoundedRectangle(cornerRadius: LayoutConstant.altButtonCornerRadius)
-                .fill(Color.black)
-                .frame(width: LayoutConstant.altButtonWidth, height: LayoutConstant.altButtonHeight)
-                .opacity(LayoutConstant.imageEditButtonsOpacity)
-            )
-        }
-        .padding(.horizontal)
-
-        Button {
-          viewObserver.didTapImageEditButtonCompletion?()
-        } label: {
-          Image(systemName: "paintbrush.pointed")
-            .foregroundStyle(.white)
-            .background(
-              Circle()
-                .fill(Color.black)
-                .frame(
-                  width: LayoutConstant.brushButtonSize, height: LayoutConstant.brushButtonSize
-                )
-                .opacity(LayoutConstant.imageEditButtonsOpacity)
-            )
-        }
-      }
-    }
-    .padding()
-  }
-
-  @ViewBuilder
-  private func TagAndLocationEditButtons() -> some View {
-    VStack {
-      Button {
-        viewObserver.didTapTagEditEntryButtonCompletion?()
-      } label: {
-        HStack {
-          Image(systemName: "person")
-            .foregroundStyle(.blue)
-
-          Text(LocalizedString.tagEditButtonText)
-            .foregroundStyle(.blue)
-        }
-      }
-
-      Button {
-        viewObserver.didTapLocationEditButtonCompletion?()
-      } label: {
-        HStack {
-          Image(systemName: "mappin")
-            .foregroundStyle(.gray)
-
-          Text(LocalizedString.locationEditButtonText)
-            .foregroundStyle(.gray)
-        }
-      }
-    }
-  }
-}
-
-struct PhotosSelector: View {
-  @ObservedObject var dataSource: NewPostEditDataSource
-
-  var body: some View {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/393
-    // - Enable Video Selection from Library Using PhotosPicker.
-    PhotosPicker(
-      selection: $dataSource.selectedItems,
-      matching: .images
-    ) {
-      Image(systemName: "photo")
-    }
-    .onChange(of: dataSource.selectedItems) {
-      setImages(from: dataSource.selectedItems)
-    }
-  }
-
-  private func setImages(from selectedItems: [PhotosPickerItem]) {
-    Task {
-      var images: [UIImage] = []
-      for selectedItem in selectedItems {
-        guard let data = try? await selectedItem.loadTransferable(type: Data.self) else { return }
-        guard let uiImage = UIImage(data: data) else { return }
-        images.append(uiImage)
-        dataSource.altTexts.append("")
-      }
-
-      dataSource.selectedImages = images
-    }
-  }
-}
-
-#Preview {
-  NewPostEditViewController()
 }

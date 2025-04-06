@@ -18,7 +18,7 @@
 		3B3ADDD72D52F36E00934445 /* UserProfileTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDD62D52F36E00934445 /* UserProfileTabsViewController.swift */; };
 		3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */; };
 		3B45B8E62C04DFAF00701649 /* UserBookmarksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */; };
-		3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */; };
+		3B497E512C6752000094F826 /* NewPostEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B497E502C6752000094F826 /* NewPostEditView.swift */; };
 		3B4F6E932D77ED9D008521CA /* TimelineEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F6E922D77ED9D008521CA /* TimelineEventModel.swift */; };
 		3B57F5FC2CD9BEC200090887 /* CannotReplyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */; };
 		3B5CE8502C74D40A005833E1 /* SelectedImageEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */; };
@@ -49,6 +49,9 @@
 		6517C9262DA10B9B001EC9B6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9252DA10B93001EC9B6 /* AuthService.swift */; };
 		6517C9282DA10BF1001EC9B6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9272DA10BEB001EC9B6 /* SignUpViewController.swift */; };
 		6517C92A2DA11183001EC9B6 /* UserAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9292DA1117A001EC9B6 /* UserAccountModel.swift */; };
+		6517C92D2DA25F3B001EC9B6 /* DraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C92C2DA25F2E001EC9B6 /* DraftsViewController.swift */; };
+		6517C92F2DA267E7001EC9B6 /* DraftsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C92E2DA267DB001EC9B6 /* DraftsView.swift */; };
+		6517C9312DA277F5001EC9B6 /* DraftBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517C9302DA277EE001EC9B6 /* DraftBottomSheet.swift */; };
 		6540F8812BB44D430029BA46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8802BB44D430029BA46 /* AppDelegate.swift */; };
 		6540F8832BB44D430029BA46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6540F8822BB44D430029BA46 /* SceneDelegate.swift */; };
 		6540F88A2BB44D430029BA46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6540F8892BB44D430029BA46 /* Assets.xcassets */; };
@@ -188,7 +191,7 @@
 		3B3ADDD62D52F36E00934445 /* UserProfileTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileTabsViewController.swift; sourceTree = "<group>"; };
 		3B3ADDF52D5D75A900934445 /* UserProfileHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderViewController.swift; sourceTree = "<group>"; };
 		3B45B8E52C04DFAF00701649 /* UserBookmarksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBookmarksPageViewController.swift; sourceTree = "<group>"; };
-		3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditViewObserver.swift; sourceTree = "<group>"; };
+		3B497E502C6752000094F826 /* NewPostEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostEditView.swift; sourceTree = "<group>"; };
 		3B4F6E922D77ED9D008521CA /* TimelineEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineEventModel.swift; sourceTree = "<group>"; };
 		3B57F5FB2CD9BEB500090887 /* CannotReplyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannotReplyBottomSheet.swift; sourceTree = "<group>"; };
 		3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedImageEditViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +223,9 @@
 		6517C9252DA10B93001EC9B6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		6517C9272DA10BEB001EC9B6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6517C9292DA1117A001EC9B6 /* UserAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountModel.swift; sourceTree = "<group>"; };
+		6517C92C2DA25F2E001EC9B6 /* DraftsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftsViewController.swift; sourceTree = "<group>"; };
+		6517C92E2DA267DB001EC9B6 /* DraftsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftsView.swift; sourceTree = "<group>"; };
+		6517C9302DA277EE001EC9B6 /* DraftBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftBottomSheet.swift; sourceTree = "<group>"; };
 		6540F87D2BB44D430029BA46 /* Twitter-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6540F8802BB44D430029BA46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6540F8822BB44D430029BA46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -412,7 +418,7 @@
 				3B9764162CAD3441007FE8BC /* LocationAccessExplanationPopUpView.swift */,
 				3BA1CD672C6B845900924DA5 /* NewPostEditDataSource.swift */,
 				6540F8BF2BB5768F0029BA46 /* NewPostEditViewController.swift */,
-				3B497E502C6752000094F826 /* NewPostEditViewObserver.swift */,
+				3B497E502C6752000094F826 /* NewPostEditView.swift */,
 				3B9764142CAD2308007FE8BC /* NewPostTagEditView.swift */,
 				3B5CE84F2C74D40A005833E1 /* SelectedImageEditViewController.swift */,
 				3B5CE8572C757F5B005833E1 /* SelectedImageEditViewObserver.swift */,
@@ -463,6 +469,16 @@
 				6517C9252DA10B93001EC9B6 /* AuthService.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		6517C92B2DA25F22001EC9B6 /* Draft */ = {
+			isa = PBXGroup;
+			children = (
+				6517C9302DA277EE001EC9B6 /* DraftBottomSheet.swift */,
+				6517C92E2DA267DB001EC9B6 /* DraftsView.swift */,
+				6517C92C2DA25F2E001EC9B6 /* DraftsViewController.swift */,
+			);
+			path = Draft;
 			sourceTree = "<group>";
 		};
 		6540F8742BB44D430029BA46 = {
@@ -552,6 +568,7 @@
 		6540F8B82BB575E80029BA46 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				6517C92B2DA25F22001EC9B6 /* Draft */,
 				3B5CE85B2C775841005833E1 /* NewPost */,
 				65F908482BE1273700C6C8B3 /* Permission */,
 				65FD4F512C1B17A80020A02E /* Reply */,
@@ -1355,6 +1372,7 @@
 				3B5CE8582C757F5B005833E1 /* SelectedImageEditViewObserver.swift in Sources */,
 				65FD4FCF2C2EEE1C0020A02E /* SubscribeOptionsViewController.swift in Sources */,
 				3B5CE8522C74D683005833E1 /* AltTextEditViewController.swift in Sources */,
+				6517C92D2DA25F3B001EC9B6 /* DraftsViewController.swift in Sources */,
 				65FD4FDC2C3039580020A02E /* SubscriptionService.swift in Sources */,
 				65C6CC272BFB70E400B0A052 /* UIViewController+Settings.swift in Sources */,
 				3B2AE4962D87F17B009F4601 /* TimelinePostsDataSource.swift in Sources */,
@@ -1370,7 +1388,7 @@
 				3B68A4BB2C0ADD89009D0350 /* NotificationsMentionsTabView.swift in Sources */,
 				658D089A2BF63058006C6A9E /* NotificationsSettingsViewController.swift in Sources */,
 				6540F9072BD377140029BA46 /* ExploreSettingsBodyView.swift in Sources */,
-				3B497E512C6752000094F826 /* NewPostEditViewObserver.swift in Sources */,
+				3B497E512C6752000094F826 /* NewPostEditView.swift in Sources */,
 				65FD4FB12C2AE5800020A02E /* HomeBottomSheetViewController.swift in Sources */,
 				656C1BB82C0749EA00EEE575 /* CommunityFilterModel.swift in Sources */,
 				6540F8C02BB5768F0029BA46 /* NewPostEditViewController.swift in Sources */,
@@ -1384,6 +1402,7 @@
 				6540F8EE2BCA28070029BA46 /* CommunitiesHomeViewController.swift in Sources */,
 				6540F8BE2BB576740029BA46 /* NewPostEntrypointButtonController.swift in Sources */,
 				65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */,
+				6517C9312DA277F5001EC9B6 /* DraftBottomSheet.swift in Sources */,
 				65FD4FA42C284AF20020A02E /* CommunitiesHomeMyCommunitiesTabView.swift in Sources */,
 				65C71BB52C357CDE0025839C /* SearchedUserModel.swift in Sources */,
 				3B3ADDD12D508D6800934445 /* UserPostsCollectionViewCell.swift in Sources */,
@@ -1396,6 +1415,7 @@
 				65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */,
 				656C1BB42C05EEE600EEE575 /* SearchTabModel.swift in Sources */,
 				65C71B9A2C32D80D0025839C /* JobsViewController.swift in Sources */,
+				6517C92F2DA267E7001EC9B6 /* DraftsView.swift in Sources */,
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,
 				6540F9032BD376750029BA46 /* ExploreSettingsViewController.swift in Sources */,
 				3B3ADDF62D5D75A900934445 /* UserProfileHeaderViewController.swift in Sources */,
