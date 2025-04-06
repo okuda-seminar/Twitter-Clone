@@ -30,7 +30,7 @@ final class SignUpViewController: UIViewController {
   }
 
   @objc func dismissWithAnimation() {
-    DispatchQueue.main.async { [weak self] in
+    Task.detached { @MainActor [weak self] in
       self?.dismiss(animated: true)
     }
   }

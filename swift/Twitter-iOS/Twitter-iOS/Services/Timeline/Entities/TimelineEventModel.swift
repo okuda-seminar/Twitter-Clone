@@ -6,9 +6,9 @@ public enum TimelineEventType: String, Codable {
   case timelineAccessed = "TimelineAccessed"
   case postCreated = "PostCreated"
   case postDeleted = "PostDeleted"
-  case RepostCreated = "RepostCreated"
-  case RepostDeleted = "RepostDeleted"
-  case QuoteRepostCreated = "QuoteRepostCreated"
+  case repostCreated = "RepostCreated"
+  case repostDeleted = "RepostDeleted"
+  case quoteRepostCreated = "QuoteRepostCreated"
 }
 
 /// Struct to hold event details
@@ -67,7 +67,9 @@ struct TimelinePostModel: Codable {
 
   var clientPostModel: PostModel? {
     guard let uuid = UUID(uuidString: id) else { return nil }
-    return PostModel(id: uuid, bodyText: text, userIcon: UIImage(), userName: "TBU", isRepostedByCurrentUser: false)
+    return PostModel(
+      id: uuid, bodyText: text, userIcon: UIImage(), userName: "TBU", isRepostedByCurrentUser: false
+    )
   }
 }
 

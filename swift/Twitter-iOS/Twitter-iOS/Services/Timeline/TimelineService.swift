@@ -114,8 +114,8 @@ public final class TimelineService: NSObject {
     // Remove the "data:" event field prefix.
     let eventField: String = "data:"
     let cleanedEventString =
-    eventString.hasPrefix(eventField)
-    ? String(eventString.dropFirst(eventField.count)) : eventString
+      eventString.hasPrefix(eventField)
+      ? String(eventString.dropFirst(eventField.count)) : eventString
 
     guard let eventJsonData = cleanedEventString.data(using: .utf8) else {
       completion(.failure(TimelineServiceError.dataProcessingError))
@@ -128,29 +128,25 @@ public final class TimelineService: NSObject {
 
       let posts = decodedEventData.timelineItems.compactMap { $0.postModel?.clientPostModel }
 
-      DispatchQueue.main.async {
-        switch decodedEventData.eventType {
-        case .timelineAccessed:
-          completion(.success((.timelineAccessed, posts)))
-        case .postCreated:
-          completion(.success((.postCreated, posts)))
-        case .postDeleted:
-          completion(.success((.postDeleted, posts)))
-        case .RepostCreated:
-          completion(.success((.RepostCreated, [])))
-        case .RepostDeleted:
-          completion(.success((.RepostDeleted, [])))
-        case .QuoteRepostCreated:
-          completion(.success((.QuoteRepostCreated, [])))
-        }
+      switch decodedEventData.eventType {
+      case .timelineAccessed:
+        completion(.success((.timelineAccessed, posts)))
+      case .postCreated:
+        completion(.success((.postCreated, posts)))
+      case .postDeleted:
+        completion(.success((.postDeleted, posts)))
+      case .repostCreated:
+        completion(.success((.repostCreated, [])))
+      case .repostDeleted:
+        completion(.success((.repostDeleted, [])))
+      case .quoteRepostCreated:
+        completion(.success((.quoteRepostCreated, [])))
       }
     } catch {
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/611
       // - Add Robust Error Handling for Timeline SSE Processing.
       print(error.localizedDescription)
-      DispatchQueue.main.async {
-        completion(.failure(TimelineServiceError.dataProcessingError))
-      }
+      completion(.failure(TimelineServiceError.dataProcessingError))
     }
   }
 }

@@ -84,13 +84,13 @@ class SearchInputViewController: UIViewController {
     let searchService = injectSearchService()
     DispatchQueue.global(qos: .userInitiated).async {
       searchService.fetchRecentSearchedUsers { [weak self] recentlySearchedUsers in
-        DispatchQueue.main.async {
+        Task { @MainActor [weak self] in
           self?.fetchRecentSearchedUsersCompletion(recentlySearchedUsers: recentlySearchedUsers)
         }
       }
 
       searchService.fetchRecentSearchedQueries { [weak self] recentlySearchedQueries in
-        DispatchQueue.main.async {
+        Task { @MainActor in
           self?.fetchRecentSearchedQueriesCompletion(
             recentlySearchedQueries: recentlySearchedQueries)
         }

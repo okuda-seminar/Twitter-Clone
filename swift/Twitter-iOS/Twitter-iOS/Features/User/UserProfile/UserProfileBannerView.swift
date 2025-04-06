@@ -46,7 +46,7 @@ struct UserProfileBannerView: View {
   var body: some View {
     GeometryReader { proxy -> AnyView in
       let minY = proxy.frame(in: .global).minY
-      DispatchQueue.main.async {
+      Task { @MainActor in
         scrollOffset = minY
       }
       return AnyView(

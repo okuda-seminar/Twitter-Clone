@@ -26,7 +26,7 @@ class BannerController {
       object: nil)
   }
 
-  public func show(on parent: UIViewController, duration: CGFloat = 5.0) {
+  public func show(on parent: UIViewController, duration: UInt64 = 5) {
     self.parent = parent
     parent.addChild(hostingController)
     hostingController.didMove(toParent: parent)
@@ -43,8 +43,9 @@ class BannerController {
           height: LayoutConstant.bannerHeight)
       }
     ) { _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-        self.dismissPresentingBanner()
+      Task { @MainActor [weak self] in
+        try? await Task.sleep(nanoseconds: duration * NSEC_PER_SEC)
+        self?.dismissPresentingBanner()
       }
     }
   }

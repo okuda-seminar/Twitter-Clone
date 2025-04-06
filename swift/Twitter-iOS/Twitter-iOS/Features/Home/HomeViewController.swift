@@ -111,7 +111,8 @@ class HomeViewController: ViewControllerWithUserIconButton {
     setUpSubviews()
 
     NotificationCenter.default.addObserver(
-      self, selector: #selector(refreshTimeline), name: .authServiceDidChangeAuthenticationState, object: nil)
+      self, selector: #selector(refreshTimeline), name: .authServiceDidChangeAuthenticationState,
+      object: nil)
   }
 
   /// Opens the bottom sheet if necessary and starts listening to the SSE connection after the view appears.
@@ -185,18 +186,21 @@ class HomeViewController: ViewControllerWithUserIconButton {
   @objc private func refreshTimeline() {
     timelineService.stopListeningToTimelineEvents()
 
-    timelineService.startListeningToTimelineEvents(id: injectAuthService().currentUser.id.uuidString) { [weak self] result in
-      guard let strongSelf = self else { return }
-
-      switch result {
-      case .success((let eventType, let posts)):
-        strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
-      case .failure(let error):
-        guard let timelineServiceError = error as? TimelineServiceError else {
-          strongSelf.handleUnknownError(error: error)
-          return
+    timelineService.startListeningToTimelineEvents(
+      id: injectAuthService().currentUser.id.uuidString
+    ) { [weak self] result in
+      Task { @MainActor in
+        guard let strongSelf = self else { return }
+        switch result {
+        case .success((let eventType, let posts)):
+          strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
+        case .failure(let error):
+          guard let timelineServiceError = error as? TimelineServiceError else {
+            strongSelf.handleUnknownError(error: error)
+            return
+          }
+          strongSelf.handleTimelineServiceError(error: timelineServiceError)
         }
-        strongSelf.handleTimelineServiceError(error: timelineServiceError)
       }
     }
   }

@@ -111,7 +111,7 @@ final class NewPostEditViewController: UIViewController {
 
       DispatchQueue.global(qos: .userInitiated).async {
         postService.fetchSearchedTagCandidateUsers { searchedUsers in
-          DispatchQueue.main.async {
+          Task { @MainActor in
             self?.dataSource.tagCandidateUsers = searchedUsers
           }
         }
@@ -119,7 +119,7 @@ final class NewPostEditViewController: UIViewController {
     }
 
     viewObserver.didEmptyTextFieldCompletion = { [weak self] in
-      DispatchQueue.main.async {
+      Task { @MainActor [weak self] in
         self?.dataSource.tagCandidateUsers.removeAll()
       }
     }
