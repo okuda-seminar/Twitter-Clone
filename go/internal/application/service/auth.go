@@ -3,7 +3,9 @@ package service
 import (
 	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -35,6 +37,20 @@ type UserClaims struct {
 	jwt.RegisteredClaims
 }
 
+func ExtractTokenFromHeader(r *http.Request) (string, error) {
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		return "", fmt.Errorf("authorization header missing.")
+	}
+
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+		return "", fmt.Errorf("invalid authorization header format.")
+	}
+
+	return parts[1], nil
+}
+
 // GenerateJWT generates a JWT with user ID and username
 func (s *AuthService) GenerateJWT(id uuid.UUID, username string) (string, error) {
 	// Set payload (claims)
@@ -63,28 +79,27 @@ func (s *AuthService) GenerateJWT(id uuid.UUID, username string) (string, error)
 }
 
 // ValidateJWT verifies and extracts claims from a JWT.
-func (s *AuthService) ValidateJWT(tokenString string) (*UserClaims, error) {
-	// Parse the JWT token and verify the signature
+func (s *AuthService) ValidateJWT(tokenString string) (string, error) {
+	// Parse the JWT token and verify its signature and expiration time.
 	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(t *jwt.Token) (interface{}, error) {
 		return s.secretKey, nil
 	})
 
 	// Handle errors
 	if err != nil || !token.Valid {
-		s.logger.Error("Invalid JWT token", "error", err)
-		return nil, fmt.Errorf("invalid token")
+		s.logger.Error("Invalid or expired token", "error", err)
+		return "", fmt.Errorf("Invalid or expired token")
 	}
 
-	// Extract and cast the claims from the token
 	claims, ok := token.Claims.(*UserClaims)
 	if !ok {
 		s.logger.Error("Failed to parse claims from JWT token", "token", tokenString)
-		return nil, fmt.Errorf("failed to parse claims")
+		return "", fmt.Errorf("failed to parse claims")
 	}
 
-	// Log and return the claims if the token is valid
-	s.logger.Info("Token validated successfully", "claims", claims)
-	return claims, nil
+	userID := claims.Subject
+	s.logger.Info("Token validated successfully", "userID", userID)
+	return userID, nil
 }
 
 // HashPassword hashes a given password using bcrypt

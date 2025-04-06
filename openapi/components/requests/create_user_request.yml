@@ -7,8 +7,11 @@ required:
 properties:
   username:
     type: string
+    minLength: 4
+    maxLength: 14
   display_name:
     type: string
   password:
     type: string
-    description: Password must be between 8 and 15 characters.
+    minLength: 8
+    maxLength: 15

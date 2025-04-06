@@ -17,18 +17,19 @@ func TestJWTMiddleware(t *testing.T) {
 	secretKey := "test_secret_key"
 	authService := service.NewAuthService(secretKey)
 
-	tokenString, _ := authService.GenerateJWT(uuid.New(), "test_user")
+	userID := uuid.New()
+	tokenString, _ := authService.GenerateJWT(userID, "test_user")
 
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		claims, ok := r.Context().Value(UserContextKey).(*service.UserClaims)
+		userIDFromContext, ok := r.Context().Value(UserContextKey).(string)
 		if !ok {
-			t.Error("Failed to retrieve claims from context")
+			t.Error("Failed to retrieve user ID from context")
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
-		if claims.Username != "test_user" {
-			t.Errorf("Expected username 'test_user', got '%v'", claims.Username)
+		if userIDFromContext != userID.String() {
+			t.Errorf("Expected user ID '%s', got '%s'", userID.String(), userIDFromContext)
 		}
 
 		w.WriteHeader(http.StatusOK)

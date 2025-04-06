@@ -6,6 +6,7 @@
 package openapi
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -20,10 +21,13 @@ type ServerInterface interface {
 	// Creates a new post.
 	// (POST /api/posts)
 	CreatePost(w http.ResponseWriter, r *http.Request)
+	// Verify user session in token.
+	// (GET /api/session/verify)
+	VerifySession(w http.ResponseWriter, r *http.Request)
 	// Creates a new user.
 	// (POST /api/users)
 	CreateUser(w http.ResponseWriter, r *http.Request)
-	// Get a collection of posts by the specified user.
+	// Get a collection of posts or timelineitems by the specified user.
 	// (GET /api/users/{id}/posts)
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new quote repost.
@@ -71,6 +75,26 @@ func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreatePost(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// VerifySession operation middleware
+func (siw *ServerInterfaceWrapper) VerifySession(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.VerifySession(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -375,6 +399,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 
 	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.Login)
 	m.HandleFunc("POST "+options.BaseURL+"/api/posts", wrapper.CreatePost)
+	m.HandleFunc("GET "+options.BaseURL+"/api/session/verify", wrapper.VerifySession)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users", wrapper.CreateUser)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/posts", wrapper.GetUserPostsTimeline)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)

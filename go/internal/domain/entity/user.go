@@ -20,10 +20,10 @@ import (
 type User struct {
 	ID          uuid.UUID `json:"id"`
 	Username    string    `json:"username"`
-	DisplayName string    `json:"display_name"`
+	DisplayName string    `json:"displayName"`
 	Bio         string    `json:"bio"`
-	IsPrivate   bool      `json:"is_private"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	IsPrivate   bool      `json:"isPrivate"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 	Password    string    `json:"-"`
 }

@@ -39,16 +39,13 @@ func TestValidateJWT(t *testing.T) {
 		t.Fatalf("Expected no error, but got: %v", err)
 	}
 
-	claims, err := authService.ValidateJWT(signedToken)
+	extractedUserID, err := authService.ValidateJWT(signedToken)
 	if err != nil {
 		t.Fatalf("Expected no error, but got: %v", err)
 	}
 
-	if claims.Subject != userID.String() {
-		t.Errorf("Expected user ID %v, but got %v", userID, claims.Subject)
-	}
-	if claims.Username != username {
-		t.Errorf("Expected username %v, but got %v", username, claims.Username)
+	if extractedUserID != userID.String() {
+		t.Errorf("Expected user ID %v, but got %v", userID, extractedUserID)
 	}
 }
 
@@ -60,8 +57,8 @@ func TestExpiredJWT(t *testing.T) {
 	expiredToken := generateExpiredJWT(secretKey)
 
 	_, err := authService.ValidateJWT(expiredToken)
-	if err == nil || err.Error() != "invalid token" {
-		t.Errorf("Expected error 'invalid token', but got: %v", err)
+	if err == nil {
+		t.Errorf("Expected error for expired token, but got nil")
 	}
 }
 
@@ -81,8 +78,8 @@ func TestInvalidSignatureJWT(t *testing.T) {
 	invalidToken := signedToken[:len(signedToken)-1] + "x"
 
 	_, err = authService.ValidateJWT(invalidToken)
-	if err == nil || err.Error() != "invalid token" {
-		t.Errorf("Expected error 'invalid token', but got: %v", err)
+	if err == nil {
+		t.Errorf("Expected error for invalid signature, but got nil")
 	}
 }
 
