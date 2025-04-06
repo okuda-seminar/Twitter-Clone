@@ -6,29 +6,4 @@ properties:
   token:
     type: string
   user:
-    type: object
-    required:
-      - id
-      - username
-      - display_name
-      - bio
-      - is_private
-      - created_at
-      - updated_at
-    properties:
-      id:
-        type: string
-      username:
-        type: string
-      display_name:
-        type: string
-      bio:
-        type: string
-      is_private:
-        type: boolean
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
+    $ref: "../models/user.yml"

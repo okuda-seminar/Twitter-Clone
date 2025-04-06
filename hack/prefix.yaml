@@ -4,3 +4,4 @@ allow-prefix:
   - "[iOS]"
   - "[Go]"
   - "[TS]"
+  - "[Go/TS]"

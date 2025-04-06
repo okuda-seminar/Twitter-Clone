@@ -1,0 +1,18 @@
+get:
+  tags:
+    - X-Clone
+  summary: Verify user session in token.
+  operationId: VerifySession
+  security:
+    - BearerAuth: []
+  responses:
+    "200":
+      description: A user object.
+      content:
+        application/json:
+          schema:
+            $ref: ../openapi.yml#/components/schemas/VerifySessionResponse
+    "401":
+      description: Invalid or expired token.
+    "500":
+      description: Unexpected error occurred.

@@ -40,22 +40,8 @@ export async function signup(
   if (res.ok) {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/631
     // - Store the JWT in a cookie.
-    const apiData = await res.json();
-    const { user: apiUser, token } = apiData;
-
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/648
-    // - Switch the login and signup response fields to camel case.
-    const user: User = {
-      id: apiUser.id,
-      username: apiUser.username,
-      displayName: apiUser.display_name,
-      bio: apiUser.bio,
-      isPrivate: apiUser.is_private,
-      createdAt: apiUser.created_at,
-      updatedAt: apiUser.updated_at,
-    };
-
-    return ok({ token, user });
+    const data: SignupResponse = await res.json();
+    return ok(data);
   }
 
   return err({

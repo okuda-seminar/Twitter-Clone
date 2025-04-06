@@ -1,0 +1,28 @@
+type: object
+title: User
+required:
+  - id
+  - username
+  - displayName
+  - bio
+  - isPrivate
+  - createdAt
+  - updatedAt
+properties:
+  id:
+    type: string
+    format: uuid
+  username:
+    type: string
+  displayName:
+    type: string
+  bio:
+    type: string
+  isPrivate:
+    type: boolean
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

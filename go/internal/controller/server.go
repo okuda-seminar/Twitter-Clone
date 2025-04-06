@@ -16,6 +16,7 @@ var _ openapi.ServerInterface = (*Server)(nil)
 type Server struct {
 	handler.CreateUserHandler
 	handler.LoginHandler
+	handler.VerifySessionHandler
 	handler.FindUserByIDHandler
 	handler.CreatePostHandler
 	handler.CreateRepostHandler
@@ -29,6 +30,7 @@ func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.Tim
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
 		LoginHandler:                               handler.NewLoginHandler(db, authService),
+		VerifySessionHandler:                       handler.NewVerifySessionHandler(db, authService),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handler.NewCreatePostHandler(db, mu, usersChan),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, mu, usersChan),

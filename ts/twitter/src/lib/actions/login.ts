@@ -35,20 +35,8 @@ export async function login(
   if (res.ok) {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/631
     // - Store the JWT in a cookie.
-    const apiData = await res.json();
-    const { user: apiUser, token } = apiData;
-
-    const user: User = {
-      id: apiUser.id,
-      username: apiUser.username,
-      displayName: apiUser.display_name,
-      bio: apiUser.bio,
-      isPrivate: apiUser.is_private,
-      createdAt: apiUser.created_at,
-      updatedAt: apiUser.updated_at,
-    };
-
-    return ok({ token, user });
+    const data: LoginResponse = await res.json();
+    return ok(data);
   }
 
   return err({

@@ -1,6 +1,4 @@
 export const VALIDATION_CONSTANTS = {
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/652
-  // - Update CreateUserRequest schema to match users table username constraints.
   USERNAME: {
     MIN_LENGTH: 4,
     MAX_LENGTH: 14,

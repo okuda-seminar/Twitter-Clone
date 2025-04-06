@@ -1,0 +1,4 @@
+type: object
+title: VerifySessionResponse
+allOf:
+  - $ref: "../models/user.yml"

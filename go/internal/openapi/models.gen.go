@@ -4,7 +4,22 @@
 package openapi
 
 import (
+	"encoding/json"
 	"time"
+
+	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
+)
+
+const (
+	BearerAuthScopes = "BearerAuth.Scopes"
+)
+
+// Defines values for GetUserPostsTimelineResponse1Type.
+const (
+	Post        GetUserPostsTimelineResponse1Type = "post"
+	QuoteRepost GetUserPostsTimelineResponse1Type = "quoteRepost"
+	Repost      GetUserPostsTimelineResponse1Type = "repost"
 )
 
 // CreatePostRequest defines model for create_post_request.
@@ -15,10 +30,24 @@ type CreatePostRequest struct {
 
 // CreatePostResponse defines model for create_post_response.
 type CreatePostResponse struct {
+	union json.RawMessage
+}
+
+// CreatePostResponse0 Response when creating a post (old schema).
+type CreatePostResponse0 struct {
 	CreatedAt time.Time `json:"created_at"`
 	Id        string    `json:"id"`
 	Text      string    `json:"text"`
 	UserId    string    `json:"user_id"`
+}
+
+// CreatePostResponse1 Response when creating a timeline item (new schema).
+type CreatePostResponse1 struct {
+	AuthorId  string    `json:"author_id"`
+	CreatedAt time.Time `json:"created_at"`
+	Id        string    `json:"id"`
+	Text      string    `json:"text"`
+	Type      string    `json:"type"`
 }
 
 // CreateQuoteRepostRequest defines model for create_quote_repost_request.
@@ -29,11 +58,26 @@ type CreateQuoteRepostRequest struct {
 
 // CreateQuoteRepostResponse defines model for create_quote_repost_response.
 type CreateQuoteRepostResponse struct {
+	union json.RawMessage
+}
+
+// CreateQuoteRepostResponse0 Response when creating a quote repost (old schema).
+type CreateQuoteRepostResponse0 struct {
 	CreatedAt time.Time `json:"created_at"`
 	Id        string    `json:"id"`
 	ParentId  string    `json:"parent_id"`
 	Text      string    `json:"text"`
 	UserId    string    `json:"user_id"`
+}
+
+// CreateQuoteRepostResponse1 Response when creating a quote repost (new schema).
+type CreateQuoteRepostResponse1 struct {
+	AuthorId     string    `json:"author_id"`
+	CreatedAt    time.Time `json:"created_at"`
+	Id           string    `json:"id"`
+	ParentPostId string    `json:"parent_post_id"`
+	Text         string    `json:"text"`
+	Type         string    `json:"type"`
 }
 
 // CreateRepostRequest defines model for create_repost_request.
@@ -43,6 +87,11 @@ type CreateRepostRequest struct {
 
 // CreateRepostResponse defines model for create_repost_response.
 type CreateRepostResponse struct {
+	union json.RawMessage
+}
+
+// CreateRepostResponse0 Response when creating a repost (old schema).
+type CreateRepostResponse0 struct {
 	CreatedAt time.Time `json:"created_at"`
 	Id        string    `json:"id"`
 	ParentId  string    `json:"parent_id"`
@@ -50,27 +99,26 @@ type CreateRepostResponse struct {
 	UserId    string    `json:"user_id"`
 }
 
+// CreateRepostResponse1 Response when creating a repost (new schema).
+type CreateRepostResponse1 struct {
+	AuthorId     string    `json:"author_id"`
+	CreatedAt    time.Time `json:"created_at"`
+	Id           string    `json:"id"`
+	ParentPostId string    `json:"parent_post_id"`
+	Type         string    `json:"type"`
+}
+
 // CreateUserRequest defines model for create_user_request.
 type CreateUserRequest struct {
 	DisplayName string `json:"display_name"`
-
-	// Password Password must be between 8 and 15 characters.
-	Password string `json:"password"`
-	Username string `json:"username"`
+	Password    string `json:"password"`
+	Username    string `json:"username"`
 }
 
 // CreateUserResponse defines model for create_user_response.
 type CreateUserResponse struct {
 	Token string `json:"token"`
-	User  struct {
-		Bio         string    `json:"bio"`
-		CreatedAt   time.Time `json:"created_at"`
-		DisplayName string    `json:"display_name"`
-		Id          string    `json:"id"`
-		IsPrivate   bool      `json:"is_private"`
-		UpdatedAt   time.Time `json:"updated_at"`
-		Username    string    `json:"username"`
-	} `json:"user"`
+	User  User   `json:"user"`
 }
 
 // DeleteRepostRequest defines model for delete_repost_request.
@@ -91,31 +139,70 @@ type FindUserByIdResponse struct {
 
 // GetReverseChronologicalHomeTimelineResponse defines model for get_reverse_chronological_home_timeline_response.
 type GetReverseChronologicalHomeTimelineResponse struct {
-	Data *struct {
-		EventType string `json:"event_type"`
-		Posts     struct {
-			CreatedAt time.Time `json:"created_at"`
-			Id        string    `json:"id"`
-			Text      string    `json:"text"`
-			UserId    string    `json:"user_id"`
-		} `json:"posts"`
-		Reposts struct {
-			CreatedAt time.Time `json:"created_at"`
-			Id        string    `json:"id"`
-			ParentId  string    `json:"parent_id"`
-			Text      string    `json:"text"`
-			UserId    string    `json:"user_id"`
-		} `json:"reposts"`
-	} `json:"data,omitempty"`
+	Data *GetReverseChronologicalHomeTimelineResponse_Data `json:"data,omitempty"`
+}
+
+// GetReverseChronologicalHomeTimelineResponseData0 defines model for .
+type GetReverseChronologicalHomeTimelineResponseData0 struct {
+	EventType string `json:"event_type"`
+	Posts     struct {
+		CreatedAt time.Time `json:"created_at"`
+		Id        string    `json:"id"`
+		Text      string    `json:"text"`
+		UserId    string    `json:"user_id"`
+	} `json:"posts"`
+	Reposts struct {
+		CreatedAt time.Time `json:"created_at"`
+		Id        string    `json:"id"`
+		ParentId  string    `json:"parent_id"`
+		Text      string    `json:"text"`
+		UserId    string    `json:"user_id"`
+	} `json:"reposts"`
+}
+
+// GetReverseChronologicalHomeTimelineResponseData1 defines model for .
+type GetReverseChronologicalHomeTimelineResponseData1 struct {
+	EventType     string `json:"event_type"`
+	Timelineitems struct {
+		AuthorId     string    `json:"author_id"`
+		CreatedAt    time.Time `json:"created_at"`
+		Id           string    `json:"id"`
+		ParentPostId *string   `json:"parent_post_id,omitempty"`
+		Text         *string   `json:"text,omitempty"`
+		Type         string    `json:"type"`
+	} `json:"timelineitems"`
+}
+
+// GetReverseChronologicalHomeTimelineResponse_Data defines model for GetReverseChronologicalHomeTimelineResponse.Data.
+type GetReverseChronologicalHomeTimelineResponse_Data struct {
+	union json.RawMessage
 }
 
 // GetUserPostsTimelineResponse defines model for get_user_posts_timeline_response.
-type GetUserPostsTimelineResponse = []struct {
+type GetUserPostsTimelineResponse struct {
+	union json.RawMessage
+}
+
+// GetUserPostsTimelineResponse0 Response when fetching user posts (old schema).
+type GetUserPostsTimelineResponse0 = []struct {
 	CreatedAt time.Time `json:"created_at"`
 	Id        string    `json:"id"`
 	Text      string    `json:"text"`
 	UserId    string    `json:"user_id"`
 }
+
+// GetUserPostsTimelineResponse1 Response when fetching timeline items (new schema).
+type GetUserPostsTimelineResponse1 = []struct {
+	AuthorId     string                            `json:"author_id"`
+	CreatedAt    time.Time                         `json:"created_at"`
+	Id           string                            `json:"id"`
+	ParentPostId *string                           `json:"parent_post_id"`
+	Text         string                            `json:"text"`
+	Type         GetUserPostsTimelineResponse1Type `json:"type"`
+}
+
+// GetUserPostsTimelineResponse1Type defines model for GetUserPostsTimelineResponse.1.Type.
+type GetUserPostsTimelineResponse1Type string
 
 // LoginRequest defines model for login_request.
 type LoginRequest struct {
@@ -126,16 +213,22 @@ type LoginRequest struct {
 // LoginResponse defines model for login_response.
 type LoginResponse struct {
 	Token string `json:"token"`
-	User  struct {
-		Bio         string    `json:"bio"`
-		CreatedAt   time.Time `json:"created_at"`
-		DisplayName string    `json:"display_name"`
-		Id          string    `json:"id"`
-		IsPrivate   bool      `json:"is_private"`
-		UpdatedAt   time.Time `json:"updated_at"`
-		Username    string    `json:"username"`
-	} `json:"user"`
+	User  User   `json:"user"`
 }
+
+// User defines model for user.
+type User struct {
+	Bio         string             `json:"bio"`
+	CreatedAt   time.Time          `json:"createdAt"`
+	DisplayName string             `json:"displayName"`
+	Id          openapi_types.UUID `json:"id"`
+	IsPrivate   bool               `json:"isPrivate"`
+	UpdatedAt   time.Time          `json:"updatedAt"`
+	Username    string             `json:"username"`
+}
+
+// VerifySessionResponse defines model for verify_session_response.
+type VerifySessionResponse = User
 
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody = LoginRequest
@@ -154,3 +247,313 @@ type CreateRepostJSONRequestBody = CreateRepostRequest
 
 // DeleteRepostJSONRequestBody defines body for DeleteRepost for application/json ContentType.
 type DeleteRepostJSONRequestBody = DeleteRepostRequest
+
+// AsCreatePostResponse0 returns the union data inside the CreatePostResponse as a CreatePostResponse0
+func (t CreatePostResponse) AsCreatePostResponse0() (CreatePostResponse0, error) {
+	var body CreatePostResponse0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreatePostResponse0 overwrites any union data inside the CreatePostResponse as the provided CreatePostResponse0
+func (t *CreatePostResponse) FromCreatePostResponse0(v CreatePostResponse0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreatePostResponse0 performs a merge with any union data inside the CreatePostResponse, using the provided CreatePostResponse0
+func (t *CreatePostResponse) MergeCreatePostResponse0(v CreatePostResponse0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreatePostResponse1 returns the union data inside the CreatePostResponse as a CreatePostResponse1
+func (t CreatePostResponse) AsCreatePostResponse1() (CreatePostResponse1, error) {
+	var body CreatePostResponse1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreatePostResponse1 overwrites any union data inside the CreatePostResponse as the provided CreatePostResponse1
+func (t *CreatePostResponse) FromCreatePostResponse1(v CreatePostResponse1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreatePostResponse1 performs a merge with any union data inside the CreatePostResponse, using the provided CreatePostResponse1
+func (t *CreatePostResponse) MergeCreatePostResponse1(v CreatePostResponse1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreatePostResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreatePostResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCreateQuoteRepostResponse0 returns the union data inside the CreateQuoteRepostResponse as a CreateQuoteRepostResponse0
+func (t CreateQuoteRepostResponse) AsCreateQuoteRepostResponse0() (CreateQuoteRepostResponse0, error) {
+	var body CreateQuoteRepostResponse0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateQuoteRepostResponse0 overwrites any union data inside the CreateQuoteRepostResponse as the provided CreateQuoteRepostResponse0
+func (t *CreateQuoteRepostResponse) FromCreateQuoteRepostResponse0(v CreateQuoteRepostResponse0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateQuoteRepostResponse0 performs a merge with any union data inside the CreateQuoteRepostResponse, using the provided CreateQuoteRepostResponse0
+func (t *CreateQuoteRepostResponse) MergeCreateQuoteRepostResponse0(v CreateQuoteRepostResponse0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateQuoteRepostResponse1 returns the union data inside the CreateQuoteRepostResponse as a CreateQuoteRepostResponse1
+func (t CreateQuoteRepostResponse) AsCreateQuoteRepostResponse1() (CreateQuoteRepostResponse1, error) {
+	var body CreateQuoteRepostResponse1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateQuoteRepostResponse1 overwrites any union data inside the CreateQuoteRepostResponse as the provided CreateQuoteRepostResponse1
+func (t *CreateQuoteRepostResponse) FromCreateQuoteRepostResponse1(v CreateQuoteRepostResponse1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateQuoteRepostResponse1 performs a merge with any union data inside the CreateQuoteRepostResponse, using the provided CreateQuoteRepostResponse1
+func (t *CreateQuoteRepostResponse) MergeCreateQuoteRepostResponse1(v CreateQuoteRepostResponse1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateQuoteRepostResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateQuoteRepostResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsCreateRepostResponse0 returns the union data inside the CreateRepostResponse as a CreateRepostResponse0
+func (t CreateRepostResponse) AsCreateRepostResponse0() (CreateRepostResponse0, error) {
+	var body CreateRepostResponse0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateRepostResponse0 overwrites any union data inside the CreateRepostResponse as the provided CreateRepostResponse0
+func (t *CreateRepostResponse) FromCreateRepostResponse0(v CreateRepostResponse0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateRepostResponse0 performs a merge with any union data inside the CreateRepostResponse, using the provided CreateRepostResponse0
+func (t *CreateRepostResponse) MergeCreateRepostResponse0(v CreateRepostResponse0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsCreateRepostResponse1 returns the union data inside the CreateRepostResponse as a CreateRepostResponse1
+func (t CreateRepostResponse) AsCreateRepostResponse1() (CreateRepostResponse1, error) {
+	var body CreateRepostResponse1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromCreateRepostResponse1 overwrites any union data inside the CreateRepostResponse as the provided CreateRepostResponse1
+func (t *CreateRepostResponse) FromCreateRepostResponse1(v CreateRepostResponse1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeCreateRepostResponse1 performs a merge with any union data inside the CreateRepostResponse, using the provided CreateRepostResponse1
+func (t *CreateRepostResponse) MergeCreateRepostResponse1(v CreateRepostResponse1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t CreateRepostResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *CreateRepostResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsGetReverseChronologicalHomeTimelineResponseData0 returns the union data inside the GetReverseChronologicalHomeTimelineResponse_Data as a GetReverseChronologicalHomeTimelineResponseData0
+func (t GetReverseChronologicalHomeTimelineResponse_Data) AsGetReverseChronologicalHomeTimelineResponseData0() (GetReverseChronologicalHomeTimelineResponseData0, error) {
+	var body GetReverseChronologicalHomeTimelineResponseData0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetReverseChronologicalHomeTimelineResponseData0 overwrites any union data inside the GetReverseChronologicalHomeTimelineResponse_Data as the provided GetReverseChronologicalHomeTimelineResponseData0
+func (t *GetReverseChronologicalHomeTimelineResponse_Data) FromGetReverseChronologicalHomeTimelineResponseData0(v GetReverseChronologicalHomeTimelineResponseData0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetReverseChronologicalHomeTimelineResponseData0 performs a merge with any union data inside the GetReverseChronologicalHomeTimelineResponse_Data, using the provided GetReverseChronologicalHomeTimelineResponseData0
+func (t *GetReverseChronologicalHomeTimelineResponse_Data) MergeGetReverseChronologicalHomeTimelineResponseData0(v GetReverseChronologicalHomeTimelineResponseData0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGetReverseChronologicalHomeTimelineResponseData1 returns the union data inside the GetReverseChronologicalHomeTimelineResponse_Data as a GetReverseChronologicalHomeTimelineResponseData1
+func (t GetReverseChronologicalHomeTimelineResponse_Data) AsGetReverseChronologicalHomeTimelineResponseData1() (GetReverseChronologicalHomeTimelineResponseData1, error) {
+	var body GetReverseChronologicalHomeTimelineResponseData1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetReverseChronologicalHomeTimelineResponseData1 overwrites any union data inside the GetReverseChronologicalHomeTimelineResponse_Data as the provided GetReverseChronologicalHomeTimelineResponseData1
+func (t *GetReverseChronologicalHomeTimelineResponse_Data) FromGetReverseChronologicalHomeTimelineResponseData1(v GetReverseChronologicalHomeTimelineResponseData1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetReverseChronologicalHomeTimelineResponseData1 performs a merge with any union data inside the GetReverseChronologicalHomeTimelineResponse_Data, using the provided GetReverseChronologicalHomeTimelineResponseData1
+func (t *GetReverseChronologicalHomeTimelineResponse_Data) MergeGetReverseChronologicalHomeTimelineResponseData1(v GetReverseChronologicalHomeTimelineResponseData1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetReverseChronologicalHomeTimelineResponse_Data) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetReverseChronologicalHomeTimelineResponse_Data) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsGetUserPostsTimelineResponse0 returns the union data inside the GetUserPostsTimelineResponse as a GetUserPostsTimelineResponse0
+func (t GetUserPostsTimelineResponse) AsGetUserPostsTimelineResponse0() (GetUserPostsTimelineResponse0, error) {
+	var body GetUserPostsTimelineResponse0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetUserPostsTimelineResponse0 overwrites any union data inside the GetUserPostsTimelineResponse as the provided GetUserPostsTimelineResponse0
+func (t *GetUserPostsTimelineResponse) FromGetUserPostsTimelineResponse0(v GetUserPostsTimelineResponse0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetUserPostsTimelineResponse0 performs a merge with any union data inside the GetUserPostsTimelineResponse, using the provided GetUserPostsTimelineResponse0
+func (t *GetUserPostsTimelineResponse) MergeGetUserPostsTimelineResponse0(v GetUserPostsTimelineResponse0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsGetUserPostsTimelineResponse1 returns the union data inside the GetUserPostsTimelineResponse as a GetUserPostsTimelineResponse1
+func (t GetUserPostsTimelineResponse) AsGetUserPostsTimelineResponse1() (GetUserPostsTimelineResponse1, error) {
+	var body GetUserPostsTimelineResponse1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromGetUserPostsTimelineResponse1 overwrites any union data inside the GetUserPostsTimelineResponse as the provided GetUserPostsTimelineResponse1
+func (t *GetUserPostsTimelineResponse) FromGetUserPostsTimelineResponse1(v GetUserPostsTimelineResponse1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeGetUserPostsTimelineResponse1 performs a merge with any union data inside the GetUserPostsTimelineResponse, using the provided GetUserPostsTimelineResponse1
+func (t *GetUserPostsTimelineResponse) MergeGetUserPostsTimelineResponse1(v GetUserPostsTimelineResponse1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetUserPostsTimelineResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetUserPostsTimelineResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}

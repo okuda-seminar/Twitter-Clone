@@ -3,7 +3,7 @@ info:
   title: X-Clone
   version: 1.0.0
 servers:
-  - url: 'http://localhost:80'
+  - url: "http://localhost:80"
 paths:
   /api/users:
     $ref: ./paths/users.yml
@@ -23,9 +23,18 @@ paths:
     $ref: ./paths/find_user_by_id.yml
   /api/login:
     $ref: ./paths/login.yml
+  /api/session/verify:
+    $ref: ./paths/verify_session.yml
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    User:
+      $ref: ./components/models/user.yml
     CreateUserRequest:
       $ref: ./components/requests/create_user_request.yml
     CreateUserResponse:
@@ -56,3 +65,5 @@ components:
       $ref: ./components/requests/login_request.yml
     LoginResponse:
       $ref: ./components/responses/login_response.yml
+    VerifySessionResponse:
+      $ref: ./components/responses/verify_session_response.yml
