@@ -25,3 +25,13 @@ func createFakePostModel() -> PostModel {
     isRepostedByCurrentUser: false
   )
 }
+
+public struct CreatePostRequest: Codable {
+  let userId: String
+  let text: String
+
+  enum CodingKeys: String, CodingKey {
+    case userId = "user_id"
+    case text
+  }
+}

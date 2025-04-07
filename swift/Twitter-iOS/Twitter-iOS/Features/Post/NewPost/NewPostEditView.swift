@@ -78,6 +78,10 @@ struct NewPostEditView: View {
     dataSource.postText.isEmpty
   }
 
+  private var isDraftsButtonDisabled: Bool {
+    !dataSource.postText.isEmpty
+  }
+
   var body: some View {
     VStack {
       Header()
@@ -119,19 +123,22 @@ struct NewPostEditView: View {
 
       Button(
         action: {
-          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/337
-          // - Add Post Functionality to POST Button in NewPostEditViewController.swift.
           viewObserver.didTapDraftsButtonCompletion?()
         },
         label: {
           Text(LocalizedString.draftsButtonText)
             .underline()
-        })
+        }
+      )
+      .opacity(isDraftsButtonDisabled ? 0 : 1.0)
+      .disabled(isDraftsButtonDisabled)
 
       Button(
         action: {
-          // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/338
-          // - Add Making Post Drafts Functionality to Drafts Button in NewPostEditViewController.swift.
+          Task { @MainActor in
+            await createNewPost()
+            dismiss()
+          }
         },
         label: {
           Text(LocalizedString.postButtonText)
@@ -301,6 +308,20 @@ struct NewPostEditView: View {
         }
       }
     }
+  }
+
+  // MARK: - Action Handlers
+
+  /// Creates a new post.
+  private func createNewPost() async {
+    let currentUserAccount = injectAuthService().currentUser
+    let post = PostModel(
+      id: UUID(),
+      bodyText: $dataSource.postText.wrappedValue,
+      userIcon: UIImage(),
+      userName: currentUserAccount.username,
+      isRepostedByCurrentUser: false)
+    await injectPostService().post(post)
   }
 }
 
