@@ -21,13 +21,9 @@ class HomeViewController: ViewControllerWithUserIconButton {
 
   /// The set of constant values used for layout configurations.
   private enum LayoutConstant {
-    static let homeTabSelectionHeight: CGFloat = 48.0
     static let edgePadding: CGFloat = 16.0
-    static let newPostsInsertIndex: Int = 0
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/614
     // - Fetch Posts for 'For You' Tab in HomeViewController from Backend Server.
-    // Remove this once posts for the "For You" tab can be fetched.
-    static let forYouTabPostsCount: Int = 30
   }
 
   /// The set of localized strings.
@@ -176,7 +172,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   /// Loads posts data for "For You" tab.
   private func loadDataForForYouTab() {
     postsDataSource.forYouTabPostModels = []
-    for _ in 0..<LayoutConstant.forYouTabPostsCount {
+    for _ in 0..<30 {
       postsDataSource.forYouTabPostModels.append(createFakePostModel())
     }
   }
@@ -216,7 +212,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
       postsDataSource.followingTabPostModels = posts
     case .postCreated:
       postsDataSource.followingTabPostModels.insert(
-        contentsOf: posts, at: LayoutConstant.newPostsInsertIndex)
+        contentsOf: posts, at: 0)
     case .postDeleted:
       let deletedPostIDs = Set(posts.map { $0.id })
       postsDataSource.followingTabPostModels.removeAll { deletedPostIDs.contains($0.id) }

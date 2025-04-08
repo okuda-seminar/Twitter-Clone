@@ -14,11 +14,6 @@ struct NotificationsTabView: View {
   @State private var selectedNotificationModel: NotificationModel?
   @State private var openSubscriptionOptionsPage: Bool = false
 
-  private enum LayoutConstant {
-    static let minTabLength: CGFloat = 40.0
-    static let additionalTabLength: CGFloat = 20.0
-  }
-
   var body: some View {
     VStack(spacing: 0) {
       TabBar()
@@ -49,7 +44,7 @@ struct NotificationsTabView: View {
           .buttonStyle(.plain)
           .rect { rect in
             let modifiedTabWidth =
-              max(LayoutConstant.minTabLength, rect.size.width) + LayoutConstant.additionalTabLength
+              max(40, rect.size.width) + 20
             tab.size = CGSizeMake(modifiedTabWidth, rect.size.height)
             tab.minX = (rect.minX + rect.maxX - modifiedTabWidth) / 2
           }

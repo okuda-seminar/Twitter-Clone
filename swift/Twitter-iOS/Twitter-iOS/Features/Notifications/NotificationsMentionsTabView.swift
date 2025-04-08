@@ -2,13 +2,6 @@ import SwiftUI
 
 struct NotificationsMentionsTabView: View {
 
-  private enum LayoutConstant {
-    static let headlineFontSize: CGFloat = 29.0
-    static let subHeadlineFontSize: CGFloat = 15.0
-    static let headlineViewSpacing: CGFloat = 10.0
-    static let headlineViewVerticalPadding: CGFloat = 50.0
-  }
-
   private enum LocalizedString {
     static let headlineText = String(localized: "Join the conversation")
     static let subHeadlineText = String(
@@ -17,19 +10,19 @@ struct NotificationsMentionsTabView: View {
 
   var body: some View {
     VStack(
-      alignment: .leading, spacing: LayoutConstant.headlineViewSpacing,
+      alignment: .leading, spacing: 10,
       content: {
         Text(LocalizedString.headlineText)
-          .font(.system(size: LayoutConstant.headlineFontSize, weight: .heavy))
+          .font(.system(size: 29, weight: .heavy))
 
         Text(LocalizedString.subHeadlineText)
-          .font(.system(size: LayoutConstant.subHeadlineFontSize))
+          .font(.system(size: 15))
           .foregroundStyle(.gray)
 
         Spacer()
       }
     )
-    .padding(.vertical, LayoutConstant.headlineViewVerticalPadding)
+    .padding(.vertical, 50)
   }
 }
 

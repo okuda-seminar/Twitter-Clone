@@ -6,13 +6,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
   private enum LayoutConstant {
     static let edgePadding: CGFloat = 16.0
 
-    static let profileIconButtonSize: CGFloat = 28.0
     static let writeMessageButtonVerticalEdgePadding: CGFloat = 25.0
-
-    static let headlineViewVerticalEdgePadding: CGFloat = 34.0
-    static let headlineViewSpacing: CGFloat = 10.0
-    static let headlineFontSize: CGFloat = 29.0
-    static let subHeadlineFontSize: CGFloat = 15.0
   }
 
   private enum LocalizedString {
@@ -29,7 +23,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = LocalizedString.headlineText
     label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.headlineFontSize, weight: .heavy)
+    label.font = UIFont.systemFont(ofSize: 29, weight: .heavy)
     return label
   }()
 
@@ -39,7 +33,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
     label.text = LocalizedString.subHeadlineText
     label.textColor = .gray
     label.numberOfLines = 0
-    label.font = UIFont.systemFont(ofSize: LayoutConstant.subHeadlineFontSize)
+    label.font = UIFont.systemFont(ofSize: 15)
     return label
   }()
 
@@ -84,7 +78,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
   private func setUpSubviews() {
     let headlineView = UIStackView(arrangedSubviews: [headlineLabel, subHeadlineLabel])
     headlineView.axis = .vertical
-    headlineView.spacing = LayoutConstant.headlineViewSpacing
+    headlineView.spacing = 10
     headlineView.translatesAutoresizingMaskIntoConstraints = false
 
     view.addSubview(headlineView)
@@ -96,7 +90,7 @@ class MessagesViewController: ViewControllerWithUserIconButton {
     let layoutGuide = view.safeAreaLayoutGuide
     NSLayoutConstraint.activate([
       headlineView.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.headlineViewVerticalEdgePadding),
+        equalTo: layoutGuide.topAnchor, constant: 34),
       headlineView.leadingAnchor.constraint(
         equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
       headlineView.trailingAnchor.constraint(

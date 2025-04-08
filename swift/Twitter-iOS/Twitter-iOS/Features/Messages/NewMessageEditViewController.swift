@@ -9,9 +9,6 @@ final class NewMessageEditViewController: UIViewController {
 
   private enum LayoutConstant {
     static let edgePadding = 16.0
-    static let addressPrefixLabelTopPadding = 12.0
-    static let addressTextFieldLeadingPadding = 4.0
-    static let permissionRequestButtonSize = 28.0
   }
 
   private let cancelButton: UIButton = {
@@ -71,13 +68,13 @@ final class NewMessageEditViewController: UIViewController {
         equalTo: layoutGuide.leadingAnchor, constant: LayoutConstant.edgePadding),
 
       addressPrefixLabel.topAnchor.constraint(
-        equalTo: cancelButton.bottomAnchor, constant: LayoutConstant.addressPrefixLabelTopPadding),
+        equalTo: cancelButton.bottomAnchor, constant: 12),
       addressPrefixLabel.leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor),
 
       addressTextField.topAnchor.constraint(equalTo: addressPrefixLabel.topAnchor),
       addressTextField.leadingAnchor.constraint(
         equalTo: addressPrefixLabel.trailingAnchor,
-        constant: LayoutConstant.addressTextFieldLeadingPadding),
+        constant: 4),
       addressTextField.trailingAnchor.constraint(
         lessThanOrEqualTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
     ])

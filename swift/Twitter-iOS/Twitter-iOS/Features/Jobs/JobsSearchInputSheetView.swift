@@ -6,9 +6,6 @@ struct JobsSearchInputSheetView: View {
   // MARK: - Private Props
 
   private enum LayoutConstant {
-    static let dismissalButtonIconHeight: CGFloat = 28.0
-    static let dismissalButtonHeight: CGFloat = 44.0
-
     static let searchBarImageLeadingPadding: CGFloat = 6.0
     static let searchBarHeight: CGFloat = 32.0
   }
@@ -40,11 +37,11 @@ struct JobsSearchInputSheetView: View {
         Image(systemName: "arrow.left")
           .resizable()
           .scaledToFit()
-          .frame(height: LayoutConstant.dismissalButtonIconHeight)
+          .frame(height: 28)
       }
     )
     .foregroundStyle(.primary)
-    .frame(height: LayoutConstant.dismissalButtonHeight)
+    .frame(height: 44)
   }
 
   @ViewBuilder

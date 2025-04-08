@@ -68,7 +68,6 @@ final class NewMessageEntrypointButton: UIButton {
 
 final class WriteMessageButton: UIButton {
   private enum LayoutConstant {
-    static let buttonWidth: CGFloat = 200.0
     static let buttonHeight: CGFloat = 55.0
   }
 
@@ -99,7 +98,7 @@ final class WriteMessageButton: UIButton {
     translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      widthAnchor.constraint(equalToConstant: LayoutConstant.buttonWidth),
+      widthAnchor.constraint(equalToConstant: 200),
       heightAnchor.constraint(equalToConstant: LayoutConstant.buttonHeight),
     ])
   }

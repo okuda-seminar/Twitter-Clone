@@ -3,10 +3,6 @@ import UIKit
 
 class NotificationsViewController: ViewControllerWithUserIconButton {
 
-  private enum LayoutConstant {
-    static let edgePadding = 16.0
-  }
-
   private enum LocalizedString {
     static let title = String(localized: "Notifications")
   }
@@ -49,6 +45,7 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
     newPostEntryPointButtonController.didMove(toParent: self)
 
     let layoutGuide = view.safeAreaLayoutGuide
+    let edgePadding = 16.0
     NSLayoutConstraint.activate([
       tabViewController.view.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
       tabViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -56,9 +53,9 @@ class NotificationsViewController: ViewControllerWithUserIconButton {
       tabViewController.view.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
 
       newPostEntryPointButtonController.view.bottomAnchor.constraint(
-        equalTo: layoutGuide.bottomAnchor, constant: -LayoutConstant.edgePadding),
+        equalTo: layoutGuide.bottomAnchor, constant: -edgePadding),
       newPostEntryPointButtonController.view.trailingAnchor.constraint(
-        equalTo: layoutGuide.trailingAnchor, constant: -LayoutConstant.edgePadding),
+        equalTo: layoutGuide.trailingAnchor, constant: -edgePadding),
     ])
 
     // set up the navigation header

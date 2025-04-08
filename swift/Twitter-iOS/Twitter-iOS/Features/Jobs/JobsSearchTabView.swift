@@ -12,7 +12,6 @@ struct JobsSearchTabView: View {
 
   private enum LayoutConstant {
     static let searchButtonHeight: CGFloat = 44.0
-    static let firstDefaultSearchQueryTopPadding: CGFloat = 10.0
   }
 
   private enum LocalizedString {
@@ -90,7 +89,7 @@ struct JobsSearchTabView: View {
         VStack {
           ForEach(defaultSearchQueries.indices, id: \.self) { index in
             DefaultSearchQueryRow(defaultSearchQueries[index])
-              .padding(.top, index == 0 ? LayoutConstant.firstDefaultSearchQueryTopPadding : 0.0)
+              .padding(.top, index == 0 ? 10 : 0.0)
               .onTapGesture {
                 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/537
                 // - Implement Job Search Results Page for Default Search Queries in JobsSearchTabView.
