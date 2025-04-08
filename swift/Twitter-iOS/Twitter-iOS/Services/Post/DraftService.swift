@@ -6,8 +6,10 @@ public func injectDraftService() -> DraftServiceProtocol {
 }
 
 public protocol DraftServiceProtocol {
-  func save(draft: DraftModel)
   var drafts: [DraftModel] { get }
+
+  func save(draft: DraftModel)
+  func remove(draft: DraftModel)
 }
 
 final class DraftService: DraftServiceProtocol {
@@ -34,6 +36,12 @@ final class DraftService: DraftServiceProtocol {
   public func save(draft: DraftModel) {
     loadDraftModels(key: Self.savedDraftsKey)
     drafts.append(draft)
+    saveDraftModels(drafts, key: Self.savedDraftsKey)
+  }
+
+  public func remove(draft: DraftModel) {
+    guard let index = drafts.firstIndex(of: draft) else { return }
+    drafts.remove(at: index)
     saveDraftModels(drafts, key: Self.savedDraftsKey)
   }
 

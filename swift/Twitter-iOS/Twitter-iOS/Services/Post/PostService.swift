@@ -25,7 +25,6 @@ public final class PostService {
 
   public func post(_ post: PostModel) async {
     guard let url = URL(string: "\(Self.baseURLString)/api/posts") else { return }
-    let createPostRequest = URLRequest(url: url)
     let request = CreatePostRequest(
       userId: injectAuthService().currentUser.id.uuidString, text: post.bodyText)
     guard let jsonData = try? JSONEncoder().encode(request) else { return }

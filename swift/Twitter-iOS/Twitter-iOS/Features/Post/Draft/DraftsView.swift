@@ -56,20 +56,23 @@ struct DraftsView: View {
           Text(dataSource.savedDrafts[index].text)
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
               Button(role: .destructive) {
-                deleteDraft(at: IndexSet([index]))
+                removeDraft(at: IndexSet([index]))
               } label: {
                 Label("Delete", systemImage: "trash")
               }
             }
         }
-        .onDelete(perform: deleteDraft)
+        .onDelete(perform: removeDraft)
       }
       .listStyle(.plain)
       .frame(maxWidth: .infinity)
     }
   }
 
-  func deleteDraft(at offsets: IndexSet) {
+  func removeDraft(at offsets: IndexSet) {
+    guard let index = offsets.first else { return }
+    let draft = dataSource.savedDrafts[index]
+    injectDraftService().remove(draft: draft)
     dataSource.savedDrafts.remove(atOffsets: offsets)
   }
 }

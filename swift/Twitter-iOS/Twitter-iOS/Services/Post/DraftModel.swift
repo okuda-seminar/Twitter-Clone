@@ -1,6 +1,6 @@
 import Foundation
 
-public struct DraftModel: Identifiable, Codable {
+public struct DraftModel: Identifiable, Codable, Equatable {
   /// The identifier for the Draft (conforms to Identifiable)
   public let id: UUID
 

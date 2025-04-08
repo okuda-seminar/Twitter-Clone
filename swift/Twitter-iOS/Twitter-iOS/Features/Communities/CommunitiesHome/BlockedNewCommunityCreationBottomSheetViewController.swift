@@ -7,9 +7,6 @@ final class BlockedNewCommunityCreationBottomSheetViewController: UIViewControll
 
   private enum LayoutConstant {
     static let edgeHorizontalPadding = 16.0
-    static let headlineLabelTopPadding = 12.0
-    static let dismissButtonTopPadding = 8.0
-    static let dismissButtonBottomPadding = 24.0
   }
 
   private let dismissalObserver = BlockedNewCommunityCreationBottomSheetViewObserver()
@@ -40,7 +37,7 @@ final class BlockedNewCommunityCreationBottomSheetViewController: UIViewControll
       hostingController.view.trailingAnchor.constraint(
         equalTo: view.trailingAnchor, constant: -LayoutConstant.edgeHorizontalPadding),
       hostingController.view.topAnchor.constraint(
-        equalTo: view.topAnchor, constant: LayoutConstant.headlineLabelTopPadding),
+        equalTo: view.topAnchor, constant: 12),
     ])
   }
 

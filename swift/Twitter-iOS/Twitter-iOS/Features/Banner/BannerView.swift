@@ -14,9 +14,6 @@ struct BannerView: View {
 
   private enum LayoutConstant {
     static let edgeCornerRadius = 16.0
-
-    static let dismissalButtonHeight = 44.0
-    static let dismissalButtonCornerRadius = 22.0
   }
 
   private enum LocalizedString {
@@ -62,8 +59,8 @@ struct BannerView: View {
       }
     )
     .background(Color(uiColor: .brandedBlue))
-    .frame(height: LayoutConstant.dismissalButtonHeight)
-    .clipShape(RoundedRectangle(cornerRadius: LayoutConstant.dismissalButtonCornerRadius))
+    .frame(height: 44)
+    .clipShape(RoundedRectangle(cornerRadius: 22))
     .padding(.leading)
     .padding(.bottom)
     .padding(.trailing)

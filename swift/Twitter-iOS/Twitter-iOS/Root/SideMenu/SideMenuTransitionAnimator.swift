@@ -19,7 +19,6 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
 
   private enum LayoutConstant {
     static let sideMenuWidth: CGFloat = 300.0
-    static let dimmingViewAlphaWhenPresented: CGFloat = 0.5
     static let duration: TimeInterval = 0.25
   }
 
@@ -98,7 +97,7 @@ class SideMenuTransitionAnimator: NSObject, UIViewControllerAnimatedTransitionin
       animations: { [weak self] in
         toView.frame.origin.x = 0.0
         fromView.frame.origin.x = LayoutConstant.sideMenuWidth
-        self?.dimmingView.alpha = LayoutConstant.dimmingViewAlphaWhenPresented
+        self?.dimmingView.alpha = 0.5
       },
       completion: { finished in
         let completed = finished && !transitionContext.transitionWasCancelled

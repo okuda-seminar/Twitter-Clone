@@ -7,7 +7,6 @@ class BannerController {
   private let dataSource = BannerViewDataSource()
 
   private enum LayoutConstant {
-    static let topPadding = 96.0
     static let bannerHeight = 128.0
     static let animationDuration = 0.3
   }
@@ -39,7 +38,7 @@ class BannerController {
       withDuration: LayoutConstant.animationDuration, delay: 0, options: .curveEaseIn,
       animations: {
         self.hostingController.view.frame = CGRect(
-          x: 0, y: LayoutConstant.topPadding, width: UIScreen.main.bounds.size.width,
+          x: 0, y: 96, width: UIScreen.main.bounds.size.width,
           height: LayoutConstant.bannerHeight)
       }
     ) { _ in

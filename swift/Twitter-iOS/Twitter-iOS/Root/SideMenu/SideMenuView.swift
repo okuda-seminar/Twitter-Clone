@@ -9,7 +9,6 @@ struct SideMenuView: View {
 
   private enum LayoutConstant {
     static let imageSize: CGFloat = 20.0
-    static let disclosureViewWidth: CGFloat = 250.0
   }
 
   private enum LocalizedString {
@@ -225,7 +224,7 @@ struct SideMenuView: View {
       .onTapGesture {}
     }
     .foregroundStyle(.primary)
-    .frame(width: LayoutConstant.disclosureViewWidth)
+    .frame(width: 250)
   }
 }
 
