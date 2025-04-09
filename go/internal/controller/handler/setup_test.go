@@ -74,23 +74,21 @@ func TestMain(m *testing.M) {
 
 type handlerTestSuite struct {
 	suite.Suite
-	db                             *sql.DB
-	resource                       *dockertest.Resource
-	getSpecificUserPostsUsecase    usecase.GetSpecificUserPostsUsecase
-	specificUserPostsUsecase       usecase.SpecificUserPostsUsecase
-	loginUseCase                   usecase.LoginUsecase
-	getUserAndFolloweePostsUsecase usecase.GetUserAndFolloweePostsUsecase
-	userAndFolloweePostsUsecase    usecase.UserAndFolloweePostsUsecase
-	usersRepository                repository.UsersRepository
-	createUserUsecase              usecase.CreateUserUsecase
-	authService                    *service.AuthService
-	likePostUsecase                usecase.LikePostUsecase
-	unlikePostUsecase              usecase.UnlikePostUsecase
-	followUserUsecase              usecase.FollowUserUsecase
-	muteUserUsecase                usecase.MuteUserUsecase
-	userChannels                   map[string]chan entity.TimelineEvent
-	mu                             sync.Mutex
-	connected                      chan struct{}
+	db                          *sql.DB
+	resource                    *dockertest.Resource
+	specificUserPostsUsecase    usecase.SpecificUserPostsUsecase
+	loginUseCase                usecase.LoginUsecase
+	userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase
+	usersRepository             repository.UsersRepository
+	createUserUsecase           usecase.CreateUserUsecase
+	authService                 *service.AuthService
+	likePostUsecase             usecase.LikePostUsecase
+	unlikePostUsecase           usecase.UnlikePostUsecase
+	followUserUsecase           usecase.FollowUserUsecase
+	muteUserUsecase             usecase.MuteUserUsecase
+	userChannels                map[string]chan entity.TimelineEvent
+	mu                          sync.Mutex
+	connected                   chan struct{}
 }
 
 // SetupTest runs before each test in the suite.
@@ -130,10 +128,7 @@ func (s *handlerTestSuite) SetupTest() {
 	s.authService = service.NewAuthService(secretKey)
 
 	// Set up usecases.
-	postsRepository := persistence.NewPostsRepository(s.db)
-	s.getSpecificUserPostsUsecase = interactor.NewGetSpecificUserPostsUsecase(postsRepository)
 	s.loginUseCase = interactor.NewLoginUseCase(s.usersRepository, s.authService)
-	s.getUserAndFolloweePostsUsecase = interactor.NewGetUserAndFolloweePostsUsecase(postsRepository)
 
 	timelineitemsRepository := persistence.NewTimelineitemsRepository(s.db)
 	s.specificUserPostsUsecase = interactor.NewSpecificUserPostsUsecase(timelineitemsRepository)

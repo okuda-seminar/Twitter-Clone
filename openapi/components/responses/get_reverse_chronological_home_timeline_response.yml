@@ -2,80 +2,37 @@ type: object
 title: GetReverseChronologicalHomeTimelineResponse
 properties:
   data:
-    oneOf:
-      - type: object
-        title: GetReverseChronologicalHomeTimelineResponseUseOldSchema
+    type: object
+    required:
+      - event_type
+      - timeline_items
+    properties:
+      event_type:
+        type: string
+      timeline_items:
+        type: object
         required:
-          - event_type
-          - posts
-          - reposts
+          - type
+          - id
+          - authorId
+          - createdAt
         properties:
-          event_type:
+          type:
             type: string
-          posts:
-            type: object
-            required:
-              - id
-              - user_id
-              - text
-              - created_at
-            properties:
-              id:
-                type: string
-              user_id:
-                type: string
-              text:
-                type: string
-              created_at:
-                type: string
-                format: date-time
-          reposts:
-            type: object
-            required:
-              - id
-              - parent_id
-              - user_id
-              - text
-              - created_at
-            properties:
-              id:
-                type: string
-              parent_id:
-                type: string
-              user_id:
-                type: string
-              text:
-                type: string
-              created_at:
-                type: string
-                format: date-time
-
-      - type: object
-        title: GetReverseChronologicalHomeTimelineResponseUseNewSchema
-        required:
-          - event_type
-          - timelineitems
-        properties:
-          event_type:
+          id:
             type: string
-          timelineitems:
+          authorId:
+            type: string
+          parentPostId:
             type: object
-            required:
-              - type
-              - id
-              - author_id
-              - created_at
+            required: [UUID, Valid]
             properties:
-              type:
+              UUID:
                 type: string
-              id:
-                type: string
-              author_id:
-                type: string
-              parent_post_id:
-                type: string
-              text:
-                type: string
-              created_at:
-                type: string
-                format: date-time
+              Valid:
+                type: boolean
+          text:
+            type: string
+          createdAt:
+            type: string
+            format: date-time

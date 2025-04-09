@@ -1,45 +1,27 @@
+type: object
 title: CreateRepostResponse
-oneOf:
-  - type: object
-    title: CreateRepostResponseReposts
-    description: Response when creating a repost (old schema).
-    required:
-      - id
-      - parent_id
-      - user_id
-      - text
-      - created_at
+description: Response when creating a repost.
+required:
+  - type
+  - id
+  - authorId
+  - parentPostId
+  - createdAt
+properties:
+  type:
+    type: string
+  id:
+    type: string
+  authorId:
+    type: string
+  parentPostId:
+    type: object
+    required: [UUID, Valid]
     properties:
-      id:
+      UUID:
         type: string
-      parent_id:
-        type: string
-      user_id:
-        type: string
-      text:
-        type: string
-      created_at:
-        type: string
-        format: date-time
-
-  - type: object
-    title: CreateRepostResponseTimelineItems
-    description: Response when creating a repost (new schema).
-    required:
-      - type
-      - id
-      - author_id
-      - parent_post_id
-      - created_at
-    properties:
-      type:
-        type: string
-      id:
-        type: string
-      author_id:
-        type: string
-      parent_post_id:
-        type: string
-      created_at:
-        type: string
-        format: date-time
+      Valid:
+        type: boolean
+  createdAt:
+    type: string
+    format: date-time

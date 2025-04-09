@@ -12,30 +12,25 @@ import (
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/infrastructure/persistence"
-	"x-clone-backend/internal/lib/featureflag"
 )
 
 type GetReverseChronologicalHomeTimelineHandler struct {
-	db                             *sql.DB
-	mu                             *sync.Mutex
-	usersChan                      *map[string]chan entity.TimelineEvent
-	getUserAndFolloweePostsUsecase usecase.GetUserAndFolloweePostsUsecase
-	userAndFolloweePostsUsecase    usecase.UserAndFolloweePostsUsecase
-	connected                      chan struct{}
+	db                          *sql.DB
+	mu                          *sync.Mutex
+	usersChan                   *map[string]chan entity.TimelineEvent
+	userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase
+	connected                   chan struct{}
 }
 
 func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, connected chan struct{}) GetReverseChronologicalHomeTimelineHandler {
-	postsRepository := persistence.NewPostsRepository(db)
 	timelineitemsRepository := persistence.NewTimelineitemsRepository(db)
-	getUserAndFolloweePostsUsecase := interactor.NewGetUserAndFolloweePostsUsecase(postsRepository)
 	userAndFolloweePostsUsecase := interactor.NewUserAndFolloweePostsUsecase(timelineitemsRepository)
 	return GetReverseChronologicalHomeTimelineHandler{
-		db:                             db,
-		mu:                             mu,
-		usersChan:                      usersChan,
-		getUserAndFolloweePostsUsecase: getUserAndFolloweePostsUsecase,
-		userAndFolloweePostsUsecase:    userAndFolloweePostsUsecase,
-		connected:                      connected,
+		db:                          db,
+		mu:                          mu,
+		usersChan:                   usersChan,
+		userAndFolloweePostsUsecase: userAndFolloweePostsUsecase,
+		connected:                   connected,
 	}
 }
 
@@ -48,75 +43,38 @@ func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHome
 	userChan := (*h.usersChan)[userID]
 	h.mu.Unlock()
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		timelineitems, err := h.userAndFolloweePostsUsecase.UserAndFolloweePosts(userID)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not get timelineitems"), http.StatusInternalServerError)
-			return
-		}
+	timelineitems, err := h.userAndFolloweePostsUsecase.UserAndFolloweePosts(userID)
+	if err != nil {
+		http.Error(w, fmt.Sprintln("Could not get timelineitems"), http.StatusInternalServerError)
+		return
+	}
 
-		userChan <- entity.TimelineEvent{EventType: entity.TimelineAccessed, TimelineItems: timelineitems}
-		h.connected <- struct{}{}
+	userChan <- entity.TimelineEvent{EventType: entity.TimelineAccessed, TimelineItems: timelineitems}
+	h.connected <- struct{}{}
 
-		flusher, _ := w.(http.Flusher)
-		w.Header().Set("Content-Type", "text/event-stream")
-		w.Header().Set("Cache-Control", "no-cache")
-		w.Header().Set("Connection", "keep-alive")
+	flusher, _ := w.(http.Flusher)
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
 
-		for {
-			select {
-			case <-h.connected:
-				continue
-			case event := <-userChan:
-				jsonData, err := json.Marshal(event)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-
-				fmt.Fprintf(w, "data: %s\n\n", jsonData)
-				flusher.Flush()
-			case <-r.Context().Done():
-				h.mu.Lock()
-				delete(*h.usersChan, userID)
-				h.mu.Unlock()
+	for {
+		select {
+		case <-h.connected:
+			continue
+		case event := <-userChan:
+			jsonData, err := json.Marshal(event)
+			if err != nil {
+				log.Println(err)
 				return
 			}
-		}
-	} else {
-		posts, err := h.getUserAndFolloweePostsUsecase.GetUserAndFolloweePosts(userID)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not get posts"), http.StatusInternalServerError)
+
+			fmt.Fprintf(w, "data: %s\n\n", jsonData)
+			flusher.Flush()
+		case <-r.Context().Done():
+			h.mu.Lock()
+			delete(*h.usersChan, userID)
+			h.mu.Unlock()
 			return
-		}
-
-		userChan <- entity.TimelineEvent{EventType: entity.TimelineAccessed, Posts: posts}
-		h.connected <- struct{}{}
-
-		flusher, _ := w.(http.Flusher)
-		w.Header().Set("Content-Type", "text/event-stream")
-		w.Header().Set("Cache-Control", "no-cache")
-		w.Header().Set("Connection", "keep-alive")
-
-		for {
-			select {
-			case <-h.connected:
-				continue
-			case event := <-userChan:
-				jsonData, err := json.Marshal(event)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-
-				fmt.Fprintf(w, "data: %s\n\n", jsonData)
-				flusher.Flush()
-			case <-r.Context().Done():
-				h.mu.Lock()
-				delete(*h.usersChan, userID)
-				h.mu.Unlock()
-				return
-			}
 		}
 	}
 }
