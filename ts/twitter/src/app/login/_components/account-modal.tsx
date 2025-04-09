@@ -1,5 +1,6 @@
 "use client";
 
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import type React from "react";
 import { FaApple, FaGoogle } from "react-icons/fa";
@@ -32,6 +33,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           color="black"
           borderRadius="full"
           fontWeight="bold"
+          boxShadow="0 0 0 1px gray"
         >
           <FaGoogle /> Login with Google
         </Button>
@@ -41,6 +43,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           color="black"
           borderRadius="full"
           fontWeight="bold"
+          boxShadow="0 0 0 1px gray"
         >
           <FaApple /> Login with Apple
         </Button>
@@ -52,10 +55,10 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           top="50%"
           left="50%"
           transform="translate(-50%, -50%)"
-          bg="black"
+          bg={useColorModeValue("white", "black")}
           px={4}
         >
-          <Text textAlign="center" color="white">
+          <Text textAlign="center" color={useColorModeValue("black", "white")}>
             or
           </Text>
         </Box>
@@ -66,8 +69,8 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           placeholder="Phone, email or username"
           value={username}
           onChange={(e) => handleUsernameChange(e.target.value)}
-          bg="black"
-          color="white"
+          bg={useColorModeValue("white", "black")}
+          color={useColorModeValue("black", "white")}
           borderColor="gray"
           pl="2"
           _placeholder={{ color: "gray" }}
@@ -78,8 +81,8 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         <Button
           type="submit"
           width="100%"
-          bg="white"
-          color="black"
+          bg={useColorModeValue("black", "white")}
+          color={useColorModeValue("white", "black")}
           borderRadius="full"
           fontWeight="bold"
           disabled={username.trim() === ""}

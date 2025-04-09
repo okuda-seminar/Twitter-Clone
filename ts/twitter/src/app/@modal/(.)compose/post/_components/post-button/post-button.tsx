@@ -1,5 +1,6 @@
 "use client";
 
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Button } from "@chakra-ui/react";
 import { useFormStatus } from "react-dom";
 
@@ -15,8 +16,8 @@ export const PostButton = ({ isDisabled }: PostButtonProps) => {
       data-testid="post-button"
       type="submit"
       disabled={isDisabled || pending}
-      bg="blue.primary"
-      color="white"
+      bg={useColorModeValue("gray", "white")}
+      color={useColorModeValue("white", "black")}
       borderRadius="full"
       px={4}
       _hover={{ bg: "blue.primaryHover" }}

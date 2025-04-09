@@ -9,7 +9,7 @@ export const MyProfileTab: React.FC = () => {
       position="relative"
       width="100%"
       key="lines"
-      defaultValue="posts"
+      defaultValue="Posts"
     >
       <Tabs.List width="100%" color="gray" position="relative">
         {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/471
