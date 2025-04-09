@@ -14,7 +14,6 @@ import (
 
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/lib/featureflag"
 )
 
 // DeleteUser deletes a user with the specified user ID.
@@ -44,109 +43,56 @@ func DeletePost(w http.ResponseWriter, r *http.Request, db *sql.DB, mu *sync.Mut
 	postID := r.PathValue("postID")
 	slog.Info(fmt.Sprintf("DELETE /api/posts was called with %s.", postID))
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		query := `DELETE FROM timelineitems WHERE id = $1 RETURNING type, author_id, text, created_at`
-		var post entity.TimelineItem
+	query := `DELETE FROM timelineitems WHERE id = $1 RETURNING type, author_id, text, created_at`
+	var post entity.TimelineItem
 
-		err := db.QueryRow(query, postID).Scan(&post.Type, &post.AuthorID, &post.Text, &post.CreatedAt)
-		if err != nil {
-			if errors.Is(err, sql.ErrNoRows) {
-				http.Error(w, fmt.Sprintf("No row found to delete (ID: %s)\n", postID), http.StatusNotFound)
-				return
-			}
-
-			http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
+	err := db.QueryRow(query, postID).Scan(&post.Type, &post.AuthorID, &post.Text, &post.CreatedAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.Error(w, fmt.Sprintf("No row found to delete (ID: %s)\n", postID), http.StatusNotFound)
 			return
 		}
 
-		post.ID, err = uuid.Parse(postID)
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
-			return
-		}
-
-		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-			var posts []*entity.TimelineItem
-			posts = append(posts, &post)
-			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-			rows, err := db.Query(query, userID.String())
-			if err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			var ids []uuid.UUID
-			for rows.Next() {
-				var id uuid.UUID
-				if err := rows.Scan(&id); err != nil {
-					log.Fatalln(err)
-					return
-				}
-
-				ids = append(ids, id)
-			}
-			ids = append(ids, userID)
-			for _, id := range ids {
-				mu.Lock()
-				if userChan, ok := (*usersChan)[id.String()]; ok {
-					userChan <- entity.TimelineEvent{EventType: entity.PostDeleted, TimelineItems: posts}
-				}
-				mu.Unlock()
-			}
-
-		}(post.AuthorID, usersChan)
-	} else {
-		query := `DELETE FROM posts WHERE id = $1 RETURNING user_id, text, created_at`
-		var post entity.Post
-
-		err := db.QueryRow(query, postID).Scan(&post.UserID, &post.Text, &post.CreatedAt)
-		if err != nil {
-			if errors.Is(err, sql.ErrNoRows) {
-				http.Error(w, fmt.Sprintf("No row found to delete (ID: %s)\n", postID), http.StatusNotFound)
-				return
-			}
-
-			http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
-			return
-		}
-
-		post.ID, err = uuid.Parse(postID)
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
-			return
-		}
-
-		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-			var posts []*entity.Post
-			posts = append(posts, &post)
-			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-			rows, err := db.Query(query, userID.String())
-			if err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			var ids []uuid.UUID
-			for rows.Next() {
-				var id uuid.UUID
-				if err := rows.Scan(&id); err != nil {
-					log.Fatalln(err)
-					return
-				}
-
-				ids = append(ids, id)
-			}
-			ids = append(ids, userID)
-			for _, id := range ids {
-				mu.Lock()
-				if userChan, ok := (*usersChan)[id.String()]; ok {
-					userChan <- entity.TimelineEvent{EventType: entity.PostDeleted, Posts: posts}
-				}
-				mu.Unlock()
-			}
-
-		}(post.UserID, usersChan)
+		http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
+		return
 	}
+
+	post.ID, err = uuid.Parse(postID)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
+		return
+	}
+
+	go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
+		var posts []*entity.TimelineItem
+		posts = append(posts, &post)
+		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+		rows, err := db.Query(query, userID.String())
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+
+		var ids []uuid.UUID
+		for rows.Next() {
+			var id uuid.UUID
+			if err := rows.Scan(&id); err != nil {
+				log.Fatalln(err)
+				return
+			}
+
+			ids = append(ids, id)
+		}
+		ids = append(ids, userID)
+		for _, id := range ids {
+			mu.Lock()
+			if userChan, ok := (*usersChan)[id.String()]; ok {
+				userChan <- entity.TimelineEvent{EventType: entity.PostDeleted, TimelineItems: posts}
+			}
+			mu.Unlock()
+		}
+
+	}(post.AuthorID, usersChan)
 
 	w.WriteHeader(http.StatusNoContent)
 }

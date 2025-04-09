@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/lib/featureflag"
 )
 
 func (s *handlerTestSuite) TestDeletePost() {
@@ -267,17 +266,10 @@ func (s *handlerTestSuite) newTestRepost(userID, postID string) string {
 	createRepostHandler := NewCreateRepostHandler(s.db, &s.mu, &s.userChannels)
 	createRepostHandler.CreateRepost(rr, req, userID)
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		var repost entity.TimelineItem
-		_ = json.NewDecoder(rr.Body).Decode(&repost)
-		repostID := repost.ID.String()
-		return repostID
-	} else {
-		var repost entity.Repost
-		_ = json.NewDecoder(rr.Body).Decode(&repost)
-		repostID := repost.ID.String()
-		return repostID
-	}
+	var repost entity.TimelineItem
+	_ = json.NewDecoder(rr.Body).Decode(&repost)
+	repostID := repost.ID.String()
+	return repostID
 }
 
 func (s *handlerTestSuite) newTestDeleteRepost(userID string, postID string, repostID string) {
@@ -304,17 +296,10 @@ func (s *handlerTestSuite) newTestQuoteRepost(userID, postID string) string {
 	createRepostHandler := NewCreateQuoteRepostHandler(s.db, &s.mu, &s.userChannels)
 	createRepostHandler.CreateQuoteRepost(rr, req, userID)
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		var repost entity.TimelineItem
-		_ = json.NewDecoder(rr.Body).Decode(&repost)
-		repostID := repost.ID.String()
-		return repostID
-	} else {
-		var repost entity.Repost
-		_ = json.NewDecoder(rr.Body).Decode(&repost)
-		repostID := repost.ID.String()
-		return repostID
-	}
+	var repost entity.TimelineItem
+	_ = json.NewDecoder(rr.Body).Decode(&repost)
+	repostID := repost.ID.String()
+	return repostID
 }
 
 func (s *handlerTestSuite) newTestUser(body string) string {
@@ -367,17 +352,10 @@ func (s *handlerTestSuite) newTestPost(body string) string {
 	createPostHandler := NewCreatePostHandler(s.db, &s.mu, &s.userChannels)
 	createPostHandler.CreatePost(rr, req)
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		var post entity.TimelineItem
-		_ = json.NewDecoder(rr.Body).Decode(&post)
-		postID := post.ID.String()
-		return postID
-	} else {
-		var post entity.Post
-		_ = json.NewDecoder(rr.Body).Decode(&post)
-		postID := post.ID.String()
-		return postID
-	}
+	var post entity.TimelineItem
+	_ = json.NewDecoder(rr.Body).Decode(&post)
+	postID := post.ID.String()
+	return postID
 }
 
 func (s *handlerTestSuite) newTestLike(userID string, postID string) {

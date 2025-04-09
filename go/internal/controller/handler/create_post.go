@@ -13,7 +13,6 @@ import (
 
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/value"
-	"x-clone-backend/internal/lib/featureflag"
 )
 
 type CreatePostHandler struct {
@@ -45,132 +44,68 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if featureflag.TimelineFeatureFlag().UseNewSchema {
-		query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
+	query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
 
-		var (
-			id        uuid.UUID
-			createdAt time.Time
-		)
+	var (
+		id        uuid.UUID
+		createdAt time.Time
+	)
 
-		postType := entity.PostTypePost
+	postType := entity.PostTypePost
 
-		err = h.db.QueryRow(query, postType, body.UserID, body.Text).Scan(&id, &createdAt)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not create a post."), http.StatusInternalServerError)
-			return
-		}
-
-		post := entity.TimelineItem{
-			Type:         postType,
-			ID:           id,
-			AuthorID:     body.UserID,
-			ParentPostID: value.NullUUID{},
-			Text:         body.Text,
-			CreatedAt:    createdAt,
-		}
-
-		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-			var posts []*entity.TimelineItem
-			posts = append(posts, &post)
-			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-			rows, err := h.db.Query(query, userID.String())
-			if err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			var ids []uuid.UUID
-			for rows.Next() {
-				var id uuid.UUID
-				if err := rows.Scan(&id); err != nil {
-					log.Fatalln(err)
-					return
-				}
-
-				ids = append(ids, id)
-			}
-			ids = append(ids, userID)
-			for _, id := range ids {
-				h.mu.Lock()
-				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- entity.TimelineEvent{EventType: entity.PostCreated, TimelineItems: posts}
-				}
-				h.mu.Unlock()
-			}
-
-		}(body.UserID, h.usersChan)
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
-
-		encoder := json.NewEncoder(w)
-		err = encoder.Encode(&post)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
-			return
-		}
-	} else {
-		query := `INSERT INTO posts (user_id, text) VALUES ($1, $2) RETURNING id, created_at`
-
-		var (
-			id        uuid.UUID
-			createdAt time.Time
-		)
-
-		err = h.db.QueryRow(query, body.UserID, body.Text).Scan(&id, &createdAt)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not create a post."), http.StatusInternalServerError)
-			return
-		}
-
-		post := entity.Post{
-			ID:        id,
-			UserID:    body.UserID,
-			Text:      body.Text,
-			CreatedAt: createdAt,
-		}
-
-		go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-			var posts []*entity.Post
-			posts = append(posts, &post)
-			query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-			rows, err := h.db.Query(query, userID.String())
-			if err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			var ids []uuid.UUID
-			for rows.Next() {
-				var id uuid.UUID
-				if err := rows.Scan(&id); err != nil {
-					log.Fatalln(err)
-					return
-				}
-
-				ids = append(ids, id)
-			}
-			ids = append(ids, userID)
-			for _, id := range ids {
-				h.mu.Lock()
-				if userChan, ok := (*h.usersChan)[id.String()]; ok {
-					userChan <- entity.TimelineEvent{EventType: entity.PostCreated, Posts: posts}
-				}
-				h.mu.Unlock()
-			}
-
-		}(body.UserID, h.usersChan)
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
-
-		encoder := json.NewEncoder(w)
-		err = encoder.Encode(&post)
-		if err != nil {
-			http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
-			return
-		}
+	err = h.db.QueryRow(query, postType, body.UserID, body.Text).Scan(&id, &createdAt)
+	if err != nil {
+		http.Error(w, fmt.Sprintln("Could not create a post."), http.StatusInternalServerError)
+		return
 	}
 
+	post := entity.TimelineItem{
+		Type:         postType,
+		ID:           id,
+		AuthorID:     body.UserID,
+		ParentPostID: value.NullUUID{},
+		Text:         body.Text,
+		CreatedAt:    createdAt,
+	}
+
+	go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
+		var posts []*entity.TimelineItem
+		posts = append(posts, &post)
+		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+		rows, err := h.db.Query(query, userID.String())
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+
+		var ids []uuid.UUID
+		for rows.Next() {
+			var id uuid.UUID
+			if err := rows.Scan(&id); err != nil {
+				log.Fatalln(err)
+				return
+			}
+
+			ids = append(ids, id)
+		}
+		ids = append(ids, userID)
+		for _, id := range ids {
+			h.mu.Lock()
+			if userChan, ok := (*h.usersChan)[id.String()]; ok {
+				userChan <- entity.TimelineEvent{EventType: entity.PostCreated, TimelineItems: posts}
+			}
+			h.mu.Unlock()
+		}
+
+	}(body.UserID, h.usersChan)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+
+	encoder := json.NewEncoder(w)
+	err = encoder.Encode(&post)
+	if err != nil {
+		http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
+		return
+	}
 }

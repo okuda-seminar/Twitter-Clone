@@ -11,7 +11,5 @@ const (
 
 type TimelineEvent struct {
 	EventType     string          `json:"event_type"`
-	Posts         []*Post         `json:"posts"`
-	Reposts       []*Repost       `json:"reposts"`
 	TimelineItems []*TimelineItem `json:"timeline_items"`
 }
