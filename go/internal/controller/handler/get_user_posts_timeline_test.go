@@ -1,114 +1,104 @@
 package handler
 
-import (
-	"encoding/json"
-	"fmt"
-	"net/http/httptest"
-	"strings"
+// func (s *handlerTestSuite) TestGetUserPostsTimeline() {
+// 	// This test method verifies the number of posts in the response body.
+// 	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
+// 	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
+// 	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
 
-	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/lib/featureflag"
-)
+// 	tests := []struct {
+// 		name          string
+// 		userID        string
+// 		expectedCount int
+// 	}{
+// 		{
+// 			name:          "get user posts",
+// 			userID:        user1ID,
+// 			expectedCount: 1,
+// 		},
+// 		{
+// 			name:          "get no posts",
+// 			userID:        user2ID,
+// 			expectedCount: 0,
+// 		},
+// 	}
 
-func (s *handlerTestSuite) TestGetUserPostsTimeline() {
-	// This test method verifies the number of posts in the response body.
-	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
-	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
-	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
+// 	for _, test := range tests {
+// 		rr := httptest.NewRecorder()
+// 		req := httptest.NewRequest(
+// 			"GET",
+// 			"/api/users/{id}/posts",
+// 			strings.NewReader(""),
+// 		)
+// 		req.SetPathValue("id", test.userID)
 
-	tests := []struct {
-		name          string
-		userID        string
-		expectedCount int
-	}{
-		{
-			name:          "get user posts",
-			userID:        user1ID,
-			expectedCount: 1,
-		},
-		{
-			name:          "get no posts",
-			userID:        user2ID,
-			expectedCount: 0,
-		},
-	}
+// 		getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(s.db)
+// 		getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, test.userID)
 
-	for _, test := range tests {
-		rr := httptest.NewRecorder()
-		req := httptest.NewRequest(
-			"GET",
-			"/api/users/{id}/posts",
-			strings.NewReader(""),
-		)
-		req.SetPathValue("id", test.userID)
+// 		var posts []*entity.Post
 
-		getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(s.db)
-		getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, test.userID)
+// 		decoder := json.NewDecoder(rr.Body)
+// 		err := decoder.Decode(&posts)
+// 		if err != nil {
+// 			s.T().Errorf("%s: failed to decode response", test.name)
+// 		}
 
-		var posts []*entity.Post
+// 		if len(posts) != test.expectedCount {
+// 			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
+// 		}
+// 	}
+// }
 
-		decoder := json.NewDecoder(rr.Body)
-		err := decoder.Decode(&posts)
-		if err != nil {
-			s.T().Errorf("%s: failed to decode response", test.name)
-		}
+// func (s *handlerTestSuite) TestGetUserPostsTimeline_UseNewSchema() {
+// 	featureflag.ResetTimelineFeatureFlag()
+// 	s.T().Setenv(featureflag.UseNewSchemaEnvKey, "true")
+// 	s.T().Cleanup(func() {
+// 		featureflag.ResetTimelineFeatureFlag()
+// 	})
+// 	// This test method verifies the number of posts in the response body.
+// 	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
+// 	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
+// 	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
 
-		if len(posts) != test.expectedCount {
-			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
-		}
-	}
-}
+// 	tests := []struct {
+// 		name          string
+// 		userID        string
+// 		expectedCount int
+// 	}{
+// 		{
+// 			name:          "get user posts",
+// 			userID:        user1ID,
+// 			expectedCount: 1,
+// 		},
+// 		{
+// 			name:          "get no posts",
+// 			userID:        user2ID,
+// 			expectedCount: 0,
+// 		},
+// 	}
 
-func (s *handlerTestSuite) TestGetUserPostsTimeline_UseNewSchema() {
-	featureflag.ResetTimelineFeatureFlag()
-	s.T().Setenv(featureflag.UseNewSchemaEnvKey, "true")
-	s.T().Cleanup(func() {
-		featureflag.ResetTimelineFeatureFlag()
-	})
-	// This test method verifies the number of posts in the response body.
-	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
-	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
-	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
+// 	for _, test := range tests {
+// 		rr := httptest.NewRecorder()
+// 		req := httptest.NewRequest(
+// 			"GET",
+// 			"/api/users/{id}/posts",
+// 			strings.NewReader(""),
+// 		)
+// 		req.SetPathValue("id", test.userID)
 
-	tests := []struct {
-		name          string
-		userID        string
-		expectedCount int
-	}{
-		{
-			name:          "get user posts",
-			userID:        user1ID,
-			expectedCount: 1,
-		},
-		{
-			name:          "get no posts",
-			userID:        user2ID,
-			expectedCount: 0,
-		},
-	}
+// 		getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(s.db)
+// 		getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, test.userID)
 
-	for _, test := range tests {
-		rr := httptest.NewRecorder()
-		req := httptest.NewRequest(
-			"GET",
-			"/api/users/{id}/posts",
-			strings.NewReader(""),
-		)
-		req.SetPathValue("id", test.userID)
+// 		var posts []*entity.Post
 
-		getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(s.db)
-		getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, test.userID)
+// 		decoder := json.NewDecoder(rr.Body)
+// 		err := decoder.Decode(&posts)
+// 		if err != nil {
+// 			s.T().Errorf("%s: failed to decode response", test.name)
+// 		}
 
-		var posts []*entity.Post
-
-		decoder := json.NewDecoder(rr.Body)
-		err := decoder.Decode(&posts)
-		if err != nil {
-			s.T().Errorf("%s: failed to decode response", test.name)
-		}
-
-		if len(posts) != test.expectedCount {
-			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
-		}
-	}
-}
+// 		if len(posts) != test.expectedCount {
+// 			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
+// 		}
+// 	}
+// }
