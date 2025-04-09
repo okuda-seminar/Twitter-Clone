@@ -6,6 +6,7 @@ import type React from "react";
 import { CiLogin } from "react-icons/ci";
 import { useAuth } from "./auth-context";
 import { MiniProfile } from "./mini-profile/mini-profile";
+import { useColorModeValue } from "./ui/color-mode";
 import { Tooltip } from "./ui/tooltip";
 
 export const SignInbutton: React.FC = () => {
@@ -28,8 +29,8 @@ export const SignInbutton: React.FC = () => {
           <Box display={{ base: "none", xl: "inline" }}>
             <Button
               onClick={dummyHandleSignIn}
-              bg="#1DA1F2"
-              color="white"
+              bg={useColorModeValue("black", "white")}
+              color={useColorModeValue("white", "black")}
               width="200px"
               size="lg"
               borderRadius="full"
@@ -41,7 +42,7 @@ export const SignInbutton: React.FC = () => {
             <Box display={{ base: "inline", xl: "none" }}>
               <IconButton
                 onClick={dummyHandleSignIn}
-                bg="#1DA1F2"
+                bg={useColorModeValue("black", "white")}
                 aria-label={"SignIn"}
                 mx={3}
                 borderRadius="full"

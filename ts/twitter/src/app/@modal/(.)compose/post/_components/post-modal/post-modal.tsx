@@ -50,6 +50,8 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
         handleCloseButtonClick();
       }}
     >
+      {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/664
+    - Adjust position of post modal when opened. */}
       <Dialog.Backdrop />
       <Dialog.Content
         bg="black"

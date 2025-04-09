@@ -1,6 +1,7 @@
 "use client";
 
 import type { LoginBody } from "@/lib/actions/login";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import type React from "react";
@@ -34,7 +35,14 @@ export const LoginModal: React.FC = () => {
     // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/621
     // - Add support for light mode in the login modal.
     <Flex align="center" justify="center" minH="100vh">
-      <Box width="400px" bg="black" borderRadius="md" p={6} color="white">
+      <Box
+        width="400px"
+        bg={useColorModeValue("white", "black")}
+        borderRadius="md"
+        p={6}
+        color={useColorModeValue("black", "white")}
+        border="1px solid gray"
+      >
         {!showPasswordModal ? (
           <AccountModal
             username={loginFormValue.username}
