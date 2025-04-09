@@ -5,12 +5,6 @@ final class NewPostEditViewController: UIViewController {
 
   // MARK: - Private Props
 
-  private enum LayoutConstant {
-    static let edgePadding: CGFloat = 16.0
-    static let permissionRequestButtonSize: CGFloat = 28.0
-    static let dimmingViewAlpha: CGFloat = 0.4
-  }
-
   @ObservedObject private var dataSource = NewPostEditDataSource()
   @ObservedObject private var viewObserver = NewPostEditViewObserver()
 
@@ -34,8 +28,7 @@ final class NewPostEditViewController: UIViewController {
   private let dimmingView: UIView = {
     let dimmingView = UIView()
     dimmingView.translatesAutoresizingMaskIntoConstraints = false
-    dimmingView.backgroundColor = UIColor.black.withAlphaComponent(
-      LayoutConstant.dimmingViewAlpha)
+    dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
     return dimmingView
   }()
 
@@ -61,9 +54,11 @@ final class NewPostEditViewController: UIViewController {
     let layoutGuide = view.safeAreaLayoutGuide
     let keyboardLayoutGuide = view.keyboardLayoutGuide
 
+    let permissionRequestButtonSize: CGFloat = 28.0
+
     NSLayoutConstraint.activate([
       newPostEditHostingController.view.topAnchor.constraint(
-        equalTo: layoutGuide.topAnchor, constant: LayoutConstant.edgePadding),
+        equalTo: layoutGuide.topAnchor, constant: 16),
       newPostEditHostingController.view.leadingAnchor.constraint(
         equalTo: layoutGuide.leadingAnchor),
       newPostEditHostingController.view.trailingAnchor.constraint(
@@ -76,9 +71,9 @@ final class NewPostEditViewController: UIViewController {
       photoLibraryAccessHostingController.view.leadingAnchor.constraint(
         equalTo: layoutGuide.leadingAnchor),
       photoLibraryAccessHostingController.view.widthAnchor.constraint(
-        equalToConstant: LayoutConstant.permissionRequestButtonSize),
+        equalToConstant: permissionRequestButtonSize),
       photoLibraryAccessHostingController.view.heightAnchor.constraint(
-        equalToConstant: LayoutConstant.permissionRequestButtonSize),
+        equalToConstant: permissionRequestButtonSize),
     ])
   }
 
@@ -133,6 +128,7 @@ final class NewPostEditViewController: UIViewController {
 
     viewObserver.didTapDraftsButtonCompletion = { [weak self] in
       let viewController = DraftsViewController()
+      viewController.delegate = self
       self?.present(viewController, animated: true)
     }
   }
@@ -250,5 +246,11 @@ final class NewPostEditViewController: UIViewController {
         print("unknown")
       }
     }
+  }
+}
+
+extension NewPostEditViewController: DraftsViewControllerDelegate {
+  func draftsViewController(_ controller: DraftsViewController, didSelectDraft draft: DraftModel) {
+    dataSource.postText = draft.text
   }
 }

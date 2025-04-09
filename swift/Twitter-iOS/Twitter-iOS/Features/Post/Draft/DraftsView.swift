@@ -1,9 +1,9 @@
 import SwiftUI
 
-typealias didTapDraftsViewDismissalButtonCompletion = () -> Void
+typealias didSelectDraftCompletion = (DraftModel) -> Void
 
 class DraftsViewObserver: ObservableObject {
-  var didTapDismissalButton: didTapDraftsViewDismissalButtonCompletion?
+  var didSelectDraft: didSelectDraftCompletion?
 }
 
 public final class DraftsViewDataSource: ObservableObject {
@@ -12,6 +12,8 @@ public final class DraftsViewDataSource: ObservableObject {
 }
 
 struct DraftsView: View {
+  @Environment(\.dismiss) private var dismiss
+
   public var dataSource: DraftsViewDataSource
   public let viewObserver: DraftsViewObserver
   @State private var isEditing = false
@@ -20,7 +22,7 @@ struct DraftsView: View {
     VStack {
       HStack {
         Button(action: {
-          viewObserver.didTapDismissalButton?()
+          dismiss()
         }) {
           Text("Cancel")
             .underline()
@@ -52,20 +54,40 @@ struct DraftsView: View {
       .padding(.top)
 
       List {
+        // Use ForEach directly with the identifiable data
         ForEach(dataSource.savedDrafts.indices, id: \.self) { index in
-          Text(dataSource.savedDrafts[index].text)
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-              Button(role: .destructive) {
-                removeDraft(at: IndexSet([index]))
-              } label: {
-                Label("Delete", systemImage: "trash")
-              }
+          let draft = dataSource.savedDrafts[index]
+          Button {
+            viewObserver.didSelectDraft?(draft)
+
+          } label: {
+            // Use an HStack within the label to control layout
+            HStack {
+              Text(draft.text)
+                .lineLimit(1)  // Optional: prevent text wrapping
+                .truncationMode(.tail)  // Optional: show ellipsis for long text
+              Spacer()  // Pushes the Text to the left
             }
+            .contentShape(Rectangle())
+          }
+          // Apply swipe actions directly to the Button or its label content
+          .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button(role: .destructive) {
+              removeDraft(at: [index])  // Pass the draft object
+            } label: {
+              Label("Delete", systemImage: "trash")
+            }
+          }
+          // Use PlainButtonStyle to make it look like regular list content
+          .buttonStyle(PlainButtonStyle())
+          // Ensure text color is standard for the list context
+          .foregroundStyle(.primary)
         }
+        // Use the onDelete that works with ForEach(data)
         .onDelete(perform: removeDraft)
       }
-      .listStyle(.plain)
-      .frame(maxWidth: .infinity)
+      .listStyle(.plain)  // Keep plain style
+      .environment(\.editMode, .constant(isEditing ? .active : .inactive))
     }
   }
 
@@ -77,6 +99,11 @@ struct DraftsView: View {
   }
 }
 
-#Preview {
-  DraftsView(dataSource: DraftsViewDataSource(), viewObserver: DraftsViewObserver())
+struct DraftsView_Previews: PreviewProvider {  // The PreviewProvider
+  static var previews: some View {
+    let dataSource = DraftsViewDataSource()
+    dataSource.savedDrafts = [.init(text: "Hello")]
+    let viewObserver = DraftsViewObserver()
+    return DraftsView(dataSource: dataSource, viewObserver: viewObserver)
+  }
 }

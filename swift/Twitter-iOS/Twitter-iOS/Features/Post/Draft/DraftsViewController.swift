@@ -1,7 +1,17 @@
 import SwiftUI
 import UIKit
 
+public protocol DraftsViewControllerDelegate: AnyObject {
+  func draftsViewController(_ controller: DraftsViewController, didSelectDraft draft: DraftModel)
+}
+
 public final class DraftsViewController: UIViewController {
+
+  // MARK: - Public Props
+
+  public weak var delegate: DraftsViewControllerDelegate?
+
+  // MARK: - Private Props
 
   private var dataSource = DraftsViewDataSource()
   private var viewObserver = DraftsViewObserver()
@@ -28,9 +38,15 @@ public final class DraftsViewController: UIViewController {
       hostingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
 
-    viewObserver.didTapDismissalButton = { [weak self] in
-      self?.dismiss(animated: true)
+    viewObserver.didSelectDraft = { [weak self] draft in
+      self?.didSelectDraft(draft)
     }
     dataSource.savedDrafts = injectDraftService().drafts
+  }
+
+  private func didSelectDraft(_ draft: DraftModel) {
+    injectDraftService().remove(draft: draft)
+    delegate?.draftsViewController(self, didSelectDraft: draft)
+    dismiss(animated: true)
   }
 }

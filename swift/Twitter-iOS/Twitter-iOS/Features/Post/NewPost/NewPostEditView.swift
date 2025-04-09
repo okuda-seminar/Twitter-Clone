@@ -79,7 +79,7 @@ struct NewPostEditView: View {
   }
 
   private var isDraftsButtonDisabled: Bool {
-    !dataSource.postText.isEmpty
+    !dataSource.postText.isEmpty || injectDraftService().drafts.isEmpty
   }
 
   var body: some View {
