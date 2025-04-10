@@ -11,15 +11,15 @@ import (
 	"github.com/google/uuid"
 )
 
-type timelineitemsRepository struct {
+type timelineItemsRepository struct {
 	db *sql.DB
 }
 
 func NewTimelineitemsRepository(db *sql.DB) repository.TimelineItemsRepository {
-	return &timelineitemsRepository{db}
+	return &timelineItemsRepository{db}
 }
 
-func (r *timelineitemsRepository) SpecificUserPosts(userID string) ([]*entity.TimelineItem, error) {
+func (r *timelineItemsRepository) SpecificUserPosts(userID string) ([]*entity.TimelineItem, error) {
 	query := `SELECT * FROM timelineitems WHERE author_id = $1`
 
 	rows, err := r.db.Query(query, userID)
@@ -56,7 +56,9 @@ func (r *timelineitemsRepository) SpecificUserPosts(userID string) ([]*entity.Ti
 	return timelineitems, nil
 }
 
-func (r *timelineitemsRepository) UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error) {
+// This method does not use the userID argument and gets all the timelineitems in the fake repository.
+// This is to avoid timelineItems having information in the follow table.
+func (r *timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error) {
 	query := `
 		SELECT timelineitems.* 
 		FROM timelineitems
@@ -98,3 +100,26 @@ func (r *timelineitemsRepository) UserAndFolloweePosts(userID string) ([]*entity
 
 	return timelineitems, nil
 }
+
+func (r *timelineItemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
+	return entity.TimelineItem{}, nil
+}
+
+func (r *timelineItemsRepository) DeletePost(postID string) error {
+	return nil
+}
+
+func (r *timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
+	return entity.TimelineItem{}, nil
+}
+
+func (r *timelineItemsRepository) DeleteRepost(postID string) error {
+	return nil
+}
+
+func (r *timelineItemsRepository) CreateQuoteRepost(userID, postID, text string) (entity.TimelineItem, error) {
+	return entity.TimelineItem{}, nil
+}
+
+func (r *timelineItemsRepository) SetError(key string, err error) {}
+func (r *timelineItemsRepository) ClearError(key string)          {}
