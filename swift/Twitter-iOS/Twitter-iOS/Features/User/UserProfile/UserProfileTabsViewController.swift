@@ -11,12 +11,6 @@ class UserProfileTabsViewController: ButtonBarPagerTabStripViewController, Pager
 
   // MARK: - Private Props
 
-  /// The set of constant values used for layout configurations.
-  private enum LayoutConstant {
-    static let pagerTabHeight: CGFloat = 5.0
-    static let selectedBarHeight: CGFloat = 0.5
-  }
-
   /// The set of localized strings used for tab titles.
   private enum LocalizedString {
     static let postsTabTitle = String(localized: "Posts")
@@ -57,7 +51,7 @@ class UserProfileTabsViewController: ButtonBarPagerTabStripViewController, Pager
 
   /// The height value for the tab bar.
   public var pagerTabHeight: CGFloat? {
-    return LayoutConstant.pagerTabHeight
+    return 5
   }
 
   // MARK: - Initializer
@@ -80,7 +74,7 @@ class UserProfileTabsViewController: ButtonBarPagerTabStripViewController, Pager
     settings.style.buttonBarItemBackgroundColor = .systemBackground
     settings.style.selectedBarBackgroundColor = .gray
     settings.style.buttonBarItemTitleColor = .brandedLightBlue
-    settings.style.selectedBarHeight = LayoutConstant.selectedBarHeight
+    settings.style.selectedBarHeight = 0.5
   }
 
   /// Updates the text color of the tab button cells when the index changes.

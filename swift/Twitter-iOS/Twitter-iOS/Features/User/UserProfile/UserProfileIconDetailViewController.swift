@@ -14,7 +14,6 @@ class UserProfileIconDetailViewController: UIViewController {
   private enum LayoutConstant {
     static let edgePadding = 16.0
     static let closeButtonSize = 28.0
-    static let profileIconViewTopPadding = 8.0
     static let profileIconViewSize = 256.0
   }
 

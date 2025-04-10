@@ -7,13 +7,6 @@ class UserProfileTabViewController: UIViewController {
 
   // MARK: - Private Props
 
-  /// The set of constant values used for layout configurations.
-  private enum LayoutConstant {
-    static let cellCount: Int = 30
-    static let cellHeight: CGFloat = 238.17
-    static let minimumLineSpacing: CGFloat = 0.0
-  }
-
   /// The collection view displaying a collection of posts.
   private lazy var collectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout()
@@ -70,7 +63,7 @@ extension UserProfileTabViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
     -> Int
   {
-    return LayoutConstant.cellCount
+    return 30
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
@@ -93,14 +86,14 @@ extension UserProfileTabViewController: UICollectionViewDelegateFlowLayout {
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
-    return CGSize(width: collectionView.bounds.width, height: LayoutConstant.cellHeight)
+    return CGSize(width: collectionView.bounds.width, height: 238)
   }
 
   func collectionView(
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     minimumLineSpacingForSectionAt section: Int
   ) -> CGFloat {
-    return LayoutConstant.minimumLineSpacing
+    return 0
   }
 }
 

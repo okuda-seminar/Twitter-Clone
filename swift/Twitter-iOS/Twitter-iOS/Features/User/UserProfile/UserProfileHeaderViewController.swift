@@ -94,12 +94,6 @@ struct UserProfileHeaderView: View {
   /// The set of constant values used for layout configurations.
   private enum LayoutConstant {
     static let borderOffsetToSwitch: CGFloat = 80.0
-    static let bannerViewHeight = 140.0
-    static let iconImageSize: CGFloat = 75.0
-    static let initialProfileIconScale: CGFloat = 1.8
-    static let maxProfileIconScale: CGFloat = 1.0
-    static let maxScrollProgress: CGFloat = 1.0
-    static let vStackSpacing: CGFloat = 0.0
   }
 
   /// The z-index values used for managing view layering.
@@ -111,10 +105,12 @@ struct UserProfileHeaderView: View {
 
   /// The current scale factor for the profile icon, adjusted based on scroll offset.
   private var currentProfileIconScale: CGFloat {
+    let maxProfileIconScale: CGFloat = 1.0
+    let maxScrollProgress: CGFloat = 1.0
     let progress = -scrollOffset / LayoutConstant.borderOffsetToSwitch
     let scale =
-      LayoutConstant.initialProfileIconScale - min(progress, LayoutConstant.maxScrollProgress)
-    return min(scale, LayoutConstant.maxProfileIconScale)
+      1.8 - min(progress, maxScrollProgress)
+    return min(scale, maxProfileIconScale)
   }
 
   /// The view observer managing completions for specific user interactions.
@@ -128,14 +124,14 @@ struct UserProfileHeaderView: View {
 
   /// The main body of the header view.
   var body: some View {
-    VStack(spacing: LayoutConstant.vStackSpacing) {
+    VStack(spacing: 0) {
       UserProfileBannerView(
         scrollOffset: $scrollOffset,
         titleOffset: $titleOffset,
         borderOffsetToSwitch: LayoutConstant.borderOffsetToSwitch,
         viewObserver: viewObserver
       )
-      .frame(height: LayoutConstant.bannerViewHeight)
+      .frame(height: 140)
       .zIndex(ZIndex.bannerForeground)
       ProfileIcon()
         .zIndex(
@@ -154,7 +150,7 @@ struct UserProfileHeaderView: View {
         Image(systemName: "apple.logo")
           .resizable()
           .scaledToFit()
-          .frame(width: LayoutConstant.iconImageSize, height: LayoutConstant.iconImageSize)
+          .frame(width: 75, height: 75)
           .background(.white)
           .clipShape(Circle())
           .padding(.leading)

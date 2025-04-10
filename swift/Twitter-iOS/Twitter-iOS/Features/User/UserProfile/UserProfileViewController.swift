@@ -32,11 +32,6 @@ class UserProfileViewController: UIViewController, TPDataSource, TPProgressDeleg
 
   // MARK: - Private Props
 
-  /// The set of constant values used for layout configurations.
-  private enum LayoutConstant {
-    static let minHeaderHeight: CGFloat = 36.0
-  }
-
   /// The view observer managing completions for specific user interactions.
   private var viewObserver = UserProfileViewObserver()
 
@@ -62,7 +57,7 @@ class UserProfileViewController: UIViewController, TPDataSource, TPProgressDeleg
   ///
   /// - Returns: The minimum height value for the header view.
   func minHeaderHeight() -> CGFloat {
-    return topInset + LayoutConstant.minHeaderHeight
+    return topInset + 36.0
   }
 
   // MARK: - TPProgressDelegate Methods

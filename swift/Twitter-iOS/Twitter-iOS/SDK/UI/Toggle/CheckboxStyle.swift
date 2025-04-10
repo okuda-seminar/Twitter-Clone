@@ -6,10 +6,6 @@ struct CheckboxStyle: ToggleStyle {
     case squareCheckboxStyle
   }
 
-  private enum LayoutConstant {
-    static let fontSize: CGFloat = 28.0
-  }
-
   public let style: Style
 
   func makeBody(configuration: Configuration) -> some View {
@@ -28,7 +24,7 @@ struct CheckboxStyle: ToggleStyle {
         .foregroundColor(
           configuration.isOn ? Color(uiColor: .brandedBlue) : Color(uiColor: .lightGray)
         )
-        .font(.system(size: LayoutConstant.fontSize, weight: .medium, design: .rounded))
+        .font(.system(size: 28.0, weight: .medium, design: .rounded))
     }
     .onTapGesture {
       configuration.isOn.toggle()
