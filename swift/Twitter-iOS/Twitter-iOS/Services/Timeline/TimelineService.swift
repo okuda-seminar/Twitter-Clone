@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 /// The completion typealias for the startListeningToTimelineSSE method.
 public typealias didStartListeningToTimelineSSECompletion = (
@@ -39,6 +40,8 @@ public final class TimelineService: NSObject {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/610
   // - Centralize Base URL Configuration Across Services.
   private static let baseURL: String = "http://localhost:80"
+
+  private let logger = os.Logger(subsystem: "com.x-clone", category: "timelineService")
 
   // MARK: - Public API
 
@@ -143,9 +146,10 @@ public final class TimelineService: NSObject {
         completion(.success((.quoteRepostCreated, [])))
       }
     } catch {
+      logger.info("\(cleanedEventString)")
       // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/611
       // - Add Robust Error Handling for Timeline SSE Processing.
-      print(error.localizedDescription)
+      logger.error("\(error.localizedDescription)")
       completion(.failure(TimelineServiceError.dataProcessingError))
     }
   }

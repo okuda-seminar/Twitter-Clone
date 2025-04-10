@@ -16,11 +16,7 @@ struct RepostOptionsBottomSheet: View {
     VStack(alignment: .leading) {
       Button(
         action: {
-          if let postModel {
-            let postService = injectPostService()
-            postService.repost(postModelId: postModel.id)
-          }
-          dismiss()
+          repost(of: postModel)
         },
         label: {
           HStack {
@@ -67,6 +63,21 @@ struct RepostOptionsBottomSheet: View {
       )
     }
     .padding()
+  }
+
+  // MARK: - Action Handler
+
+  /// Create a repost and dismiss the sheet.
+  private func repost(of post: PostModel?) {
+    guard let postModel else {
+      dismiss()
+      return
+    }
+    Task { @MainActor in
+      let postService = injectPostService()
+      await postService.repost(of: postModel)
+      dismiss()
+    }
   }
 }
 

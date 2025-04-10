@@ -28,14 +28,14 @@ struct TimelineEventModel: Codable {
 
 struct TimelineEventItemModel: Codable {
   let type: String
-  let id: String
-  let authorId: String
-  let text: String
+  let id: UUID
+  let authorId: UUID
+  let text: String?
   let createdAt: String
-  let parentPostId: String?
+  let parentPostId: ParentPostId?
 
   var postModel: TimelinePostModel? {
-    guard type == "post" else { return nil }
+    guard type == "post", let text else { return nil }
     return TimelinePostModel(
       type: type,
       id: id,
@@ -46,12 +46,11 @@ struct TimelineEventItemModel: Codable {
   }
 
   var repostModel: TimelineRepostModel? {
-    guard type == "repost", let parentId = parentPostId else { return nil }
+    guard type == "repost", let parentPostId else { return nil }
     return TimelineRepostModel(
       id: id,
-      parentId: parentId,
+      parentPostId: parentPostId,
       userId: authorId,
-      text: text,
       createdAt: createdAt
     )
   }
@@ -60,32 +59,41 @@ struct TimelineEventItemModel: Codable {
 /// Base struct for Post
 struct TimelinePostModel: Codable {
   let type: String
-  let id: String
-  let authorId: String
+  let id: UUID
+  let authorId: UUID
   let text: String
   let createdAt: String
 
   var clientPostModel: PostModel? {
-    guard let uuid = UUID(uuidString: id) else { return nil }
     return PostModel(
-      id: uuid, bodyText: text, userIcon: UIImage(), userName: "TBU", isRepostedByCurrentUser: false
+      id: id, bodyText: text, userIcon: UIImage(), userName: "TBU", isRepostedByCurrentUser: false
     )
   }
 }
 
 /// Timeline struct for Repost
 struct TimelineRepostModel: Codable {
-  let id: String
-  let parentId: String
-  let userId: String
-  let text: String
+  let id: UUID
+  let parentPostId: ParentPostId
+  let userId: UUID
   let createdAt: String
 
+  var clientRepostModel: RepostModel? {
+    RepostModel(
+      id: id,
+      post: .init(
+        id: parentPostId.uuid, bodyText: "Repost!", userIcon: UIImage(), userName: "",
+        isRepostedByCurrentUser: true))
+  }
+}
+
+/// Represents the nested parentPostId object
+struct ParentPostId: Codable, Hashable {
+  let uuid: UUID
+  let isValid: Bool
+
   enum CodingKeys: String, CodingKey {
-    case id
-    case parentId = "parent_id"
-    case userId = "user_id"
-    case text
-    case createdAt = "created_at"
+    case uuid = "UUID"
+    case isValid = "Valid"
   }
 }

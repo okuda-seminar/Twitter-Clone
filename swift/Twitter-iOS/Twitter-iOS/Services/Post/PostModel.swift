@@ -9,6 +9,12 @@ public struct PostModel: Identifiable {
   let isRepostedByCurrentUser: Bool
 }
 
+/// The model representing a repost.
+public struct RepostModel: Identifiable {
+  public let id: UUID
+  let post: PostModel
+}
+
 /// Create a fake post model for preview and testing purposes.
 ///
 /// - Returns: The PostModel instance with sample data.
@@ -24,6 +30,14 @@ func createFakePostModel() -> PostModel {
     userName: "Apple",
     isRepostedByCurrentUser: false
   )
+}
+
+public struct CreateRepostRequest: Codable {
+  let postId: String
+
+  enum CodingKeys: String, CodingKey {
+    case postId = "post_id"
+  }
 }
 
 public struct CreatePostRequest: Codable {

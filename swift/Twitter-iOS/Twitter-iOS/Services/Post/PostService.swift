@@ -36,7 +36,7 @@ public final class PostService {
     do {
       let (_, response) = try await URLSession.shared.data(for: urlRequest)
       if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
-        logger.info("Post created: \(httpResponse)")
+        logger.debug("Post created: \(httpResponse)")
       }
     } catch {}
   }
@@ -44,11 +44,25 @@ public final class PostService {
   /// Reposts the post with the given post model id.
   ///
   /// - Parameter postModelId: The id of the given post to repost.
-  public func repost(postModelId: UUID) {
-    // Need to send requests to server first in the future.
-    for delegate in delegates {
-      delegate.didRepost(postModelId: postModelId)
-    }
+  public func repost(of post: PostModel) async {
+    let userId = injectAuthService().currentUser.id.uuidString
+    guard let url = URL(string: "\(Self.baseURLString)/api/users/\(userId)/reposts") else { return }
+    let request = CreateRepostRequest(postId: post.id.uuidString)
+    guard let jsonData = try? JSONEncoder().encode(request) else { return }
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+    urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    urlRequest.httpBody = jsonData
+
+    do {
+      let (_, response) = try await URLSession.shared.data(for: urlRequest)
+      if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+        logger.debug("Repost created: \(httpResponse)")
+        for delegate in delegates {
+          delegate.didRepost(of: post)
+        }
+      }
+    } catch {}
   }
 
   /// Fetches a list of the searched tag canditate users.
@@ -67,7 +81,7 @@ public final class PostService {
 
 /// The protocol that defines methods for handling post-related actions in PostService.
 public protocol PostServiceDelegate: AnyObject {
-  func didRepost(postModelId: UUID)
+  func didRepost(of post: PostModel)
 }
 
 /// Injects the shared instance of PostService.
