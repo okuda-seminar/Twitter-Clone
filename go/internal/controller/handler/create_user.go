@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,7 +10,7 @@ import (
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/infrastructure/persistence"
+	"x-clone-backend/internal/domain/repository"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -20,9 +19,8 @@ type CreateUserHandler struct {
 	authService       *service.AuthService
 }
 
-func NewCreateUserHandler(db *sql.DB, authService *service.AuthService) CreateUserHandler {
-	usersRepository := persistence.NewUsersRepository(db)
-	createUserUsecase := interactor.NewCreateUserUsecase(usersRepository)
+func NewCreateUserHandler(repo repository.UsersRepository, authService *service.AuthService) CreateUserHandler {
+	createUserUsecase := interactor.NewCreateUserUsecase(repo)
 	return CreateUserHandler{
 		createUserUsecase,
 		authService,
