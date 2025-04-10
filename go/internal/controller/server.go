@@ -7,6 +7,7 @@ import (
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/controller/handler"
 	"x-clone-backend/internal/domain/entity"
+	"x-clone-backend/internal/infrastructure"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -27,7 +28,7 @@ type Server struct {
 
 func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, authService *service.AuthService) Server {
 	return Server{
-		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
+		CreateUserHandler:                          handler.NewCreateUserHandler(infrastructure.InjectUsersRepository(db), authService),
 		LoginHandler:                               handler.NewLoginHandler(db, authService),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handler.NewCreatePostHandler(db, mu, usersChan),
