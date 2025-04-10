@@ -1,6 +1,11 @@
 import SwiftUI
 import UIKit
 
+extension Notification.Name {
+  public static let shouldDismissNewPostEditViewController = Notification.Name(
+    "shouldDismissNewPostEditViewController")
+}
+
 final class NewPostEditViewController: UIViewController {
 
   // MARK: - Private Props
@@ -40,7 +45,7 @@ final class NewPostEditViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUpSubviews()
-    setUpViewObserver()
+    setUpObservers()
   }
 
   // MARK: - Private API
@@ -77,10 +82,7 @@ final class NewPostEditViewController: UIViewController {
     ])
   }
 
-  private func setUpViewObserver() {
-    viewObserver.didTapNewPostEditCancelButtonCompletion = { [weak self] in
-      self?.askToSaveDraftIfNeeded()
-    }
+  private func setUpObservers() {
 
     viewObserver.didTapImageEditButtonCompletion = { [weak self] in
       let selectedImageEditViewController = SelectedImageEditViewController()
@@ -131,18 +133,15 @@ final class NewPostEditViewController: UIViewController {
       viewController.delegate = self
       self?.present(viewController, animated: true)
     }
+
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(dismissAfterCleaningUp),
+      name: .shouldDismissNewPostEditViewController, object: nil)
   }
 
   // MARK: - Methods for ViewObserver Completion
 
-  private func askToSaveDraftIfNeeded() {
-    guard !dataSource.postText.isEmpty else {
-      dismissAfterCleaningUp()
-      return
-    }
-  }
-
-  private func dismissAfterCleaningUp() {
+  @objc private func dismissAfterCleaningUp() {
     newPostEditHostingController.view.layer.opacity = 0.0
     photoLibraryAccessHostingController.view.layer.opacity = 0.0
 
