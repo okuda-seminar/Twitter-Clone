@@ -1,6 +1,8 @@
 "use server";
 
+import { AUTH_COOKIE_OPTIONS } from "@/lib/constants/cookie-constants";
 import type { User } from "@/lib/models/user";
+import { cookies } from "next/headers";
 import {
   type ServerActionsError,
   type ServerActionsResult,
@@ -38,9 +40,12 @@ export async function signup(
   );
 
   if (res.ok) {
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/631
-    // - Store the JWT in a cookie.
     const data: SignupResponse = await res.json();
+    cookies().set({
+      ...AUTH_COOKIE_OPTIONS,
+      value: data.token,
+    });
+
     return ok(data);
   }
 

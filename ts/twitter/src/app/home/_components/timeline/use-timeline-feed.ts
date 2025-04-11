@@ -15,11 +15,15 @@ export interface useTimelineFeedReturn {
 export const useTimelineFeed = (): useTimelineFeedReturn => {
   const router = useRouter();
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timelineFeedServiceRef = useRef<TimelineFeedService | null>(null);
 
   useEffect(() => {
+    if (authLoading) {
+      return;
+    }
+
     if (!user?.id) {
       router.push("/login");
       return;
@@ -42,10 +46,17 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
             ) {
               return;
             }
-            setTimelineItems((prevTimelineItems) => [
-              ...newTimelineItems.timeline_items,
-              ...prevTimelineItems,
-            ]);
+
+            setTimelineItems((prevTimelineItems) => {
+              const existingIds = new Set(
+                prevTimelineItems.map((item) => item.id),
+              );
+              const newItems = newTimelineItems.timeline_items.filter(
+                (item) => !existingIds.has(item.id),
+              );
+
+              return [...newItems, ...prevTimelineItems];
+            });
             break;
           case "PostDeleted":
             // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/540
@@ -61,7 +72,7 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
     return () => {
       timelineFeedServiceRef.current?.disconnect();
     };
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   return {
     errorMessage,

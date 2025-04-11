@@ -6,6 +6,7 @@ export const ERROR_MESSAGES = {
     "Something went wrong, but don't fret - let's give it another shot.",
   SIGNUP_ERROR: "Something went wrong with signup. Please try again.",
   UNKNOWN_ERROR: "An unknown error occurred.",
+  NO_AUTH_TOKEN: "No authentication token found.",
 } as const;
 
 export const STATUS_TEXT = {
