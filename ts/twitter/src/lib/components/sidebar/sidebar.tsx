@@ -16,13 +16,15 @@ import { FaTwitter, FaUser } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { PiHouseFill } from "react-icons/pi";
+import { useAuth } from "../auth-context";
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
+import { MiniProfile } from "../mini-profile/mini-profile";
 import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
-import { SignInbutton } from "../sign-in-button";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
 export const SideBar: React.FC = () => {
+  const { user } = useAuth();
   const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
   const sidebarItems = [
     {
@@ -122,7 +124,7 @@ export const SideBar: React.FC = () => {
 
         <SideBarPostButton />
         <Spacer />
-        <SignInbutton />
+        {user && <MiniProfile user={user} />}
       </VStack>
     </Flex>
   );
