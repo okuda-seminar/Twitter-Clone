@@ -1,9 +1,8 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 import { AuthProvider } from "@/lib/components/auth-context";
 import { PageLayout } from "@/lib/components/page-layout";
 import { Provider } from "@/lib/components/ui/provider";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
+  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/672
+  // - Fix UI layout issues on mobile view.
   return (
     <html lang="en">
       <body className={inter.className}>

@@ -19,6 +19,7 @@ import { PiHouseFill } from "react-icons/pi";
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
 import { SignInbutton } from "../sign-in-button";
+import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
 export const SideBar: React.FC = () => {
@@ -77,8 +78,8 @@ export const SideBar: React.FC = () => {
                 aria-label="Twitter"
                 borderRadius="full"
                 mx={3}
-                color="white"
-                bg="black"
+                color={useColorModeValue("black", "white")}
+                bg={useColorModeValue("white", "black")}
               >
                 <FaTwitter />
               </IconButton>
@@ -102,7 +103,11 @@ export const SideBar: React.FC = () => {
             positioning={{ placement: "bottom" }}
             disabled={isTooltipDisabled}
           >
-            <IconButton aria-label="More" color="white" bg="black">
+            <IconButton
+              aria-label="More"
+              color={useColorModeValue("black", "white")}
+              bg={useColorModeValue("white", "black")}
+            >
               <CiCircleMore />
             </IconButton>
           </Tooltip>

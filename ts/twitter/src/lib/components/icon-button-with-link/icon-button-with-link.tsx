@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import type React from "react";
+import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
 interface IconButtonWithLinkProps {
@@ -32,7 +33,11 @@ export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
             positioning={{ placement: "bottom" }}
             disabled={isTooltipDisabled}
           >
-            <IconButton aria-label={ariaLabel} color="white" bg="black">
+            <IconButton
+              aria-label={ariaLabel}
+              color={useColorModeValue("black", "white")}
+              bg={useColorModeValue("white", "black")}
+            >
               {icon}
             </IconButton>
           </Tooltip>

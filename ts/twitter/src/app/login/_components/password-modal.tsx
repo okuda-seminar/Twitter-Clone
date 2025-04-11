@@ -1,6 +1,7 @@
 "use client";
 
 import type { LoginBody } from "@/lib/actions/login";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import { useFormState } from "react-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -31,7 +32,6 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
             position="absolute"
             left={0}
             top={0}
-            color="white"
             _hover={{ color: "white" }}
             aria-label="Back to account"
           >
@@ -61,9 +61,8 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
           name="username"
           value={loginFormValue.username}
           readOnly
-          bg="black"
-          color="white"
-          borderColor="gray"
+          bg={useColorModeValue("gray.100", "gray.900")}
+          color={useColorModeValue("black", "gray.500")}
           pl="2"
           _placeholder={{ color: "gray" }}
           _focus={{ borderColor: "blue.primary" }}
@@ -75,9 +74,9 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
           type="password"
           value={loginFormValue.password}
           onChange={(e) => handlePasswordChange(e.target.value)}
-          bg="black"
-          color="white"
-          borderColor="gray"
+          bg={useColorModeValue("gray.100", "black")}
+          color={useColorModeValue("black", "white")}
+          borderColor={useColorModeValue("gray.200", "gray")}
           pl="2"
           _placeholder={{ color: "gray" }}
           _focus={{ borderColor: "blue.primary" }}
@@ -95,8 +94,8 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
         <Button
           type="submit"
           width="100%"
-          bg="white"
-          color="black"
+          bg={useColorModeValue("black", "white")}
+          color={useColorModeValue("white", "black")}
           borderRadius="full"
           fontWeight="bold"
           disabled={loginFormValue.password.trim() === ""}

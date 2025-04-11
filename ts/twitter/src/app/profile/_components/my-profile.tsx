@@ -69,10 +69,11 @@ export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
             <Button
               borderRadius="full"
               marginLeft="auto"
-              bg="gray.200"
-              color="black"
+              bg={useColorModeValue("white", "black")}
+              color={useColorModeValue("black", "white")}
               fontSize="md"
-              _hover={{ bg: "gray.300" }}
+              _hover={{ bg: "gray" }}
+              boxShadow="0 0 0 1px gray"
             >
               EditProfile
             </Button>
