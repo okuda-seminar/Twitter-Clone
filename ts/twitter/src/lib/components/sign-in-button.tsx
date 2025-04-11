@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, IconButton } from "@chakra-ui/react";
+import { Box, Button, IconButton, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { CiLogin } from "react-icons/ci";
@@ -9,15 +9,20 @@ import { MiniProfile } from "./mini-profile/mini-profile";
 import { Tooltip } from "./ui/tooltip";
 
 export const SignInbutton: React.FC = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
-  // This is a temporary sign-in handler.
-  // When clicked, it redirects the user to the login page.
-  // In the future, this will be replaced with a real authentication flow.
   const dummyHandleSignIn = () => {
     router.push("/login");
   };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+        <Spinner size="md" color="blue.primary" />
+      </Box>
+    );
+  }
 
   return (
     <Box>

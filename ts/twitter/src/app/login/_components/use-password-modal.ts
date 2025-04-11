@@ -1,6 +1,6 @@
-import { login } from "@/lib/actions/login";
 import { useAuth } from "@/lib/components/auth-context";
 import { useRouter } from "next/navigation";
+import { login } from "#src/lib/actions/login";
 
 interface UsePasswordModalReturn {
   handleLoginAction: (
