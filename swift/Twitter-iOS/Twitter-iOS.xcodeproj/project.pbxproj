@@ -128,6 +128,7 @@
 		65C71BB72C3580A00025839C /* SearchInputDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BB62C3580A00025839C /* SearchInputDataSource.swift */; };
 		65C71BBC2C36DBC90025839C /* SearchedQueryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BBB2C36DBC90025839C /* SearchedQueryModel.swift */; };
 		65C71BC52C3823070025839C /* SearchInputViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C71BC42C3823070025839C /* SearchInputViewObserver.swift */; };
+		65E70D1D2DAA2D0400A6052E /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 65E70D1C2DAA2D0400A6052E /* Apollo */; };
 		65F9083E2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F9083D2BDFCE4300C6C8B3 /* PhotoLibraryPermissionController.swift */; };
 		65F908422BE1130200C6C8B3 /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908412BE1130200C6C8B3 /* PostDetailViewController.swift */; };
 		65F908452BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F908442BE119CE00C6C8B3 /* UINavigationController+UIGestureRecognizerDelegate.swift */; };
@@ -349,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EC2A799F69643D23A86C7A3 /* Pods_Twitter_iOS.framework in Frameworks */,
+				65E70D1D2DAA2D0400A6052E /* Apollo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,6 +1828,13 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		65E70D1C2DAA2D0400A6052E /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Apollo;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6540F8752BB44D430029BA46 /* Project object */;
 }
