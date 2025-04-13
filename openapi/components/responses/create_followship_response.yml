@@ -1,0 +1,7 @@
+type: object
+title: CreateFollowshipErrorResponse
+required:
+  - message
+properties:
+  message:
+    type: string
