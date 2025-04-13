@@ -23,6 +23,8 @@ paths:
     $ref: ./paths/find_user_by_id.yml
   /api/login:
     $ref: ./paths/login.yml
+  /api/users/{id}/following:
+    $ref: ./paths/followship.yml
 
 components:
   schemas:
@@ -44,6 +46,10 @@ components:
       $ref: ./components/responses/create_quote_repost_response.yml
     DeleteRepostRequest:
       $ref: ./components/requests/delete_repost_request.yml
+    CreateFollowshipRequest:
+      $ref: ./components/requests/create_followship_request.yml
+    CreateFollowshipResponse:
+      $ref: ./components/responses/create_followship_response.yml
     GetReverseChronologicalHomeTimelineResponse:
       $ref: ./components/responses/get_reverse_chronological_home_timeline_response.yml
     GetReverseChronologicalHomeTimelineExample:
