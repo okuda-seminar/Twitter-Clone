@@ -23,7 +23,10 @@ type ServerInterface interface {
 	// Creates a new user.
 	// (POST /api/users)
 	CreateUser(w http.ResponseWriter, r *http.Request)
-	// Get a collection of posts by the specified user.
+	// Create a followship
+	// (POST /api/users/{id}/following)
+	CreateFollowship(w http.ResponseWriter, r *http.Request, id string)
+	// Get a collection of posts or timelineitems by the specified user.
 	// (GET /api/users/{id}/posts)
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new quote repost.
@@ -85,6 +88,31 @@ func (siw *ServerInterfaceWrapper) CreateUser(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateUser(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateFollowship operation middleware
+func (siw *ServerInterfaceWrapper) CreateFollowship(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateFollowship(w, r, id)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -376,6 +404,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.Login)
 	m.HandleFunc("POST "+options.BaseURL+"/api/posts", wrapper.CreatePost)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users", wrapper.CreateUser)
+	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/following", wrapper.CreateFollowship)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/posts", wrapper.GetUserPostsTimeline)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/reposts", wrapper.CreateRepost)
