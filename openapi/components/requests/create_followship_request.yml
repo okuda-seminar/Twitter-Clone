@@ -1,0 +1,7 @@
+type: object
+title: CreateFollowshipRequest
+required:
+  - targetUserID
+properties:
+  targetUserID:
+    type: string

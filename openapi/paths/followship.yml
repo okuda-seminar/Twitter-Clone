@@ -1,0 +1,33 @@
+post:
+  tags:
+    - X-Clone
+  summary: Create a followship
+  operationId: createFollowship
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: string
+  requestBody:
+    description: JSON payload to specify target user
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/requests/create_followship_request.yml
+  responses:
+    '201':
+      description: Followship created successfully
+    '400':
+      description: Bad Request – The request body was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/create_followship_response.yml
+    '500':
+      description: Internal Server Error – Could not create followship.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/create_followship_response.yml
