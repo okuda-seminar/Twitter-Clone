@@ -42,7 +42,6 @@ func main() {
 	deleteUserUsecase := interactor.NewDeleteUserUsecase(usersRepository)
 	likePostUsecase := interactor.NewLikePostUsecase(usersRepository)
 	unlikePostUsecase := interactor.NewUnlikePostUsecase(usersRepository)
-	followUserUsecase := interactor.NewFollowUserUsecase(usersRepository)
 	unfollowUserUsecase := interactor.NewUnfollowUserUsecase(usersRepository)
 	muteUserUsecase := interactor.NewMuteUserUsecase(usersRepository)
 	unmuteUserUsecase := interactor.NewUnmuteUserUsecase(usersRepository)
@@ -63,10 +62,6 @@ func main() {
 
 	mux.HandleFunc("DELETE /api/users/{id}/likes/{post_id}", func(w http.ResponseWriter, r *http.Request) {
 		handler.UnlikePost(w, r, unlikePostUsecase)
-	})
-
-	mux.HandleFunc("POST /api/users/{id}/following", func(w http.ResponseWriter, r *http.Request) {
-		handler.CreateFollowship(w, r, followUserUsecase)
 	})
 
 	mux.HandleFunc("DELETE /api/users/{source_user_id}/following/{target_user_id}", func(w http.ResponseWriter, r *http.Request) {
