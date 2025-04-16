@@ -1,4 +1,5 @@
 allow-prefix:
+  - "[BFF]"
   - "[Infra]"
   - "[CI/CD]"
   - "[iOS]"
