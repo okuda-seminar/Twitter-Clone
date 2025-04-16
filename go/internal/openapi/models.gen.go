@@ -5,6 +5,19 @@ package openapi
 
 import (
 	"time"
+
+	openapi_types "github.com/oapi-codegen/runtime/types"
+)
+
+const (
+	BearerAuthScopes = "BearerAuth.Scopes"
+)
+
+// Defines values for GetUserPostsTimelineResponseType.
+const (
+	Post        GetUserPostsTimelineResponseType = "post"
+	QuoteRepost GetUserPostsTimelineResponseType = "quoteRepost"
+	Repost      GetUserPostsTimelineResponseType = "repost"
 )
 
 // CreatePostRequest defines model for create_post_request.
@@ -13,12 +26,13 @@ type CreatePostRequest struct {
 	UserId string `json:"user_id"`
 }
 
-// CreatePostResponse defines model for create_post_response.
+// CreatePostResponse Response when creating a timeline item.
 type CreatePostResponse struct {
-	CreatedAt time.Time `json:"created_at"`
+	AuthorId  string    `json:"authorId"`
+	CreatedAt time.Time `json:"createdAt"`
 	Id        string    `json:"id"`
 	Text      string    `json:"text"`
-	UserId    string    `json:"user_id"`
+	Type      string    `json:"type"`
 }
 
 // CreateQuoteRepostRequest defines model for create_quote_repost_request.
@@ -27,13 +41,17 @@ type CreateQuoteRepostRequest struct {
 	Text   string `json:"text"`
 }
 
-// CreateQuoteRepostResponse defines model for create_quote_repost_response.
+// CreateQuoteRepostResponse Response when creating a quote repost.
 type CreateQuoteRepostResponse struct {
-	CreatedAt time.Time `json:"created_at"`
-	Id        string    `json:"id"`
-	ParentId  string    `json:"parent_id"`
-	Text      string    `json:"text"`
-	UserId    string    `json:"user_id"`
+	AuthorId     string    `json:"authorId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Id           string    `json:"id"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
+	Text string `json:"text"`
+	Type string `json:"type"`
 }
 
 // CreateRepostRequest defines model for create_repost_request.
@@ -41,13 +59,16 @@ type CreateRepostRequest struct {
 	PostId string `json:"post_id"`
 }
 
-// CreateRepostResponse defines model for create_repost_response.
+// CreateRepostResponse Response when creating a repost.
 type CreateRepostResponse struct {
-	CreatedAt time.Time `json:"created_at"`
-	Id        string    `json:"id"`
-	ParentId  string    `json:"parent_id"`
-	Text      string    `json:"text"`
-	UserId    string    `json:"user_id"`
+	AuthorId     string    `json:"authorId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Id           string    `json:"id"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
+	Type string `json:"type"`
 }
 
 // CreateUserRequest defines model for create_user_request.
@@ -78,44 +99,39 @@ type DeleteRepostRequest struct {
 	RepostId string `json:"repost_id"`
 }
 
-// FindUserByIdResponse defines model for find_user_by_id_response.
-type FindUserByIdResponse struct {
-	Bio         string    `json:"bio"`
-	CreatedAt   time.Time `json:"created_at"`
-	DisplayName string    `json:"display_name"`
-	Id          string    `json:"id"`
-	IsPrivate   bool      `json:"is_private"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	Username    string    `json:"username"`
-}
-
 // GetReverseChronologicalHomeTimelineResponse defines model for get_reverse_chronological_home_timeline_response.
 type GetReverseChronologicalHomeTimelineResponse struct {
 	Data *struct {
-		EventType string `json:"event_type"`
-		Posts     struct {
-			CreatedAt time.Time `json:"created_at"`
-			Id        string    `json:"id"`
-			Text      string    `json:"text"`
-			UserId    string    `json:"user_id"`
-		} `json:"posts"`
-		Reposts struct {
-			CreatedAt time.Time `json:"created_at"`
-			Id        string    `json:"id"`
-			ParentId  string    `json:"parent_id"`
-			Text      string    `json:"text"`
-			UserId    string    `json:"user_id"`
-		} `json:"reposts"`
+		EventType     string `json:"event_type"`
+		TimelineItems struct {
+			AuthorId     string    `json:"authorId"`
+			CreatedAt    time.Time `json:"createdAt"`
+			Id           string    `json:"id"`
+			ParentPostId *struct {
+				UUID  string `json:"UUID"`
+				Valid bool   `json:"Valid"`
+			} `json:"parentPostId,omitempty"`
+			Text *string `json:"text,omitempty"`
+			Type string  `json:"type"`
+		} `json:"timeline_items"`
 	} `json:"data,omitempty"`
 }
 
-// GetUserPostsTimelineResponse defines model for get_user_posts_timeline_response.
+// GetUserPostsTimelineResponse Response when fetching timeline items.
 type GetUserPostsTimelineResponse = []struct {
-	CreatedAt time.Time `json:"created_at"`
-	Id        string    `json:"id"`
-	Text      string    `json:"text"`
-	UserId    string    `json:"user_id"`
+	AuthorId     string    `json:"authorId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Id           string    `json:"id"`
+	ParentPostId *struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId,omitempty"`
+	Text string                           `json:"text"`
+	Type GetUserPostsTimelineResponseType `json:"type"`
 }
+
+// GetUserPostsTimelineResponseType defines model for GetUserPostsTimelineResponse.Type.
+type GetUserPostsTimelineResponseType string
 
 // LoginRequest defines model for login_request.
 type LoginRequest struct {

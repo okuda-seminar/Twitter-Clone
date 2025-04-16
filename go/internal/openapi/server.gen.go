@@ -35,9 +35,12 @@ type ServerInterface interface {
 	// Get a collection of posts by the specified user and users they follow.
 	// (GET /api/users/{id}/timelines/reverse_chronological)
 	GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, id string)
-	// Find user by ID.
+
+	// (DELETE /api/users/{userID})
+	DeleteApiUsersUserID(w http.ResponseWriter, r *http.Request, userID string)
+
 	// (GET /api/users/{userID})
-	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
+	GetApiUsersUserID(w http.ResponseWriter, r *http.Request, userID string)
 	// Deletes a repost.
 	// (DELETE /api/users/{user_id}/reposts/{post_id})
 	DeleteRepost(w http.ResponseWriter, r *http.Request, userId string, postId string)
@@ -194,8 +197,8 @@ func (siw *ServerInterfaceWrapper) GetReverseChronologicalHomeTimeline(w http.Re
 	handler.ServeHTTP(w, r)
 }
 
-// FindUserByID operation middleware
-func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.Request) {
+// DeleteApiUsersUserID operation middleware
+func (siw *ServerInterfaceWrapper) DeleteApiUsersUserID(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
@@ -209,7 +212,32 @@ func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.R
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.FindUserByID(w, r, userID)
+		siw.Handler.DeleteApiUsersUserID(w, r, userID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetApiUsersUserID operation middleware
+func (siw *ServerInterfaceWrapper) GetApiUsersUserID(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userID" -------------
+	var userID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userID", r.PathValue("userID"), &userID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userID", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetApiUsersUserID(w, r, userID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -380,7 +408,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
-	m.HandleFunc("GET "+options.BaseURL+"/api/users/{userID}", wrapper.FindUserByID)
+	m.HandleFunc("DELETE "+options.BaseURL+"/api/users/{userID}", wrapper.DeleteApiUsersUserID)
+	m.HandleFunc("GET "+options.BaseURL+"/api/users/{userID}", wrapper.GetApiUsersUserID)
 	m.HandleFunc("DELETE "+options.BaseURL+"/api/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 
 	return m
