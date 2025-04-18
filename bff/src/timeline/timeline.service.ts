@@ -1,0 +1,41 @@
+import { HttpService } from "@nestjs/axios";
+import { Injectable } from "@nestjs/common";
+import { firstValueFrom } from "rxjs";
+import { CreatePostInput } from "./inputs/create-post.input";
+import { Post } from "./models/post.model";
+import { TimelineItem } from "./models/timeline-item.model";
+
+@Injectable()
+export class TimelineService {
+  constructor(private readonly httpService: HttpService) {}
+
+  /**
+   * Fetches the timeline posts for a specific user from the backend API.
+   *
+   * @param userId The unique identifier of the user whose posts are to be fetched.
+   * @returns A promise that resolves to an array of TimelineItem objects (Post, Repost, or QuoteRepost).
+   */
+  async getUserPosts(userId: string): Promise<Array<typeof TimelineItem>> {
+    const { data } = await firstValueFrom(
+      this.httpService.get<Array<typeof TimelineItem>>(
+        `/api/users/${userId}/posts`,
+      ),
+    );
+
+    return data;
+  }
+
+  /**
+   * Creates a new post by sending the data to the backend API.
+   *
+   * @param createPostInput - An object containing the necessary data for creating a post (e.g., userId, text).
+   * @returns A promise that resolves to the newly created Post object as returned by the backend.
+   */
+  async createPost(createPostInput: CreatePostInput): Promise<Post> {
+    const { data } = await firstValueFrom(
+      this.httpService.post<Post>("/api/posts", createPostInput),
+    );
+
+    return data;
+  }
+}

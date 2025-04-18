@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  type: String!
+  id: ID!
+  authorId: ID!
+  text: String!
+  createdAt: String!
+}
+
+type NullableUuid {
+  UUID: ID
+  Valid: Boolean!
+}
+
+type Query {
+  getUserPosts(userId: ID!): [TimelineItem!]!
+}
+
+union TimelineItem = Post | Repost | QuoteRepost
+
+type Repost {
+  type: String!
+  id: ID!
+  authorId: ID!
+  parentPostId: NullableUuid!
+  createdAt: String!
+}
+
+type QuoteRepost {
+  type: String!
+  id: ID!
+  authorId: ID!
+  parentPostId: NullableUuid!
+  text: String!
+  createdAt: String!
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
+}
+
+input CreatePostInput {
+  user_id: ID!
+  text: String!
+}
