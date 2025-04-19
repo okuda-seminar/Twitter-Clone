@@ -1,0 +1,3 @@
+env     = "prd"
+profile = "x-clone"
+account_id = "xxxxxxxxxxxxxx"
