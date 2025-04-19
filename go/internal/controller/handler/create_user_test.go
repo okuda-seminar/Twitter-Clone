@@ -1,70 +1,132 @@
 package handler
 
-// func (s *handlerTestSuite) TestCreateUser() {
-// 	tests := []struct {
-// 		name         string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "create user",
-// 			body:         `{ "username": "test", "display_name": "test", "password": "securepassword" }`,
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "invalid JSON body",
-// 			body:         `{ "username": "` + "test",
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "invalid body",
-// 			body:         `{ "invalid": "test", "password": "securepassword" }`,
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "duplicated username",
-// 			body:         `{ "username": "test", "display_name": "duplicated", "password": "securepassword" }`,
-// 			expectedCode: http.StatusConflict,
-// 		},
-// 		{
-// 			name:         "password too short",
-// 			body:         `{ "username": "test2", "display_name": "duplicated", "password": "shortpw" }`,
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "password too long",
-// 			body:         `{ "username": "test3", "display_name": "duplicated", "password": "longsecurepassword" }`,
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 	}
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	for _, test := range tests {
-// 		createUserHandler := NewCreateUserHandler(s.db, s.authService)
+	"x-clone-backend/internal/application/service"
+	"x-clone-backend/internal/infrastructure"
+	"x-clone-backend/internal/openapi"
+)
 
-// 		req := httptest.NewRequest("POST", "/api/users", strings.NewReader(test.body))
-// 		rr := httptest.NewRecorder()
+func TestCreateUser(t *testing.T) {
+	t.Run("create user", func(t *testing.T) {
+		repo := infrastructure.InjectUsersRepository(nil)
+		authService := service.NewAuthService("test")
+		createUserHandler := NewCreateUserHandler(repo, authService)
 
-// 		createUserHandler.CreateUser(rr, req)
+		body, err := json.Marshal(openapi.CreateUserRequest{
+			Username:    "test",
+			DisplayName: "test",
+			Password:    "securepassword",
+		})
+		if err != nil {
+			t.Errorf("failed to marshal request body: %v", err)
+		}
+		req := httptest.NewRequest("POST", "/api/users", bytes.NewReader(body))
+		rr := httptest.NewRecorder()
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf("%s: wrong code returned; expected %d, but got %d", test.name, test.expectedCode, rr.Code)
-// 		}
+		createUserHandler.CreateUser(rr, req)
 
-// 		if test.expectedCode == http.StatusCreated {
-// 			var res map[string]interface{}
-// 			err := json.Unmarshal(rr.Body.Bytes(), &res)
-// 			if err != nil {
-// 				s.T().Errorf("%s: failed to parse response body: %v", test.name, err)
-// 				continue
-// 			}
+		if rr.Code != http.StatusCreated {
+			t.Errorf("wrong code returned; expected %d, but got %d", http.StatusCreated, rr.Code)
+		}
 
-// 			if _, ok := res["token"]; !ok {
-// 				s.T().Errorf("%s: token not found in response", test.name)
-// 			}
+		var res map[string]interface{}
+		if err := json.Unmarshal(rr.Body.Bytes(), &res); err != nil {
+			t.Errorf("failed to parse response body: %v", err)
+		}
 
-// 			if _, ok := res["user"]; !ok {
-// 				s.T().Errorf("%s: user not found in response", test.name)
-// 			}
-// 		}
-// 	}
-// }
+		if _, ok := res["token"]; !ok {
+			t.Error("token not found in response")
+		}
+		if _, ok := res["user"]; !ok {
+			t.Error("user not found in response")
+		}
+	})
+
+	t.Run("duplicate username", func(t *testing.T) {
+		repo := infrastructure.InjectUsersRepository(nil)
+		authService := service.NewAuthService("test")
+		createUserHandler := NewCreateUserHandler(repo, authService)
+
+		initialUserBody, err := json.Marshal(openapi.CreateUserRequest{
+			Username:    "test",
+			DisplayName: "test",
+			Password:    "securepassword",
+		})
+		if err != nil {
+			t.Errorf("failed to marshal request body: %v", err)
+		}
+		initialUserReq := httptest.NewRequest("POST", "/api/users", bytes.NewReader(initialUserBody))
+		initialUserRr := httptest.NewRecorder()
+
+		createUserHandler.CreateUser(initialUserRr, initialUserReq)
+
+		duplicateUserBody, err := json.Marshal(openapi.CreateUserRequest{
+			Username:    "test",
+			DisplayName: "duplicated",
+			Password:    "securepassword",
+		})
+		if err != nil {
+			t.Errorf("failed to marshal request body: %v", err)
+		}
+		duplicateUserReq := httptest.NewRequest("POST", "/api/users", bytes.NewReader(duplicateUserBody))
+		duplicateUserRr := httptest.NewRecorder()
+
+		createUserHandler.CreateUser(duplicateUserRr, duplicateUserReq)
+
+		if duplicateUserRr.Code != http.StatusConflict {
+			t.Errorf("wrong code returned; expected %d, but got %d", http.StatusConflict, duplicateUserRr.Code)
+		}
+	})
+}
+
+// TODO: Add error tests for authService after the fake implementation.
+func TestCreateUser_Error(t *testing.T) {
+	tests := map[string]struct {
+		username     string
+		displayName  string
+		password     string
+		expectedCode int
+	}{
+		"too short password": {
+			username:     "test",
+			displayName:  "test",
+			password:     "shortpw",
+			expectedCode: http.StatusBadRequest,
+		},
+		"too long password": {
+			username:     "test",
+			displayName:  "test",
+			password:     "longsecurepassword",
+			expectedCode: http.StatusBadRequest,
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			repo := infrastructure.InjectUsersRepository(nil)
+			authService := service.NewAuthService("test")
+			createUserHandler := NewCreateUserHandler(repo, authService)
+
+			body, err := json.Marshal(openapi.CreateUserRequest{
+				DisplayName: tt.displayName,
+				Password:    tt.password,
+				Username:    tt.username,
+			})
+			if err != nil {
+				t.Errorf("failed to marshal request body: %v", err)
+			}
+			req := httptest.NewRequest("POST", "/api/users", bytes.NewReader(body))
+			rr := httptest.NewRecorder()
+			createUserHandler.CreateUser(rr, req)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
