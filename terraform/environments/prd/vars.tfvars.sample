@@ -1,0 +1,2 @@
+env     = "prd"
+profile = "x-clone"
