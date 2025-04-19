@@ -2,6 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { firstValueFrom } from "rxjs";
 import { CreatePostInput } from "./inputs/create-post.input";
+import { CreateRepostInput } from "./inputs/create-repost.input";
 import { Post } from "./models/post.model";
 import { TimelineItem } from "./models/timeline-item.model";
 
@@ -34,6 +35,26 @@ export class TimelineService {
   async createPost(createPostInput: CreatePostInput): Promise<Post> {
     const { data } = await firstValueFrom(
       this.httpService.post<Post>("/api/posts", createPostInput),
+    );
+
+    return data;
+  }
+
+  /**
+   * Creates a new repost by sending the data to the backend API.
+   *
+   * @param createRepostInput - An object containing the necessary data for creating a repost (e.g., postId).
+   * @returns A promise that resolves to the newly created Repost object as returned by the backend.
+   */
+  async createRepost(
+    userId: string,
+    createRepostInput: CreateRepostInput,
+  ): Promise<Post> {
+    const { data } = await firstValueFrom(
+      this.httpService.post<Post>(
+        `/api/users/${userId}/reposts`,
+        createRepostInput,
+      ),
     );
 
     return data;
