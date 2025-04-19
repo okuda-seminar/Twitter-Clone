@@ -141,17 +141,6 @@ type DeleteRepostRequest struct {
 	RepostId string `json:"repost_id"`
 }
 
-// FindUserByIdResponse defines model for find_user_by_id_response.
-type FindUserByIdResponse struct {
-	Bio         string    `json:"bio"`
-	CreatedAt   time.Time `json:"created_at"`
-	DisplayName string    `json:"display_name"`
-	Id          string    `json:"id"`
-	IsPrivate   bool      `json:"is_private"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	Username    string    `json:"username"`
-}
-
 // GetReverseChronologicalHomeTimelineResponse defines model for get_reverse_chronological_home_timeline_response.
 type GetReverseChronologicalHomeTimelineResponse struct {
 	Data *GetReverseChronologicalHomeTimelineResponse_Data `json:"data,omitempty"`

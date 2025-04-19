@@ -24,6 +24,7 @@ type Server struct {
 	handler.GetUserPostsTimelineHandler
 	handler.GetReverseChronologicalHomeTimelineHandler
 	handler.CreateFollowshipHandler
+	handler.DeleteUserHandler
 }
 
 func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, authService *service.AuthService) Server {
@@ -38,5 +39,6 @@ func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.Tim
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, mu, usersChan, make(chan struct{}, 1)),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(db),
+		DeleteUserHandler:                          handler.NewDeleteUserHandler(service.NewDeleteUserUsecase(db)),
 	}
 }
