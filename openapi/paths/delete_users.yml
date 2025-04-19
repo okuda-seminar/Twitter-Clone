@@ -1,0 +1,17 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Deletes a user.
+  operationId: DeleteUser
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../openapi.yml#/components/schemas/DeleteUserRequest
+  responses:
+    "204":
+      description: A user was deleted successfully.
+    "404":
+      description: The specified user was not found.
+    "500":
+      description: Unexpected error occurred.

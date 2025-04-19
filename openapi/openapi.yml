@@ -20,7 +20,16 @@ paths:
   /api/users/{id}/posts:
     $ref: ./paths/user_posts.yml
   /api/users/{userID}:
-    $ref: ./paths/find_user_by_id.yml
+    parameters:
+      - in: path
+        name: userID
+        required: true
+        schema:
+          type: string
+    get:
+      $ref: ./paths/find_user_by_id.yml
+    delete:
+      $ref: ./paths/delete_users.yml
   /api/login:
     $ref: ./paths/login.yml
   /api/users/{id}/following:
@@ -62,3 +71,5 @@ components:
       $ref: ./components/requests/login_request.yml
     LoginResponse:
       $ref: ./components/responses/login_response.yml
+    DeleteUserRequest:
+      $ref: ./components/requests/delete_user_request.yml
