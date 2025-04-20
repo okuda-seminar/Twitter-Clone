@@ -1,3 +1,7 @@
 env     = "prd"
 profile = "x-clone"
 account_id = "xxxxxxxxxxxxxx"
+user_pool_name     = "example-user-pool"
+identity_pool_name = "example-identity-pool"
+callback_urls = ["http://example.com"]
+logout_urls = ["http://example.com"]
