@@ -1,7 +1,9 @@
 variable "env" {
-  type = string
+  description = "The environment name"
+  type        = string
 }
 
 variable "account_id" {
-  type = string
+  description = "The AWS account ID"
+  type        = string
 }
