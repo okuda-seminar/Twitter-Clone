@@ -10,6 +10,8 @@ import { Tooltip } from "../ui/tooltip";
 
 export const SideBarPostButton: React.FC = () => {
   const { user } = useAuth();
+  const bgColor = useColorModeValue("black", "white");
+  const textColor = useColorModeValue("white", "black");
 
   if (!user) {
     return null;
@@ -21,8 +23,8 @@ export const SideBarPostButton: React.FC = () => {
         <ChakraLink asChild>
           <NextLink href="/compose/post" scroll={false}>
             <Button
-              bg={useColorModeValue("black", "white")}
-              color={useColorModeValue("white", "black")}
+              bg={bgColor}
+              color={textColor}
               width="200px"
               size="lg"
               borderRadius="full"
@@ -37,7 +39,7 @@ export const SideBarPostButton: React.FC = () => {
           <ChakraLink asChild>
             <NextLink href="/compose/post" scroll={false}>
               <IconButton
-                bg={useColorModeValue("black", "white")}
+                bg={bgColor}
                 aria-label={"Post"}
                 mx={3}
                 borderRadius="full"

@@ -11,8 +11,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import type React from "react";
-import { useRef } from "react";
-import { useFormState } from "react-dom";
+import { useActionState, useRef } from "react";
 import { FaImage } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { PostButton } from "../post-button/post-button";
@@ -35,9 +34,10 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
     user,
   });
 
-  // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/525
-  // - Replace useFormState with useActionState after upgrading React to v19.
-  const [message, formAction] = useFormState(handlePostButtonClick, undefined);
+  const [message, formAction] = useActionState(
+    handlePostButtonClick,
+    undefined,
+  );
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   if (textAreaRef.current) textAreaRef.current.focus();
 
