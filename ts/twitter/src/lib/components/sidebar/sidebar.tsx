@@ -1,31 +1,26 @@
 "use client";
 
-import {
-  Flex,
-  IconButton,
-  Spacer,
-  Text,
-  VStack,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Flex, IconButton, Spacer, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
 import { BsPeople, BsSlashSquare } from "react-icons/bs";
-import { CiBellOn, CiCircleMore } from "react-icons/ci";
+import { CiBellOn } from "react-icons/ci";
 import { FaTwitter, FaUser } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { PiHouseFill } from "react-icons/pi";
 import { useAuth } from "../auth-context";
+
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import { MiniProfile } from "../mini-profile/mini-profile";
+import { MorePopup } from "../more-popup/more-popup";
+
 import { SideBarPostButton } from "../sidebar-post-button/sidebar-post-button";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
 export const SideBar: React.FC = () => {
   const { user } = useAuth();
-  const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
   const sidebarItems = [
     {
       url: "/home",
@@ -99,28 +94,7 @@ export const SideBar: React.FC = () => {
           />
         ))}
 
-        <Flex alignItems="center" p="12px">
-          <Tooltip
-            content="More"
-            positioning={{ placement: "bottom" }}
-            disabled={isTooltipDisabled}
-          >
-            <IconButton
-              aria-label="More"
-              color={useColorModeValue("black", "white")}
-              bg={useColorModeValue("white", "black")}
-            >
-              <CiCircleMore />
-            </IconButton>
-          </Tooltip>
-          <Text
-            fontWeight="bold"
-            ml="20px"
-            display={{ base: "none", xl: "flex" }}
-          >
-            More
-          </Text>
-        </Flex>
+        <MorePopup />
 
         <SideBarPostButton />
         <Spacer />
