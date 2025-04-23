@@ -36,7 +36,8 @@ export async function login(
 
   if (res.ok) {
     const data: LoginResponse = await res.json();
-    cookies().set({
+    const cookieStore = await cookies();
+    cookieStore.set({
       ...AUTH_COOKIE_OPTIONS,
       value: data.token,
     });

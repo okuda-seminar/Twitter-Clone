@@ -3,7 +3,7 @@
 import type { LoginBody } from "@/lib/actions/login";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { usePasswordModal } from "./use-password-modal";
 
@@ -19,7 +19,7 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
   handlePasswordChange,
 }) => {
   const { handleLoginAction } = usePasswordModal();
-  const [message, formAction] = useFormState(handleLoginAction, undefined);
+  const [message, formAction] = useActionState(handleLoginAction, undefined);
 
   return (
     <form action={formAction}>

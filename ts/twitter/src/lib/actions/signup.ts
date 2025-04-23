@@ -41,7 +41,8 @@ export async function signup(
 
   if (res.ok) {
     const data: SignupResponse = await res.json();
-    cookies().set({
+    const cookieStore = await cookies();
+    cookieStore.set({
       ...AUTH_COOKIE_OPTIONS,
       value: data.token,
     });
