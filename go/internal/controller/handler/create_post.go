@@ -4,28 +4,25 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
 
+	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/value"
 )
 
 type CreatePostHandler struct {
-	db        *sql.DB
-	mu        *sync.Mutex
-	usersChan *map[string]chan entity.TimelineEvent
+	db                        *sql.DB
+	updateNotificationUsecase usecase.UpdateNotificationUsecase
 }
 
-func NewCreatePostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) CreatePostHandler {
+func NewCreatePostHandler(db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase) CreatePostHandler {
 	return CreatePostHandler{
-		db:        db,
-		mu:        mu,
-		usersChan: usersChan,
+		db:                        db,
+		updateNotificationUsecase: updateNotificationUsecase,
 	}
 }
 
@@ -68,36 +65,7 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
 		CreatedAt:    createdAt,
 	}
 
-	go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-		var posts []*entity.TimelineItem
-		posts = append(posts, &post)
-		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-		rows, err := h.db.Query(query, userID.String())
-		if err != nil {
-			log.Fatalln(err)
-			return
-		}
-
-		var ids []uuid.UUID
-		for rows.Next() {
-			var id uuid.UUID
-			if err := rows.Scan(&id); err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			ids = append(ids, id)
-		}
-		ids = append(ids, userID)
-		for _, id := range ids {
-			h.mu.Lock()
-			if userChan, ok := (*h.usersChan)[id.String()]; ok {
-				userChan <- entity.TimelineEvent{EventType: entity.PostCreated, TimelineItems: posts}
-			}
-			h.mu.Unlock()
-		}
-
-	}(body.UserID, h.usersChan)
+	go h.updateNotificationUsecase.SendNotification(body.UserID.String(), entity.PostCreated, &post)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

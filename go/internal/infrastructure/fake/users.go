@@ -2,6 +2,7 @@ package fake
 
 import (
 	"database/sql"
+	"slices"
 	"sync"
 	"time"
 
@@ -176,6 +177,24 @@ func (r *fakeUsersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserI
 	}
 
 	return repository.ErrRecordNotFound
+}
+
+func (r *fakeUsersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if err, ok := r.errors["Followees"]; ok {
+		return nil, err
+	}
+
+	var ids []string
+	for sourceUserID, followers := range r.followships {
+		if slices.Contains(followers, targetUserID) {
+			ids = append(ids, sourceUserID)
+		}
+	}
+
+	return ids, nil
 }
 
 func (r *fakeUsersRepository) MuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error {
