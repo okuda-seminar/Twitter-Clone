@@ -4,29 +4,26 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
 
+	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/value"
 	"x-clone-backend/internal/openapi"
 )
 
 type CreateQuoteRepostHandler struct {
-	db        *sql.DB
-	mu        *sync.Mutex
-	usersChan *map[string]chan entity.TimelineEvent
+	db                        *sql.DB
+	updateNotificationUsecase usecase.UpdateNotificationUsecase
 }
 
-func NewCreateQuoteRepostHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) CreateQuoteRepostHandler {
+func NewCreateQuoteRepostHandler(db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase) CreateQuoteRepostHandler {
 	return CreateQuoteRepostHandler{
-		db:        db,
-		mu:        mu,
-		usersChan: usersChan,
+		db:                        db,
+		updateNotificationUsecase: updateNotificationUsecase,
 	}
 }
 
@@ -78,36 +75,7 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 		CreatedAt:    createdAt,
 	}
 
-	go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-		var quoteReposts []*entity.TimelineItem
-		quoteReposts = append(quoteReposts, &quoteRepost)
-		query := `SELECT source_user_id FROM followships WHERE target_user_id = $1`
-		rows, err := h.db.Query(query, userID.String())
-		if err != nil {
-			log.Fatalln(err)
-			return
-		}
-
-		var ids []uuid.UUID
-		for rows.Next() {
-			var id uuid.UUID
-			if err := rows.Scan(&id); err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			ids = append(ids, id)
-		}
-		ids = append(ids, userID)
-		for _, id := range ids {
-			h.mu.Lock()
-			if userChan, ok := (*h.usersChan)[id.String()]; ok {
-				userChan <- entity.TimelineEvent{EventType: entity.QuoteRepostCreated, TimelineItems: quoteReposts}
-			}
-			h.mu.Unlock()
-		}
-
-	}(userID, h.usersChan)
+	go h.updateNotificationUsecase.SendNotification(userIDStr, entity.QuoteRepostCreated, &quoteRepost)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

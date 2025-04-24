@@ -225,6 +225,32 @@ func (r *usersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID st
 	return nil
 }
 
+func (r *usersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, error) {
+	query := `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+	var rows *sql.Rows
+	var err error
+	if tx != nil {
+		rows, err = tx.Query(query, targetUserID)
+	} else {
+		rows, err = r.db.Query(query, targetUserID)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	var ids []string
+	for rows.Next() {
+		var id uuid.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+
+		ids = append(ids, id.String())
+	}
+
+	return ids, err
+}
+
 func (r *usersRepository) MuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error {
 	query := `INSERT INTO mutes (source_user_id, target_user_id) VALUES ($1, $2)`
 

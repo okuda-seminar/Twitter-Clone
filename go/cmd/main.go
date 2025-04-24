@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
@@ -13,7 +12,6 @@ import (
 	"x-clone-backend/internal/controller"
 	"x-clone-backend/internal/controller/handler"
 	"x-clone-backend/internal/controller/middleware"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
@@ -30,12 +28,8 @@ func main() {
 	}
 	defer db.Close()
 
-	var userChannels = make(map[string]chan entity.TimelineEvent)
-	var mu sync.Mutex
-
 	authService := service.NewAuthService(secretKey)
 
-	server := controller.NewServer(db, &mu, &userChannels, authService)
 	mux := http.NewServeMux()
 
 	usersRepository := persistence.NewUsersRepository(db)
@@ -47,9 +41,12 @@ func main() {
 	unmuteUserUsecase := interactor.NewUnmuteUserUsecase(usersRepository)
 	blockUserUsecase := interactor.NewBlockUserUsecase(usersRepository)
 	unblockUserUsecase := interactor.NewUnblockUserUsecase(usersRepository)
+	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+
+	server := controller.NewServer(db, authService, updateNotificationUsecase)
 
 	mux.HandleFunc("DELETE /api/posts/{postID}", func(w http.ResponseWriter, r *http.Request) {
-		handler.DeletePost(w, r, db, &mu, &userChannels)
+		handler.DeletePost(w, r, db, updateNotificationUsecase)
 	})
 
 	mux.HandleFunc("DELETE /api/users/{userID}", func(w http.ResponseWriter, r *http.Request) {

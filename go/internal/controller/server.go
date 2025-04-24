@@ -2,11 +2,10 @@ package controller
 
 import (
 	"database/sql"
-	"sync"
 
 	"x-clone-backend/internal/application/service"
+	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/controller/handler"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -27,18 +26,18 @@ type Server struct {
 	handler.CreateFollowshipHandler
 }
 
-func NewServer(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, authService *service.AuthService) Server {
+func NewServer(db *sql.DB, authService *service.AuthService, updateNotificationUsecase usecase.UpdateNotificationUsecase) Server {
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
 		LoginHandler:                               handler.NewLoginHandler(db, authService),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(db, authService),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
-		CreatePostHandler:                          handler.NewCreatePostHandler(db, mu, usersChan),
-		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, mu, usersChan),
-		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, mu, usersChan),
-		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, mu, usersChan),
+		CreatePostHandler:                          handler.NewCreatePostHandler(db, updateNotificationUsecase),
+		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),
+		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, updateNotificationUsecase),
+		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
-		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, mu, usersChan, make(chan struct{}, 1)),
+		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, updateNotificationUsecase, make(chan struct{}, 1)),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(db),
 	}
 }
