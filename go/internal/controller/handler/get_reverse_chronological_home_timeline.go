@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"sync"
 
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/application/usecase/interactor"
@@ -16,32 +15,29 @@ import (
 
 type GetReverseChronologicalHomeTimelineHandler struct {
 	db                          *sql.DB
-	mu                          *sync.Mutex
-	usersChan                   *map[string]chan entity.TimelineEvent
 	userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase
+	updateNotificationUsecase   usecase.UpdateNotificationUsecase
 	connected                   chan struct{}
 }
 
-func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent, connected chan struct{}) GetReverseChronologicalHomeTimelineHandler {
+func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase, connected chan struct{}) GetReverseChronologicalHomeTimelineHandler {
 	timelineitemsRepository := persistence.NewTimelineitemsRepository(db)
 	userAndFolloweePostsUsecase := interactor.NewUserAndFolloweePostsUsecase(timelineitemsRepository)
 	return GetReverseChronologicalHomeTimelineHandler{
 		db:                          db,
-		mu:                          mu,
-		usersChan:                   usersChan,
 		userAndFolloweePostsUsecase: userAndFolloweePostsUsecase,
+		updateNotificationUsecase:   updateNotificationUsecase,
 		connected:                   connected,
 	}
 }
 
 // GetReverseChronologicalHomeTimeline gets posts whose user_id is user or following user from posts table.
 func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, userID string) {
-	h.mu.Lock()
-	if _, exists := (*h.usersChan)[userID]; !exists {
-		(*h.usersChan)[userID] = make(chan entity.TimelineEvent, 1)
+	userChan, err := h.updateNotificationUsecase.SetChannel(userID)
+	if err != nil {
+		http.Error(w, fmt.Sprintln("Failed to set notification channel"), http.StatusInternalServerError)
+		return
 	}
-	userChan := (*h.usersChan)[userID]
-	h.mu.Unlock()
 
 	timelineitems, err := h.userAndFolloweePostsUsecase.UserAndFolloweePosts(userID)
 	if err != nil {
@@ -71,9 +67,7 @@ func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHome
 			fmt.Fprintf(w, "data: %s\n\n", jsonData)
 			flusher.Flush()
 		case <-r.Context().Done():
-			h.mu.Lock()
-			delete(*h.usersChan, userID)
-			h.mu.Unlock()
+			h.updateNotificationUsecase.DeleteChannel(userID)
 			return
 		}
 	}
