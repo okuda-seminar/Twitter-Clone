@@ -5,10 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
-	"sync"
 
 	"github.com/google/uuid"
 
@@ -39,7 +37,7 @@ func DeleteUserByID(w http.ResponseWriter, r *http.Request, u usecase.DeleteUser
 
 // DeletePost deletes a post with the specified post ID.
 // If the post doesn't exist, it returns 404 error.
-func DeletePost(w http.ResponseWriter, r *http.Request, db *sql.DB, mu *sync.Mutex, usersChan *map[string]chan entity.TimelineEvent) {
+func DeletePost(w http.ResponseWriter, r *http.Request, db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase) {
 	postID := r.PathValue("postID")
 	slog.Info(fmt.Sprintf("DELETE /api/posts was called with %s.", postID))
 
@@ -63,36 +61,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request, db *sql.DB, mu *sync.Mut
 		return
 	}
 
-	go func(userID uuid.UUID, userChan *map[string]chan entity.TimelineEvent) {
-		var posts []*entity.TimelineItem
-		posts = append(posts, &post)
-		query = `SELECT source_user_id FROM followships WHERE target_user_id=$1`
-		rows, err := db.Query(query, userID.String())
-		if err != nil {
-			log.Fatalln(err)
-			return
-		}
-
-		var ids []uuid.UUID
-		for rows.Next() {
-			var id uuid.UUID
-			if err := rows.Scan(&id); err != nil {
-				log.Fatalln(err)
-				return
-			}
-
-			ids = append(ids, id)
-		}
-		ids = append(ids, userID)
-		for _, id := range ids {
-			mu.Lock()
-			if userChan, ok := (*usersChan)[id.String()]; ok {
-				userChan <- entity.TimelineEvent{EventType: entity.PostDeleted, TimelineItems: posts}
-			}
-			mu.Unlock()
-		}
-
-	}(post.AuthorID, usersChan)
+	go updateNotificationUsecase.SendNotification(post.AuthorID.String(), entity.PostDeleted, &post)
 
 	w.WriteHeader(http.StatusNoContent)
 }
