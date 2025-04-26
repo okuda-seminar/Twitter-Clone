@@ -7,6 +7,7 @@ import (
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/handler"
+	"x-clone-backend/internal/infrastructure"
 	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
@@ -48,6 +49,6 @@ func NewServer(db *sql.DB) Server {
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, updateNotificationUsecase, make(chan struct{}, 1)),
-		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(db),
+		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(infrastructure.InjectUsersRepository(db)),
 	}
 }

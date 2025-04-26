@@ -1,27 +1,24 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/application/usecase/interactor"
-	"x-clone-backend/internal/infrastructure/persistence"
+	"x-clone-backend/internal/domain/repository"
+	"x-clone-backend/internal/openapi"
 )
 
 // CreateFollowshipHandler handles the POST /api/users/{id}/following
 type CreateFollowshipHandler struct {
-	db      *sql.DB
 	usecase usecase.FollowUserUsecase
 }
 
 // NewCreateFollowshipHandler initializes the handler with its dependencies
-func NewCreateFollowshipHandler(db *sql.DB) CreateFollowshipHandler {
-	usersRepository := persistence.NewUsersRepository(db)
-	createFollowshipUsecase := interactor.NewFollowUserUsecase(usersRepository)
+func NewCreateFollowshipHandler(repo repository.UsersRepository) CreateFollowshipHandler {
+	createFollowshipUsecase := interactor.NewFollowUserUsecase(repo)
 	return CreateFollowshipHandler{
-		db:      db,
 		usecase: createFollowshipUsecase,
 	}
 }
@@ -30,12 +27,12 @@ func NewCreateFollowshipHandler(db *sql.DB) CreateFollowshipHandler {
 // endpoint request body.
 // Successful: returns status code 201
 func (h *CreateFollowshipHandler) CreateFollowship(w http.ResponseWriter, r *http.Request, id string) {
-	var body createFollowshipRequestBody
+	var body openapi.CreateFollowshipRequest
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, "Request body was invalid.", http.StatusBadRequest)
+		http.Error(w, ErrInvalidRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -43,7 +40,7 @@ func (h *CreateFollowshipHandler) CreateFollowship(w http.ResponseWriter, r *htt
 
 	err = h.usecase.FollowUser(sourceUserID, body.TargetUserID)
 	if err != nil {
-		http.Error(w, "Could not create followship.", http.StatusInternalServerError)
+		http.Error(w, ErrCreateFollowship.Error(), http.StatusInternalServerError)
 		return
 	}
 
