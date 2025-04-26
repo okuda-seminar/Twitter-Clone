@@ -50,6 +50,6 @@ func NewServer(db *sql.DB) Server {
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, updateNotificationUsecase, make(chan struct{}, 1)),
-		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(db),
+		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(infrastructure.InjectUsersRepository(db)),
 	}
 }
