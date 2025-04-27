@@ -1,10 +1,10 @@
 "use client";
 
 import type { LoginBody } from "@/lib/actions/login";
+import { BackIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import { useActionState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
 import { usePasswordModal } from "./use-password-modal";
 
 interface PasswordModalProps {
@@ -35,7 +35,7 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
             _hover={{ color: "white" }}
             aria-label="Back to account"
           >
-            <FaArrowLeft /> Back
+            <BackIcon /> Back
           </Button>
         </Box>
 

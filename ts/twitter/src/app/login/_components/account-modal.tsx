@@ -1,9 +1,9 @@
 "use client";
 
+import { AppleIcon, GoogleIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
 import type React from "react";
-import { FaApple, FaGoogle } from "react-icons/fa";
 
 interface AccountModalProps {
   username: string;
@@ -35,7 +35,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           fontWeight="bold"
           boxShadow="0 0 0 1px gray"
         >
-          <FaGoogle /> Login with Google
+          <GoogleIcon /> Login with Google
         </Button>
         <Button
           width="100%"
@@ -45,7 +45,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           fontWeight="bold"
           boxShadow="0 0 0 1px gray"
         >
-          <FaApple /> Login with Apple
+          <AppleIcon /> Login with Apple
         </Button>
       </VStack>
       <Box position="relative" width="100%" my={2}>

@@ -1,10 +1,10 @@
 "use client";
 
+import { SettingsIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
 import type React from "react";
-import { IoIosSettings } from "react-icons/io";
 import { NotificationsTabBar } from "./notifications-tab-bar";
 
 export const Notifications: React.FC = () => {
@@ -24,7 +24,7 @@ export const Notifications: React.FC = () => {
             borderRadius="full"
             ml="auto"
           >
-            <IoIosSettings />
+            <SettingsIcon />
           </IconButton>
         </Tooltip>
       </Flex>

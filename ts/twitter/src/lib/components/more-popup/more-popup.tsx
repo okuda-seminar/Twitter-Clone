@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Box,
   Flex,
@@ -8,39 +9,36 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { CiCircleMore } from "react-icons/ci";
-import { DiAptana } from "react-icons/di";
-import { FaMoneyBills, FaPodcast } from "react-icons/fa6";
-import { MdOpenInNew } from "react-icons/md";
-
+import {
+  AdsIcon,
+  MonetizationIcon,
+  MoreIcon,
+  SettingsIcon,
+  SpaceIcon,
+} from "../icons";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
-
-interface MenuItemProps {
-  label: string;
-  icon: React.ReactElement;
-}
 
 export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
   props,
 ) => {
   const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
-  const menuItems: MenuItemProps[] = [
+  const menuItems = [
     {
       label: "Monetization",
-      icon: <FaMoneyBills />,
+      icon: <MonetizationIcon />,
     },
     {
       label: "Ads",
-      icon: <MdOpenInNew />,
+      icon: <AdsIcon />,
     },
     {
       label: "Create your Space",
-      icon: <FaPodcast />,
+      icon: <SpaceIcon />,
     },
     {
       label: "Settings and privacy",
-      icon: <DiAptana />,
+      icon: <SettingsIcon />,
     },
   ];
 
@@ -55,7 +53,7 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
                 color={useColorModeValue("black", "white")}
                 bg={useColorModeValue("white", "black")}
               >
-                <CiCircleMore />
+                <MoreIcon />
               </IconButton>
             </Tooltip>
             <Text

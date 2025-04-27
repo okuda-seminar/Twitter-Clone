@@ -1,6 +1,7 @@
 "use client";
 
 import type { FindUserByIdResponse } from "@/lib/actions/find-user-by-id";
+import { BackIcon, CalendarIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import {
@@ -13,8 +14,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import type React from "react";
-import { GoArrowLeft } from "react-icons/go";
-import { RxCalendar } from "react-icons/rx";
 import { MyProfileTab } from "./my-profile-tab";
 
 interface MyProfileProps {
@@ -45,7 +44,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
                 aria-label="arrow"
                 color={useColorModeValue("black", "white")}
               >
-                <GoArrowLeft />
+                <BackIcon />
               </IconButton>
             </Tooltip>
             <Box mt="5px">
@@ -87,7 +86,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ userProfile }) => {
             </Box>
           </Flex>
           <Flex alignItems="center" color="gray" mx="24px" gap="2">
-            <RxCalendar />
+            <CalendarIcon size="md" />
             <Box fontSize="sm">Joined {userJoinedDate}</Box>
           </Flex>
           <Flex fontSize="sm" mx="24px" gap="4">

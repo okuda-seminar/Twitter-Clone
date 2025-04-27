@@ -1,9 +1,11 @@
 "use client";
 
+import { EyeIcon, SunIcon } from "@/lib/components/icons";
 import { VALIDATION_CONSTANTS } from "@/lib/constants/validation-constants";
 import {
   Box,
   Button,
+  CloseButton,
   Dialog,
   Flex,
   Input,
@@ -12,8 +14,6 @@ import {
 } from "@chakra-ui/react";
 import type React from "react";
 import { useFormState } from "react-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { useSignupModal } from "./use-signup-modal";
 
 export const SignupModal: React.FC = () => {
@@ -29,7 +29,7 @@ export const SignupModal: React.FC = () => {
   const [message, formAction] = useFormState(handleSignupAction, undefined);
 
   return (
-    <Dialog.Root open={true}>
+    <Dialog.Root open={true} placement="center">
       <Dialog.Backdrop />
       <Dialog.Content
         bg="surface.dark"
@@ -39,19 +39,16 @@ export const SignupModal: React.FC = () => {
         border="1px solid"
         borderColor="gray"
         width="400px"
-        position="fixed"
-        top="50%"
-        left="50%"
-        transform="translate(-50%, -50%)"
+        position="relative"
       >
         <Dialog.CloseTrigger
+          asChild
           position="absolute"
-          top="3"
-          left="3"
+          right="auto"
           onClick={handleCloseButtonClick}
           color="gray"
         >
-          <RxCross2 size={18} />
+          <CloseButton />
         </Dialog.CloseTrigger>
 
         <Dialog.Body p="6">
@@ -162,11 +159,7 @@ export const SignupModal: React.FC = () => {
                     h="100%"
                     color="gray"
                   >
-                    {showPassword ? (
-                      <FaEyeSlash size={16} />
-                    ) : (
-                      <FaEye size={16} />
-                    )}
+                    {showPassword ? <SunIcon /> : <EyeIcon />}
                   </Button>
                 </Flex>
                 <Text fontSize="xs" color="gray" mt="1">

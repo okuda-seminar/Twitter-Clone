@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { PiHouseFill } from "react-icons/pi";
+import { HomeIcon } from "../icons";
 import { IconButtonWithLink } from "./icon-button-with-link";
 
 const meta: Meta<typeof IconButtonWithLink> = {
@@ -9,7 +9,7 @@ const meta: Meta<typeof IconButtonWithLink> = {
     url: "/home",
     tooltipContent: "Home",
     ariaLabel: "Home",
-    icon: <PiHouseFill />,
+    icon: <HomeIcon />,
   },
 };
 
