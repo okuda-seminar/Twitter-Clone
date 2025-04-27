@@ -3,8 +3,8 @@
 import { Box, Button, Link as ChakraLink, IconButton } from "@chakra-ui/react";
 import NextLink from "next/link";
 import type React from "react";
-import { FaFeather } from "react-icons/fa";
 import { useAuth } from "../auth-context";
+import { FeatherIcon } from "../icons";
 import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
@@ -44,7 +44,7 @@ export const SideBarPostButton: React.FC = () => {
                 mx={3}
                 borderRadius="full"
               >
-                <FaFeather />
+                <FeatherIcon />
               </IconButton>
             </NextLink>
           </ChakraLink>

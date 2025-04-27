@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/lib/components/auth-context";
+import { MediaIcon } from "@/lib/components/icons";
 import {
   Avatar,
   Box,
+  CloseButton,
   Dialog,
   Flex,
   IconButton,
@@ -12,8 +14,6 @@ import {
 } from "@chakra-ui/react";
 import type React from "react";
 import { useActionState, useRef } from "react";
-import { FaImage } from "react-icons/fa6";
-import { RxCross2 } from "react-icons/rx";
 import { PostButton } from "../post-button/post-button";
 import { usePostModal } from "./use-post-modal";
 
@@ -61,6 +61,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
         top="50px"
       >
         <Dialog.CloseTrigger
+          asChild
           color="white"
           position="absolute"
           top="8px"
@@ -73,7 +74,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
             background: "gray.500",
           }}
         >
-          <RxCross2 size={20} />
+          <CloseButton />
         </Dialog.CloseTrigger>
         <Dialog.Body pt="30px" pb={4}>
           <form action={formAction}>
@@ -118,7 +119,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
                   borderRadius="full"
                   _hover={{ bg: "whiteAlpha.200" }}
                 >
-                  <FaImage />
+                  <MediaIcon />
                 </IconButton>
                 <PostButton isDisabled={isPostButtonDisabled} />
               </Flex>

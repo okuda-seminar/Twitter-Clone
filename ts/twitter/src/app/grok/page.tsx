@@ -1,3 +1,3 @@
 export default function Page() {
-  return <>groc page</>;
+  return <>grok page</>;
 }

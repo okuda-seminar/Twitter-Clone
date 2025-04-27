@@ -3,15 +3,19 @@
 import { Flex, IconButton, Spacer, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
-import { BsPeople, BsSlashSquare } from "react-icons/bs";
-import { CiBellOn } from "react-icons/ci";
-import { FaTwitter, FaUser } from "react-icons/fa";
-import { IoSearch } from "react-icons/io5";
-import { MdEmail } from "react-icons/md";
-import { PiHouseFill } from "react-icons/pi";
 import { useAuth } from "../auth-context";
 
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
+import {
+  CommunityIcon,
+  GrokIcon,
+  HomeIcon,
+  MailIcon,
+  NotificationIcon,
+  ProfileIcon,
+  SearchIcon,
+  XIcon,
+} from "../icons";
 import { MiniProfile } from "../mini-profile/mini-profile";
 import { MorePopup } from "../more-popup/more-popup";
 
@@ -26,43 +30,43 @@ export const SideBar: React.FC = () => {
       url: "/home",
       tooltipContent: "Home",
       ariaLabel: "Home",
-      icon: <PiHouseFill />,
+      icon: <HomeIcon />,
     },
     {
       url: "/explore",
       tooltipContent: "Explore",
       ariaLabel: "Explore",
-      icon: <IoSearch />,
+      icon: <SearchIcon />,
     },
     {
       url: "/notifications",
       tooltipContent: "Notifications",
       ariaLabel: "Notifications",
-      icon: <CiBellOn />,
+      icon: <NotificationIcon />,
     },
     {
       url: "/message",
       tooltipContent: "Message",
       ariaLabel: "Message",
-      icon: <MdEmail />,
+      icon: <MailIcon />,
     },
     {
-      url: "/groc",
-      tooltipContent: "Groc",
-      ariaLabel: "Groc",
-      icon: <BsSlashSquare />,
+      url: "/grok",
+      tooltipContent: "Grok",
+      ariaLabel: "Grok",
+      icon: <GrokIcon />,
     },
     {
       url: "/community",
       tooltipContent: "Community",
       ariaLabel: "Community",
-      icon: <BsPeople />,
+      icon: <CommunityIcon />,
     },
     {
       url: "/profile",
       tooltipContent: "Profile",
       ariaLabel: "Profile",
-      icon: <FaUser />,
+      icon: <ProfileIcon />,
     },
   ];
   return (
@@ -78,7 +82,7 @@ export const SideBar: React.FC = () => {
                 color={useColorModeValue("black", "white")}
                 bg={useColorModeValue("white", "black")}
               >
-                <FaTwitter />
+                <XIcon />
               </IconButton>
             </Flex>
           </Tooltip>
