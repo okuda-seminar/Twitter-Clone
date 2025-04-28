@@ -27,3 +27,10 @@ $ terraform plan -var-file=vars.tfvars
 ```
 $ terraform apply -var-file=vars.tfvars
 ```
+
+# Start Backend Server
+1. Connect to the EC2 instance using EC2 Instance Connect. (See [Connect using the Amazon EC2 console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-methods.html#ec2-instance-connect-connecting-console) for instructions.)
+2. Start the backend server:
+```sh
+docker exec -it x_app go run ./cmd/main.go
+```

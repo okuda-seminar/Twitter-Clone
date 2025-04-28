@@ -12,7 +12,7 @@ data "aws_ami" "amazon_linux_2023" {
   }
 }
 
-resource "aws_security_group" "postgres_sg" {
+resource "aws_security_group" "backend_sg" {
   vpc_id = var.vpc_id
 
   ingress {
@@ -30,54 +30,39 @@ resource "aws_security_group" "postgres_sg" {
   }
 
   tags = {
-    Name = "${var.env}-x-clone-postgres-sg"
+    Name = "${var.env}-x-clone-backend-sg"
   }
 }
 
-resource "aws_instance" "postgres" {
+resource "aws_instance" "backend" {
   ami           = data.aws_ami.amazon_linux_2023.id
   instance_type = "t2.micro"
   subnet_id     = var.subnet_id
 
-  vpc_security_group_ids = [aws_security_group.postgres_sg.id]
+  vpc_security_group_ids = [aws_security_group.backend_sg.id]
 
-  # User data script to install Docker, Docker Compose, Git, clone repo, and run compose.
-  # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/699
-  # - Enable SSH access to EC2 and verify successful instance setup.
-  # user_data = <<-EOF
-  #             #!/bin/bash
-  #             set -e
+  user_data = <<-EOF
+    #!/bin/bash
+    set -e
 
-  #             echo "Starting user data script..."
+    # Install docker, git, ec2-instance-connect.
+    sudo dnf update -y
+    sudo dnf install -y docker git ec2-instance-connect
 
-  #             # Install updates, Docker, Git
-  #             echo "Updating packages and installing Docker and Git..."
-  #             dnf update -y
-  #             dnf install -y docker git
+    # Install docker compose.
+    sudo mkdir -p /usr/local/libexec/docker/cli-plugins
+    sudo curl -sSL -o /usr/local/libexec/docker/cli-plugins/docker-compose "https://github.com/docker/compose/releases/download/v2.35.1/docker-compose-linux-x86_64"
+    sudo chmod +x /usr/local/libexec/docker/cli-plugins/docker-compose
 
-  #             echo "Enabling and starting Docker service..."
-  #             systemctl enable docker
-  #             systemctl start docker
+    # Clone repo and run compose.
+    git clone https://github.com/okuda-seminar/Twitter-Clone /home/ec2-user/Twitter-Clone
+    cd /home/ec2-user/Twitter-Clone/go
+    cp .env.sample .env
+    docker compose up -d
 
-  #             echo "Adding ec2-user to docker group..."
-  #             usermod -a -G docker $(whoami)
-
-  #             echo "Installing Docker Compose v2..."
-  #             mkdir -p /usr/local/libexec/docker/cli-plugins
-  #             curl -sSL "https://github.com/docker/compose/releases/download/v2.35.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/libexec/docker/cli-plugins/docker-compose
-  #             chmod +x /usr/local/libexec/docker/cli-plugins/docker-compose
-
-  #             echo "Cloning repository..."
-  #             git clone https://github.com/okuda-seminar/Twitter-Clone /home/ec2-user/app
-
-  #             echo "Running docker compose..."
-  #             cd /home/ec2-user/app/go
-  #             sudo docker compose up -d
-
-  #             echo "User data script finished."
-  #             EOF
+    EOF
 
   tags = {
-    Name = "${var.env}-x-clone-postgres"
+    Name = "${var.env}-x-clone-backend"
   }
 }
