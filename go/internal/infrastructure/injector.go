@@ -15,3 +15,10 @@ func InjectUsersRepository(db *sql.DB) repository.UsersRepository {
 	}
 	return persistence.NewUsersRepository(db)
 }
+
+func InjecttimelineItemsRepository(db *sql.DB) repository.TimelineItemsRepository {
+	if testing.Testing() {
+		return fake.NewFakeTimelineItemsRepository()
+	}
+	return persistence.NewTimelineitemsRepository(db)
+}

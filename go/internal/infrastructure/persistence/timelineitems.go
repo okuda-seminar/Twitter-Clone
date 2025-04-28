@@ -101,10 +101,34 @@ func (r *timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity
 	return timelineitems, nil
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/678
-// - Refactor CreatePost
-func (r *timelineItemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
-	return entity.TimelineItem{}, nil
+// CreatePost creates and returns a new post by the given userID with the provided text.
+func (r *timelineItemsRepository) CreatePost(userID uuid.UUID, text string) (entity.TimelineItem, error) {
+	query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
+
+	var (
+		id        uuid.UUID
+		createdAt time.Time
+	)
+
+	postType := entity.PostTypePost
+
+	err := r.db.QueryRow(query, postType, userID.String(), text).Scan(&id, &createdAt)
+	if err != nil {
+		if IsForeignKeyError(err) {
+			return entity.TimelineItem{}, repository.ErrForeignViolation
+		}
+		return entity.TimelineItem{}, err
+	}
+
+	post := entity.TimelineItem{
+		Type:         postType,
+		ID:           id,
+		AuthorID:     userID,
+		ParentPostID: value.NullUUID{},
+		Text:         text,
+		CreatedAt:    createdAt,
+	}
+	return post, nil
 }
 
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/679
