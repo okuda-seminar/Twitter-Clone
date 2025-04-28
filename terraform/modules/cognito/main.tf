@@ -10,9 +10,9 @@
 # ------------------------------------------------------------------------------
 
 resource "aws_cognito_user_pool" "user_pool" {
-  name = "${var.user_pool_name}-${var.env}"
+  name                       = "${var.user_pool_name}-${var.env}"
   sms_authentication_message = "Your verification code is {####}."
-  mfa_configuration = "OFF"
+  mfa_configuration          = "OFF"
 
   lifecycle {
     prevent_destroy = false
@@ -46,8 +46,8 @@ resource "aws_cognito_user_pool" "user_pool" {
 
   schema {
     attribute_data_type = "String"
-    name     = "email"
-    required = true
+    name                = "email"
+    required            = true
   }
 
   username_configuration {
