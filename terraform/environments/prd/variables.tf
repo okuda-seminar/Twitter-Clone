@@ -28,3 +28,8 @@ variable "logout_urls" {
   description = "URL to redirect to after logout"
   type        = list(string)
 }
+
+variable "region" {
+  description = "The region name"
+  type = string
+}

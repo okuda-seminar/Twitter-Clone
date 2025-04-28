@@ -22,4 +22,6 @@ module "cognito" {
   user_pool_name = var.user_pool_name
   callback_urls  = var.callback_urls
   logout_urls    = var.logout_urls
+  region = var.region
+  bucket_name = module.s3.bucket_name
 }

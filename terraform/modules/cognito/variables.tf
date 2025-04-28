@@ -17,3 +17,13 @@ variable "env" {
   type        = string
   description = "Deployment environment name (e.g. dev, staging, prod)."
 }
+
+variable "region" {
+  description = "The region name"
+  type = string
+}
+
+variable "bucket_name" {
+  description = "The name of the S3 bucket to allow access to."
+  type        = string
+}
