@@ -14,6 +14,10 @@ const (
 	PostTypeQuoteRepost = "quoteRepost"
 )
 
+const (
+	PostTextMaxLength = 140
+)
+
 // TimelineItem represents an entry of `timelineitems` table.
 // It contains properties such as Type, ID, AuthorID, ParentPostID, Text, and CreatedAt.
 // AuthorID is the ID of the author of the timeline item.

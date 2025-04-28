@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // ServerInterface represents all server handlers.
@@ -18,9 +19,6 @@ type ServerInterface interface {
 	// User login
 	// (POST /login)
 	Login(w http.ResponseWriter, r *http.Request)
-	// Creates a new post.
-	// (POST /posts)
-	CreatePost(w http.ResponseWriter, r *http.Request)
 	// Verify user session in token.
 	// (GET /session/verify)
 	VerifySession(w http.ResponseWriter, r *http.Request)
@@ -33,6 +31,9 @@ type ServerInterface interface {
 	// Get a collection of posts or timelineitems by the specified user.
 	// (GET /users/{id}/posts)
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
+	// Creates a new post.
+	// (POST /users/{id}/posts)
+	CreatePost(w http.ResponseWriter, r *http.Request, id openapi_types.UUID)
 	// Creates a new quote repost.
 	// (POST /users/{id}/quote_reposts)
 	CreateQuoteRepost(w http.ResponseWriter, r *http.Request, id string)
@@ -64,20 +65,6 @@ func (siw *ServerInterfaceWrapper) Login(w http.ResponseWriter, r *http.Request)
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.Login(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// CreatePost operation middleware
-func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreatePost(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -162,6 +149,31 @@ func (siw *ServerInterfaceWrapper) GetUserPostsTimeline(w http.ResponseWriter, r
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetUserPostsTimeline(w, r, id)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreatePost operation middleware
+func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "id" -------------
+	var id openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreatePost(w, r, id)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -426,11 +438,11 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	}
 
 	m.HandleFunc("POST "+options.BaseURL+"/login", wrapper.Login)
-	m.HandleFunc("POST "+options.BaseURL+"/posts", wrapper.CreatePost)
 	m.HandleFunc("GET "+options.BaseURL+"/session/verify", wrapper.VerifySession)
 	m.HandleFunc("POST "+options.BaseURL+"/users", wrapper.CreateUser)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/following", wrapper.CreateFollowship)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/posts", wrapper.GetUserPostsTimeline)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/posts", wrapper.CreatePost)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)

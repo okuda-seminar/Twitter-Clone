@@ -1,79 +1,69 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 
 	"x-clone-backend/internal/application/usecase"
+	"x-clone-backend/internal/application/usecase/interactor"
+	"x-clone-backend/internal/controller/transfer"
 	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/domain/value"
+	"x-clone-backend/internal/domain/repository"
+	"x-clone-backend/internal/openapi"
 )
 
 type CreatePostHandler struct {
-	db                        *sql.DB
 	updateNotificationUsecase usecase.UpdateNotificationUsecase
+	createPostUsecase         usecase.CreatePostUsecase
 }
 
-func NewCreatePostHandler(db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase) CreatePostHandler {
+func NewCreatePostHandler(updateNotificationUsecase usecase.UpdateNotificationUsecase, repo repository.TimelineItemsRepository) CreatePostHandler {
 	return CreatePostHandler{
-		db:                        db,
 		updateNotificationUsecase: updateNotificationUsecase,
+		createPostUsecase:         interactor.NewCreatePostUsecase(repo),
 	}
 }
 
 // CreatePost creates a new post with the specified user_id and text,
 // then, inserts it into posts table.
-//
-// TODO: https://github.com/okuda-seminar/X-Clone-Backend/issues/174
-// - [Posts] Separate the logic of CreatePost into usecase and repository layers.
-func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request) {
-	var body createPostRequestBody
+func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request, userID uuid.UUID) {
+	var body openapi.CreatePostRequest
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Request body was invalid."), http.StatusBadRequest)
+		http.Error(w, ErrDecodeRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
-	query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
-
-	var (
-		id        uuid.UUID
-		createdAt time.Time
-	)
-
-	postType := entity.PostTypePost
-
-	err = h.db.QueryRow(query, postType, body.UserID, body.Text).Scan(&id, &createdAt)
+	post, err := h.createPostUsecase.CreatePost(userID, body.Text)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not create a post."), http.StatusInternalServerError)
+		if errors.Is(err, usecase.ErrUserNotFound) {
+			http.Error(w, ErrUserNotFound.Error(), http.StatusBadRequest)
+			return
+		} else if errors.Is(err, usecase.ErrTooLongText) {
+			http.Error(w, ErrTooLongText.Error(), http.StatusBadRequest)
+			return
+		}
+
+		http.Error(w, ErrCreatePost.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	post := entity.TimelineItem{
-		Type:         postType,
-		ID:           id,
-		AuthorID:     body.UserID,
-		ParentPostID: value.NullUUID{},
-		Text:         body.Text,
-		CreatedAt:    createdAt,
-	}
+	go h.updateNotificationUsecase.SendNotification(userID.String(), entity.PostCreated, &post)
 
-	go h.updateNotificationUsecase.SendNotification(body.UserID.String(), entity.PostCreated, &post)
+	res := transfer.ToCreatePostResponse(&post)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 
 	encoder := json.NewEncoder(w)
-	err = encoder.Encode(&post)
+	err = encoder.Encode(res)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
+		http.Error(w, ErrEncodeResponse.Error(), http.StatusInternalServerError)
 		return
 	}
 }

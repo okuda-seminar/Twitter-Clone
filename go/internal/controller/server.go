@@ -7,6 +7,7 @@ import (
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/handler"
+	"x-clone-backend/internal/infrastructure"
 	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
@@ -42,7 +43,7 @@ func NewServer(db *sql.DB) Server {
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(db, authService),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
-		CreatePostHandler:                          handler.NewCreatePostHandler(db, updateNotificationUsecase),
+		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, infrastructure.InjecttimelineItemsRepository(db)),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),

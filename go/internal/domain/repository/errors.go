@@ -15,7 +15,7 @@ const (
 )
 
 var (
-	ErrRecordNotFound  = errors.New("record not found")
-	ErrUniqueViolation = errors.New("unique violation")
-	ErrRepostViolation = errors.New("repost violation")
+	ErrRecordNotFound   = errors.New("record not found")
+	ErrUniqueViolation  = errors.New("unique violation")
+	ErrForeignViolation = errors.New("foreign violation")
 )

@@ -7,8 +7,6 @@ servers:
 paths:
   /users:
     $ref: ./paths/users.yml
-  /posts:
-    $ref: ./paths/posts.yml
   /users/{id}/reposts:
     $ref: ./paths/reposts.yml
   /users/{user_id}/reposts/{post_id}:
