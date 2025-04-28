@@ -18,3 +18,32 @@ get:
             $ref: ../openapi.yml#/components/schemas/GetUserPostsTimelineResponse
     "500":
       description: Unexpected error occurred.
+
+post:
+  tags:
+    - X-Clone
+  summary: Creates a new post.
+  parameters:
+  - in: path
+    name: id
+    schema:
+      type: string
+      format: uuid
+    required: true
+  operationId: CreatePost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../openapi.yml#/components/schemas/CreatePostRequest
+  responses:
+    "201":
+      description: A post object.
+      content:
+        application/json:
+          schema:
+            $ref: ../openapi.yml#/components/schemas/CreatePostResponse
+    "400":
+      description: The request body is invalid.
+    "500":
+      description: Unexpected error occurred.

@@ -12,8 +12,10 @@ properties:
     type: string
   id:
     type: string
+    format: uuid
   authorId:
     type: string
+    format: uuid
   text:
     type: string
   createdAt:

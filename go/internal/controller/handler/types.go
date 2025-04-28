@@ -4,13 +4,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// createPostRequestBody is the type of the "CreatePost"
-// endpoint request body.
-type createPostRequestBody struct {
-	UserID uuid.UUID `json:"user_id,omitempty"`
-	Text   string    `json:"text"`
-}
-
 // likePostRequestBody is the type of the "LikePost"
 // endpoint request body.
 type likePostRequestBody struct {
