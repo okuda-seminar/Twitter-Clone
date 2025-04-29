@@ -1,0 +1,28 @@
+service: serverless-example
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: ap-northeast-1
+  runtime: nodejs22.x
+  environment:
+    API_BASE_URL: ${env:API_BASE_URL}
+    STAGE: ${env:STAGE}
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    port: 8080
+
+functions:
+  main:
+    handler: dist/src/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'

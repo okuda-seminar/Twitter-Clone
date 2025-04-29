@@ -11,12 +11,15 @@ import { TimelineModule } from "./timeline/timeline.module";
 @Module({
   imports: [
     HttpModule.register({
-      baseURL: "http://localhost:80",
+      baseURL: process.env.API_BASE_URL,
       global: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), "src/schema.gql"),
+      autoSchemaFile:
+        process.env.STAGE === "dev"
+          ? join(process.cwd(), "src/schema.gql")
+          : true,
       buildSchemaOptions: {
         addNewlineAtEnd: true,
       },
