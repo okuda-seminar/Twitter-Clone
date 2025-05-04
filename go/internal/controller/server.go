@@ -2,10 +2,12 @@ package controller
 
 import (
 	"database/sql"
+	"os"
 
 	"x-clone-backend/internal/application/service"
-	"x-clone-backend/internal/application/usecase"
+	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/handler"
+	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -26,10 +28,18 @@ type Server struct {
 	handler.CreateFollowshipHandler
 }
 
-func NewServer(db *sql.DB, authService *service.AuthService, updateNotificationUsecase usecase.UpdateNotificationUsecase) Server {
+func NewServer(db *sql.DB) Server {
+	usersRepository := persistence.NewUsersRepository(db)
+
+	secretKey := os.Getenv("SECRET_KEY")
+	authService := service.NewAuthService(secretKey)
+
+	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
+	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
-		LoginHandler:                               handler.NewLoginHandler(db, authService),
+		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(db, authService),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handler.NewCreatePostHandler(db, updateNotificationUsecase),

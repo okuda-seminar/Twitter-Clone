@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
-	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/config"
 	"x-clone-backend/internal/controller"
@@ -21,14 +19,11 @@ const (
 )
 
 func main() {
-	secretKey := os.Getenv("SECRET_KEY")
 	db, err := config.ConnectToPostgres()
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer db.Close()
-
-	authService := service.NewAuthService(secretKey)
 
 	mux := http.NewServeMux()
 
@@ -43,7 +38,7 @@ func main() {
 	unblockUserUsecase := interactor.NewUnblockUserUsecase(usersRepository)
 	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
 
-	server := controller.NewServer(db, authService, updateNotificationUsecase)
+	server := controller.NewServer(db)
 
 	mux.HandleFunc("DELETE /api/posts/{postID}", func(w http.ResponseWriter, r *http.Request) {
 		handler.DeletePost(w, r, db, updateNotificationUsecase)
@@ -85,7 +80,17 @@ func main() {
 		fmt.Fprintf(w, "Notifications\n")
 	})
 
-	handler := middleware.CORS(openapi.HandlerFromMux(&server, mux))
+	handler := openapi.HandlerWithOptions(
+		&server,
+		openapi.StdHTTPServerOptions{
+			BaseURL:    "/api",
+			BaseRouter: mux,
+			Middlewares: []openapi.MiddlewareFunc{
+				middleware.CORS,
+			},
+		},
+	)
+
 	s := http.Server{
 		Handler: handler,
 		Addr:    fmt.Sprintf(":%d", port),
