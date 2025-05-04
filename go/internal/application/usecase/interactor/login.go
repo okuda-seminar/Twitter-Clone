@@ -5,7 +5,6 @@ import (
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/domain"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -15,7 +14,7 @@ type loginUsecase struct {
 	authService     *service.AuthService
 }
 
-func NewLoginUseCase(usersRepository repository.UsersRepository, authService *service.AuthService) usecase.LoginUsecase {
+func NewLoginUsecase(usersRepository repository.UsersRepository, authService *service.AuthService) usecase.LoginUsecase {
 	return &loginUsecase{
 		usersRepository: usersRepository,
 		authService:     authService,
@@ -32,12 +31,12 @@ func (p *loginUsecase) Login(username, password string) (entity.User, string, er
 	}
 
 	if !p.authService.VerifyPassword(user.Password, password) {
-		return entity.User{}, "", domain.ErrInvalidCredentials
+		return entity.User{}, "", usecase.ErrInvalidCredentials
 	}
 
 	token, err := p.authService.GenerateJWT(user.ID, user.Username)
 	if err != nil {
-		return entity.User{}, "", domain.ErrTokenGeneration
+		return entity.User{}, "", usecase.ErrTokenGeneration
 	}
 
 	return user, token, nil

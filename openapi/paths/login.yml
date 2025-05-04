@@ -9,19 +9,19 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/requests/login_request.yml
+          $ref: ../components/requestBodies/login_request.yml
   responses:
-    '200':
-      description: Successfully authenticated
+    "200":
+      description: Successfully authenticated.
       content:
         application/json:
           schema:
             $ref: ../components/responses/login_response.yml
-    '400':
-      description: The request body is invalid.
-    '401':
+    "400":
+      description: The request body was invalid.
+    "401":
       description: Invalid password.
-    '404':
-      description: Use not found.
-    '500':
+    "404":
+      description: User not found.
+    "500":
       description: Unexpected error occurred.
