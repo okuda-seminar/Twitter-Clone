@@ -1,29 +1,22 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
 
-	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/domain"
-	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
 
 type LoginHandler struct {
-	loginUseCase usecase.LoginUsecase
+	loginUsecase usecase.LoginUsecase
 }
 
-func NewLoginHandler(db *sql.DB, authService *service.AuthService) LoginHandler {
-	usersRepository := persistence.NewUsersRepository(db)
-	loginUseCase := interactor.NewLoginUseCase(usersRepository, authService)
+func NewLoginHandler(loginUsecase usecase.LoginUsecase) LoginHandler {
 	return LoginHandler{
-		loginUseCase,
+		loginUsecase,
 	}
 }
 
@@ -42,12 +35,12 @@ func (h *LoginHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, token, err := h.loginUseCase.Login(body.Username, body.Password)
+	user, token, err := h.loginUsecase.Login(body.Username, body.Password)
 	if err != nil {
 		switch {
 		case errors.Is(err, usecase.ErrUserNotFound):
 			http.Error(w, err.Error(), http.StatusNotFound)
-		case errors.Is(err, domain.ErrInvalidCredentials):
+		case errors.Is(err, usecase.ErrInvalidCredentials):
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 		default:
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)

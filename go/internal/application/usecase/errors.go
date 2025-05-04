@@ -9,4 +9,6 @@ var (
 	ErrLikeNotFound       = errors.New("like not found")
 	ErrUserNotFound       = errors.New("user not found")
 	ErrUserAlreadyExists  = errors.New("user already exists")
+	ErrInvalidCredentials = errors.New("invalid username or password")
+	ErrTokenGeneration    = errors.New("could not generate token")
 )

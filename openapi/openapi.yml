@@ -3,29 +3,29 @@ info:
   title: X-Clone
   version: 1.0.0
 servers:
-  - url: "http://localhost:80"
+  - url: "http://localhost:80/api"
 paths:
-  /api/users:
+  /users:
     $ref: ./paths/users.yml
-  /api/posts:
+  /posts:
     $ref: ./paths/posts.yml
-  /api/users/{id}/reposts:
+  /users/{id}/reposts:
     $ref: ./paths/reposts.yml
-  /api/users/{user_id}/reposts/{post_id}:
+  /users/{user_id}/reposts/{post_id}:
     $ref: ./paths/delete_reposts.yml
-  /api/users/{id}/quote_reposts:
+  /users/{id}/quote_reposts:
     $ref: ./paths/quote_reposts.yml
-  /api/users/{id}/timelines/reverse_chronological:
+  /users/{id}/timelines/reverse_chronological:
     $ref: ./paths/reverse_chronological_timeline_posts.yml
-  /api/users/{id}/posts:
+  /users/{id}/posts:
     $ref: ./paths/user_posts.yml
-  /api/users/{userID}:
+  /users/{userID}:
     $ref: ./paths/find_user_by_id.yml
-  /api/login:
+  /login:
     $ref: ./paths/login.yml
-  /api/session/verify:
+  /session/verify:
     $ref: ./paths/verify_session.yml
-  /api/users/{id}/following:
+  /users/{id}/following:
     $ref: ./paths/followship.yml
 
 components:
@@ -35,28 +35,26 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    User:
-      $ref: ./components/models/user.yml
     CreateUserRequest:
-      $ref: ./components/requests/create_user_request.yml
+      $ref: ./components/requestBodies/create_user_request.yml
     CreateUserResponse:
       $ref: ./components/responses/create_user_response.yml
     CreatePostRequest:
-      $ref: ./components/requests/create_post_request.yml
+      $ref: ./components/requestBodies/create_post_request.yml
     CreatePostResponse:
       $ref: ./components/responses/create_post_response.yml
     CreateRepostRequest:
-      $ref: ./components/requests/create_repost_request.yml
+      $ref: ./components/requestBodies/create_repost_request.yml
     CreateRepostResponse:
       $ref: ./components/responses/create_repost_response.yml
     CreateQuoteRepostRequest:
-      $ref: ./components/requests/create_quote_repost_request.yml
+      $ref: ./components/requestBodies/create_quote_repost_request.yml
     CreateQuoteRepostResponse:
       $ref: ./components/responses/create_quote_repost_response.yml
     DeleteRepostRequest:
-      $ref: ./components/requests/delete_repost_request.yml
+      $ref: ./components/requestBodies/delete_repost_request.yml
     CreateFollowshipRequest:
-      $ref: ./components/requests/create_followship_request.yml
+      $ref: ./components/requestBodies/create_followship_request.yml
     CreateFollowshipResponse:
       $ref: ./components/responses/create_followship_response.yml
     GetReverseChronologicalHomeTimelineResponse:
@@ -67,9 +65,5 @@ components:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
     FindUserByIDResponse:
       $ref: ./components/responses/find_user_by_id_response.yml
-    LoginRequest:
-      $ref: ./components/requests/login_request.yml
-    LoginResponse:
-      $ref: ./components/responses/login_response.yml
     VerifySessionResponse:
       $ref: ./components/responses/verify_session_response.yml

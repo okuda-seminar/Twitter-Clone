@@ -16,37 +16,37 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// User login
-	// (POST /api/login)
+	// (POST /login)
 	Login(w http.ResponseWriter, r *http.Request)
 	// Creates a new post.
-	// (POST /api/posts)
+	// (POST /posts)
 	CreatePost(w http.ResponseWriter, r *http.Request)
 	// Verify user session in token.
-	// (GET /api/session/verify)
+	// (GET /session/verify)
 	VerifySession(w http.ResponseWriter, r *http.Request)
 	// Creates a new user.
-	// (POST /api/users)
+	// (POST /users)
 	CreateUser(w http.ResponseWriter, r *http.Request)
 	// Create a followship
-	// (POST /api/users/{id}/following)
+	// (POST /users/{id}/following)
 	CreateFollowship(w http.ResponseWriter, r *http.Request, id string)
 	// Get a collection of posts or timelineitems by the specified user.
-	// (GET /api/users/{id}/posts)
+	// (GET /users/{id}/posts)
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new quote repost.
-	// (POST /api/users/{id}/quote_reposts)
+	// (POST /users/{id}/quote_reposts)
 	CreateQuoteRepost(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new repost.
-	// (POST /api/users/{id}/reposts)
+	// (POST /users/{id}/reposts)
 	CreateRepost(w http.ResponseWriter, r *http.Request, id string)
 	// Get a collection of posts by the specified user and users they follow.
-	// (GET /api/users/{id}/timelines/reverse_chronological)
+	// (GET /users/{id}/timelines/reverse_chronological)
 	GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Find user by ID.
-	// (GET /api/users/{userID})
+	// (GET /users/{userID})
 	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
 	// Deletes a repost.
-	// (DELETE /api/users/{user_id}/reposts/{post_id})
+	// (DELETE /users/{user_id}/reposts/{post_id})
 	DeleteRepost(w http.ResponseWriter, r *http.Request, userId string, postId string)
 }
 
@@ -425,17 +425,17 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
-	m.HandleFunc("POST "+options.BaseURL+"/api/login", wrapper.Login)
-	m.HandleFunc("POST "+options.BaseURL+"/api/posts", wrapper.CreatePost)
-	m.HandleFunc("GET "+options.BaseURL+"/api/session/verify", wrapper.VerifySession)
-	m.HandleFunc("POST "+options.BaseURL+"/api/users", wrapper.CreateUser)
-	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/following", wrapper.CreateFollowship)
-	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/posts", wrapper.GetUserPostsTimeline)
-	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
-	m.HandleFunc("POST "+options.BaseURL+"/api/users/{id}/reposts", wrapper.CreateRepost)
-	m.HandleFunc("GET "+options.BaseURL+"/api/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
-	m.HandleFunc("GET "+options.BaseURL+"/api/users/{userID}", wrapper.FindUserByID)
-	m.HandleFunc("DELETE "+options.BaseURL+"/api/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
+	m.HandleFunc("POST "+options.BaseURL+"/login", wrapper.Login)
+	m.HandleFunc("POST "+options.BaseURL+"/posts", wrapper.CreatePost)
+	m.HandleFunc("GET "+options.BaseURL+"/session/verify", wrapper.VerifySession)
+	m.HandleFunc("POST "+options.BaseURL+"/users", wrapper.CreateUser)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/following", wrapper.CreateFollowship)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/posts", wrapper.GetUserPostsTimeline)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/reposts", wrapper.CreateRepost)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{userID}", wrapper.FindUserByID)
+	m.HandleFunc("DELETE "+options.BaseURL+"/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 
 	return m
 }
