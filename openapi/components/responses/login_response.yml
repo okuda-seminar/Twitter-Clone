@@ -6,4 +6,4 @@ properties:
   token:
     type: string
   user:
-    $ref: "../models/user.yml"
+    $ref: ../schemas/user.yml
