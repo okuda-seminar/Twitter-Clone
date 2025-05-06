@@ -167,7 +167,9 @@ type User struct {
 }
 
 // VerifySessionResponse defines model for verify_session_response.
-type VerifySessionResponse = User
+type VerifySessionResponse struct {
+	User User `json:"user"`
+}
 
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody = LoginRequest

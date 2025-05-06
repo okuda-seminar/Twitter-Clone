@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       try {
         const result = await verifySession();
         if (result.ok) {
-          setUser(result.value);
+          setUser(result.value.user);
         } else {
           router.push("/login");
         }

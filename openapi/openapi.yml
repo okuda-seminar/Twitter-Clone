@@ -22,7 +22,7 @@ paths:
   /login:
     $ref: ./paths/login.yml
   /session/verify:
-    $ref: ./paths/verify_session.yml
+    $ref: ./paths/session_verify.yml
   /users/{id}/following:
     $ref: ./paths/followship.yml
 
@@ -63,5 +63,3 @@ components:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
     FindUserByIDResponse:
       $ref: ./components/responses/find_user_by_id_response.yml
-    VerifySessionResponse:
-      $ref: ./components/responses/verify_session_response.yml
