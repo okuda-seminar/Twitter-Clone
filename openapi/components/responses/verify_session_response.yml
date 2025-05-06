@@ -1,4 +1,7 @@
 type: object
 title: VerifySessionResponse
-allOf:
-  - $ref: ../schemas/user.yml
+required:
+  - user
+properties:
+  user:
+    $ref: ../schemas/user.yml
