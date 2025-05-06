@@ -36,11 +36,12 @@ func NewServer(db *sql.DB) Server {
 
 	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
 	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
-		VerifySessionHandler:                       handler.NewVerifySessionHandler(db, authService),
+		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handler.NewCreatePostHandler(db, updateNotificationUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),

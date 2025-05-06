@@ -11,7 +11,9 @@ import {
   ok,
 } from "./types";
 
-type VerifySessionResponse = User;
+interface VerifySessionResponse {
+  user: User;
+}
 
 export async function verifySession(): Promise<
   ServerActionsResult<VerifySessionResponse, ServerActionsError>
@@ -38,8 +40,8 @@ export async function verifySession(): Promise<
   );
 
   if (res.ok) {
-    const user: VerifySessionResponse = await res.json();
-    return ok(user);
+    const data: VerifySessionResponse = await res.json();
+    return ok(data);
   }
 
   return err({
