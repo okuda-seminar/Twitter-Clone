@@ -73,7 +73,10 @@ func (r *fakeTimelineitemsRepository) UserAndFolloweePosts(userID string) ([]*en
 	return timelineItems, nil
 }
 
-func (r *fakeTimelineitemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
+// CreatePost creates and stores a new post by the given userID with the provided text in the in-memory database.
+// If a preconfigured error for CreatePost exists, it returns the error without creating a post.
+// Otherwise, it returns the created TimelineItem.
+func (r *fakeTimelineitemsRepository) CreatePost(userID uuid.UUID, text string) (entity.TimelineItem, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -81,15 +84,11 @@ func (r *fakeTimelineitemsRepository) CreatePost(userID, text string) (entity.Ti
 		return entity.TimelineItem{}, err
 	}
 
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return entity.TimelineItem{}, err
-	}
 	postID := uuid.New()
 	timelineItem := entity.TimelineItem{
 		Type:      entity.PostTypePost,
 		ID:        postID,
-		AuthorID:  userUUID,
+		AuthorID:  userID,
 		Text:      text,
 		CreatedAt: time.Now(),
 	}
@@ -138,10 +137,6 @@ func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string) (entit
 	postNullUUID := value.NullUUID{UUID: postUUID, Valid: true}
 
 	parentPost := *r.timelineItems[postID]
-	if parentPost.Type == entity.PostTypeRepost {
-		return entity.TimelineItem{}, repository.ErrRepostViolation
-	}
-
 	if isRepostUniqueViolation(parentPost, postUUID, postNullUUID) {
 		return entity.TimelineItem{}, repository.ErrUniqueViolation
 	}
@@ -187,10 +182,6 @@ func (r *fakeTimelineitemsRepository) CreateQuoteRepost(userID, postID, text str
 
 	if _, ok := r.timelineItems[postID]; !ok {
 		return entity.TimelineItem{}, repository.ErrRecordNotFound
-	}
-
-	if item, _ := r.timelineItems[postID]; item.Type == entity.PostTypeRepost {
-		return entity.TimelineItem{}, repository.ErrRepostViolation
 	}
 
 	userUUID, err := uuid.Parse(userID)

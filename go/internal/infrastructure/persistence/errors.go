@@ -15,3 +15,12 @@ func IsUniqueViolationError(err error) bool {
 
 	return false
 }
+
+func IsForeignKeyError(err error) bool {
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return pgErr.Code == pgerrcode.ForeignKeyViolation
+	}
+
+	return false
+}

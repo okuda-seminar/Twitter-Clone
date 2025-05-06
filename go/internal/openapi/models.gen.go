@@ -32,17 +32,16 @@ type CreateFollowshipResponse struct {
 
 // CreatePostRequest defines model for create_post_request.
 type CreatePostRequest struct {
-	Text   string `json:"text"`
-	UserId string `json:"user_id"`
+	Text string `json:"text"`
 }
 
 // CreatePostResponse Response when creating a timeline item.
 type CreatePostResponse struct {
-	AuthorId  string    `json:"authorId"`
-	CreatedAt time.Time `json:"createdAt"`
-	Id        string    `json:"id"`
-	Text      string    `json:"text"`
-	Type      string    `json:"type"`
+	AuthorId  openapi_types.UUID `json:"authorId"`
+	CreatedAt time.Time          `json:"createdAt"`
+	Id        openapi_types.UUID `json:"id"`
+	Text      string             `json:"text"`
+	Type      string             `json:"type"`
 }
 
 // CreateQuoteRepostRequest defines model for create_quote_repost_request.
@@ -173,14 +172,14 @@ type VerifySessionResponse = User
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody = LoginRequest
 
-// CreatePostJSONRequestBody defines body for CreatePost for application/json ContentType.
-type CreatePostJSONRequestBody = CreatePostRequest
-
 // CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
 type CreateUserJSONRequestBody = CreateUserRequest
 
 // CreateFollowshipJSONRequestBody defines body for CreateFollowship for application/json ContentType.
 type CreateFollowshipJSONRequestBody = CreateFollowshipRequest
+
+// CreatePostJSONRequestBody defines body for CreatePost for application/json ContentType.
+type CreatePostJSONRequestBody = CreatePostRequest
 
 // CreateQuoteRepostJSONRequestBody defines body for CreateQuoteRepost for application/json ContentType.
 type CreateQuoteRepostJSONRequestBody = CreateQuoteRepostRequest

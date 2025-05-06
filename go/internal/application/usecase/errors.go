@@ -11,4 +11,5 @@ var (
 	ErrUserAlreadyExists  = errors.New("user already exists")
 	ErrInvalidCredentials = errors.New("invalid username or password")
 	ErrTokenGeneration    = errors.New("could not generate token")
+	ErrTooLongText        = errors.New("text is too long")
 )

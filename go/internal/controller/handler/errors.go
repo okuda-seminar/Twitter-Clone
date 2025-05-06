@@ -1,0 +1,18 @@
+package handler
+
+import (
+	"errors"
+	"fmt"
+)
+
+var (
+	ErrDecodeRequestBody = errors.New("Request body was invalid.")
+	ErrEncodeResponse    = errors.New("Could not encode response.")
+	ErrTooLongText       = errors.New("Text is too long.")
+	ErrUserNotFound      = errors.New("User not found.")
+	ErrCreatePost        = errors.New("Could not create a post.")
+)
+
+func NewInvalidUserIDError(id string) error {
+	return fmt.Errorf("Could not parse a userID (ID: %s).", id)
+}
