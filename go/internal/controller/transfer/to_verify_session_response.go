@@ -7,12 +7,14 @@ import (
 
 func ToVerifySessionResponse(in *entity.User) *openapi.VerifySessionResponse {
 	return &openapi.VerifySessionResponse{
-		Bio:         in.Bio,
-		CreatedAt:   in.CreatedAt,
-		DisplayName: in.DisplayName,
-		Id:          in.ID,
-		IsPrivate:   in.IsPrivate,
-		UpdatedAt:   in.UpdatedAt,
-		Username:    in.Username,
+		User: openapi.User{
+			Bio:         in.Bio,
+			CreatedAt:   in.CreatedAt,
+			DisplayName: in.DisplayName,
+			Id:          in.ID,
+			IsPrivate:   in.IsPrivate,
+			UpdatedAt:   in.UpdatedAt,
+			Username:    in.Username,
+		},
 	}
 }

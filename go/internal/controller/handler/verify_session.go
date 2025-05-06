@@ -1,28 +1,23 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/infrastructure/persistence"
 )
 
 type VerifySessionHandler struct {
-	authService            *service.AuthService
-	getSpecificUserUsecase usecase.GetSpecificUserUsecase
+	authService         *service.AuthService
+	userByUserIDUsecase usecase.UserByUserIDUsecase
 }
 
-func NewVerifySessionHandler(db *sql.DB, authService *service.AuthService) VerifySessionHandler {
-	usersRepository := persistence.NewUsersRepository(db)
-	getSpecificUserUsecase := interactor.NewGetSpecificUserUsecase(usersRepository)
+func NewVerifySessionHandler(authService *service.AuthService, userByUserIDUsecase usecase.UserByUserIDUsecase) VerifySessionHandler {
 	return VerifySessionHandler{
-		authService:            authService,
-		getSpecificUserUsecase: getSpecificUserUsecase,
+		authService,
+		userByUserIDUsecase,
 	}
 }
 
@@ -39,7 +34,7 @@ func (h *VerifySessionHandler) VerifySession(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	user, err := h.getSpecificUserUsecase.GetSpecificUser(userID)
+	user, err := h.userByUserIDUsecase.UserByUserID(userID)
 	if err != nil {
 		http.Error(w, "Unexpected error occurred.", http.StatusInternalServerError)
 		return

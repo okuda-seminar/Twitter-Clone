@@ -14,14 +14,14 @@ import (
 )
 
 type FindUserByIDHandler struct {
-	getSpecificUserUsecase usecase.GetSpecificUserUsecase
+	userByUserIDUsecase usecase.UserByUserIDUsecase
 }
 
 func NewFindUserByIDHandler(db *sql.DB) FindUserByIDHandler {
 	usersRepository := persistence.NewUsersRepository(db)
-	getSpecificUserUsecase := interactor.NewGetSpecificUserUsecase(usersRepository)
+	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 	return FindUserByIDHandler{
-		getSpecificUserUsecase,
+		userByUserIDUsecase,
 	}
 }
 
@@ -29,7 +29,7 @@ func NewFindUserByIDHandler(db *sql.DB) FindUserByIDHandler {
 func (h *FindUserByIDHandler) FindUserByID(w http.ResponseWriter, r *http.Request, userID string) {
 	slog.Info("GET /api/users/{userID} was called.")
 
-	user, err := h.getSpecificUserUsecase.GetSpecificUser(userID)
+	user, err := h.userByUserIDUsecase.UserByUserID(userID)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Could not find a user (ID: %s)\n", userID), http.StatusNotFound)
 		return

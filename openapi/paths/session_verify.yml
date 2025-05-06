@@ -11,7 +11,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../openapi.yml#/components/schemas/VerifySessionResponse
+            $ref: ../components/responses/verify_session_response.yml
     "401":
       description: Invalid or expired token.
     "500":
