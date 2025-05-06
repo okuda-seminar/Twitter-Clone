@@ -111,27 +111,6 @@ func UnlikePost(w http.ResponseWriter, r *http.Request, u usecase.UnlikePostUsec
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func CreateFollowship(w http.ResponseWriter, r *http.Request, u usecase.FollowUserUsecase) {
-	var body createFollowshipRequestBody
-
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&body)
-	if err != nil {
-		http.Error(w, fmt.Sprintln("Request body was invalid."), http.StatusBadRequest)
-		return
-	}
-
-	sourceUserID := r.PathValue("id")
-
-	err = u.FollowUser(sourceUserID, body.TargetUserID)
-	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not create followship."), http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusCreated)
-}
-
 func DeleteFollowship(w http.ResponseWriter, r *http.Request, u usecase.UnfollowUserUsecase) {
 	sourceUserID := r.PathValue("source_user_id")
 	targetUserID := r.PathValue("target_user_id")
