@@ -1,6 +1,8 @@
 name: "k8s manifests test"
 on:
-  pull_request
+  push:
+    paths:
+      - "infra/**"
 
 jobs:
   conftest:
