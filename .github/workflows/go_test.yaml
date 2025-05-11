@@ -1,6 +1,8 @@
 name: "Action for go test"
 on:
-  pull_request
+  push:
+    paths:
+      - "go/**"
 
 jobs:
   go-test:

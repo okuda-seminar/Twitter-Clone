@@ -1,6 +1,8 @@
 name: "Go formatter"
 on:
-  pull_request
+  push:
+    paths:
+      - "go/**"
 
 jobs:
   formatter:
