@@ -51,7 +51,7 @@ func TestVerifySessionHandler(t *testing.T) {
 			t.Fatalf("Failed to unmarshal response body: %v", err)
 		}
 		if resp.User.Id != user.ID {
-			t.Errorf("expected user ID %s, got %s", user.ID.String(), resp.User.Id)
+			t.Errorf("expected user ID %s, got %s", user.ID, resp.User.Id)
 		}
 	})
 
@@ -61,7 +61,7 @@ func TestVerifySessionHandler(t *testing.T) {
 		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
-		token, _ := authService.GenerateJWT(uuid.New(), "nonexistentuser")
+		token, _ := authService.GenerateJWT(uuid.NewString(), "nonexistentuser")
 
 		req := httptest.NewRequest(http.MethodGet, "/api/session/verify", nil)
 		req.Header.Set("Content-Type", "application/json")
@@ -81,7 +81,7 @@ func TestVerifySessionHandler(t *testing.T) {
 		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
-		token, _ := createExpiredToken(uuid.New(), "testuser")
+		token, _ := createExpiredToken(uuid.NewString(), "testuser")
 
 		req := httptest.NewRequest(http.MethodGet, "/api/session/verify", nil)
 		req.Header.Set("Content-Type", "application/json")
@@ -96,11 +96,11 @@ func TestVerifySessionHandler(t *testing.T) {
 	})
 }
 
-func createExpiredToken(userID uuid.UUID, username string) (string, error) {
+func createExpiredToken(userID string, username string) (string, error) {
 	expiredClaims := service.UserClaims{
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   userID.String(),
+			Subject:   userID,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(-time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now().Add(-2 * time.Hour)),
 		},

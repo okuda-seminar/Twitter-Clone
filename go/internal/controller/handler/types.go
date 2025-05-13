@@ -1,13 +1,9 @@
 package handler
 
-import (
-	"github.com/google/uuid"
-)
-
 // likePostRequestBody is the type of the "LikePost"
 // endpoint request body.
 type likePostRequestBody struct {
-	PostID uuid.UUID `json:"post_id,omitempty"`
+	PostID string `json:"post_id,omitempty"`
 }
 
 // createFollowshipRequestBody is the type of the "CreateFollowship"

@@ -17,7 +17,7 @@ func TestJWTMiddleware(t *testing.T) {
 	secretKey := "test_secret_key"
 	authService := service.NewAuthService(secretKey)
 
-	userID := uuid.New()
+	userID := uuid.NewString()
 	tokenString, _ := authService.GenerateJWT(userID, "test_user")
 
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -28,8 +28,8 @@ func TestJWTMiddleware(t *testing.T) {
 			return
 		}
 
-		if userIDFromContext != userID.String() {
-			t.Errorf("Expected user ID '%s', got '%s'", userID.String(), userIDFromContext)
+		if userIDFromContext != userID {
+			t.Errorf("Expected user ID '%s', got '%s'", userID, userIDFromContext)
 		}
 
 		w.WriteHeader(http.StatusOK)

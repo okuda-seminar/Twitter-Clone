@@ -10,7 +10,7 @@ func ToFindUserByIDResponse(in *entity.User) *openapi.FindUserByIdResponse {
 		Bio:         in.Bio,
 		CreatedAt:   in.CreatedAt,
 		DisplayName: in.DisplayName,
-		Id:          in.ID.String(),
+		Id:          in.ID,
 		IsPrivate:   in.IsPrivate,
 		UpdatedAt:   in.UpdatedAt,
 		Username:    in.Username,

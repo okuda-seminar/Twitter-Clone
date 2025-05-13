@@ -4,8 +4,6 @@ import (
 	"database/sql"
 
 	"x-clone-backend/internal/domain/entity"
-
-	"github.com/google/uuid"
 )
 
 type UsersRepository interface {
@@ -15,8 +13,8 @@ type UsersRepository interface {
 	DeleteUser(tx *sql.Tx, userID string) error
 	UserByUserID(tx *sql.Tx, userID string) (entity.User, error)
 	UserByUsername(tx *sql.Tx, userName string) (entity.User, error)
-	LikePost(tx *sql.Tx, userID string, postID uuid.UUID) error
-	UnlikePost(tx *sql.Tx, userID string, postID string) error
+	LikePost(tx *sql.Tx, userID, postID string) error
+	UnlikePost(tx *sql.Tx, userID, postID string) error
 	FollowUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	Followees(tx *sql.Tx, targetUserID string) ([]string, error)

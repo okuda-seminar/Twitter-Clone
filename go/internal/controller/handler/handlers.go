@@ -8,8 +8,6 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
 )
@@ -55,13 +53,9 @@ func DeletePost(w http.ResponseWriter, r *http.Request, db *sql.DB, updateNotifi
 		return
 	}
 
-	post.ID, err = uuid.Parse(postID)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not delete a post (ID: %s)\n", postID), http.StatusInternalServerError)
-		return
-	}
+	post.ID = postID
 
-	go updateNotificationUsecase.SendNotification(post.AuthorID.String(), entity.PostDeleted, &post)
+	go updateNotificationUsecase.SendNotification(post.AuthorID, entity.PostDeleted, &post)
 
 	w.WriteHeader(http.StatusNoContent)
 }

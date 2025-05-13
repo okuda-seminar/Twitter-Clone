@@ -1,8 +1,6 @@
 package interactor
 
 import (
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -15,7 +13,7 @@ func NewLikePostUsecase(usersRepository repository.UsersRepository) usecase.Like
 	return &likePostUsecase{usersRepository: usersRepository}
 }
 
-func (p *likePostUsecase) LikePost(userID string, postID uuid.UUID) error {
+func (p *likePostUsecase) LikePost(userID string, postID string) error {
 	err := p.usersRepository.LikePost(nil, userID, postID)
 	return err
 }

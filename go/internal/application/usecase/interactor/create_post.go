@@ -3,8 +3,6 @@ package interactor
 import (
 	"errors"
 
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
@@ -20,7 +18,7 @@ func NewCreatePostUsecase(timelineItemsRepository repository.TimelineItemsReposi
 	}
 }
 
-func (u createPostUsecase) CreatePost(userID uuid.UUID, text string) (entity.TimelineItem, error) {
+func (u createPostUsecase) CreatePost(userID, text string) (entity.TimelineItem, error) {
 	var post entity.TimelineItem
 
 	if len(text) > entity.PostTextMaxLength {

@@ -28,7 +28,6 @@ post:
     name: id
     schema:
       type: string
-      format: uuid
     required: true
   operationId: CreatePost
   requestBody:

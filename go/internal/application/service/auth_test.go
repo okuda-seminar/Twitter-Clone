@@ -13,7 +13,7 @@ func TestGenerateJWT(t *testing.T) {
 	secretKey := "test_secret_key"
 	authService := NewAuthService(secretKey)
 
-	userID := uuid.New()
+	userID := uuid.NewString()
 	username := "test_user"
 
 	signedToken, err := authService.GenerateJWT(userID, username)
@@ -31,7 +31,7 @@ func TestValidateJWT(t *testing.T) {
 	secretKey := "test_secret_key"
 	authService := NewAuthService(secretKey)
 
-	userID := uuid.New()
+	userID := uuid.NewString()
 	username := "test_user"
 
 	signedToken, err := authService.GenerateJWT(userID, username)
@@ -44,7 +44,7 @@ func TestValidateJWT(t *testing.T) {
 		t.Fatalf("Expected no error, but got: %v", err)
 	}
 
-	if extractedUserID != userID.String() {
+	if extractedUserID != userID {
 		t.Errorf("Expected user ID %v, but got %v", userID, extractedUserID)
 	}
 }
@@ -67,7 +67,7 @@ func TestInvalidSignatureJWT(t *testing.T) {
 	secretKey := "test_secret_key"
 	authService := NewAuthService(secretKey)
 
-	userID := uuid.New()
+	userID := uuid.NewString()
 	username := "test_user"
 
 	signedToken, err := authService.GenerateJWT(userID, username)
@@ -88,7 +88,7 @@ func generateExpiredJWT(secretKey string) string {
 	claims := UserClaims{
 		Username: "test_user",
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   uuid.New().String(),
+			Subject:   uuid.NewString(),
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(-time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now().Add(-2 * time.Hour)),
 		},
