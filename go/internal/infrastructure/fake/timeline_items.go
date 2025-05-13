@@ -35,15 +35,9 @@ func (r *fakeTimelineitemsRepository) SpecificUserPosts(userID string) ([]*entit
 		return []*entity.TimelineItem{}, err
 	}
 
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return []*entity.TimelineItem{}, err
-	}
-
 	timelineItems := []*entity.TimelineItem{}
-
 	for _, item := range r.timelineItems {
-		if item.AuthorID == userUUID {
+		if item.AuthorID == userID {
 			timelineItems = append(timelineItems, item)
 		}
 	}
@@ -76,7 +70,7 @@ func (r *fakeTimelineitemsRepository) UserAndFolloweePosts(userID string) ([]*en
 // CreatePost creates and stores a new post by the given userID with the provided text in the in-memory database.
 // If a preconfigured error for CreatePost exists, it returns the error without creating a post.
 // Otherwise, it returns the created TimelineItem.
-func (r *fakeTimelineitemsRepository) CreatePost(userID uuid.UUID, text string) (entity.TimelineItem, error) {
+func (r *fakeTimelineitemsRepository) CreatePost(userID string, text string) (entity.TimelineItem, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -84,7 +78,7 @@ func (r *fakeTimelineitemsRepository) CreatePost(userID uuid.UUID, text string) 
 		return entity.TimelineItem{}, err
 	}
 
-	postID := uuid.New()
+	postID := uuid.NewString()
 	timelineItem := entity.TimelineItem{
 		Type:      entity.PostTypePost,
 		ID:        postID,
@@ -92,7 +86,7 @@ func (r *fakeTimelineitemsRepository) CreatePost(userID uuid.UUID, text string) 
 		Text:      text,
 		CreatedAt: time.Now(),
 	}
-	r.timelineItems[postID.String()] = &timelineItem
+	r.timelineItems[postID] = &timelineItem
 
 	return timelineItem, nil
 }
@@ -126,32 +120,23 @@ func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string) (entit
 		return entity.TimelineItem{}, repository.ErrRecordNotFound
 	}
 
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return entity.TimelineItem{}, err
-	}
-	postUUID, err := uuid.Parse(postID)
-	if err != nil {
-		return entity.TimelineItem{}, err
-	}
-	postNullUUID := value.NullUUID{UUID: postUUID, Valid: true}
-
 	parentPost := *r.timelineItems[postID]
-	if isRepostUniqueViolation(parentPost, postUUID, postNullUUID) {
+
+	if isRepostUniqueViolation(parentPost, postID, value.NullUUID{UUID: postID, Valid: true}) {
 		return entity.TimelineItem{}, repository.ErrUniqueViolation
 	}
 
-	repostID := uuid.New()
+	repostID := uuid.NewString()
 	timelineItem := entity.TimelineItem{
 		Type:         entity.PostTypeRepost,
 		ID:           repostID,
-		AuthorID:     userUUID,
-		ParentPostID: postNullUUID,
+		AuthorID:     userID,
+		ParentPostID: value.NullUUID{UUID: postID, Valid: true},
 		Text:         "",
 		CreatedAt:    time.Now(),
 	}
 
-	r.timelineItems[repostID.String()] = &timelineItem
+	r.timelineItems[repostID] = &timelineItem
 
 	return timelineItem, nil
 }
@@ -184,25 +169,16 @@ func (r *fakeTimelineitemsRepository) CreateQuoteRepost(userID, postID, text str
 		return entity.TimelineItem{}, repository.ErrRecordNotFound
 	}
 
-	userUUID, err := uuid.Parse(userID)
-	if err != nil {
-		return entity.TimelineItem{}, err
-	}
-	postUUID, err := uuid.Parse(postID)
-	if err != nil {
-		return entity.TimelineItem{}, err
-	}
-
-	quoteRepostID := uuid.New()
+	quoteRepostID := uuid.NewString()
 	timelineItem := entity.TimelineItem{
 		Type:         entity.PostTypeQuoteRepost,
 		ID:           quoteRepostID,
-		AuthorID:     userUUID,
-		ParentPostID: value.NullUUID{UUID: postUUID, Valid: true},
+		AuthorID:     userID,
+		ParentPostID: value.NullUUID{UUID: postID, Valid: true},
 		Text:         text,
 		CreatedAt:    time.Now(),
 	}
-	r.timelineItems[quoteRepostID.String()] = &timelineItem
+	r.timelineItems[quoteRepostID] = &timelineItem
 
 	return timelineItem, nil
 }
@@ -221,6 +197,6 @@ func (r *fakeTimelineitemsRepository) ClearError(key string) {
 	delete(r.errors, key)
 }
 
-func isRepostUniqueViolation(item entity.TimelineItem, userUUID uuid.UUID, postNullUUID value.NullUUID) bool {
+func isRepostUniqueViolation(item entity.TimelineItem, userUUID string, postNullUUID value.NullUUID) bool {
 	return item.Type == entity.PostTypeRepost && item.AuthorID == userUUID && item.ParentPostID == postNullUUID
 }

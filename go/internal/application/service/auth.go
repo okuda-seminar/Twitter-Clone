@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -52,12 +51,12 @@ func ExtractTokenFromHeader(r *http.Request) (string, error) {
 }
 
 // GenerateJWT generates a JWT with user ID and username
-func (s *AuthService) GenerateJWT(id uuid.UUID, username string) (string, error) {
+func (s *AuthService) GenerateJWT(userID string, username string) (string, error) {
 	// Set payload (claims)
 	claims := UserClaims{
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   id.String(),
+			Subject:   userID,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(jwtExpirationDuration)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},

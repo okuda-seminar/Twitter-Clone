@@ -5,13 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/transfer"
 	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/domain/repository"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -20,16 +16,16 @@ type CreatePostHandler struct {
 	createPostUsecase         usecase.CreatePostUsecase
 }
 
-func NewCreatePostHandler(updateNotificationUsecase usecase.UpdateNotificationUsecase, repo repository.TimelineItemsRepository) CreatePostHandler {
+func NewCreatePostHandler(updateNotificationUsecase usecase.UpdateNotificationUsecase, createPostUsecase usecase.CreatePostUsecase) CreatePostHandler {
 	return CreatePostHandler{
-		updateNotificationUsecase: updateNotificationUsecase,
-		createPostUsecase:         interactor.NewCreatePostUsecase(repo),
+		updateNotificationUsecase,
+		createPostUsecase,
 	}
 }
 
 // CreatePost creates a new post with the specified user_id and text,
 // then, inserts it into posts table.
-func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request, userID uuid.UUID) {
+func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request, userID string) {
 	var body openapi.CreatePostRequest
 
 	decoder := json.NewDecoder(r.Body)
@@ -53,7 +49,7 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request, u
 		return
 	}
 
-	go h.updateNotificationUsecase.SendNotification(userID.String(), entity.PostCreated, &post)
+	go h.updateNotificationUsecase.SendNotification(userID, entity.PostCreated, &post)
 
 	res := transfer.ToCreatePostResponse(&post)
 

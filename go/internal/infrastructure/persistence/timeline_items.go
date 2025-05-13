@@ -7,8 +7,6 @@ import (
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 	"x-clone-backend/internal/domain/value"
-
-	"github.com/google/uuid"
 )
 
 type timelineItemsRepository struct {
@@ -31,9 +29,9 @@ func (r *timelineItemsRepository) SpecificUserPosts(userID string) ([]*entity.Ti
 	var timelineitems []*entity.TimelineItem
 	for rows.Next() {
 		var (
-			id             uuid.UUID
+			id             string
 			postType       string
-			author_id      uuid.UUID
+			author_id      string
 			parent_post_id value.NullUUID
 			text           string
 			created_at     time.Time
@@ -76,9 +74,9 @@ func (r *timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity
 	var timelineitems []*entity.TimelineItem
 	for rows.Next() {
 		var (
-			id             uuid.UUID
+			id             string
 			postType       string
-			author_id      uuid.UUID
+			author_id      string
 			parent_post_id value.NullUUID
 			text           string
 			created_at     time.Time
@@ -102,17 +100,17 @@ func (r *timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity
 }
 
 // CreatePost creates and returns a new post by the given userID with the provided text.
-func (r *timelineItemsRepository) CreatePost(userID uuid.UUID, text string) (entity.TimelineItem, error) {
+func (r *timelineItemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
 	query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
 
 	var (
-		id        uuid.UUID
+		id        string
 		createdAt time.Time
 	)
 
 	postType := entity.PostTypePost
 
-	err := r.db.QueryRow(query, postType, userID.String(), text).Scan(&id, &createdAt)
+	err := r.db.QueryRow(query, postType, userID, text).Scan(&id, &createdAt)
 	if err != nil {
 		if IsForeignKeyError(err) {
 			return entity.TimelineItem{}, repository.ErrForeignViolation

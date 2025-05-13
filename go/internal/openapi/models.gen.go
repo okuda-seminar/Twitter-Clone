@@ -5,8 +5,6 @@ package openapi
 
 import (
 	"time"
-
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 const (
@@ -37,11 +35,11 @@ type CreatePostRequest struct {
 
 // CreatePostResponse Response when creating a timeline item.
 type CreatePostResponse struct {
-	AuthorId  openapi_types.UUID `json:"authorId"`
-	CreatedAt time.Time          `json:"createdAt"`
-	Id        openapi_types.UUID `json:"id"`
-	Text      string             `json:"text"`
-	Type      string             `json:"type"`
+	AuthorId  string    `json:"authorId"`
+	CreatedAt time.Time `json:"createdAt"`
+	Id        string    `json:"id"`
+	Text      string    `json:"text"`
+	Type      string    `json:"type"`
 }
 
 // CreateQuoteRepostRequest defines model for create_quote_repost_request.
@@ -157,13 +155,13 @@ type LoginResponse struct {
 
 // User defines model for user.
 type User struct {
-	Bio         string             `json:"bio"`
-	CreatedAt   time.Time          `json:"createdAt"`
-	DisplayName string             `json:"displayName"`
-	Id          openapi_types.UUID `json:"id"`
-	IsPrivate   bool               `json:"isPrivate"`
-	UpdatedAt   time.Time          `json:"updatedAt"`
-	Username    string             `json:"username"`
+	Bio         string    `json:"bio"`
+	CreatedAt   time.Time `json:"createdAt"`
+	DisplayName string    `json:"displayName"`
+	Id          string    `json:"id"`
+	IsPrivate   bool      `json:"isPrivate"`
+	UpdatedAt   time.Time `json:"updatedAt"`
+	Username    string    `json:"username"`
 }
 
 // VerifySessionResponse defines model for verify_session_response.
