@@ -8,7 +8,6 @@ import (
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/handler"
 	"x-clone-backend/internal/infrastructure"
-	"x-clone-backend/internal/infrastructure/persistence"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -30,11 +29,13 @@ type Server struct {
 }
 
 func NewServer(db *sql.DB) Server {
-	usersRepository := persistence.NewUsersRepository(db)
+	timelineItemsRepository := infrastructure.InjectTimelineItemsRepository(db)
+	usersRepository := infrastructure.InjectUsersRepository(db)
 
 	secretKey := os.Getenv("SECRET_KEY")
 	authService := service.NewAuthService(secretKey)
 
+	createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
 	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
 	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
 	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
@@ -44,7 +45,7 @@ func NewServer(db *sql.DB) Server {
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
-		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, infrastructure.InjecttimelineItemsRepository(db)),
+		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),

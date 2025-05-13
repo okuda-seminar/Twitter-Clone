@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/application/usecase"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/value"
@@ -29,7 +27,7 @@ func NewCreateRepostHandler(db *sql.DB, updateNotificationUsecase usecase.Update
 
 // CreateRepost creates a new repost with the specified post_id and user_id,
 // then, inserts it into reposts table.
-func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Request, userIDStr string) {
+func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Request, userID string) {
 	var body openapi.CreateRepostRequest
 
 	decoder := json.NewDecoder(r.Body)
@@ -39,29 +37,17 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse a userID (ID: %s)\n", userIDStr), http.StatusBadRequest)
-		return
-	}
-
-	PostID, err := uuid.Parse(body.PostId)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse a PostId (ID: %s)\n", body.PostId), http.StatusBadRequest)
-		return
-	}
-
 	query := `INSERT INTO timelineitems (type, author_id, parent_post_id ,text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
 
 	var (
-		id        uuid.UUID
+		id        string
 		createdAt time.Time
 	)
 
 	postType := entity.PostTypeRepost
 	text := ""
 
-	err = h.db.QueryRow(query, postType, userID, PostID, text).Scan(&id, &createdAt)
+	err = h.db.QueryRow(query, postType, userID, body.PostId, text).Scan(&id, &createdAt)
 	if err != nil {
 		http.Error(w, fmt.Sprintln("Could not create a repost."), http.StatusInternalServerError)
 		return
@@ -71,12 +57,12 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 		Type:         postType,
 		ID:           id,
 		AuthorID:     userID,
-		ParentPostID: value.NullUUID{UUID: PostID, Valid: true},
+		ParentPostID: value.NullUUID{UUID: body.PostId, Valid: true},
 		Text:         text,
 		CreatedAt:    createdAt,
 	}
 
-	go h.updateNotificationUsecase.SendNotification(userIDStr, entity.RepostCreated, &repost)
+	go h.updateNotificationUsecase.SendNotification(userID, entity.RepostCreated, &repost)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

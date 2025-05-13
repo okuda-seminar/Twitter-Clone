@@ -2,8 +2,6 @@ package entity
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // User represents an entry of `users` table.
@@ -18,12 +16,12 @@ import (
 //
 // For more information on terminology, refer to: https://help.twitter.com/en/resources/glossary.
 type User struct {
-	ID          uuid.UUID `json:"id"`
+	ID          string    `json:"id"`
 	Username    string    `json:"username"`
+	Password    string    `json:"-"`
 	DisplayName string    `json:"displayName"`
 	Bio         string    `json:"bio"`
 	IsPrivate   bool      `json:"isPrivate"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
-	Password    string    `json:"-"`
 }

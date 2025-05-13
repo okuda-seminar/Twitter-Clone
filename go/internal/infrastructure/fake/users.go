@@ -48,7 +48,7 @@ func (r *fakeUsersRepository) CreateUser(tx *sql.Tx, username, displayName, pass
 	}
 
 	user := entity.User{
-		ID:          uuid.New(),
+		ID:          uuid.NewString(),
 		Username:    username,
 		DisplayName: displayName,
 		Password:    password,
@@ -63,7 +63,7 @@ func (r *fakeUsersRepository) CreateUser(tx *sql.Tx, username, displayName, pass
 			return entity.User{}, repository.ErrUniqueViolation
 		}
 	}
-	r.users[user.ID.String()] = user
+	r.users[user.ID] = user
 
 	return user, nil
 }
@@ -117,19 +117,19 @@ func (r *fakeUsersRepository) UserByUsername(tx *sql.Tx, username string) (entit
 	return entity.User{}, repository.ErrRecordNotFound
 }
 
-func (r *fakeUsersRepository) LikePost(tx *sql.Tx, userID string, postID uuid.UUID) error {
+func (r *fakeUsersRepository) LikePost(tx *sql.Tx, userID, postID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	if err, ok := r.errors["LikePost"]; ok {
 		return err
 	}
-	r.likes[userID] = append(r.likes[userID], postID.String())
+	r.likes[userID] = append(r.likes[userID], postID)
 
 	return nil
 }
 
-func (r *fakeUsersRepository) UnlikePost(tx *sql.Tx, userID string, postID string) error {
+func (r *fakeUsersRepository) UnlikePost(tx *sql.Tx, userID, postID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

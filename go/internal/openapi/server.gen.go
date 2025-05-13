@@ -11,7 +11,6 @@ import (
 	"net/http"
 
 	"github.com/oapi-codegen/runtime"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // ServerInterface represents all server handlers.
@@ -33,7 +32,7 @@ type ServerInterface interface {
 	GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new post.
 	// (POST /users/{id}/posts)
-	CreatePost(w http.ResponseWriter, r *http.Request, id openapi_types.UUID)
+	CreatePost(w http.ResponseWriter, r *http.Request, id string)
 	// Creates a new quote repost.
 	// (POST /users/{id}/quote_reposts)
 	CreateQuoteRepost(w http.ResponseWriter, r *http.Request, id string)
@@ -164,7 +163,7 @@ func (siw *ServerInterfaceWrapper) CreatePost(w http.ResponseWriter, r *http.Req
 	var err error
 
 	// ------------- Path parameter "id" -------------
-	var id openapi_types.UUID
+	var id string
 
 	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {

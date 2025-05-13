@@ -18,16 +18,11 @@ import (
 )
 
 func TestCreatePost(t *testing.T) {
-	nonExistentUserID, err := uuid.NewUUID()
-	if err != nil {
-		t.Error("failed to generate userID")
-	}
-	existentUserID, err := uuid.NewUUID()
-	if err != nil {
-		t.Error("failed to generate userID")
-	}
+	nonExistentUserID := uuid.NewString()
+	existentUserID := uuid.NewString()
+
 	tests := map[string]struct {
-		userID       uuid.UUID
+		userID       string
 		text         string
 		err          error
 		expectedCode int
@@ -52,19 +47,20 @@ func TestCreatePost(t *testing.T) {
 		},
 	}
 
-	for name, tc := range tests {
+	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			timelineItemsRepository := infrastructure.InjecttimelineItemsRepository(nil)
+			timelineItemsRepository := infrastructure.InjectTimelineItemsRepository(nil)
 			usersRepository := infrastructure.InjectUsersRepository(nil)
+			createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
 			updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
-			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, timelineItemsRepository)
+			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, createPostUsecase)
 
-			if tc.err != nil {
-				timelineItemsRepository.SetError(repository.ErrKeyCreatePost, tc.err)
+			if tt.err != nil {
+				timelineItemsRepository.SetError(repository.ErrKeyCreatePost, tt.err)
 			}
 
 			body, err := json.Marshal(openapi.CreatePostRequest{
-				Text: tc.text,
+				Text: tt.text,
 			})
 			if err != nil {
 				t.Errorf("failed to marshal request body: %v", err)
@@ -72,13 +68,13 @@ func TestCreatePost(t *testing.T) {
 
 			req := httptest.NewRequest(
 				"POST",
-				fmt.Sprintf("/api/%s/posts", tc.userID),
+				fmt.Sprintf("/api/%s/posts", tt.userID),
 				bytes.NewReader(body),
 			)
 			rr := httptest.NewRecorder()
-			createPostHandler.CreatePost(rr, req, tc.userID)
-			if rr.Code != tc.expectedCode {
-				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tc.expectedCode, rr.Code)
+			createPostHandler.CreatePost(rr, req, tt.userID)
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
 			}
 
 			timelineItemsRepository.ClearError(repository.ErrKeyCreatePost)

@@ -5,8 +5,6 @@ import (
 	"errors"
 	"time"
 
-	"github.com/google/uuid"
-
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 )
@@ -47,7 +45,7 @@ func (r *usersRepository) CreateUser(tx *sql.Tx, username, displayName, password
         RETURNING id, created_at, updated_at`
 
 	var (
-		id                   uuid.UUID
+		id                   string
 		createdAt, updatedAt time.Time
 	)
 
@@ -155,7 +153,7 @@ func (r *usersRepository) UserByUsername(tx *sql.Tx, username string) (entity.Us
 	return user, err
 }
 
-func (r *usersRepository) LikePost(tx *sql.Tx, userID string, postID uuid.UUID) error {
+func (r *usersRepository) LikePost(tx *sql.Tx, userID string, postID string) error {
 	query := "INSERT INTO likes (user_id, post_id) VALUES ($1, $2)"
 
 	var err error
@@ -240,12 +238,12 @@ func (r *usersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, 
 
 	var ids []string
 	for rows.Next() {
-		var id uuid.UUID
+		var id string
 		if err := rows.Scan(&id); err != nil {
 			return nil, err
 		}
 
-		ids = append(ids, id.String())
+		ids = append(ids, id)
 	}
 
 	return ids, err
