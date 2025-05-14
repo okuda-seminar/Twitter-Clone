@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/lib/components/auth-context";
+import { ClientAuthProvider } from "@/lib/components/auth-context";
 import { Provider } from "@/lib/components/ui/provider";
 import type { Preview } from "@storybook/react";
 
@@ -44,9 +44,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <Provider>
-        <AuthProvider>
+        <ClientAuthProvider>
           <Story />
-        </AuthProvider>
+        </ClientAuthProvider>
       </Provider>
     ),
   ],
