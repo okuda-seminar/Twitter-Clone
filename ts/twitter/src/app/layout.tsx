@@ -1,5 +1,3 @@
-import { AuthProvider } from "@/lib/components/auth-context";
-import { PageLayout } from "@/lib/components/page-layout";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ClientProvider from "../lib/components/client-provider";
@@ -13,21 +11,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/672
   // - Fix UI layout issues on mobile view.
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
-        <ClientProvider>
-          <AuthProvider>
-            <PageLayout modal={modal}>{children}</PageLayout>
-          </AuthProvider>
-        </ClientProvider>
+        <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
   );

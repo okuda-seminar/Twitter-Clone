@@ -1,5 +1,6 @@
 "use server";
 
+import { AUTH_COOKIE_OPTIONS } from "@/lib/constants/cookie-constants";
 import type { User } from "@/lib/models/user";
 import { cookies } from "next/headers";
 import { ERROR_MESSAGES } from "../constants/error-messages";
@@ -19,7 +20,7 @@ export async function verifySession(): Promise<
   ServerActionsResult<VerifySessionResponse, ServerActionsError>
 > {
   const cookieStore = await cookies();
-  const authToken = cookieStore.get("auth_token");
+  const authToken = cookieStore.get(AUTH_COOKIE_OPTIONS.name);
 
   if (!authToken || !authToken.value) {
     return err({

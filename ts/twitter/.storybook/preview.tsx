@@ -44,7 +44,7 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <Provider>
-        <AuthProvider>
+        <AuthProvider user={undefined}>
           <Story />
         </AuthProvider>
       </Provider>

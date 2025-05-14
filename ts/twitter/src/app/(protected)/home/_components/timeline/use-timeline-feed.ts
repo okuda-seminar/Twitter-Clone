@@ -15,15 +15,11 @@ export interface useTimelineFeedReturn {
 export const useTimelineFeed = (): useTimelineFeedReturn => {
   const router = useRouter();
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const timelineFeedServiceRef = useRef<TimelineFeedService | null>(null);
 
   useEffect(() => {
-    if (authLoading) {
-      return;
-    }
-
     if (!user?.id) {
       router.push("/login");
       return;
@@ -34,6 +30,8 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
       timelineFeedServiceRef.current = createTimelineFeedService();
     }
 
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/742
+    // - Fix Timeline Post Display Issue After URL Changes.
     timelineFeedServiceRef.current.connect(
       url,
       (newTimelineItems) => {
@@ -72,7 +70,7 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
     return () => {
       timelineFeedServiceRef.current?.disconnect();
     };
-  }, [user, authLoading, router]);
+  }, [user, router]);
 
   return {
     errorMessage,

@@ -78,6 +78,8 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
                       positioning={{ placement: "bottom" }}
                       disabled={isTooltipDisabled}
                     >
+                      {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/739 
+                      - Replace default Focus Ring with Focus Visible Ring. */}
                       <IconButton
                         aria-label={item.label}
                         color={useColorModeValue("black", "white")}
