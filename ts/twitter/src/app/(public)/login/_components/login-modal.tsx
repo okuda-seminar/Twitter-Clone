@@ -32,8 +32,6 @@ export const LoginModal: React.FC = () => {
   };
 
   return (
-    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/621
-    // - Add support for light mode in the login modal.
     <Flex align="center" justify="center" minH="100vh">
       <Box
         width="400px"

@@ -1,61 +1,28 @@
 "use client";
 
-import { verifySession } from "@/lib/actions/verify-session";
 import type { User } from "@/lib/models/user";
-import { useRouter } from "next/navigation";
 import type React from "react";
-import {
-  type ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { type PropsWithChildren, createContext, useContext } from "react";
 
 interface AuthContextType {
   user: User | undefined;
-  loading: boolean;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({ user: undefined });
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+export const AuthProvider: React.FC<PropsWithChildren<AuthContextType>> = ({
   children,
+  user,
 }) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const result = await verifySession();
-        if (result.ok) {
-          setUser(result.value.user);
-        } else {
-          router.push("/login");
-        }
-      } catch (error) {
-        router.push("/login");
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkSession();
-  }, [router]);
-
   return (
-    <AuthContext.Provider value={{ user, loading, setUser }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within a AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

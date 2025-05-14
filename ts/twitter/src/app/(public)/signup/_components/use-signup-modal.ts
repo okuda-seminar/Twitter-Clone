@@ -1,4 +1,3 @@
-import { useAuth } from "@/lib/components/auth-context";
 import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
 import { VALIDATION_CONSTANTS } from "@/lib/constants/validation-constants";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,6 @@ export const useSignupModal = (): UseSignupModalReturn => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuth();
 
   const generateUsername = (displayName: string): string => {
     if (!displayName) return "";
@@ -67,7 +65,6 @@ export const useSignupModal = (): UseSignupModalReturn => {
       if (!result.ok) {
         return `${ERROR_MESSAGES.SIGNUP_ERROR} (${result.error.statusText})`;
       }
-      setUser(result.value.user);
 
       router.push("/home");
     } catch (error: unknown) {
