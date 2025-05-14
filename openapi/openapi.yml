@@ -25,6 +25,8 @@ paths:
     $ref: ./paths/session_verify.yml
   /users/{id}/following:
     $ref: ./paths/followship.yml
+  /users/{sourceUserID}/following/{targetUserID}:
+    $ref: ./paths/delete_followship.yml
 
 components:
   securitySchemes:
@@ -55,6 +57,8 @@ components:
       $ref: ./components/requestBodies/create_followship_request.yml
     CreateFollowshipResponse:
       $ref: ./components/responses/create_followship_response.yml
+    DeleteFollowshipResponse:
+      $ref: ./components/responses/delete_followship_response.yml
     GetReverseChronologicalHomeTimelineResponse:
       $ref: ./components/responses/get_reverse_chronological_home_timeline_response.yml
     GetReverseChronologicalHomeTimelineExample:

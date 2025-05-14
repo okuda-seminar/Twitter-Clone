@@ -26,6 +26,7 @@ type Server struct {
 	handler.GetUserPostsTimelineHandler
 	handler.GetReverseChronologicalHomeTimelineHandler
 	handler.CreateFollowshipHandler
+	handler.DeleteFollowshipHandler
 }
 
 func NewServer(db *sql.DB) Server {
@@ -38,6 +39,7 @@ func NewServer(db *sql.DB) Server {
 	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
+	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
 	loginUsecase := usecaseInjector.InjectLoginUsecase(usersRepository, authService)
 	specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timelineItemsRepository)
 	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
@@ -56,5 +58,6 @@ func NewServer(db *sql.DB) Server {
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(specificUserPostsUsecase),
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, make(chan struct{}, 1)),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(followUserUsecase),
+		DeleteFollowshipHandler:                    handler.NewDeleteFollowshipHandler(unfollowUserUsecase),
 	}
 }

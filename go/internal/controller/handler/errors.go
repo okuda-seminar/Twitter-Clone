@@ -13,6 +13,8 @@ var (
 	ErrCreatePost         = errors.New("Could not create a post.")
 	ErrInvalidRequestBody = errors.New("Request body was invalid.")
 	ErrCreateFollowship   = errors.New("Could not create followship.")
+	ErrFollowshipNotFound = errors.New("No row found to delete")
+	ErrDeleteFollowship   = errors.New("Could not delete followship.")
 )
 
 func NewInvalidUserIDError(id string) error {
