@@ -31,7 +31,6 @@ func main() {
 	deleteUserUsecase := usecaseInjector.InjectDeleteUserUsecase(usersRepository)
 	likePostUsecase := usecaseInjector.InjectLikePostUsecase(usersRepository)
 	unlikePostUsecase := usecaseInjector.InjectUnlikePostUsecase(usersRepository)
-	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
 	muteUserUsecase := usecaseInjector.InjectMuteUserUsecase(usersRepository)
 	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
 	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
@@ -54,10 +53,6 @@ func main() {
 
 	mux.HandleFunc("DELETE /api/users/{id}/likes/{post_id}", func(w http.ResponseWriter, r *http.Request) {
 		handler.UnlikePost(w, r, unlikePostUsecase)
-	})
-
-	mux.HandleFunc("DELETE /api/users/{source_user_id}/following/{target_user_id}", func(w http.ResponseWriter, r *http.Request) {
-		handler.DeleteFollowship(w, r, unfollowUserUsecase)
 	})
 
 	mux.HandleFunc("POST /api/users/{id}/muting", func(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,31 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Delete a followship
+  operationId: deleteFollowship
+  parameters:
+    - in: path
+      name: sourceUserID
+      required: true
+      schema:
+        type: string
+    - in: path
+      name: targetUserID
+      required: true
+      schema:
+        type: string
+  responses:
+    "204":
+      description: Followship deleted successfully
+    "404":
+      description: Status Not Found - No row found to delete.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/delete_followship_response.yml
+    "500":
+      description: Internal Server Error - Could not delete followship.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/delete_followship_response.yml

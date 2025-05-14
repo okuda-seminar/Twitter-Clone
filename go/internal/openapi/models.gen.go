@@ -91,6 +91,11 @@ type CreateUserResponse struct {
 	User  User   `json:"user"`
 }
 
+// DeleteFollowshipResponse defines model for delete_followship_response.
+type DeleteFollowshipResponse struct {
+	Message string `json:"message"`
+}
+
 // DeleteRepostRequest defines model for delete_repost_request.
 type DeleteRepostRequest struct {
 	RepostId string `json:"repost_id"`

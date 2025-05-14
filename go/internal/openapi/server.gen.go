@@ -42,6 +42,9 @@ type ServerInterface interface {
 	// Get a collection of posts by the specified user and users they follow.
 	// (GET /users/{id}/timelines/reverse_chronological)
 	GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, id string)
+	// Delete a followship
+	// (DELETE /users/{sourceUserID}/following/{targetUserID})
+	DeleteFollowship(w http.ResponseWriter, r *http.Request, sourceUserID string, targetUserID string)
 	// Find user by ID.
 	// (GET /users/{userID})
 	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
@@ -257,6 +260,40 @@ func (siw *ServerInterfaceWrapper) GetReverseChronologicalHomeTimeline(w http.Re
 	handler.ServeHTTP(w, r)
 }
 
+// DeleteFollowship operation middleware
+func (siw *ServerInterfaceWrapper) DeleteFollowship(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "sourceUserID" -------------
+	var sourceUserID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "sourceUserID", r.PathValue("sourceUserID"), &sourceUserID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "sourceUserID", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "targetUserID" -------------
+	var targetUserID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "targetUserID", r.PathValue("targetUserID"), &targetUserID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "targetUserID", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteFollowship(w, r, sourceUserID, targetUserID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // FindUserByID operation middleware
 func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.Request) {
 
@@ -445,6 +482,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
+	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserID}/following/{targetUserID}", wrapper.DeleteFollowship)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userID}", wrapper.FindUserByID)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 

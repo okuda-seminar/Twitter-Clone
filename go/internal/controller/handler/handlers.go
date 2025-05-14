@@ -105,24 +105,6 @@ func UnlikePost(w http.ResponseWriter, r *http.Request, u usecase.UnlikePostUsec
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func DeleteFollowship(w http.ResponseWriter, r *http.Request, u usecase.UnfollowUserUsecase) {
-	sourceUserID := r.PathValue("source_user_id")
-	targetUserID := r.PathValue("target_user_id")
-
-	err := u.UnfollowUser(sourceUserID, targetUserID)
-	if err != nil {
-		switch {
-		case errors.Is(err, usecase.ErrFollowshipNotFound):
-			http.Error(w, "No row found to delete", http.StatusNotFound)
-		default:
-			http.Error(w, "Could not delete followship.", http.StatusInternalServerError)
-		}
-		return
-	}
-
-	w.WriteHeader(http.StatusNoContent)
-}
-
 func CreateMuting(w http.ResponseWriter, r *http.Request, u usecase.MuteUserUsecase) {
 	var body createMutingRequestBody
 
