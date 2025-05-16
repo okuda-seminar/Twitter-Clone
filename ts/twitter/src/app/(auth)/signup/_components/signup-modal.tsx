@@ -13,7 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type React from "react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { useSignupModal } from "./use-signup-modal";
 
 export const SignupModal: React.FC = () => {
@@ -26,7 +26,7 @@ export const SignupModal: React.FC = () => {
     isSubmitDisabled,
     handleCloseButtonClick,
   } = useSignupModal();
-  const [message, formAction] = useFormState(handleSignupAction, undefined);
+  const [message, formAction] = useActionState(handleSignupAction, undefined);
 
   return (
     <Dialog.Root open={true} placement="center">

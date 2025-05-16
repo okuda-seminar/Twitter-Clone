@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/lib/components/auth-context";
+import { AuthProvider } from "@/lib/components/auth-provider";
 import { PageLayout } from "@/lib/components/page-layout";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
