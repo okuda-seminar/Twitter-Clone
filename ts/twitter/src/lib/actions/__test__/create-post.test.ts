@@ -2,14 +2,13 @@ import { STATUS_TEXT } from "@/lib/constants/error-messages";
 import { createPost } from "../create-post";
 
 describe("createPost API Tests", () => {
-  const API_ENDPOINT = `${process.env.API_BASE_URL}/api/posts`;
+  const mockUserId = "623f9799-e816-418b-9e5e-09ad043653fb";
+  const API_ENDPOINT = `${process.env.API_BASE_URL}/api/users/${mockUserId}/posts`;
+
   const mockFetch = vi.fn();
   vi.stubGlobal("fetch", mockFetch);
 
-  const request = {
-    user_id: "623f9799-e816-418b-9e5e-09ad043653fb",
-    text: "test post",
-  };
+  const text = "test post";
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -20,8 +19,8 @@ describe("createPost API Tests", () => {
       // Arrange
       const response = {
         id: "91c76cd1-29c9-475a-abe3-247234bd9fd4",
-        user_id: request.user_id,
-        text: request.text,
+        user_id: mockUserId,
+        text: text,
         created_at: "2024-01-01T00:00:00Z",
       };
 
@@ -31,7 +30,7 @@ describe("createPost API Tests", () => {
       });
 
       // Act
-      const result = await createPost(request);
+      const result = await createPost(mockUserId, { text });
 
       // Assert
       expect(result).toEqual({ ok: true, value: response });
@@ -40,7 +39,7 @@ describe("createPost API Tests", () => {
         expect.objectContaining({
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(request),
+          body: JSON.stringify({ text }),
         }),
       );
     });
@@ -58,7 +57,7 @@ describe("createPost API Tests", () => {
       mockFetch.mockResolvedValueOnce(response);
 
       // Act
-      const result = await createPost(request);
+      const result = await createPost(mockUserId, { text });
 
       // Assert
       expect(result).toEqual({
@@ -76,7 +75,9 @@ describe("createPost API Tests", () => {
       mockFetch.mockRejectedValueOnce(new Error(errorMessage));
 
       // Act & Assert
-      await expect(createPost(request)).rejects.toThrow(errorMessage);
+      await expect(createPost(mockUserId, { text })).rejects.toThrow(
+        errorMessage,
+      );
     });
   });
 });
