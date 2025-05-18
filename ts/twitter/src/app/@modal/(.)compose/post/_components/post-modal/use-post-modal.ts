@@ -43,11 +43,11 @@ export const usePostModal = ({
     formData: FormData,
   ) => {
     try {
-      const res = await createPost({
-        // biome-ignore lint/style/noNonNullAssertion: user is guaranteed to exist in this context.
-        user_id: user!.id,
-        text: formData.get("text") as string,
-      });
+      // biome-ignore lint/style/noNonNullAssertion: user is guaranteed to exist in this context.
+      const userId = user!.id;
+      const text = formData.get("text") as string;
+
+      const res = await createPost(userId, { text });
 
       if (!res.ok) {
         return ERROR_MESSAGES.POST_CREATION_ERROR;

@@ -8,7 +8,6 @@ import {
 } from "./types";
 
 interface CreatePostBody {
-  user_id: string;
   text: string;
 }
 
@@ -20,16 +19,17 @@ interface CreatePostResponse {
 }
 
 export async function createPost(
+  userId: string,
   body: CreatePostBody,
 ): Promise<ServerActionsResult<CreatePostResponse, ServerActionsError>> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/posts`,
+    `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${userId}/posts`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ text: body.text }),
     },
   );
 
