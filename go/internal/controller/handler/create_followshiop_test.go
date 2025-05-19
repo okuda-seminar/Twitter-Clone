@@ -10,17 +10,18 @@ import (
 
 	"github.com/google/uuid"
 
+	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/domain/repository"
-	"x-clone-backend/internal/infrastructure/fake"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
 func TestCreateFollowship(t *testing.T) {
-	testUserID := uuid.New().String()
-	targetUserID := uuid.New().String()
+	testUserID := uuid.NewString()
+	targetUserID := uuid.NewString()
 
 	tests := map[string]struct {
-		body         interface{}
+		body         openapi.CreateFollowshipRequest
 		setupRepo    func(repo repository.UsersRepository)
 		expectedCode int
 	}{
@@ -47,20 +48,16 @@ func TestCreateFollowship(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			repo := fake.NewFakeUsersRepository()
+			usersRepository := infraInjector.InjectUsersRepository(nil)
 			if tt.setupRepo != nil {
-				tt.setupRepo(repo)
+				tt.setupRepo(usersRepository)
 			}
+			followUserUsecase := interactor.NewFollowUserUsecase(usersRepository)
+			h := NewCreateFollowshipHandler(followUserUsecase)
 
-			h := NewCreateFollowshipHandler(repo)
-
-			var requestBody []byte
-			if tt.body != nil {
-				var err error
-				requestBody, err = json.Marshal(tt.body)
-				if err != nil {
-					t.Fatalf("[%s] failed to marshal request body: %v", name, err)
-				}
+			requestBody, err := json.Marshal(tt.body)
+			if err != nil {
+				t.Fatalf("[%s] failed to marshal request body: %v", name, err)
 			}
 
 			req := httptest.NewRequest(http.MethodPost, "/api/users/{id}/following", bytes.NewReader(requestBody))

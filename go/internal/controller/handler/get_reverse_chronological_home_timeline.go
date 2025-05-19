@@ -1,33 +1,30 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/domain/entity"
-	"x-clone-backend/internal/infrastructure/persistence"
 )
 
 type GetReverseChronologicalHomeTimelineHandler struct {
-	db                          *sql.DB
 	userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase
 	updateNotificationUsecase   usecase.UpdateNotificationUsecase
 	connected                   chan struct{}
 }
 
-func NewGetReverseChronologicalHomeTimelineHandler(db *sql.DB, updateNotificationUsecase usecase.UpdateNotificationUsecase, connected chan struct{}) GetReverseChronologicalHomeTimelineHandler {
-	timelineitemsRepository := persistence.NewTimelineitemsRepository(db)
-	userAndFolloweePostsUsecase := interactor.NewUserAndFolloweePostsUsecase(timelineitemsRepository)
+func NewGetReverseChronologicalHomeTimelineHandler(
+	userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase,
+	updateNotificationUsecase usecase.UpdateNotificationUsecase,
+	connected chan struct{},
+) GetReverseChronologicalHomeTimelineHandler {
 	return GetReverseChronologicalHomeTimelineHandler{
-		db:                          db,
-		userAndFolloweePostsUsecase: userAndFolloweePostsUsecase,
-		updateNotificationUsecase:   updateNotificationUsecase,
-		connected:                   connected,
+		userAndFolloweePostsUsecase,
+		updateNotificationUsecase,
+		connected,
 	}
 }
 

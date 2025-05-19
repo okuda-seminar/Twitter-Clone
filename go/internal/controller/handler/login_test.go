@@ -9,7 +9,7 @@ import (
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
-	"x-clone-backend/internal/infrastructure"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -51,7 +51,7 @@ func TestLoginHandler(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			usersRepository := infrastructure.InjectUsersRepository(nil)
+			usersRepository := infraInjector.InjectUsersRepository(nil)
 			authService := service.NewAuthService("test_secret_key")
 			loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
 			loginHandler := NewLoginHandler(loginUsecase)

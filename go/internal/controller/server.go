@@ -7,7 +7,7 @@ import (
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/handler"
-	"x-clone-backend/internal/infrastructure"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -29,28 +29,32 @@ type Server struct {
 }
 
 func NewServer(db *sql.DB) Server {
-	timelineItemsRepository := infrastructure.InjectTimelineItemsRepository(db)
-	usersRepository := infrastructure.InjectUsersRepository(db)
+	timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(db)
+	usersRepository := infraInjector.InjectUsersRepository(db)
 
 	secretKey := os.Getenv("SECRET_KEY")
 	authService := service.NewAuthService(secretKey)
 
 	createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
+	createUserUsecase := interactor.NewCreateUserUsecase(usersRepository)
+	followUserUsecase := interactor.NewFollowUserUsecase(usersRepository)
 	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
+	specificUserPostsUsecase := interactor.NewSpecificUserPostsUsecase(timelineItemsRepository)
 	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+	userAndFolloweePostsUsecase := interactor.NewUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 
 	return Server{
-		CreateUserHandler:                          handler.NewCreateUserHandler(db, authService),
+		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
-		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
+		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(userByUserIDUsecase),
 		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
-		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
-		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, updateNotificationUsecase, make(chan struct{}, 1)),
-		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(infrastructure.InjectUsersRepository(db)),
+		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(specificUserPostsUsecase),
+		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, make(chan struct{}, 1)),
+		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(followUserUsecase),
 	}
 }

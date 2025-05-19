@@ -10,7 +10,7 @@ import (
 	"x-clone-backend/internal/controller"
 	"x-clone-backend/internal/controller/handler"
 	"x-clone-backend/internal/controller/middleware"
-	"x-clone-backend/internal/infrastructure/persistence"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -27,7 +27,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	usersRepository := persistence.NewUsersRepository(db)
+	usersRepository := infraInjector.InjectUsersRepository(db)
 	deleteUserUsecase := interactor.NewDeleteUserUsecase(usersRepository)
 	likePostUsecase := interactor.NewLikePostUsecase(usersRepository)
 	unlikePostUsecase := interactor.NewUnlikePostUsecase(usersRepository)

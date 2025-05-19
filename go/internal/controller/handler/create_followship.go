@@ -5,21 +5,18 @@ import (
 	"net/http"
 
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
-	"x-clone-backend/internal/domain/repository"
 	"x-clone-backend/internal/openapi"
 )
 
 // CreateFollowshipHandler handles the POST /api/users/{id}/following
 type CreateFollowshipHandler struct {
-	usecase usecase.FollowUserUsecase
+	followUserUsecase usecase.FollowUserUsecase
 }
 
 // NewCreateFollowshipHandler initializes the handler with its dependencies
-func NewCreateFollowshipHandler(repo repository.UsersRepository) CreateFollowshipHandler {
-	createFollowshipUsecase := interactor.NewFollowUserUsecase(repo)
+func NewCreateFollowshipHandler(followUserUsecase usecase.FollowUserUsecase) CreateFollowshipHandler {
 	return CreateFollowshipHandler{
-		usecase: createFollowshipUsecase,
+		followUserUsecase,
 	}
 }
 
@@ -38,7 +35,7 @@ func (h *CreateFollowshipHandler) CreateFollowship(w http.ResponseWriter, r *htt
 
 	sourceUserID := id
 
-	err = h.usecase.FollowUser(sourceUserID, body.TargetUserID)
+	err = h.followUserUsecase.FollowUser(sourceUserID, body.TargetUserID)
 	if err != nil {
 		http.Error(w, ErrCreateFollowship.Error(), http.StatusInternalServerError)
 		return

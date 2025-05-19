@@ -13,13 +13,13 @@ import (
 
 	"x-clone-backend/internal/application/service"
 	"x-clone-backend/internal/application/usecase/interactor"
-	"x-clone-backend/internal/infrastructure"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
 func TestVerifySessionHandler(t *testing.T) {
 	t.Run("Valid Token", func(t *testing.T) {
-		usersRepository := infrastructure.InjectUsersRepository(nil)
+		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
 		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
@@ -56,7 +56,7 @@ func TestVerifySessionHandler(t *testing.T) {
 	})
 
 	t.Run("Token With Non-Existent User", func(t *testing.T) {
-		usersRepository := infrastructure.InjectUsersRepository(nil)
+		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
 		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
@@ -76,7 +76,7 @@ func TestVerifySessionHandler(t *testing.T) {
 	})
 
 	t.Run("Expired Token", func(t *testing.T) {
-		usersRepository := infrastructure.InjectUsersRepository(nil)
+		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
 		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
