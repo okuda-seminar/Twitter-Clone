@@ -1,25 +1,20 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
 
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/infrastructure/persistence"
 )
 
 type FindUserByIDHandler struct {
 	userByUserIDUsecase usecase.UserByUserIDUsecase
 }
 
-func NewFindUserByIDHandler(db *sql.DB) FindUserByIDHandler {
-	usersRepository := persistence.NewUsersRepository(db)
-	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
+func NewFindUserByIDHandler(userByUserIDUsecase usecase.UserByUserIDUsecase) FindUserByIDHandler {
 	return FindUserByIDHandler{
 		userByUserIDUsecase,
 	}

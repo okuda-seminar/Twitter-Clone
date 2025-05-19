@@ -1,4 +1,4 @@
-package persistence
+package implementation
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-func IsUniqueViolationError(err error) bool {
+func isUniqueViolationError(err error) bool {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
 		return pgErr.Code == pgerrcode.UniqueViolation
@@ -16,7 +16,7 @@ func IsUniqueViolationError(err error) bool {
 	return false
 }
 
-func IsForeignKeyError(err error) bool {
+func isForeignKeyError(err error) bool {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
 		return pgErr.Code == pgerrcode.ForeignKeyViolation

@@ -13,7 +13,7 @@ import (
 
 	"x-clone-backend/internal/application/usecase/interactor"
 	"x-clone-backend/internal/domain/repository"
-	"x-clone-backend/internal/infrastructure"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -49,8 +49,8 @@ func TestCreatePost(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			timelineItemsRepository := infrastructure.InjectTimelineItemsRepository(nil)
-			usersRepository := infrastructure.InjectUsersRepository(nil)
+			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			usersRepository := infraInjector.InjectUsersRepository(nil)
 			createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
 			updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
 			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, createPostUsecase)

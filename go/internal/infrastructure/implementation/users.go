@@ -1,4 +1,4 @@
-package persistence
+package implementation
 
 import (
 	"database/sql"
@@ -56,7 +56,7 @@ func (r *usersRepository) CreateUser(tx *sql.Tx, username, displayName, password
 		err = r.db.QueryRow(query, username, displayName, password, "", false).Scan(&id, &createdAt, &updatedAt)
 	}
 	if err != nil {
-		if IsUniqueViolationError(err) {
+		if isUniqueViolationError(err) {
 			return entity.User{}, repository.ErrUniqueViolation
 		}
 

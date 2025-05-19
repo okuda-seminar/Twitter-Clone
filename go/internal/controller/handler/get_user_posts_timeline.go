@@ -1,24 +1,19 @@
 package handler
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
 
 	"x-clone-backend/internal/application/usecase"
-	"x-clone-backend/internal/application/usecase/interactor"
-	"x-clone-backend/internal/infrastructure/persistence"
 )
 
 type GetUserPostsTimelineHandler struct {
 	specificUserPostsUsecase usecase.SpecificUserPostsUsecase
 }
 
-func NewGetUserPostsTimelineHandler(db *sql.DB) GetUserPostsTimelineHandler {
-	timelineitemsRepository := persistence.NewTimelineitemsRepository(db)
-	specificUserPostsUsecase := interactor.NewSpecificUserPostsUsecase(timelineitemsRepository)
+func NewGetUserPostsTimelineHandler(specificUserPostsUsecase usecase.SpecificUserPostsUsecase) GetUserPostsTimelineHandler {
 	return GetUserPostsTimelineHandler{
-		specificUserPostsUsecase: specificUserPostsUsecase,
+		specificUserPostsUsecase,
 	}
 }
 

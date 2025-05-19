@@ -1,4 +1,4 @@
-package persistence
+package implementation
 
 import (
 	"database/sql"
@@ -13,7 +13,7 @@ type timelineItemsRepository struct {
 	db *sql.DB
 }
 
-func NewTimelineitemsRepository(db *sql.DB) repository.TimelineItemsRepository {
+func NewTimelineItemsRepository(db *sql.DB) repository.TimelineItemsRepository {
 	return &timelineItemsRepository{db}
 }
 
@@ -112,7 +112,7 @@ func (r *timelineItemsRepository) CreatePost(userID, text string) (entity.Timeli
 
 	err := r.db.QueryRow(query, postType, userID, text).Scan(&id, &createdAt)
 	if err != nil {
-		if IsForeignKeyError(err) {
+		if isForeignKeyError(err) {
 			return entity.TimelineItem{}, repository.ErrForeignViolation
 		}
 		return entity.TimelineItem{}, err
