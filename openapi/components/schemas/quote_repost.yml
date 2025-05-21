@@ -1,0 +1,29 @@
+type: object
+title: Quote repost
+required:
+  - type
+  - id
+  - authorId
+  - parentPostId
+  - text
+  - createdAt
+properties:
+  type:
+    type: string
+  id:
+    type: string
+  authorId:
+    type: string
+  parentPostId:
+    type: object
+    required: [UUID, Valid]
+    properties:
+      UUID:
+        type: string
+      Valid:
+        type: boolean
+  text:
+    type: string
+  createdAt:
+    type: string
+    format: date-time

@@ -183,6 +183,22 @@ func (r *fakeTimelineitemsRepository) CreateQuoteRepost(userID, postID, text str
 	return timelineItem, nil
 }
 
+func (r *fakeTimelineitemsRepository) TimelineItemByID(postID string) (*entity.TimelineItem, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if err, ok := r.errors[repository.ErrKeyRetrieveTimelineItem]; ok {
+		return &entity.TimelineItem{}, err
+	}
+
+	item, ok := r.timelineItems[postID]
+	if !ok {
+		return &entity.TimelineItem{}, repository.ErrRecordNotFound
+	}
+
+	return item, nil
+}
+
 func (r *fakeTimelineitemsRepository) SetError(key string, err error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
