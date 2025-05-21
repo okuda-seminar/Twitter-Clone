@@ -2,6 +2,7 @@ package implementation
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 
 	"x-clone-backend/internal/domain/entity"
@@ -147,10 +148,66 @@ func (r *timelineItemsRepository) DeleteRepost(postID string) error {
 	return nil
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/682
-// - Refactor CreateQuoteRepost
+// CreateQuoteRepost creates and returns a new quote repost by the given userID with the provided text.
+// This method does not handle
 func (r *timelineItemsRepository) CreateQuoteRepost(userID, postID, text string) (entity.TimelineItem, error) {
-	return entity.TimelineItem{}, nil
+	query := `INSERT INTO timelineitems (type, author_id, parent_post_id ,text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
+
+	var (
+		id        string
+		createdAt time.Time
+	)
+
+	postType := entity.PostTypeQuoteRepost
+
+	err := r.db.QueryRow(query, postType, userID, postID, text).Scan(&id, &createdAt)
+	if err != nil {
+		if isForeignKeyError(err) {
+			return entity.TimelineItem{}, repository.ErrForeignViolation
+		}
+		return entity.TimelineItem{}, err
+	}
+
+	quoteRepost := entity.TimelineItem{
+		Type:         postType,
+		ID:           id,
+		AuthorID:     userID,
+		ParentPostID: value.NullUUID{UUID: postID, Valid: true},
+		Text:         text,
+		CreatedAt:    createdAt,
+	}
+
+	return quoteRepost, nil
+}
+
+func (r *timelineItemsRepository) TimelineItemByID(postID string) (*entity.TimelineItem, error) {
+	query := `SELECT type, author_id, parent_post_id ,text, created_at FROM timelineitems WHERE id = $1`
+
+	var (
+		postType     string
+		authorID     string
+		parentPostID sql.NullString
+		text         string
+		createdAt    time.Time
+	)
+
+	err := r.db.QueryRow(query, postID).Scan(&postType, &authorID, &parentPostID, &text, &createdAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, repository.ErrRecordNotFound
+		}
+		return nil, err
+	}
+
+	item := &entity.TimelineItem{
+		Type:         postType,
+		AuthorID:     authorID,
+		ParentPostID: value.NullUUID{UUID: parentPostID.String, Valid: parentPostID.Valid},
+		Text:         text,
+		CreatedAt:    createdAt,
+	}
+
+	return item, nil
 }
 
 // These methods are only used in the fake implementation for testing and are unused here.

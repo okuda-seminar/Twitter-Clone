@@ -12,6 +12,7 @@ type TimelineItemsRepository interface {
 	CreateRepost(userID, postID string) (entity.TimelineItem, error)
 	DeleteRepost(postID string) error
 	CreateQuoteRepost(userID, postID, text string) (entity.TimelineItem, error)
+	TimelineItemByID(postID string) (*entity.TimelineItem, error)
 
 	// These methods are used to set or clear simulated operation-specific errors in tests.
 	SetError(key string, err error)

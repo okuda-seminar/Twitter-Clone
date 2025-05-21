@@ -13,9 +13,9 @@ const (
 
 // Defines values for GetUserPostsTimelineResponseType.
 const (
-	Post        GetUserPostsTimelineResponseType = "post"
-	QuoteRepost GetUserPostsTimelineResponseType = "quoteRepost"
-	Repost      GetUserPostsTimelineResponseType = "repost"
+	GetUserPostsTimelineResponseTypePost        GetUserPostsTimelineResponseType = "post"
+	GetUserPostsTimelineResponseTypeQuoteRepost GetUserPostsTimelineResponseType = "quoteRepost"
+	GetUserPostsTimelineResponseTypeRepost      GetUserPostsTimelineResponseType = "repost"
 )
 
 // CreateFollowshipRequest defines model for create_followship_request.
@@ -50,15 +50,7 @@ type CreateQuoteRepostRequest struct {
 
 // CreateQuoteRepostResponse Response when creating a quote repost.
 type CreateQuoteRepostResponse struct {
-	AuthorId     string    `json:"authorId"`
-	CreatedAt    time.Time `json:"createdAt"`
-	Id           string    `json:"id"`
-	ParentPostId struct {
-		UUID  string `json:"UUID"`
-		Valid bool   `json:"Valid"`
-	} `json:"parentPostId"`
-	Text string `json:"text"`
-	Type string `json:"type"`
+	QuoteRepost QuoteRepost `json:"quoteRepost"`
 }
 
 // CreateRepostRequest defines model for create_repost_request.
@@ -156,6 +148,19 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Token string `json:"token"`
 	User  User   `json:"user"`
+}
+
+// QuoteRepost defines model for quote_repost.
+type QuoteRepost struct {
+	AuthorId     string    `json:"authorId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Id           string    `json:"id"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
+	Text string `json:"text"`
+	Type string `json:"type"`
 }
 
 // User defines model for user.

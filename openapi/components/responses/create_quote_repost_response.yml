@@ -2,29 +2,7 @@ type: object
 title: CreateQuoteRepostResponse
 description: Response when creating a quote repost.
 required:
-  - type
-  - id
-  - authorId
-  - parentPostId
-  - text
-  - createdAt
+  - quoteRepost
 properties:
-  type:
-    type: string
-  id:
-    type: string
-  authorId:
-    type: string
-  parentPostId:
-    type: object
-    required: [UUID, Valid]
-    properties:
-      UUID:
-        type: string
-      Valid:
-        type: boolean
-  text:
-    type: string
-  createdAt:
-    type: string
-    format: date-time
+  quoteRepost:
+    $ref: ../schemas/quote_repost.yml
