@@ -19,6 +19,7 @@ type Server struct {
 	handler.LoginHandler
 	handler.VerifySessionHandler
 	handler.FindUserByIDHandler
+	handler.DeleteUserByIDHandler
 	handler.CreatePostHandler
 	handler.DeletePostHandler
 	handler.CreateRepostHandler
@@ -43,6 +44,7 @@ func NewServer(db *sql.DB) Server {
 	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
+	deleteUserByIDUsecase := usecaseInjector.InjectDeleteUserByIDUsecase(usersRepository)
 	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
 	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
 	likePostUsecase := usecaseInjector.InjectLikePostUsecase(usersRepository)
@@ -58,6 +60,7 @@ func NewServer(db *sql.DB) Server {
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(userByUserIDUsecase),
+		DeleteUserByIDHandler:                      handler.NewDeleteUserByIDHandler(deleteUserByIDUsecase),
 		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
 		DeletePostHandler:                          handler.NewDeletePostHandler(db, updateNotificationUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(createRepostUsecase, updateNotificationUsecase),

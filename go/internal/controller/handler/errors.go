@@ -19,6 +19,7 @@ var (
 	ErrTimelineItemNotFound = errors.New("Timeline item not found.")
 	ErrRepostViolation      = errors.New("Could not repost a repost.")
 	ErrCreateRepost         = errors.New("Could not create a repost.")
+	ErrDeleteUserFailed     = errors.New("Could not delete a user.")
 )
 
 func NewInvalidUserIDError(id string) error {

@@ -76,7 +76,7 @@ func (r *usersRepository) CreateUser(tx *sql.Tx, username, displayName, password
 	return user, nil
 }
 
-func (r *usersRepository) DeleteUser(tx *sql.Tx, userID string) error {
+func (r *usersRepository) DeleteUserByID(tx *sql.Tx, userID string) error {
 	query := `DELETE FROM users WHERE id = $1`
 	var res sql.Result
 	var err error
