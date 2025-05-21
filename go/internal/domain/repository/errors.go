@@ -12,6 +12,7 @@ const (
 	ErrKeyCreateRepost         = "CreateRepost"
 	ErrKeyDeleteRepost         = "DeleteRepost"
 	ErrKeyCreateQuoteRepost    = "CreateQuoteRepost"
+	ErrKeyRetrieveTimelineItem = "RetrieveTimelineItem"
 )
 
 var (
