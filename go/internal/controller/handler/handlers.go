@@ -4,32 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log/slog"
 	"net/http"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
 )
-
-// DeleteUser deletes a user with the specified user ID.
-// If a target user does not exist, it returns 404.
-func DeleteUserByID(w http.ResponseWriter, r *http.Request, u usecase.DeleteUserUsecase) {
-	userID := r.PathValue("userID")
-
-	slog.Info(fmt.Sprintf("DELETE /api/users was called with %s.", userID))
-
-	err := u.DeleteUser(userID)
-	if err != nil {
-		switch {
-		case errors.Is(err, usecase.ErrUserNotFound):
-			http.Error(w, fmt.Sprintf("No row found to delete (ID: %s)\n", userID), http.StatusNotFound)
-		default:
-			http.Error(w, fmt.Sprintf("Could not delete a user (ID: %s)\n", userID), http.StatusInternalServerError)
-		}
-		return
-	}
-
-	w.WriteHeader(http.StatusNoContent)
-}
 
 func CreateMuting(w http.ResponseWriter, r *http.Request, u usecase.MuteUserUsecase) {
 	var body createMutingRequestBody
