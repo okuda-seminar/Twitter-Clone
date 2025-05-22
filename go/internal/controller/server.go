@@ -36,6 +36,7 @@ func NewServer(db *sql.DB) Server {
 	authService := service.NewAuthService(secretKey)
 
 	createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
+	createQuoteReposeUsecase := interactor.NewCreateQuoteRepostUsecase(timelineItemsRepository)
 	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
 	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
 	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
@@ -47,7 +48,7 @@ func NewServer(db *sql.DB) Server {
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(db),
 		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(db, updateNotificationUsecase),
-		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(db, updateNotificationUsecase),
+		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(createQuoteReposeUsecase, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(db),
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(db, updateNotificationUsecase, make(chan struct{}, 1)),

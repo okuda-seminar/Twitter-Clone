@@ -6,13 +6,16 @@ import (
 )
 
 var (
-	ErrDecodeRequestBody  = errors.New("Request body was invalid.")
-	ErrEncodeResponse     = errors.New("Could not encode response.")
-	ErrTooLongText        = errors.New("Text is too long.")
-	ErrUserNotFound       = errors.New("User not found.")
-	ErrCreatePost         = errors.New("Could not create a post.")
-	ErrInvalidRequestBody = errors.New("Request body was invalid.")
-	ErrCreateFollowship   = errors.New("Could not create followship.")
+	ErrDecodeRequestBody    = errors.New("Request body was invalid.")
+	ErrEncodeResponse       = errors.New("Could not encode response.")
+	ErrTooLongText          = errors.New("Text is too long.")
+	ErrUserNotFound         = errors.New("User not found.")
+	ErrCreatePost           = errors.New("Could not create a post.")
+	ErrCreateQuoteRepost    = errors.New("Could not create a quote repost.")
+	ErrInvalidRequestBody   = errors.New("Request body was invalid.")
+	ErrCreateFollowship     = errors.New("Could not create followship.")
+	ErrTimelineItemNotFound = errors.New("Timeline item not found.")
+	ErrRepostViolation      = errors.New("Could not repost a repost.")
 )
 
 func NewInvalidUserIDError(id string) error {
