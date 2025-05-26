@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 
 	"x-clone-backend/internal/application/service"
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
@@ -21,7 +21,7 @@ func TestVerifySessionHandler(t *testing.T) {
 	t.Run("Valid Token", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		// Fixture
@@ -29,7 +29,7 @@ func TestVerifySessionHandler(t *testing.T) {
 		password := "securepassword"
 
 		hashedPassword, _ := authService.HashPassword(password)
-		createUserUsecase := interactor.NewCreateUserUsecase(usersRepository)
+		createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 		user, _ := createUserUsecase.CreateUser(username, "Test User", hashedPassword)
 
 		token, _ := authService.GenerateJWT(user.ID, username)
@@ -58,7 +58,7 @@ func TestVerifySessionHandler(t *testing.T) {
 	t.Run("Token With Non-Existent User", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		token, _ := authService.GenerateJWT(uuid.NewString(), "nonexistentuser")
@@ -78,7 +78,7 @@ func TestVerifySessionHandler(t *testing.T) {
 	t.Run("Expired Token", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		token, _ := createExpiredToken(uuid.NewString(), "testuser")

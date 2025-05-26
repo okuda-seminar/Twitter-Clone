@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"x-clone-backend/internal/application/usecase"
+	usecase "x-clone-backend/internal/application/usecase/api"
 	"x-clone-backend/internal/controller/transfer"
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"

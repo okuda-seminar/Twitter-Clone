@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"x-clone-backend/internal/application/service"
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
@@ -53,12 +53,12 @@ func TestLoginHandler(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			usersRepository := infraInjector.InjectUsersRepository(nil)
 			authService := service.NewAuthService("test_secret_key")
-			loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
+			loginUsecase := usecaseInjector.InjectLoginUsecase(usersRepository, authService)
 			loginHandler := NewLoginHandler(loginUsecase)
 
 			// Fixture
 			hashedPassword, _ := authService.HashPassword(password)
-			createUserUsecase := interactor.NewCreateUserUsecase(usersRepository)
+			createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 			createUserUsecase.CreateUser(username, "Test User", hashedPassword)
 
 			reqBody, _ := json.Marshal(tt.requestBody)

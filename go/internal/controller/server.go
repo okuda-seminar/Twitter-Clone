@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"x-clone-backend/internal/application/service"
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/controller/handler"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
@@ -35,14 +35,14 @@ func NewServer(db *sql.DB) Server {
 	secretKey := os.Getenv("SECRET_KEY")
 	authService := service.NewAuthService(secretKey)
 
-	createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
-	createUserUsecase := interactor.NewCreateUserUsecase(usersRepository)
-	followUserUsecase := interactor.NewFollowUserUsecase(usersRepository)
-	loginUsecase := interactor.NewLoginUsecase(usersRepository, authService)
-	specificUserPostsUsecase := interactor.NewSpecificUserPostsUsecase(timelineItemsRepository)
-	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
-	userAndFolloweePostsUsecase := interactor.NewUserAndFolloweePostsUsecase(timelineItemsRepository)
-	userByUserIDUsecase := interactor.NewUserByUserIDUsecase(usersRepository)
+	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
+	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
+	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
+	loginUsecase := usecaseInjector.InjectLoginUsecase(usersRepository, authService)
+	specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timelineItemsRepository)
+	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
+	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
+	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
