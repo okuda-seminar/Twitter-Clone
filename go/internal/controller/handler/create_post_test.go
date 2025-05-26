@@ -11,7 +11,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/domain/repository"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
@@ -51,8 +51,8 @@ func TestCreatePost(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
-			createPostUsecase := interactor.NewCreatePostUsecase(timelineItemsRepository)
-			updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+			createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
+			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, createPostUsecase)
 
 			if tt.err != nil {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/domain/repository"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
@@ -52,7 +52,7 @@ func TestCreateFollowship(t *testing.T) {
 			if tt.setupRepo != nil {
 				tt.setupRepo(usersRepository)
 			}
-			followUserUsecase := interactor.NewFollowUserUsecase(usersRepository)
+			followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
 			h := NewCreateFollowshipHandler(followUserUsecase)
 
 			requestBody, err := json.Marshal(tt.body)

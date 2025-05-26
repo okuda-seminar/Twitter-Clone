@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"x-clone-backend/internal/application/usecase"
+	usecase "x-clone-backend/internal/application/usecase/api"
 	"x-clone-backend/internal/domain/entity"
 )
 

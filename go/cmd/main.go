@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"x-clone-backend/internal/application/usecase/interactor"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/config"
 	"x-clone-backend/internal/controller"
 	"x-clone-backend/internal/controller/handler"
@@ -28,15 +28,15 @@ func main() {
 	mux := http.NewServeMux()
 
 	usersRepository := infraInjector.InjectUsersRepository(db)
-	deleteUserUsecase := interactor.NewDeleteUserUsecase(usersRepository)
-	likePostUsecase := interactor.NewLikePostUsecase(usersRepository)
-	unlikePostUsecase := interactor.NewUnlikePostUsecase(usersRepository)
-	unfollowUserUsecase := interactor.NewUnfollowUserUsecase(usersRepository)
-	muteUserUsecase := interactor.NewMuteUserUsecase(usersRepository)
-	unmuteUserUsecase := interactor.NewUnmuteUserUsecase(usersRepository)
-	blockUserUsecase := interactor.NewBlockUserUsecase(usersRepository)
-	unblockUserUsecase := interactor.NewUnblockUserUsecase(usersRepository)
-	updateNotificationUsecase := interactor.NewUpdateNotificationUsecase(usersRepository)
+	deleteUserUsecase := usecaseInjector.InjectDeleteUserUsecase(usersRepository)
+	likePostUsecase := usecaseInjector.InjectLikePostUsecase(usersRepository)
+	unlikePostUsecase := usecaseInjector.InjectUnlikePostUsecase(usersRepository)
+	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
+	muteUserUsecase := usecaseInjector.InjectMuteUserUsecase(usersRepository)
+	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
+	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
+	unblockUserUsecase := usecaseInjector.InjectUnblockUserUsecase(usersRepository)
+	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 
 	server := controller.NewServer(db)
 
