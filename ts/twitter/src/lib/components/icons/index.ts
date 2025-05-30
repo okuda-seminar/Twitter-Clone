@@ -20,4 +20,5 @@ export * from "./search-icon";
 export * from "./settings-icon";
 export * from "./space-icon";
 export * from "./sun-icon";
+export * from "./three-dots-icon";
 export * from "./x-icon";
