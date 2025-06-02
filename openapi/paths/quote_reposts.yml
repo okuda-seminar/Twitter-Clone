@@ -13,14 +13,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../openapi.yml#/components/schemas/CreateQuoteRepostRequest
+          $ref: ../components/requestBodies/create_quote_repost_request.yml
   responses:
     "201":
       description: A quote repost object.
       content:
         application/json:
           schema:
-            $ref: ../openapi.yml#/components/schemas/CreateQuoteRepostResponse
+            $ref: ../components/responses/create_quote_repost_response.yml
     "400":
       description: The request body is invalid.
     "500":

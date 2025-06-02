@@ -9,9 +9,9 @@ import (
 	"x-clone-backend/internal/domain/repository"
 )
 
-func InjectUpdateNotificationUsecase(usersRepository repository.UsersRepository) usecase.UpdateNotificationUsecase {
+func InjectCreateRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreateRepostUsecase {
 	if testing.Testing() {
-		return fake.NewFakeUpdateNotificationUsecase()
+		return fake.NewFakeCreateRepostUsecase()
 	}
-	return implementation.NewUpdateNotificationUsecase(usersRepository)
+	return implementation.NewCreateRepostUsecase(timelineItemsRepository)
 }

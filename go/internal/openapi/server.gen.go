@@ -36,9 +36,6 @@ type ServerInterface interface {
 	// Creates a new quote repost.
 	// (POST /users/{id}/quote_reposts)
 	CreateQuoteRepost(w http.ResponseWriter, r *http.Request, id string)
-	// Creates a new repost.
-	// (POST /users/{id}/reposts)
-	CreateRepost(w http.ResponseWriter, r *http.Request, id string)
 	// Get a collection of posts by the specified user and users they follow.
 	// (GET /users/{id}/timelines/reverse_chronological)
 	GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, id string)
@@ -48,6 +45,9 @@ type ServerInterface interface {
 	// Find user by ID.
 	// (GET /users/{userID})
 	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
+	// Creates a new repost.
+	// (POST /users/{userId}/reposts)
+	CreateRepost(w http.ResponseWriter, r *http.Request, userId string)
 	// Deletes a repost.
 	// (DELETE /users/{user_id}/reposts/{post_id})
 	DeleteRepost(w http.ResponseWriter, r *http.Request, userId string, postId string)
@@ -210,31 +210,6 @@ func (siw *ServerInterfaceWrapper) CreateQuoteRepost(w http.ResponseWriter, r *h
 	handler.ServeHTTP(w, r)
 }
 
-// CreateRepost operation middleware
-func (siw *ServerInterfaceWrapper) CreateRepost(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "id", r.PathValue("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "id", Err: err})
-		return
-	}
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreateRepost(w, r, id)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
 // GetReverseChronologicalHomeTimeline operation middleware
 func (siw *ServerInterfaceWrapper) GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request) {
 
@@ -310,6 +285,31 @@ func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.FindUserByID(w, r, userID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateRepost operation middleware
+func (siw *ServerInterfaceWrapper) CreateRepost(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateRepost(w, r, userId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -480,10 +480,10 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/posts", wrapper.GetUserPostsTimeline)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/posts", wrapper.CreatePost)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
-	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserID}/following/{targetUserID}", wrapper.DeleteFollowship)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userID}", wrapper.FindUserByID)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 
 	return m

@@ -1,70 +1,66 @@
 package handler
 
-// func (s *handlerTestSuite) TestCreateRepost() {
-// 	userID := s.newTestUser(`{ "username": "test", "display_name": "test", "password": "securepassword" }`)
-// 	postID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test" }`, userID))
-// 	repostID := s.newTestQuoteRepost(userID, postID)
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 		createRepostHandler := NewCreateRepostHandler(s.db, &s.mu, &s.userChannels)
-// 		createRepostHandler.CreateRepost(rr, req, test.userID)
+	"github.com/google/uuid"
 
-// 	tests := []struct {
-// 		name         string
-// 		userID       string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "create repost from a post",
-// 			userID:       userID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "create repost from a quote repost",
-// 			userID:       userID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, repostID),
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "invalid JSON body",
-// 			userID:       userID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s }`, postID),
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "invalid body",
-// 			userID:       userID,
-// 			body:         "{}",
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "non-existent user id",
-// 			userID:       uuid.New().String(),
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "non-existent post id",
-// 			userID:       userID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, uuid.New()),
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 	}
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/openapi"
+)
 
-// 	for _, test := range tests {
-// 		req := httptest.NewRequest(
-// 			"POST",
-// 			fmt.Sprintf("/api/users/%s/reposts", test.userID),
-// 			strings.NewReader(test.body),
-// 		)
-// 		rr := httptest.NewRecorder()
+func TestCreateRepost(t *testing.T) {
+	tests := map[string]struct {
+		userID       string
+		requestBody  openapi.CreateRepostRequest
+		setup        func(createRepostUsecase usecase.CreateRepostUsecase)
+		expectedCode int
+	}{
+		"returns 201 when repost is created successfully": {
+			userID:       uuid.NewString(),
+			requestBody:  openapi.CreateRepostRequest{PostId: uuid.NewString()},
+			expectedCode: http.StatusCreated,
+		},
+		"returns 500 when failed to create a repost": {
+			userID:      uuid.NewString(),
+			requestBody: openapi.CreateRepostRequest{PostId: uuid.NewString()},
+			setup: func(createRepostUsecase usecase.CreateRepostUsecase) {
+				createRepostUsecase.SetError(errors.New("failed to create a repost"))
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
 
-// 		createRepostHandler := NewCreateRepostHandler(s.db, &s.mu, &s.userChannels)
-// 		createRepostHandler.CreateRepost(rr, req, test.userID)
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(nil)
+			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(nil)
+			createRepostHandler := NewCreateRepostHandler(createRepostUsecase, updateNotificationUsecase)
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf("%s: wrong code returned; expected %d, but got %d", test.name, test.expectedCode, rr.Code)
-// 		}
-// 	}
-// }
+			if tt.setup != nil {
+				tt.setup(createRepostUsecase)
+			}
+
+			reqBody, _ := json.Marshal(tt.requestBody)
+			req := httptest.NewRequest(
+				"POST",
+				fmt.Sprintf("/api/users/%s/reposts", tt.userID),
+				bytes.NewBuffer(reqBody),
+			)
+			rr := httptest.NewRecorder()
+
+			createRepostHandler.CreateRepost(rr, req, tt.userID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
