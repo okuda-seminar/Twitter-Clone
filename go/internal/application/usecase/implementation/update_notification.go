@@ -60,3 +60,6 @@ func (u *updateNotificationUsecase) DeleteChannel(userID string) error {
 	u.mu.Unlock()
 	return nil
 }
+
+func (u *updateNotificationUsecase) SetError(err error) {}
+func (u *updateNotificationUsecase) ClearError()        {}

@@ -7,7 +7,7 @@ servers:
 paths:
   /users:
     $ref: ./paths/users.yml
-  /users/{id}/reposts:
+  /users/{userId}/reposts:
     $ref: ./paths/reposts.yml
   /users/{user_id}/reposts/{post_id}:
     $ref: ./paths/delete_reposts.yml
@@ -43,20 +43,8 @@ components:
       $ref: ./components/requestBodies/create_post_request.yml
     CreatePostResponse:
       $ref: ./components/responses/create_post_response.yml
-    CreateRepostRequest:
-      $ref: ./components/requestBodies/create_repost_request.yml
-    CreateRepostResponse:
-      $ref: ./components/responses/create_repost_response.yml
-    CreateQuoteRepostRequest:
-      $ref: ./components/requestBodies/create_quote_repost_request.yml
-    CreateQuoteRepostResponse:
-      $ref: ./components/responses/create_quote_repost_response.yml
     DeleteRepostRequest:
       $ref: ./components/requestBodies/delete_repost_request.yml
-    CreateFollowshipRequest:
-      $ref: ./components/requestBodies/create_followship_request.yml
-    CreateFollowshipResponse:
-      $ref: ./components/responses/create_followship_response.yml
     DeleteFollowshipResponse:
       $ref: ./components/responses/delete_followship_response.yml
     GetReverseChronologicalHomeTimelineResponse:

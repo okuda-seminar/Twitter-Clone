@@ -58,17 +58,8 @@ type CreateRepostRequest struct {
 	PostId string `json:"post_id"`
 }
 
-// CreateRepostResponse Response when creating a repost.
-type CreateRepostResponse struct {
-	AuthorId     string    `json:"authorId"`
-	CreatedAt    time.Time `json:"createdAt"`
-	Id           string    `json:"id"`
-	ParentPostId struct {
-		UUID  string `json:"UUID"`
-		Valid bool   `json:"Valid"`
-	} `json:"parentPostId"`
-	Type string `json:"type"`
-}
+// CreateRepostResponse defines model for create_repost_response.
+type CreateRepostResponse = Repost
 
 // CreateUserRequest defines model for create_user_request.
 type CreateUserRequest struct {
@@ -160,6 +151,18 @@ type QuoteRepost struct {
 		Valid bool   `json:"Valid"`
 	} `json:"parentPostId"`
 	Text string `json:"text"`
+	Type string `json:"type"`
+}
+
+// Repost defines model for repost.
+type Repost struct {
+	AuthorId     string    `json:"authorId"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Id           string    `json:"id"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
 	Type string `json:"type"`
 }
 

@@ -1,0 +1,26 @@
+type: object
+title: Repost
+required:
+  - type
+  - id
+  - authorId
+  - parentPostId
+  - createdAt
+properties:
+  type:
+    type: string
+  id:
+    type: string
+  authorId:
+    type: string
+  parentPostId:
+    type: object
+    required: [UUID, Valid]
+    properties:
+      UUID:
+        type: string
+      Valid:
+        type: boolean
+  createdAt:
+    type: string
+    format: date-time

@@ -18,6 +18,7 @@ var (
 	ErrCreateFollowship     = errors.New("Could not create followship.")
 	ErrTimelineItemNotFound = errors.New("Timeline item not found.")
 	ErrRepostViolation      = errors.New("Could not repost a repost.")
+	ErrCreateRepost         = errors.New("Could not create a repost.")
 )
 
 func NewInvalidUserIDError(id string) error {

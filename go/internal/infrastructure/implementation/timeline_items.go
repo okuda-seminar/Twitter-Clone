@@ -136,10 +136,35 @@ func (r *timelineItemsRepository) DeletePost(postID string) error {
 	return nil
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/680
-// - Refactor CreateRepost
 func (r *timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
-	return entity.TimelineItem{}, nil
+	query := `INSERT INTO timelineitems (type, author_id, parent_post_id, text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
+
+	var (
+		id        string
+		createdAt time.Time
+	)
+
+	postType := entity.PostTypeRepost
+	text := ""
+
+	err := r.db.QueryRow(query, postType, userID, postID, text).Scan(&id, &createdAt)
+	if err != nil {
+		if isForeignKeyError(err) {
+			return entity.TimelineItem{}, repository.ErrForeignViolation
+		}
+		return entity.TimelineItem{}, err
+	}
+
+	repost := entity.TimelineItem{
+		Type:         postType,
+		ID:           id,
+		AuthorID:     userID,
+		ParentPostID: value.NullUUID{UUID: postID, Valid: true},
+		Text:         text,
+		CreatedAt:    createdAt,
+	}
+
+	return repost, nil
 }
 
 // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/681

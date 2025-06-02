@@ -4,7 +4,7 @@ post:
   summary: Creates a new repost.
   parameters:
     - in: path
-      name: id
+      name: userId
       schema:
         type: string
       required: true
@@ -13,14 +13,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../openapi.yml#/components/schemas/CreateRepostRequest
+          $ref: ../components/requestBodies/create_repost_request.yml
   responses:
     "201":
       description: A repost object.
       content:
         application/json:
           schema:
-            $ref: ../openapi.yml#/components/schemas/CreateRepostResponse
+            $ref: ../components/responses/create_repost_response.yml
     "400":
       description: The request body is invalid.
     "500":
