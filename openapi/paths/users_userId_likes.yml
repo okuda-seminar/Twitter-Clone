@@ -1,0 +1,23 @@
+post:
+  tags:
+    - X-Clone
+  summary: Like the specified post.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: LikePost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/requestBodies/like_post_request.yml
+  responses:
+    "204":
+      description: The post was liked.
+    "400":
+      description: The request body is invalid.
+    "500":
+      description: Unexpected error occurred.

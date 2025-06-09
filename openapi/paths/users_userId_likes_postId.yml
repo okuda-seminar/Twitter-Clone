@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Unlike the specified post.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: postId
+      schema:
+        type: string
+      required: true
+  operationId: UnlikePost
+  responses:
+    "204":
+      description: The post was unliked.
+    "404":
+      description: The specified post is not liked.
+    "500":
+      description: Unexpected error occurred.
