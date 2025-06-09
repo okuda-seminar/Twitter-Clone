@@ -1,0 +1,7 @@
+type: object
+title: LikePostRequest
+required:
+  - post_id
+properties:
+  post_id:
+    type: string

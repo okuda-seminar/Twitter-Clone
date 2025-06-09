@@ -20,6 +20,7 @@ type Server struct {
 	handler.VerifySessionHandler
 	handler.FindUserByIDHandler
 	handler.CreatePostHandler
+	handler.DeletePostHandler
 	handler.CreateRepostHandler
 	handler.CreateQuoteRepostHandler
 	handler.DeleteRepostHandler
@@ -27,6 +28,8 @@ type Server struct {
 	handler.GetReverseChronologicalHomeTimelineHandler
 	handler.CreateFollowshipHandler
 	handler.DeleteFollowshipHandler
+	handler.LikePostHandler
+	handler.UnlikePostHandler
 }
 
 func NewServer(db *sql.DB) Server {
@@ -42,8 +45,10 @@ func NewServer(db *sql.DB) Server {
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
 	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
+	likePostUsecase := usecaseInjector.InjectLikePostUsecase(usersRepository)
 	loginUsecase := usecaseInjector.InjectLoginUsecase(usersRepository, authService)
 	specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timelineItemsRepository)
+	unlikePostUsecase := usecaseInjector.InjectUnlikePostUsecase(usersRepository)
 	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
@@ -54,6 +59,7 @@ func NewServer(db *sql.DB) Server {
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(userByUserIDUsecase),
 		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
+		DeletePostHandler:                          handler.NewDeletePostHandler(db, updateNotificationUsecase),
 		CreateRepostHandler:                        handler.NewCreateRepostHandler(createRepostUsecase, updateNotificationUsecase),
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(db, updateNotificationUsecase),
@@ -61,5 +67,7 @@ func NewServer(db *sql.DB) Server {
 		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, make(chan struct{}, 1)),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(followUserUsecase),
 		DeleteFollowshipHandler:                    handler.NewDeleteFollowshipHandler(unfollowUserUsecase),
+		LikePostHandler:                            handler.NewLikePostHandler(likePostUsecase),
+		UnlikePostHandler:                          handler.NewUnlikePostHandler(unlikePostUsecase),
 	}
 }

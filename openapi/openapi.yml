@@ -19,6 +19,12 @@ paths:
     $ref: ./paths/user_posts.yml
   /users/{userID}:
     $ref: ./paths/find_user_by_id.yml
+  /users/{userId}/likes:
+    $ref: ./paths/users_userId_likes.yml
+  /users/{userId}/likes/{postId}:
+    $ref: ./paths/users_userId_likes_postId.yml
+  /posts/{postId}:
+    $ref: ./paths/posts_postId.yml
   /login:
     $ref: ./paths/login.yml
   /session/verify:

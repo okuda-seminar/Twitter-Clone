@@ -129,6 +129,11 @@ type GetUserPostsTimelineResponse = []struct {
 // GetUserPostsTimelineResponseType defines model for GetUserPostsTimelineResponse.Type.
 type GetUserPostsTimelineResponseType string
 
+// LikePostRequest defines model for like_post_request.
+type LikePostRequest struct {
+	PostId string `json:"post_id"`
+}
+
 // LoginRequest defines model for login_request.
 type LoginRequest struct {
 	Password string `json:"password"`
@@ -196,6 +201,9 @@ type CreatePostJSONRequestBody = CreatePostRequest
 
 // CreateQuoteRepostJSONRequestBody defines body for CreateQuoteRepost for application/json ContentType.
 type CreateQuoteRepostJSONRequestBody = CreateQuoteRepostRequest
+
+// LikePostJSONRequestBody defines body for LikePost for application/json ContentType.
+type LikePostJSONRequestBody = LikePostRequest
 
 // CreateRepostJSONRequestBody defines body for CreateRepost for application/json ContentType.
 type CreateRepostJSONRequestBody = CreateRepostRequest

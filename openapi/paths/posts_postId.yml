@@ -1,0 +1,18 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Delete specified post by ID.
+  parameters:
+    - in: path
+      name: postId
+      schema:
+        type: string
+      required: true
+  operationId: DeletePost
+  responses:
+    "204":
+      description: The post was deleted.
+    "404":
+      description: The specified post does not exist.
+    "500":
+      description: Unexpected error occurred.

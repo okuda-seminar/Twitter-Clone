@@ -1,11 +1,5 @@
 package handler
 
-// likePostRequestBody is the type of the "LikePost"
-// endpoint request body.
-type likePostRequestBody struct {
-	PostID string `json:"post_id,omitempty"`
-}
-
 // createMutingRequestBody is the type of the "CreateMute"
 // endpoint request body.
 type createMutingRequestBody struct {
