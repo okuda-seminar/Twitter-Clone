@@ -57,9 +57,9 @@ export const SideBar: React.FC = () => {
       icon: <GrokIcon />,
     },
     {
-      url: "/community",
-      tooltipContent: "Community",
-      ariaLabel: "Community",
+      url: "/communities",
+      tooltipContent: "Communities",
+      ariaLabel: "Communities",
       icon: <CommunityIcon />,
     },
     {
