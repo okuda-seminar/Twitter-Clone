@@ -3,6 +3,7 @@ export * from "./apple-icon";
 export * from "./back-icon";
 export * from "./calendar-icon";
 export * from "./community-icon";
+export * from "./create-community-icon";
 export * from "./eye-icon";
 export * from "./eye-slash-icon";
 export * from "./feather-icon";
