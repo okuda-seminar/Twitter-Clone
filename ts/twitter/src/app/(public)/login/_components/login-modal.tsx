@@ -34,9 +34,10 @@ export const LoginModal: React.FC = () => {
   return (
     <Flex align="center" justify="center" minH="100vh">
       <Box
-        width="400px"
+        width="600px"
+        height="650px"
         bg={useColorModeValue("white", "black")}
-        borderRadius="md"
+        borderRadius="2xl"
         p={6}
         color={useColorModeValue("black", "white")}
         border="1px solid gray"

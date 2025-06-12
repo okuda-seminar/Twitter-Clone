@@ -1,9 +1,11 @@
 "use client";
 
 import type { LoginBody } from "@/lib/actions/login";
-import { BackIcon } from "@/lib/components/icons";
+import { BackIcon, XIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
-import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, IconButton, Input, Text, VStack } from "@chakra-ui/react";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { useActionState } from "react";
 import { usePasswordModal } from "./use-password-modal";
 
@@ -22,99 +24,135 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
   const [message, formAction] = useActionState(handleLoginAction, undefined);
 
   return (
-    <form action={formAction}>
-      <VStack gap={4}>
-        <Box width="100%" position="relative" mb={4}>
+    <Box position="relative" height="100%" minHeight="500px">
+      <form action={formAction}>
+        <Box width="100%" position="relative" mb={2}>
           <Button
             variant="ghost"
-            size="sm"
+            size="md"
             onClick={handleBackButtonClick}
             position="absolute"
-            left={0}
-            top={0}
-            _hover={{ color: "white" }}
+            left={-4}
+            top={-6}
+            _hover={{ color: useColorModeValue("black", "white") }}
             aria-label="Back to account"
           >
             <BackIcon /> Back
           </Button>
         </Box>
+        <VStack align="center" height="100%">
+          <VStack gap={8} align="stretch" width="80%">
+            <IconButton
+              aria-label="X"
+              width="36px"
+              alignSelf="center"
+              color={useColorModeValue("black", "white")}
+              bg={useColorModeValue("white", "black")}
+              mt={-6}
+            >
+              <XIcon boxSize={8} />
+            </IconButton>
 
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-          Enter your password
-        </Text>
+            <Text fontSize="3xl" fontWeight="bold" textAlign="left">
+              Enter your password
+            </Text>
 
-        {message !== undefined && (
-          <Text
-            fontSize="14px"
-            lineHeight="16px"
-            px="16px"
-            py="12px"
-            bg="error.primary"
-            borderRadius="8px"
-            color="white"
+            {message !== undefined && (
+              <Text
+                fontSize="14px"
+                lineHeight="16px"
+                px="16px"
+                py="12px"
+                bg="error.primary"
+                borderRadius="8px"
+                color="white"
+              >
+                {message}
+              </Text>
+            )}
+
+            {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/760 
+            - Implement floating label behavior for email and password inputs in password modal. */}
+            <Input
+              name="username"
+              value={loginFormValue.username}
+              readOnly
+              bg={useColorModeValue("gray.100", "gray.900")}
+              color={useColorModeValue("black", "gray.500")}
+              pl="2"
+              width="100%"
+              height="50px"
+              _placeholder={{ color: "gray" }}
+              _focus={{ borderColor: "blue.primary" }}
+            />
+
+            <Input
+              name="password"
+              placeholder="Password"
+              type="password"
+              value={loginFormValue.password}
+              onChange={(e) => handlePasswordChange(e.target.value)}
+              bg={useColorModeValue("gray.100", "black")}
+              color={useColorModeValue("black", "white")}
+              borderColor={useColorModeValue("gray.200", "gray")}
+              pl="2"
+              width="100%"
+              height="50px"
+              _placeholder={{ color: "gray" }}
+              _focus={{ borderColor: "blue.primary" }}
+            />
+
+            <Text
+              color={"blue.primary"}
+              fontSize="sm"
+              textAlign="left"
+              width="100%"
+              mt="-30px"
+              cursor="pointer"
+              _hover={{ textDecoration: "underline" }}
+            >
+              Forgot password?
+            </Text>
+          </VStack>
+          <VStack
+            gap={4}
+            align="stretch"
+            width="80%"
+            position="absolute"
+            bottom="20px"
           >
-            {message}
-          </Text>
-        )}
+            <Button
+              type="submit"
+              width="100%"
+              height="50px"
+              bg={useColorModeValue("black", "white")}
+              color={useColorModeValue("white", "black")}
+              borderRadius="full"
+              fontWeight="bold"
+              fontSize="md"
+              disabled={loginFormValue.password.trim() === ""}
+            >
+              Log in
+            </Button>
 
-        <Input
-          name="username"
-          value={loginFormValue.username}
-          readOnly
-          bg={useColorModeValue("gray.100", "gray.900")}
-          color={useColorModeValue("black", "gray.500")}
-          pl="2"
-          _placeholder={{ color: "gray" }}
-          _focus={{ borderColor: "blue.primary" }}
-        />
-
-        <Input
-          name="password"
-          placeholder="Password"
-          type="password"
-          value={loginFormValue.password}
-          onChange={(e) => handlePasswordChange(e.target.value)}
-          bg={useColorModeValue("gray.100", "black")}
-          color={useColorModeValue("black", "white")}
-          borderColor={useColorModeValue("gray.200", "gray")}
-          pl="2"
-          _placeholder={{ color: "gray" }}
-          _focus={{ borderColor: "blue.primary" }}
-        />
-
-        <Text
-          color={"blue.primary"}
-          textAlign="center"
-          cursor="pointer"
-          _hover={{ textDecoration: "underline" }}
-        >
-          Forgot your password?
-        </Text>
-
-        <Button
-          type="submit"
-          width="100%"
-          bg={useColorModeValue("black", "white")}
-          color={useColorModeValue("white", "black")}
-          borderRadius="full"
-          fontWeight="bold"
-          disabled={loginFormValue.password.trim() === ""}
-        >
-          Login
-        </Button>
-
-        <Text textAlign="center" color="gray">
-          Don't have an account?&nbsp;
-          <Text
-            as="span"
-            color="blue.primary"
-            cursor="pointer"
-            _hover={{ textDecoration: "underline" }}
-          >
-            Sign up
-          </Text>
-        </Text>
-      </VStack>
-    </form>
+            <Text textAlign="left" color="gray">
+              Don't have an account?&nbsp;
+              <ChakraLink asChild>
+                <NextLink href="/signup">
+                  <Text
+                    as="span"
+                    color="blue.primary"
+                    cursor="pointer"
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    Sign up
+                  </Text>
+                </NextLink>
+              </ChakraLink>
+            </Text>
+          </VStack>
+        </VStack>
+      </form>
+    </Box>
   );
 };

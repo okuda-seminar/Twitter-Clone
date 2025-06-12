@@ -1,8 +1,10 @@
 "use client";
 
-import { AppleIcon, GoogleIcon } from "@/lib/components/icons";
+import { AppleIcon, GoogleIcon, XIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
-import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, IconButton, Input, Text, VStack } from "@chakra-ui/react";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import NextLink from "next/link";
 import type React from "react";
 
 interface AccountModalProps {
@@ -23,9 +25,18 @@ export const AccountModal: React.FC<AccountModalProps> = ({
 
   return (
     <VStack as="form" gap={4} onSubmit={handleNext}>
-      <VStack gap={4} align="stretch" width="100%">
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-          Login to X
+      <IconButton
+        aria-label="X"
+        width="36px"
+        color={useColorModeValue("black", "white")}
+        bg={useColorModeValue("white", "black")}
+        mt={-4}
+      >
+        <XIcon boxSize={8} />
+      </IconButton>
+      <VStack gap={8} align="stretch" width="55%">
+        <Text fontSize="3xl" fontWeight="bold" textAlign="left">
+          Sign in to X
         </Text>
         <Button
           width="100%"
@@ -48,7 +59,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           <AppleIcon /> Login with Apple
         </Button>
       </VStack>
-      <Box position="relative" width="100%" my={2}>
+      <Box position="relative" width="55%" my={2}>
         <Box borderBottom="2px solid" borderColor="gray" width="100%" />
         <Box
           position="absolute"
@@ -64,7 +75,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         </Box>
       </Box>
 
-      <VStack gap={4} align="stretch" width="100%">
+      <VStack gap={8} align="stretch" width="55%">
         <Input
           placeholder="Phone, email or username"
           value={username}
@@ -89,24 +100,31 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         >
           Next
         </Button>
-        <Text
-          textAlign="center"
-          color="blue.primary"
-          cursor="pointer"
-          _hover={{ textDecoration: "underline" }}
+        <Button
+          type="submit"
+          width="100%"
+          bg={useColorModeValue("white", "black")}
+          color={useColorModeValue("black", "white")}
+          borderRadius="full"
+          fontWeight="bold"
+          boxShadow="0 0 0 1px gray"
         >
-          Forgot your password?
-        </Text>
-        <Text textAlign="center" color="gray">
+          Forgot password?
+        </Button>
+        <Text textAlign="left" color="gray">
           Don't have an account?&nbsp;
-          <Text
-            as="span"
-            color="blue.primary"
-            cursor="pointer"
-            _hover={{ textDecoration: "underline" }}
-          >
-            Sign up
-          </Text>
+          <ChakraLink asChild>
+            <NextLink href="/signup">
+              <Text
+                as="span"
+                color="blue.primary"
+                cursor="pointer"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Sign up
+              </Text>
+            </NextLink>
+          </ChakraLink>
         </Text>
       </VStack>
     </VStack>
