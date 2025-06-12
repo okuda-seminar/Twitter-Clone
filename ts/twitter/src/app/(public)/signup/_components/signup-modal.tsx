@@ -29,6 +29,8 @@ export const SignupModal: React.FC = () => {
   const [message, formAction] = useActionState(handleSignupAction, undefined);
 
   return (
+    // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/759
+    // - Fix Sign Up Modal UI Layout and Styling.
     <Dialog.Root open={true} placement="center">
       <Dialog.Backdrop />
       <Dialog.Content
