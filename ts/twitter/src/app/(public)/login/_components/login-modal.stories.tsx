@@ -18,7 +18,7 @@ export const AccountForm: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    expect(canvas.getByText("Login to X")).toBeInTheDocument();
+    expect(canvas.getByText("Sign in to X")).toBeInTheDocument();
 
     const usernameInput = canvas.getByPlaceholderText(
       "Phone, email or username",
@@ -63,7 +63,7 @@ export const PasswordForm: Story = {
     const passwordInput = canvas.getByPlaceholderText("Password");
     await userEvent.type(passwordInput, "swweeweerd");
 
-    const loginButton = canvas.getByRole("button", { name: "Login" });
+    const loginButton = canvas.getByRole("button", { name: "Log in" });
     expect(loginButton).not.toBeDisabled();
   },
 };
@@ -93,7 +93,7 @@ export const LoginFailed: Story = {
     const passwordInput = canvas.getByPlaceholderText("Password");
     await userEvent.type(passwordInput, "ssdsdwdwee");
 
-    const loginButton = canvas.getByRole("button", { name: "Login" });
+    const loginButton = canvas.getByRole("button", { name: "Log in" });
     await userEvent.click(loginButton);
 
     await expect(
@@ -124,7 +124,7 @@ export const NetworkError: Story = {
     const passwordInput = canvas.getByPlaceholderText("Password");
     await userEvent.type(passwordInput, "ssdsdwdedw");
 
-    const loginButton = canvas.getByRole("button", { name: "Login" });
+    const loginButton = canvas.getByRole("button", { name: "Log in" });
     await userEvent.click(loginButton);
 
     await expect(
@@ -150,6 +150,6 @@ export const BackNavigation: Story = {
     const backButton = canvas.getByRole("button", { name: "Back to account" });
     await userEvent.click(backButton);
 
-    expect(canvas.getByText("Login to X")).toBeInTheDocument();
+    expect(canvas.getByText("Sign in to X")).toBeInTheDocument();
   },
 };
