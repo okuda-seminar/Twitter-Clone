@@ -84,6 +84,11 @@ type DeleteRepostRequest struct {
 	RepostId string `json:"repost_id"`
 }
 
+// DeleteUserByIdResponse defines model for delete_user_by_id_response.
+type DeleteUserByIdResponse struct {
+	Message string `json:"message"`
+}
+
 // FindUserByIdResponse defines model for find_user_by_id_response.
 type FindUserByIdResponse struct {
 	Bio         string    `json:"bio"`

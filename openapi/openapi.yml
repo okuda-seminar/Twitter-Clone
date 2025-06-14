@@ -17,8 +17,8 @@ paths:
     $ref: ./paths/reverse_chronological_timeline_posts.yml
   /users/{id}/posts:
     $ref: ./paths/user_posts.yml
-  /users/{userID}:
-    $ref: ./paths/find_user_by_id.yml
+  /users/{userId}:
+    $ref: ./paths/users_userId.yml
   /users/{userId}/likes:
     $ref: ./paths/users_userId_likes.yml
   /users/{userId}/likes/{postId}:

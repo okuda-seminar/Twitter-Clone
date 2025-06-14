@@ -1,0 +1,7 @@
+type: object
+title: DeleteUserByIDResponse
+required:
+  - message
+properties:
+  message:
+    type: string

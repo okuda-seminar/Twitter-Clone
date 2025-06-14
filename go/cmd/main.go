@@ -28,17 +28,12 @@ func main() {
 	mux := http.NewServeMux()
 
 	usersRepository := infraInjector.InjectUsersRepository(db)
-	deleteUserUsecase := usecaseInjector.InjectDeleteUserUsecase(usersRepository)
 	muteUserUsecase := usecaseInjector.InjectMuteUserUsecase(usersRepository)
 	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
 	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
 	unblockUserUsecase := usecaseInjector.InjectUnblockUserUsecase(usersRepository)
 
 	server := controller.NewServer(db)
-
-	mux.HandleFunc("DELETE /api/users/{userID}", func(w http.ResponseWriter, r *http.Request) {
-		handler.DeleteUserByID(w, r, deleteUserUsecase)
-	})
 
 	mux.HandleFunc("POST /api/users/{id}/muting", func(w http.ResponseWriter, r *http.Request) {
 		handler.CreateMuting(w, r, muteUserUsecase)

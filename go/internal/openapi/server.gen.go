@@ -45,9 +45,12 @@ type ServerInterface interface {
 	// Delete a followship
 	// (DELETE /users/{sourceUserID}/following/{targetUserID})
 	DeleteFollowship(w http.ResponseWriter, r *http.Request, sourceUserID string, targetUserID string)
+	// Delete user by ID.
+	// (DELETE /users/{userId})
+	DeleteUserByID(w http.ResponseWriter, r *http.Request, userId string)
 	// Find user by ID.
-	// (GET /users/{userID})
-	FindUserByID(w http.ResponseWriter, r *http.Request, userID string)
+	// (GET /users/{userId})
+	FindUserByID(w http.ResponseWriter, r *http.Request, userId string)
 	// Like the specified post.
 	// (POST /users/{userId}/likes)
 	LikePost(w http.ResponseWriter, r *http.Request, userId string)
@@ -303,22 +306,47 @@ func (siw *ServerInterfaceWrapper) DeleteFollowship(w http.ResponseWriter, r *ht
 	handler.ServeHTTP(w, r)
 }
 
+// DeleteUserByID operation middleware
+func (siw *ServerInterfaceWrapper) DeleteUserByID(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteUserByID(w, r, userId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // FindUserByID operation middleware
 func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
-	// ------------- Path parameter "userID" -------------
-	var userID string
+	// ------------- Path parameter "userId" -------------
+	var userId string
 
-	err = runtime.BindStyledParameterWithOptions("simple", "userID", r.PathValue("userID"), &userID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userID", Err: err})
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
 		return
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.FindUserByID(w, r, userID)
+		siw.Handler.FindUserByID(w, r, userId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -576,7 +604,8 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserID}/following/{targetUserID}", wrapper.DeleteFollowship)
-	m.HandleFunc("GET "+options.BaseURL+"/users/{userID}", wrapper.FindUserByID)
+	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}", wrapper.DeleteUserByID)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}", wrapper.FindUserByID)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/likes", wrapper.LikePost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}/likes/{postId}", wrapper.UnlikePost)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/reposts", wrapper.CreateRepost)

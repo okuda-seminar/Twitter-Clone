@@ -10,7 +10,7 @@ type UsersRepository interface {
 	WithTransaction(fn func(tx *sql.Tx) error) error
 
 	CreateUser(tx *sql.Tx, username, displayName, password string) (entity.User, error)
-	DeleteUser(tx *sql.Tx, userID string) error
+	DeleteUserByID(tx *sql.Tx, userID string) error
 	UserByUserID(tx *sql.Tx, userID string) (entity.User, error)
 	UserByUsername(tx *sql.Tx, userName string) (entity.User, error)
 	LikePost(tx *sql.Tx, userID, postID string) error

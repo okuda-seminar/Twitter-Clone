@@ -1,0 +1,49 @@
+get:
+  tags:
+    - X-Clone
+  summary: Find user by ID.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: FindUserByID
+  responses:
+    "200":
+      description: A user object.
+      content:
+        application/json:
+          schema:
+            $ref: ../openapi.yml#/components/schemas/FindUserByIDResponse
+    "404":
+      description: The specified user was not find.
+    "500":
+      description: Unexpected error occurred.
+
+delete:
+  tags:
+    - X-Clone
+  summary: Delete user by ID.
+  operationId: DeleteUserByID
+  parameters:
+    - in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+  responses:
+    "204":
+      description: A user was successfully deleted.
+    "404":
+      description: Status Not Found - No row found to delete.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/delete_user_by_id_response.yml
+    "500":
+      description: Internal Server Error - Could not delete a user.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/delete_user_by_id_response.yml

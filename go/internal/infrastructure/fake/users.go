@@ -68,7 +68,7 @@ func (r *fakeUsersRepository) CreateUser(tx *sql.Tx, username, displayName, pass
 	return user, nil
 }
 
-func (r *fakeUsersRepository) DeleteUser(tx *sql.Tx, userID string) error {
+func (r *fakeUsersRepository) DeleteUserByID(tx *sql.Tx, userID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
