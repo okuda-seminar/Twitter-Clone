@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Unmute the specified user.
+  parameters:
+    - in: path
+      name: sourceUserId
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: targetUserId
+      schema:
+        type: string
+      required: true
+  operationId: UnmuteUser
+  responses:
+    "204":
+      description: The user was unmuted.
+    "404":
+      description: The specified user is not muted.
+    "500":
+      description: Unexpected error occurred.

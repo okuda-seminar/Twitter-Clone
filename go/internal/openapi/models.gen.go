@@ -18,6 +18,11 @@ const (
 	GetUserPostsTimelineResponseTypeRepost      GetUserPostsTimelineResponseType = "repost"
 )
 
+// BlockUserRequest defines model for block_user_request.
+type BlockUserRequest struct {
+	TargetUserId string `json:"target_user_id"`
+}
+
 // CreateFollowshipRequest defines model for create_followship_request.
 type CreateFollowshipRequest struct {
 	TargetUserID string `json:"targetUserID"`
@@ -151,6 +156,11 @@ type LoginResponse struct {
 	User  User   `json:"user"`
 }
 
+// MuteUserRequest defines model for mute_user_request.
+type MuteUserRequest struct {
+	TargetUserId string `json:"target_user_id"`
+}
+
 // QuoteRepost defines model for quote_repost.
 type QuoteRepost struct {
 	AuthorId     string    `json:"authorId"`
@@ -207,8 +217,14 @@ type CreatePostJSONRequestBody = CreatePostRequest
 // CreateQuoteRepostJSONRequestBody defines body for CreateQuoteRepost for application/json ContentType.
 type CreateQuoteRepostJSONRequestBody = CreateQuoteRepostRequest
 
+// BlockUserJSONRequestBody defines body for BlockUser for application/json ContentType.
+type BlockUserJSONRequestBody = BlockUserRequest
+
 // LikePostJSONRequestBody defines body for LikePost for application/json ContentType.
 type LikePostJSONRequestBody = LikePostRequest
+
+// MuteUserJSONRequestBody defines body for MuteUser for application/json ContentType.
+type MuteUserJSONRequestBody = MuteUserRequest
 
 // CreateRepostJSONRequestBody defines body for CreateRepost for application/json ContentType.
 type CreateRepostJSONRequestBody = CreateRepostRequest

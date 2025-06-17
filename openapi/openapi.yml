@@ -23,6 +23,14 @@ paths:
     $ref: ./paths/users_userId_likes.yml
   /users/{userId}/likes/{postId}:
     $ref: ./paths/users_userId_likes_postId.yml
+  /users/{userId}/muting:
+    $ref: ./paths/users_userId_muting.yml
+  /users/{sourceUserId}/muting/{targetUserId}:
+    $ref: ./paths/users_sourceUserId_muting_targetUserId.yml
+  /users/{userId}/blocking:
+    $ref: ./paths/users_userId_blocking.yml
+  /users/{sourceUserId}/blocking/{targetUserId}:
+    $ref: ./paths/users_sourceUserId_blocking_targetUserId.yml
   /posts/{postId}:
     $ref: ./paths/posts_postId.yml
   /login:

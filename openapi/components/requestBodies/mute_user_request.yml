@@ -1,0 +1,7 @@
+type: object
+title: MuteUserRequest
+required:
+  - target_user_id
+properties:
+  target_user_id:
+    type: string
