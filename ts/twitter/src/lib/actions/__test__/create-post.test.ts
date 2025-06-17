@@ -3,7 +3,7 @@ import { createPost } from "../create-post";
 
 describe("createPost API Tests", () => {
   const mockUserId = "623f9799-e816-418b-9e5e-09ad043653fb";
-  const API_ENDPOINT = `${process.env.API_BASE_URL}/api/users/${mockUserId}/posts`;
+  const API_ENDPOINT = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${mockUserId}/posts`;
 
   const mockFetch = vi.fn();
   vi.stubGlobal("fetch", mockFetch);

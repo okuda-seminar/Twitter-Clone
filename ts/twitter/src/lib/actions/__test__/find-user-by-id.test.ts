@@ -9,7 +9,7 @@ describe("findUserById API Tests", () => {
     user_id: "623f9799-e816-418b-9e5e-09ad043653fb",
   };
 
-  const API_ENDPOINT = `${process.env.API_BASE_URL}/api/users/${request.user_id}`;
+  const API_ENDPOINT = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/users/${request.user_id}`;
 
   beforeEach(() => {
     vi.clearAllMocks();
