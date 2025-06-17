@@ -31,6 +31,10 @@ type Server struct {
 	handler.DeleteFollowshipHandler
 	handler.LikePostHandler
 	handler.UnlikePostHandler
+	handler.MuteUserHandler
+	handler.UnmuteUserHandler
+	handler.BlockUserHandler
+	handler.UnblockUserHandler
 }
 
 func NewServer(db *sql.DB) Server {
@@ -40,6 +44,7 @@ func NewServer(db *sql.DB) Server {
 	secretKey := os.Getenv("SECRET_KEY")
 	authService := service.NewAuthService(secretKey)
 
+	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
 	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
 	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository)
@@ -49,8 +54,11 @@ func NewServer(db *sql.DB) Server {
 	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
 	likePostUsecase := usecaseInjector.InjectLikePostUsecase(usersRepository)
 	loginUsecase := usecaseInjector.InjectLoginUsecase(usersRepository, authService)
+	muteUserUsecase := usecaseInjector.InjectMuteUserUsecase(usersRepository)
 	specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timelineItemsRepository)
+	unblockUserUsecase := usecaseInjector.InjectUnblockUserUsecase(usersRepository)
 	unlikePostUsecase := usecaseInjector.InjectUnlikePostUsecase(usersRepository)
+	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
 	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
@@ -72,5 +80,9 @@ func NewServer(db *sql.DB) Server {
 		DeleteFollowshipHandler:                    handler.NewDeleteFollowshipHandler(unfollowUserUsecase),
 		LikePostHandler:                            handler.NewLikePostHandler(likePostUsecase),
 		UnlikePostHandler:                          handler.NewUnlikePostHandler(unlikePostUsecase),
+		MuteUserHandler:                            handler.NewMuteUserHandler(muteUserUsecase),
+		UnmuteUserHandler:                          handler.NewUnmuteUserHandler(unmuteUserUsecase),
+		BlockUserHandler:                           handler.NewBlockUserHandler(blockUserUsecase),
+		UnblockUserHandler:                         handler.NewUnblockUserHandler(unblockUserUsecase),
 	}
 }

@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - X-Clone
+  summary: Unblock the specified user.
+  parameters:
+    - in: path
+      name: sourceUserId
+      schema:
+        type: string
+      required: true
+    - in: path
+      name: targetUserId
+      schema:
+        type: string
+      required: true
+  operationId: UnblockUser
+  responses:
+    "204":
+      description: The user was unblocked.
+    "404":
+      description: The specified user is not blocked.
+    "500":
+      description: Unexpected error occurred.

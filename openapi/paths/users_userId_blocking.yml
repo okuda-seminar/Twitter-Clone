@@ -1,0 +1,23 @@
+post:
+  tags:
+    - X-Clone
+  summary: Block the specified user.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: BlockUser
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/requestBodies/block_user_request.yml
+  responses:
+    "201":
+      description: The user was blocked.
+    "400":
+      description: The request body is invalid.
+    "500":
+      description: Unexpected error occurred.

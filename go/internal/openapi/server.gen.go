@@ -45,18 +45,30 @@ type ServerInterface interface {
 	// Delete a followship
 	// (DELETE /users/{sourceUserID}/following/{targetUserID})
 	DeleteFollowship(w http.ResponseWriter, r *http.Request, sourceUserID string, targetUserID string)
+	// Unblock the specified user.
+	// (DELETE /users/{sourceUserId}/blocking/{targetUserId})
+	UnblockUser(w http.ResponseWriter, r *http.Request, sourceUserId string, targetUserId string)
+	// Unmute the specified user.
+	// (DELETE /users/{sourceUserId}/muting/{targetUserId})
+	UnmuteUser(w http.ResponseWriter, r *http.Request, sourceUserId string, targetUserId string)
 	// Delete user by ID.
 	// (DELETE /users/{userId})
 	DeleteUserByID(w http.ResponseWriter, r *http.Request, userId string)
 	// Find user by ID.
 	// (GET /users/{userId})
 	FindUserByID(w http.ResponseWriter, r *http.Request, userId string)
+	// Block the specified user.
+	// (POST /users/{userId}/blocking)
+	BlockUser(w http.ResponseWriter, r *http.Request, userId string)
 	// Like the specified post.
 	// (POST /users/{userId}/likes)
 	LikePost(w http.ResponseWriter, r *http.Request, userId string)
 	// Unlike the specified post.
 	// (DELETE /users/{userId}/likes/{postId})
 	UnlikePost(w http.ResponseWriter, r *http.Request, userId string, postId string)
+	// Mute the specified user.
+	// (POST /users/{userId}/muting)
+	MuteUser(w http.ResponseWriter, r *http.Request, userId string)
 	// Creates a new repost.
 	// (POST /users/{userId}/reposts)
 	CreateRepost(w http.ResponseWriter, r *http.Request, userId string)
@@ -306,6 +318,74 @@ func (siw *ServerInterfaceWrapper) DeleteFollowship(w http.ResponseWriter, r *ht
 	handler.ServeHTTP(w, r)
 }
 
+// UnblockUser operation middleware
+func (siw *ServerInterfaceWrapper) UnblockUser(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "sourceUserId" -------------
+	var sourceUserId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "sourceUserId", r.PathValue("sourceUserId"), &sourceUserId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "sourceUserId", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "targetUserId" -------------
+	var targetUserId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "targetUserId", r.PathValue("targetUserId"), &targetUserId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "targetUserId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UnblockUser(w, r, sourceUserId, targetUserId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UnmuteUser operation middleware
+func (siw *ServerInterfaceWrapper) UnmuteUser(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "sourceUserId" -------------
+	var sourceUserId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "sourceUserId", r.PathValue("sourceUserId"), &sourceUserId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "sourceUserId", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "targetUserId" -------------
+	var targetUserId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "targetUserId", r.PathValue("targetUserId"), &targetUserId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "targetUserId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UnmuteUser(w, r, sourceUserId, targetUserId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // DeleteUserByID operation middleware
 func (siw *ServerInterfaceWrapper) DeleteUserByID(w http.ResponseWriter, r *http.Request) {
 
@@ -347,6 +427,31 @@ func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.FindUserByID(w, r, userId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// BlockUser operation middleware
+func (siw *ServerInterfaceWrapper) BlockUser(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.BlockUser(w, r, userId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -406,6 +511,31 @@ func (siw *ServerInterfaceWrapper) UnlikePost(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.UnlikePost(w, r, userId, postId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// MuteUser operation middleware
+func (siw *ServerInterfaceWrapper) MuteUser(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.MuteUser(w, r, userId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -604,10 +734,14 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/quote_reposts", wrapper.CreateQuoteRepost)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{id}/timelines/reverse_chronological", wrapper.GetReverseChronologicalHomeTimeline)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserID}/following/{targetUserID}", wrapper.DeleteFollowship)
+	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserId}/blocking/{targetUserId}", wrapper.UnblockUser)
+	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserId}/muting/{targetUserId}", wrapper.UnmuteUser)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}", wrapper.DeleteUserByID)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}", wrapper.FindUserByID)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/blocking", wrapper.BlockUser)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/likes", wrapper.LikePost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}/likes/{postId}", wrapper.UnlikePost)
+	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/muting", wrapper.MuteUser)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/reposts", wrapper.CreateRepost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{user_id}/reposts/{post_id}", wrapper.DeleteRepost)
 

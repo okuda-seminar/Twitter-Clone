@@ -1,0 +1,23 @@
+post:
+  tags:
+    - X-Clone
+  summary: Mute the specified user.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: MuteUser
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/requestBodies/mute_user_request.yml
+  responses:
+    "201":
+      description: The user was muted.
+    "400":
+      description: The request body is invalid.
+    "500":
+      description: Unexpected error occurred.
