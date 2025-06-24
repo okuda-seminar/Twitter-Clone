@@ -22,6 +22,7 @@ var (
 	ErrDeleteUserFailed     = errors.New("Could not delete a user.")
 	ErrDeletePostFailed     = errors.New("Could not delete a post.")
 	ErrDeleteRepostFailed   = errors.New("Could not delete a repost.")
+	ErrCreateLike           = errors.New("Could not create a like.")
 )
 
 func NewInvalidUserIDError(id string) error {

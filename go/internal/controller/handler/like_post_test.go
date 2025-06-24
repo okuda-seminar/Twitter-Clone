@@ -1,82 +1,89 @@
 package handler
 
-// func (s *handlerTestSuite) TestLikePost() {
-// 	// LikePost must use existing user ID and post ID
-// 	// from the users and posts table.
-// 	// Therefore, users and posts are created
-// 	// for testing purposes to obtain these IDs.
-// 	authorUserID := s.newTestUser(`{ "username": "author", "display_name": "author", "password": "securepassword" }`)
-// 	likerUserID := s.newTestUser(`{ "username": "liker", "display_name": "liker", "password": "securepassword" }`)
-// 	postID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test post" }`, authorUserID))
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	tests := []struct {
-// 		name         string
-// 		userID       string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "like an own post successfully with a proper pair of User and Post",
-// 			userID:       authorUserID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "like another user's post successfully with a proper pair of User and Post",
-// 			userID:       likerUserID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "fail to like another user's post with a invalid JSON body",
-// 			userID:       likerUserID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s"`, postID),
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "fail to like a post with a invalid JSON field",
-// 			userID:       likerUserID,
-// 			body:         `{ "invalid": "test" }`,
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "fail to like a post with a pair of non-existent User and proper Post",
-// 			userID:       uuid.New().String(),
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "fail to like a post with a pair of proper User and non-existent Post",
-// 			userID:       likerUserID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, uuid.New().String()),
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "fail to like another user's post duplicately with a proper pair of User and Post",
-// 			userID:       likerUserID,
-// 			body:         fmt.Sprintf(`{ "post_id": "%s" }`, postID),
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		req := httptest.NewRequest(
-// 			"POST",
-// 			"/api/users/{id}/likes",
-// 			strings.NewReader(test.body),
-// 		)
-// 		req.SetPathValue("id", test.userID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/openapi"
+)
 
-// 		rr := httptest.NewRecorder()
-// 		LikePost(rr, req, s.likePostUsecase)
+func TestLikePost(t *testing.T) {
+	authorUserID := uuid.NewString()
+	likerUserID := uuid.NewString()
+	postID := uuid.NewString()
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf(
-// 				"%s: wrong code returned; expected %d, but got %d",
-// 				test.name,
-// 				test.expectedCode,
-// 				rr.Code,
-// 			)
-// 		}
-// 	}
-// }
+	tests := map[string]struct {
+		userID       string
+		requestBody  openapi.LikePostRequest
+		setup        func(likePostUsecase usecase.LikePostUsecase)
+		expectedCode int
+	}{
+		"returns 204 when the author likes own post successfully": {
+			userID:       authorUserID,
+			requestBody:  openapi.LikePostRequest{PostId: postID},
+			expectedCode: http.StatusNoContent,
+		},
+		"returns 204 when a user likes another user's post successfully": {
+			userID:       likerUserID,
+			requestBody:  openapi.LikePostRequest{PostId: postID},
+			expectedCode: http.StatusNoContent,
+		},
+		"returns 500 when user or post does not exist": {
+			userID:      uuid.NewString(),
+			requestBody: openapi.LikePostRequest{PostId: postID},
+			setup: func(likePostUsecase usecase.LikePostUsecase) {
+				likePostUsecase.SetError(usecase.ErrUserOrPostNotFound)
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+		"returns 500 when post is already liked": {
+			userID:      likerUserID,
+			requestBody: openapi.LikePostRequest{PostId: postID},
+			setup: func(likePostUsecase usecase.LikePostUsecase) {
+				likePostUsecase.SetError(usecase.ErrAlreadyLiked)
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+		"returns 500 when unexpected error occurs": {
+			userID:      likerUserID,
+			requestBody: openapi.LikePostRequest{PostId: postID},
+			setup: func(likePostUsecase usecase.LikePostUsecase) {
+				likePostUsecase.SetError(fmt.Errorf("unexpected error"))
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			likePostUsecase := usecaseInjector.InjectLikePostUsecase(nil)
+			likePostHandler := NewLikePostHandler(likePostUsecase)
+
+			if tt.setup != nil {
+				tt.setup(likePostUsecase)
+			}
+
+			reqBody, _ := json.Marshal(tt.requestBody)
+			req := httptest.NewRequest(
+				"POST",
+				fmt.Sprintf("/api/users/%s/likes", tt.userID),
+				bytes.NewBuffer(reqBody),
+			)
+			rr := httptest.NewRecorder()
+
+			likePostHandler.LikePost(rr, req, tt.userID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
