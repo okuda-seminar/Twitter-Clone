@@ -1,52 +1,69 @@
 package handler
 
-// func (s *handlerTestSuite) TestDeleteRepost() {
-// 	userID := s.newTestUser(`{ "username": "test", "display_name": "test", "password": "securepassword" }`)
-// 	postID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test" }`, userID))
-// 	repostID := s.newTestRepost(userID, postID)
-// 	quoteRepostID := s.newTestQuoteRepost(userID, postID)
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	tests := []struct {
-// 		name         string
-// 		parentID     string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "delete repost",
-// 			parentID:     postID,
-// 			body:         fmt.Sprintf(`{ "repost_id": "%s" }`, repostID),
-// 			expectedCode: http.StatusNoContent,
-// 		},
-// 		{
-// 			name:         "delete quote repost",
-// 			parentID:     repostID,
-// 			body:         fmt.Sprintf(`{ "repost_id": "%s" }`, quoteRepostID),
-// 			expectedCode: http.StatusNoContent,
-// 		},
-// 		{
-// 			name:         "non-existent repost",
-// 			parentID:     postID,
-// 			body:         fmt.Sprintf(`{ "repost_id": "%s" }`, repostID),
-// 			expectedCode: http.StatusNotFound,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		rr := httptest.NewRecorder()
-// 		req := httptest.NewRequest(
-// 			"DELETE",
-// 			fmt.Sprintf("/api/users/%s/reposts/%s", userID, test.parentID),
-// 			strings.NewReader(test.body),
-// 		)
-// 		req.SetPathValue("user_id", userID)
-// 		req.SetPathValue("post_id", test.parentID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
+	"x-clone-backend/internal/openapi"
+)
 
-// 		deleteRepostHandler := NewDeleteRepostHandler(s.db, &s.mu, &s.userChannels)
-// 		deleteRepostHandler.DeleteRepost(rr, req, userID, test.parentID)
+func TestDeleteRepost(t *testing.T) {
+	tests := map[string]struct {
+		setup        func(deleteRepostUsecase usecase.DeleteRepostUsecase)
+		body         openapi.DeleteRepostRequest
+		expectedCode int
+	}{
+		"returns 204 when repost is deleted successfully": {
+			body:         openapi.DeleteRepostRequest{RepostId: uuid.NewString()},
+			expectedCode: http.StatusNoContent,
+		},
+		"returns 500 when there is a server error": {
+			setup: func(deleteRepostUsecase usecase.DeleteRepostUsecase) {
+				deleteRepostUsecase.SetError(errors.New("Could not delete a repost"))
+			},
+			body:         openapi.DeleteRepostRequest{RepostId: uuid.NewString()},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf("%s: wrong code returned; expected %d, but got %d", test.name, test.expectedCode, rr.Code)
-// 		}
-// 	}
-// }
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			usersRepository := infraInjector.InjectUsersRepository(nil)
+			deleteRepostUsecase := usecaseInjector.InjectDeleteRepostUsecase(timelineItemsRepository)
+			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
+			deleteRepostHandler := NewDeleteRepostHandler(deleteRepostUsecase, updateNotificationUsecase)
+
+			if tt.setup != nil {
+				tt.setup(deleteRepostUsecase)
+			}
+
+			userID := uuid.NewString()
+			postID := uuid.NewString()
+
+			reqBody, _ := json.Marshal(tt.body)
+			req := httptest.NewRequest(
+				http.MethodDelete,
+				fmt.Sprintf("/api/users/%s/reposts/%s", userID, postID),
+				bytes.NewReader(reqBody),
+			)
+
+			rr := httptest.NewRecorder()
+			deleteRepostHandler.DeleteRepost(rr, req, userID, postID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}

@@ -1,46 +1,60 @@
 package handler
 
-// func (s *handlerTestSuite) TestDeletePost() {
-// 	userID := s.newTestUser(`{ "username": "test user", "display_name": "test user", "password": "securepassword" }`)
-// 	postID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test post" }`, userID))
+import (
+	"errors"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	tests := []struct {
-// 		name         string
-// 		postID       string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "delete a post successfully with a proper post ID.",
-// 			postID:       postID,
-// 			expectedCode: http.StatusNoContent,
-// 		},
-// 		{
-// 			name:         "fail to delete a post that was already deleted .",
-// 			postID:       postID,
-// 			expectedCode: http.StatusNotFound,
-// 		},
-// 		{
-// 			name:         "fail to delete a post with a non-existent post ID.",
-// 			postID:       uuid.New().String(),
-// 			expectedCode: http.StatusNotFound,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		req := httptest.NewRequest("DELETE", "/api/posts{postID}",
-// 			nil)
-// 		req.SetPathValue("postID", test.postID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
+)
 
-// 		rr := httptest.NewRecorder()
-// 		DeletePost(rr, req, s.db, &s.mu, &s.userChannels)
+func TestDeletePost(t *testing.T) {
+	tests := map[string]struct {
+		setup        func(deletePostUsecase usecase.DeletePostUsecase)
+		expectedCode int
+	}{
+		"returns 204 when post is deleted successfully": {
+			expectedCode: http.StatusNoContent,
+		},
+		"returns 500 when there is a server error": {
+			setup: func(deletePostUsecase usecase.DeletePostUsecase) {
+				deletePostUsecase.SetError(errors.New("Could not delete a post"))
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf(
-// 				"%s: wrong code returned; expected %d, but got %d",
-// 				test.name,
-// 				test.expectedCode,
-// 				rr.Code,
-// 			)
-// 		}
-// 	}
-// }
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			usersRepository := infraInjector.InjectUsersRepository(nil)
+			deletePostUsecase := usecaseInjector.InjectDeletePostUsecase(timelineItemsRepository)
+			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
+			deletePostHandler := NewDeletePostHandler(deletePostUsecase, updateNotificationUsecase)
+
+			if tt.setup != nil {
+				tt.setup(deletePostUsecase)
+			}
+
+			postID := uuid.NewString()
+
+			rr := httptest.NewRecorder()
+			req := httptest.NewRequest(
+				http.MethodDelete,
+				fmt.Sprintf("/api/posts/%s", postID),
+				nil,
+			)
+			deletePostHandler.DeletePost(rr, req, postID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
