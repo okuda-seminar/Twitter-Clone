@@ -130,10 +130,32 @@ func (r *timelineItemsRepository) CreatePost(userID, text string) (entity.Timeli
 	return post, nil
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/679
-// - Refactor DeletePost
-func (r *timelineItemsRepository) DeletePost(postID string) error {
-	return nil
+func (r *timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
+	query := `DELETE FROM timelineitems WHERE id = $1 RETURNING author_id, text, created_at`
+
+	var (
+		authorID  string
+		text      string
+		createdAt time.Time
+	)
+
+	err := r.db.QueryRow(query, postID).Scan(&authorID, &text, &createdAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return entity.TimelineItem{}, repository.ErrRecordNotFound
+		}
+		return entity.TimelineItem{}, err
+	}
+
+	post := entity.TimelineItem{
+		Type:      entity.PostTypePost,
+		ID:        postID,
+		AuthorID:  authorID,
+		Text:      text,
+		CreatedAt: createdAt,
+	}
+
+	return post, nil
 }
 
 func (r *timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
@@ -167,10 +189,33 @@ func (r *timelineItemsRepository) CreateRepost(userID, postID string) (entity.Ti
 	return repost, nil
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/681
-// - Refactor DeleteRepost
-func (r *timelineItemsRepository) DeleteRepost(postID string) error {
-	return nil
+func (r *timelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
+	query := `DELETE FROM timelineitems WHERE id = $1 RETURNING author_id, parent_post_id, created_at`
+
+	var (
+		authorID     string
+		parentPostID sql.NullString
+		createdAt    time.Time
+	)
+
+	err := r.db.QueryRow(query, postID).Scan(&authorID, &parentPostID, &createdAt)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return entity.TimelineItem{}, repository.ErrRecordNotFound
+		}
+		return entity.TimelineItem{}, err
+	}
+
+	repost := entity.TimelineItem{
+		Type:         entity.PostTypeRepost,
+		ID:           postID,
+		AuthorID:     authorID,
+		ParentPostID: value.NullUUID{UUID: parentPostID.String, Valid: parentPostID.Valid},
+		Text:         "",
+		CreatedAt:    createdAt,
+	}
+
+	return repost, nil
 }
 
 // CreateQuoteRepost creates and returns a new quote repost by the given userID with the provided text.
