@@ -14,6 +14,8 @@ post:
       application/json:
         schema:
           $ref: ../components/requestBodies/like_post_request.yml
+  # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/776
+  # - Update OpenAPI Schema to Support More Conditions for LikePost.
   responses:
     "204":
       description: The post was liked.
