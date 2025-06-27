@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
@@ -25,15 +24,15 @@ func (h *LikePostHandler) LikePost(w http.ResponseWriter, r *http.Request, userI
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Request body was invalid."), http.StatusBadRequest)
+		http.Error(w, ErrDecodeRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = h.likePostUsecase.LikePost(userID, body.PostId)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not create a like."), http.StatusInternalServerError)
+		http.Error(w, ErrCreateLike.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusNoContent)
 }
