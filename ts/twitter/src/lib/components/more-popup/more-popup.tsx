@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Link as ChakraLink,
   Flex,
   IconButton,
   Menu,
@@ -9,6 +10,7 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import {
   AdsIcon,
   MonetizationIcon,
@@ -35,10 +37,6 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
     {
       label: "Create your Space",
       icon: <SpaceIcon />,
-    },
-    {
-      label: "Settings and privacy",
-      icon: <SettingsIcon />,
     },
   ];
 
@@ -98,6 +96,37 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
                   </Flex>
                 </Menu.Item>
               ))}
+              <Menu.Item
+                value="Settings and privacy"
+                key="settings-privacy-link"
+              >
+                <ChakraLink asChild _hover={{ textDecoration: "none" }}>
+                  <NextLink href="/settings" scroll={false}>
+                    <Flex alignItems="center" p="12px" w="100%">
+                      <Tooltip
+                        content="Settings and privacy"
+                        positioning={{ placement: "bottom" }}
+                        disabled={isTooltipDisabled}
+                      >
+                        <IconButton
+                          aria-label="Settings and privacy"
+                          color={useColorModeValue("black", "white")}
+                          bg={useColorModeValue("white", "black")}
+                        >
+                          <SettingsIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Text
+                        fontWeight="bold"
+                        ml="20px"
+                        display={{ base: "none", xl: "flex" }}
+                      >
+                        Settings and privacy
+                      </Text>
+                    </Flex>
+                  </NextLink>
+                </ChakraLink>
+              </Menu.Item>
             </Menu.Content>
           </Menu.Positioner>
         </Portal>
