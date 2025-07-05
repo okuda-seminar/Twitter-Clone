@@ -21,13 +21,14 @@ func NewGetUserPostsTimelineHandler(specificUserPostsUsecase usecase.SpecificUse
 func (h *GetUserPostsTimelineHandler) GetUserPostsTimeline(w http.ResponseWriter, r *http.Request, id string) {
 	timelineitems, err := h.specificUserPostsUsecase.SpecificUserPosts(id)
 	if err != nil {
-		http.Error(w, "Failed to get timelineitems", http.StatusInternalServerError)
+		http.Error(w, ErrGetTimeLineItemsFailed.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(timelineitems); err != nil {
-		http.Error(w, "Failed to convert to json", http.StatusInternalServerError)
+		http.Error(w, ErrEncodeResponse.Error(), http.StatusInternalServerError)
 		return
 	}
 }
