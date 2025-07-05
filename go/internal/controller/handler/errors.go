@@ -23,8 +23,14 @@ var (
 	ErrDeletePostFailed     = errors.New("Could not delete a post.")
 	ErrDeleteRepostFailed   = errors.New("Could not delete a repost.")
 	ErrCreateLike           = errors.New("Could not create a like.")
+	ErrInvalidToken         = errors.New("Invalid or expired token.")
+	ErrInternalError        = errors.New("Unexpected error occurred.")
 )
 
 func NewInvalidUserIDError(id string) error {
 	return fmt.Errorf("Could not parse a userID (ID: %s).", id)
+}
+
+func NewUserNotFoundError(userID string) error {
+	return fmt.Errorf("Could not find a user (ID: %s).", userID)
 }

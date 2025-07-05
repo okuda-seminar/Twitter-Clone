@@ -24,19 +24,19 @@ func NewVerifySessionHandler(authService *service.AuthService, userByUserIDUseca
 func (h *VerifySessionHandler) VerifySession(w http.ResponseWriter, r *http.Request) {
 	token, err := service.ExtractTokenFromHeader(r)
 	if err != nil {
-		http.Error(w, "Invalid or expired token.", http.StatusUnauthorized)
+		http.Error(w, ErrInvalidToken.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	userID, err := h.authService.ValidateJWT(token)
 	if err != nil {
-		http.Error(w, "Invalid or expired token.", http.StatusUnauthorized)
+		http.Error(w, ErrInvalidToken.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	user, err := h.userByUserIDUsecase.UserByUserID(userID)
 	if err != nil {
-		http.Error(w, "Unexpected error occurred.", http.StatusInternalServerError)
+		http.Error(w, ErrInternalError.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -46,7 +46,7 @@ func (h *VerifySessionHandler) VerifySession(w http.ResponseWriter, r *http.Requ
 	encoder := json.NewEncoder(w)
 	err = encoder.Encode(res)
 	if err != nil {
-		http.Error(w, "Unexpected error occurred.", http.StatusInternalServerError)
+		http.Error(w, ErrInternalError.Error(), http.StatusInternalServerError)
 		return
 	}
 }
