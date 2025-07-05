@@ -22,3 +22,7 @@ func (u *userByUserIDUsecase) UserByUserID(userID string) (entity.User, error) {
 
 	return user, nil
 }
+
+func (u *userByUserIDUsecase) SetError(err error)  {}
+func (u *userByUserIDUsecase) ClearError()         {}
+func (u *userByUserIDUsecase) SetUser(entity.User) {}
