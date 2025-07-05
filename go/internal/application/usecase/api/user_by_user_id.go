@@ -6,4 +6,8 @@ import (
 
 type UserByUserIDUsecase interface {
 	UserByUserID(userID string) (entity.User, error)
+
+	SetError(err error)
+	ClearError()
+	SetUser(entity.User)
 }

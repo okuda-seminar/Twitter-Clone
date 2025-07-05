@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -13,6 +14,7 @@ import (
 
 	"x-clone-backend/internal/application/service"
 	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/domain/entity"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
@@ -29,8 +31,17 @@ func TestVerifySessionHandler(t *testing.T) {
 		password := "securepassword"
 
 		hashedPassword, _ := authService.HashPassword(password)
-		createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
-		user, _ := createUserUsecase.CreateUser(username, "Test User", hashedPassword)
+		user := entity.User{
+			ID:          uuid.NewString(),
+			Username:    "test user",
+			Password:    hashedPassword,
+			DisplayName: "test user",
+			Bio:         "test bio",
+			IsPrivate:   false,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+		}
+		userByUserIDUsecase.SetUser(user)
 
 		token, _ := authService.GenerateJWT(user.ID, username)
 
@@ -60,6 +71,8 @@ func TestVerifySessionHandler(t *testing.T) {
 		authService := service.NewAuthService("test_secret_key")
 		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
+
+		userByUserIDUsecase.SetError(errors.New("User not found"))
 
 		token, _ := authService.GenerateJWT(uuid.NewString(), "nonexistentuser")
 
