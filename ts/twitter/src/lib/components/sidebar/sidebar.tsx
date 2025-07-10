@@ -7,6 +7,7 @@ import { useAuth } from "../auth-context";
 
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import {
+  BookmarksIcon,
   CommunityIcon,
   GrokIcon,
   HomeIcon,
@@ -61,6 +62,12 @@ export const SideBar: React.FC = () => {
       tooltipContent: "Communities",
       ariaLabel: "Communities",
       icon: <CommunityIcon />,
+    },
+    {
+      url: "/bookmarks",
+      tooltipContent: "Bookmarks",
+      ariaLabel: "Bookmarks",
+      icon: <BookmarksIcon />,
     },
     {
       url: "/profile",
