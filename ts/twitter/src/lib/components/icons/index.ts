@@ -1,6 +1,7 @@
 export * from "./ads-icon";
 export * from "./apple-icon";
 export * from "./back-icon";
+export * from "./bookmarks-icon";
 export * from "./calendar-icon";
 export * from "./chevron-right-icon";
 export * from "./community-icon";

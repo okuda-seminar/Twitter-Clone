@@ -7,6 +7,7 @@ import { useAuth } from "../auth-context";
 
 import { IconButtonWithLink } from "../icon-button-with-link/icon-button-with-link";
 import {
+  BookmarksIcon,
   CommunityIcon,
   GrokIcon,
   HomeIcon,
@@ -63,6 +64,12 @@ export const SideBar: React.FC = () => {
       icon: <CommunityIcon />,
     },
     {
+      url: "/bookmarks",
+      tooltipContent: "Bookmarks",
+      ariaLabel: "Bookmarks",
+      icon: <BookmarksIcon />,
+    },
+    {
       url: "/profile",
       tooltipContent: "Profile",
       ariaLabel: "Profile",
@@ -71,7 +78,7 @@ export const SideBar: React.FC = () => {
   ];
   return (
     <Flex>
-      <VStack marginBottom="24px" align="flex-start">
+      <VStack marginBottom="24px" align="flex-start" gap="1">
         <Link href="/home">
           <Tooltip content="twitter" positioning={{ placement: "bottom" }}>
             <Flex alignItems="center">
