@@ -1,50 +1,73 @@
 package handler
 
-// func (s *handlerTestSuite) TestGetUserPostsTimeline() {
-// 	// This test method verifies the number of posts in the response body.
-// 	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
-// 	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
-// 	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
+import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"time"
 
-// 	tests := []struct {
-// 		name          string
-// 		userID        string
-// 		expectedCount int
-// 	}{
-// 		{
-// 			name:          "get user posts",
-// 			userID:        user1ID,
-// 			expectedCount: 1,
-// 		},
-// 		{
-// 			name:          "get no posts",
-// 			userID:        user2ID,
-// 			expectedCount: 0,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		rr := httptest.NewRecorder()
-// 		req := httptest.NewRequest(
-// 			"GET",
-// 			"/api/users/{id}/posts",
-// 			strings.NewReader(""),
-// 		)
-// 		req.SetPathValue("id", test.userID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/domain/entity"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
+)
 
-// 		getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(s.db)
-// 		getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, test.userID)
+func TestGetUserPostsTimeline(t *testing.T) {
+	userID := uuid.NewString()
+	tests := map[string]struct {
+		setup        func(specificUserPostsUsecase usecase.SpecificUserPostsUsecase)
+		expectedCode int
+	}{
+		"returns 200 when user posts are retrieved successfully": {
+			setup: func(specificUserPostsUsecase usecase.SpecificUserPostsUsecase) {
+				specificUserPostsUsecase.SetPosts([]*entity.TimelineItem{
+					{
+						Type:      entity.PostTypePost,
+						ID:        uuid.NewString(),
+						AuthorID:  userID,
+						Text:      "test post",
+						CreatedAt: time.Now(),
+					},
+				})
+			},
+			expectedCode: http.StatusOK,
+		},
+		"returns 200 when user posts are empty": {
+			expectedCode: http.StatusOK,
+		},
+		"returns 500 when there is a server error": {
+			setup: func(specificUserPostsUsecase usecase.SpecificUserPostsUsecase) {
+				specificUserPostsUsecase.SetError(ErrGetTimeLineItemsFailed)
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
 
-// 		var posts []*entity.Post
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			timeLineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timeLineItemsRepository)
+			getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(specificUserPostsUsecase)
 
-// 		decoder := json.NewDecoder(rr.Body)
-// 		err := decoder.Decode(&posts)
-// 		if err != nil {
-// 			s.T().Errorf("%s: failed to decode response", test.name)
-// 		}
+			if tt.setup != nil {
+				tt.setup(specificUserPostsUsecase)
+			}
 
-// 		if len(posts) != test.expectedCount {
-// 			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got %d", test.name, test.expectedCount, len(posts))
-// 		}
-// 	}
-// }
+			rr := httptest.NewRecorder()
+			req := httptest.NewRequest(
+				http.MethodGet,
+				fmt.Sprintf("/api/users/%s/posts", userID),
+				nil,
+			)
+
+			getUserPostsTimelineHandler.GetUserPostsTimeline(rr, req, userID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
