@@ -22,3 +22,7 @@ func (u *specificUserPostsUsecase) SpecificUserPosts(userID string) ([]*entity.T
 
 	return timelineitems, nil
 }
+
+func (u *specificUserPostsUsecase) SetError(err error)                    {}
+func (u *specificUserPostsUsecase) ClearError()                           {}
+func (u *specificUserPostsUsecase) SetPosts(posts []*entity.TimelineItem) {}
