@@ -3,7 +3,16 @@
 import type { LoginBody } from "@/lib/actions/login";
 import { BackIcon, XIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
-import { Box, Button, IconButton, Input, Text, VStack } from "@chakra-ui/react";
+import { floatingStyles } from "@/lib/styles/floating-labels";
+import {
+  Box,
+  Button,
+  Field,
+  IconButton,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useActionState } from "react";
@@ -70,37 +79,50 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
                 {message}
               </Text>
             )}
+            <Field.Root>
+              <Box pos="relative" w="full">
+                <Input
+                  name="username"
+                  placeholder=" "
+                  className="peer"
+                  fontSize="lg"
+                  value={loginFormValue.username}
+                  readOnly
+                  bg={useColorModeValue("gray.100", "gray.900")}
+                  color={useColorModeValue("black", "gray.500")}
+                  pl="2"
+                  pt="4"
+                  width="100%"
+                  height="60px"
+                  _placeholder={{ color: "gray" }}
+                  _focus={{ borderColor: "blue.primary" }}
+                />
+                <Field.Label css={floatingStyles()}>Username</Field.Label>
+              </Box>
+            </Field.Root>
 
-            {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/760 
-            - Implement floating label behavior for email and password inputs in password modal. */}
-            <Input
-              name="username"
-              value={loginFormValue.username}
-              readOnly
-              bg={useColorModeValue("gray.100", "gray.900")}
-              color={useColorModeValue("black", "gray.500")}
-              pl="2"
-              width="100%"
-              height="50px"
-              _placeholder={{ color: "gray" }}
-              _focus={{ borderColor: "blue.primary" }}
-            />
-
-            <Input
-              name="password"
-              placeholder="Password"
-              type="password"
-              value={loginFormValue.password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
-              bg={useColorModeValue("gray.100", "black")}
-              color={useColorModeValue("black", "white")}
-              borderColor={useColorModeValue("gray.200", "gray")}
-              pl="2"
-              width="100%"
-              height="50px"
-              _placeholder={{ color: "gray" }}
-              _focus={{ borderColor: "blue.primary" }}
-            />
+            <Field.Root>
+              <Box pos="relative" w="full">
+                <Input
+                  name="password"
+                  type="password"
+                  placeholder=" "
+                  className="peer"
+                  value={loginFormValue.password}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  bg={useColorModeValue("gray.100", "black")}
+                  color={useColorModeValue("black", "white")}
+                  borderColor={useColorModeValue("gray.200", "gray")}
+                  pl="2"
+                  pt="4"
+                  width="100%"
+                  height="60px"
+                  _placeholder={{ color: "gray" }}
+                  _focus={{ borderColor: "blue.primary" }}
+                />
+                <Field.Label css={floatingStyles()}>Password</Field.Label>
+              </Box>
+            </Field.Root>
 
             <Text
               color={"blue.primary"}

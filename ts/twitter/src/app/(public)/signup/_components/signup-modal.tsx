@@ -4,11 +4,13 @@ import { EyeIcon, EyeSlashIcon, XIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import { VALIDATION_CONSTANTS } from "@/lib/constants/validation-constants";
+import { floatingStyles } from "@/lib/styles/floating-labels";
 import {
   Box,
   Button,
   CloseButton,
   Dialog,
+  Field,
   Flex,
   IconButton,
   Input,
@@ -67,7 +69,7 @@ export const SignupModal: React.FC = () => {
                 <Box position="center">
                   <XIcon boxSize={8} />
                 </Box>
-                <VStack gap={4} align="stretch" width="85%">
+                <VStack gap={8} align="stretch" width="85%">
                   <Text
                     fontSize="3xl"
                     fontWeight="bold"
@@ -89,30 +91,32 @@ export const SignupModal: React.FC = () => {
                     </Box>
                   )}
 
-                  <Box>
-                    <Text fontWeight="medium" mb="1">
-                      Display Name
-                    </Text>
-                    <Input
-                      value={formValues.displayName}
-                      onChange={(e) =>
-                        handleInputChange("displayName", e.target.value)
-                      }
-                      placeholder="Display name"
-                      _placeholder={{ color: "gray" }}
-                      fontSize="md"
-                      name="displayName"
-                      bg={useColorModeValue("white", "black")}
-                      borderColor="gray"
-                      height="60px"
-                      width="100%"
-                    />
-                  </Box>
+                  <Field.Root>
+                    <Box pos="relative" w="full">
+                      <Input
+                        value={formValues.displayName}
+                        onChange={(e) =>
+                          handleInputChange("displayName", e.target.value)
+                        }
+                        placeholder=" "
+                        className="peer"
+                        _placeholder={{ color: "gray" }}
+                        _focus={{ borderColor: "blue.primary" }}
+                        fontSize="md"
+                        name="displayName"
+                        bg={useColorModeValue("white", "black")}
+                        borderColor="gray"
+                        height="60px"
+                        width="100%"
+                        pt="3"
+                      />
+                      <Field.Label css={floatingStyles()}>
+                        Display name
+                      </Field.Label>
+                    </Box>
+                  </Field.Root>
 
                   <Box>
-                    <Text fontWeight="medium" mb="1">
-                      Username
-                    </Text>
                     <Flex>
                       <Flex
                         align="center"
@@ -127,22 +131,32 @@ export const SignupModal: React.FC = () => {
                       >
                         @
                       </Flex>
-                      <Input
-                        value={formValues.username}
-                        onChange={(e) =>
-                          handleInputChange("username", e.target.value)
-                        }
-                        placeholder="username"
-                        _placeholder={{ color: "gray" }}
-                        fontSize="md"
-                        name="username"
-                        maxLength={VALIDATION_CONSTANTS.USERNAME.MAX_LENGTH}
-                        bg={useColorModeValue("white", "black")}
-                        borderColor="gray"
-                        borderLeftRadius="0"
-                        height="60px"
-                        width="100%"
-                      />
+                      <Field.Root>
+                        <Box pos="relative" w="full">
+                          <Input
+                            value={formValues.username}
+                            onChange={(e) =>
+                              handleInputChange("username", e.target.value)
+                            }
+                            placeholder=" "
+                            className="peer"
+                            _placeholder={{ color: "gray" }}
+                            _focus={{ borderColor: "blue.primary" }}
+                            fontSize="md"
+                            name="username"
+                            maxLength={VALIDATION_CONSTANTS.USERNAME.MAX_LENGTH}
+                            bg={useColorModeValue("white", "black")}
+                            borderColor="gray"
+                            borderLeftRadius="0"
+                            height="60px"
+                            width="100%"
+                            pt="3"
+                          />
+                          <Field.Label css={floatingStyles()}>
+                            User name
+                          </Field.Label>
+                        </Box>
+                      </Field.Root>
                     </Flex>
                     <Text fontSize="sm" color="gray" mt="1">
                       {`Username must be between ${VALIDATION_CONSTANTS.USERNAME.MIN_LENGTH} and ${VALIDATION_CONSTANTS.USERNAME.MAX_LENGTH} characters.`}
@@ -150,26 +164,34 @@ export const SignupModal: React.FC = () => {
                   </Box>
 
                   <Box>
-                    <Text fontWeight="medium" mb="1">
-                      Password
-                    </Text>
                     <Flex position="relative">
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        value={formValues.password}
-                        onChange={(e) =>
-                          handleInputChange("password", e.target.value)
-                        }
-                        placeholder="Password"
-                        _placeholder={{ color: "gray" }}
-                        fontSize="md"
-                        name="password"
-                        maxLength={VALIDATION_CONSTANTS.PASSWORD.MAX_LENGTH}
-                        bg={useColorModeValue("white", "black")}
-                        borderColor="gray"
-                        height="60px"
-                        width="100%"
-                      />
+                      <Field.Root>
+                        <Box pos="relative" w="full">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            value={formValues.password}
+                            onChange={(e) =>
+                              handleInputChange("password", e.target.value)
+                            }
+                            placeholder=" "
+                            className="peer"
+                            _placeholder={{ color: "gray" }}
+                            _focus={{ borderColor: "blue.primary" }}
+                            fontSize="md"
+                            name="password"
+                            maxLength={VALIDATION_CONSTANTS.PASSWORD.MAX_LENGTH}
+                            bg={useColorModeValue("white", "black")}
+                            borderColor="gray"
+                            height="60px"
+                            width="100%"
+                            pt="3"
+                          />
+                          <Field.Label css={floatingStyles()}>
+                            Password
+                          </Field.Label>
+                        </Box>
+                      </Field.Root>
+
                       <IconButton
                         variant="ghost"
                         onClick={togglePasswordVisibility}

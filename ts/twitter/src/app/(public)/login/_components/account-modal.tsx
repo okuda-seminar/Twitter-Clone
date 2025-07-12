@@ -2,7 +2,16 @@
 
 import { AppleIcon, GoogleIcon, XIcon } from "@/lib/components/icons";
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
-import { Box, Button, IconButton, Input, Text, VStack } from "@chakra-ui/react";
+import { floatingStyles } from "@/lib/styles/floating-labels";
+import {
+  Box,
+  Button,
+  Field,
+  IconButton,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import NextLink from "next/link";
 import type React from "react";
@@ -76,19 +85,29 @@ export const AccountModal: React.FC<AccountModalProps> = ({
       </Box>
 
       <VStack gap={8} align="stretch" width="55%">
-        <Input
-          placeholder="Phone, email or username"
-          value={username}
-          onChange={(e) => handleUsernameChange(e.target.value)}
-          bg={useColorModeValue("white", "black")}
-          color={useColorModeValue("black", "white")}
-          borderColor="gray"
-          pl="2"
-          _placeholder={{ color: "gray" }}
-          _focus={{
-            borderColor: "blue.primary",
-          }}
-        />
+        <Field.Root>
+          <Box pos="relative" w="full">
+            <Input
+              placeholder=" "
+              value={username}
+              className="peer"
+              onChange={(e) => handleUsernameChange(e.target.value)}
+              bg={useColorModeValue("white", "black")}
+              color={useColorModeValue("black", "white")}
+              borderColor="gray"
+              pl="2"
+              pt="3"
+              height="60px"
+              _placeholder={{ color: "gray" }}
+              _focus={{
+                borderColor: "blue.primary",
+              }}
+            />
+            <Field.Label css={floatingStyles()}>
+              Phone, email or username
+            </Field.Label>
+          </Box>
+        </Field.Root>
         <Button
           type="submit"
           width="100%"

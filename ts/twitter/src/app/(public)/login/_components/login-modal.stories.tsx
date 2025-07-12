@@ -20,9 +20,7 @@ export const AccountForm: Story = {
 
     expect(canvas.getByText("Sign in to X")).toBeInTheDocument();
 
-    const usernameInput = canvas.getByPlaceholderText(
-      "Phone, email or username",
-    );
+    const usernameInput = canvas.getByLabelText("Phone, email or username");
     await userEvent.type(usernameInput, "testuser");
 
     const nextButton = canvas.getByRole("button", { name: "Next" });
@@ -50,9 +48,7 @@ export const PasswordForm: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const usernameInput = canvas.getByPlaceholderText(
-      "Phone, email or username",
-    );
+    const usernameInput = canvas.getByLabelText("Phone, email or username");
     await userEvent.type(usernameInput, "testuser");
 
     const nextButton = canvas.getByRole("button", { name: "Next" });
@@ -60,7 +56,7 @@ export const PasswordForm: Story = {
 
     expect(canvas.getByText("Enter your password")).toBeInTheDocument();
 
-    const passwordInput = canvas.getByPlaceholderText("Password");
+    const passwordInput = canvas.getByLabelText("Password");
     await userEvent.type(passwordInput, "swweeweerd");
 
     const loginButton = canvas.getByRole("button", { name: "Log in" });
@@ -80,9 +76,7 @@ export const LoginFailed: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const usernameInput = canvas.getByPlaceholderText(
-      "Phone, email or username",
-    );
+    const usernameInput = canvas.getByLabelText("Phone, email or username");
     await userEvent.type(usernameInput, "testuser");
 
     const nextButton = canvas.getByRole("button", { name: "Next" });
@@ -90,7 +84,7 @@ export const LoginFailed: Story = {
 
     expect(canvas.getByText("Enter your password")).toBeInTheDocument();
 
-    const passwordInput = canvas.getByPlaceholderText("Password");
+    const passwordInput = canvas.getByLabelText("Password");
     await userEvent.type(passwordInput, "ssdsdwdwee");
 
     const loginButton = canvas.getByRole("button", { name: "Log in" });
@@ -111,9 +105,7 @@ export const NetworkError: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const usernameInput = canvas.getByPlaceholderText(
-      "Phone, email or username",
-    );
+    const usernameInput = canvas.getByLabelText("Phone, email or username");
     await userEvent.type(usernameInput, "testuser");
 
     const nextButton = canvas.getByRole("button", { name: "Next" });
@@ -121,7 +113,7 @@ export const NetworkError: Story = {
 
     expect(canvas.getByText("Enter your password")).toBeInTheDocument();
 
-    const passwordInput = canvas.getByPlaceholderText("Password");
+    const passwordInput = canvas.getByLabelText("Password");
     await userEvent.type(passwordInput, "ssdsdwdedw");
 
     const loginButton = canvas.getByRole("button", { name: "Log in" });
@@ -137,9 +129,7 @@ export const BackNavigation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const usernameInput = canvas.getByPlaceholderText(
-      "Phone, email or username",
-    );
+    const usernameInput = canvas.getByLabelText("Phone, email or username");
     await userEvent.type(usernameInput, "testuser");
 
     const nextButton = canvas.getByRole("button", { name: "Next" });
