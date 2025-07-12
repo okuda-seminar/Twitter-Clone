@@ -45,15 +45,9 @@ export const ErrorForm: Story = {
   play: async () => {
     const canvas = within(screen.getByRole("dialog"));
 
-    await userEvent.type(
-      canvas.getByPlaceholderText("Display name"),
-      "Test User",
-    );
+    await userEvent.type(canvas.getByLabelText("Display name"), "Test User");
 
-    await userEvent.type(
-      canvas.getByPlaceholderText("Password"),
-      "securepassword",
-    );
+    await userEvent.type(canvas.getByLabelText("Password"), "securepassword");
 
     await userEvent.click(canvas.getByText("Register"));
 
