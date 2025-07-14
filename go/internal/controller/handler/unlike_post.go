@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
@@ -23,9 +22,9 @@ func (h *UnlikePostHandler) UnlikePost(w http.ResponseWriter, r *http.Request, u
 	if err != nil {
 		switch {
 		case errors.Is(err, usecase.ErrLikeNotFound):
-			http.Error(w, "No row found to delete", http.StatusNotFound)
+			http.Error(w, ErrLikeNotFound.Error(), http.StatusNotFound)
 		default:
-			http.Error(w, fmt.Sprintf("Could not delete a like: %v", err), http.StatusInternalServerError)
+			http.Error(w, ErrDeleteLike.Error(), http.StatusInternalServerError)
 		}
 		return
 	}
