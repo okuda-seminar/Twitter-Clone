@@ -32,13 +32,13 @@ func NewGetReverseChronologicalHomeTimelineHandler(
 func (h *GetReverseChronologicalHomeTimelineHandler) GetReverseChronologicalHomeTimeline(w http.ResponseWriter, r *http.Request, userID string) {
 	userChan, err := h.updateNotificationUsecase.SetChannel(userID)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Failed to set notification channel"), http.StatusInternalServerError)
+		http.Error(w, ErrSetChannel.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	timelineitems, err := h.userAndFolloweePostsUsecase.UserAndFolloweePosts(userID)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not get timelineitems"), http.StatusInternalServerError)
+		http.Error(w, ErrUserAndFolloweePosts.Error(), http.StatusInternalServerError)
 		return
 	}
 

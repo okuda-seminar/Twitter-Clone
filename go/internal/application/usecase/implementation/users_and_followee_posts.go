@@ -22,3 +22,7 @@ func (u *userAndFolloweePostsUsecase) UserAndFolloweePosts(userID string) ([]*en
 
 	return timelineitems, nil
 }
+
+func (u *userAndFolloweePostsUsecase) SetError(err error)                      {}
+func (u *userAndFolloweePostsUsecase) ClearError()                             {}
+func (u *userAndFolloweePostsUsecase) SetTimelineItems([]*entity.TimelineItem) {}
