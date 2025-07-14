@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
@@ -23,15 +22,17 @@ func (h *BlockUserHandler) BlockUser(w http.ResponseWriter, r *http.Request, use
 	var body openapi.BlockUserRequest
 
 	decoder := json.NewDecoder(r.Body)
+	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/786
+	// - Update OpenAPI Schema to Support More Conditions for BlockUser.
 	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Request body was invalid: %v", err), http.StatusBadRequest)
+		http.Error(w, ErrDecodeRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = h.blockUserUsecase.BlockUser(userID, body.TargetUserId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not create block: %v", err), http.StatusInternalServerError)
+		http.Error(w, ErrCreateBlock.Error(), http.StatusInternalServerError)
 		return
 	}
 

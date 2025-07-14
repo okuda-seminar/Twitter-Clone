@@ -14,6 +14,8 @@ post:
       application/json:
         schema:
           $ref: ../components/requestBodies/block_user_request.yml
+  # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/786
+  # - Update OpenAPI Schema to Support More Conditions for BlockUser.
   responses:
     "201":
       description: The user was blocked.
