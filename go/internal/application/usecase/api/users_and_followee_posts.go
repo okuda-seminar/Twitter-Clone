@@ -6,4 +6,8 @@ import (
 
 type UserAndFolloweePostsUsecase interface {
 	UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error)
+
+	SetError(err error)
+	ClearError()
+	SetTimelineItems([]*entity.TimelineItem)
 }

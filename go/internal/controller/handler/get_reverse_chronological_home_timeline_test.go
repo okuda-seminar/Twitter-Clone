@@ -1,140 +1,204 @@
 package handler
 
-// func (s *handlerTestSuite) TestGetReverseChronologicalHomeTimeline() {
-// 	// This test method verifies the number of posts in the response body.
-// 	user1ID := s.newTestUser(`{ "username": "test1", "display_name": "test1", "password": "securepassword" }`)
-// 	post1ID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test1" }`, user1ID))
-// 	user2ID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
-// 	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test2" }`, user2ID))
-// 	user3ID := s.newTestUser(`{ "username": "test3", "display_name": "test3", "password": "securepassword" }`)
-// 	_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test3" }`, user3ID))
-// 	user4ID := s.newTestUser(`{ "username": "test4", "display_name": "test4", "password": "securepassword" }`)
-// 	s.newTestFollow(user3ID, user2ID)
-// 	user5ID := s.newTestUser(`{ "username": "test5", "display_name": "test5", "password": "securepassword" }`)
-// 	post2ID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test5" }`, user5ID))
-// 	repostID := s.newTestRepost(user5ID, post2ID)
-// 	user6ID := s.newTestUser(`{ "username": "test6", "display_name": "test6", "password": "securepassword" }`)
-// 	post3ID := s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test6" }`, user6ID))
-// 	quoteRepostID := s.newTestQuoteRepost(user6ID, post3ID)
+import (
+	"bufio"
+	"context"
+	"encoding/json"
+	"net/http/httptest"
+	"strings"
+	"sync"
+	"testing"
+	"time"
 
-// 	tests := []struct {
-// 		name          string
-// 		userID        string
-// 		expectedCount int
-// 	}{
-// 		{
-// 			name:          "get only a target user posts",
-// 			userID:        user1ID,
-// 			expectedCount: 1,
-// 		},
-// 		{
-// 			name:          "get a target user and following users posts",
-// 			userID:        user3ID,
-// 			expectedCount: 2,
-// 		},
-// 		{
-// 			name:          "get no posts",
-// 			userID:        user4ID,
-// 			expectedCount: 0,
-// 		},
-// 		{
-// 			name:          "get posts already posted and posts posted during timeline access",
-// 			userID:        user3ID,
-// 			expectedCount: 3,
-// 		},
-// 		{
-// 			name:          "get posts and posts deleted during timeline access",
-// 			userID:        user1ID,
-// 			expectedCount: 2,
-// 		},
-// 		{
-// 			name:          "get posts and reposts deleted during timeline access",
-// 			userID:        user5ID,
-// 			expectedCount: 3,
-// 		},
-// 		{
-// 			name:          "get a target user post and a repost notification during timeline access",
-// 			userID:        user5ID,
-// 			expectedCount: 2,
-// 		},
-// 		{
-// 			name:          "get posts and quote reposts deleted during timeline access",
-// 			userID:        user6ID,
-// 			expectedCount: 3,
-// 		},
-// 		{
-// 			name:          "get a target user post and a quote repost notification during timeline access",
-// 			userID:        user6ID,
-// 			expectedCount: 2,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-// 		defer cancel()
-// 		rr := httptest.NewRecorder()
-// 		req := httptest.NewRequest(
-// 			"GET",
-// 			"/api/users/{id}/timelines/reverse_chronological",
-// 			strings.NewReader(""),
-// 		).WithContext(ctx)
-// 		req.SetPathValue("id", test.userID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/domain/entity"
+	"x-clone-backend/internal/domain/value"
+)
 
-// 		getReverseChronologicalHomeTimelineHandler := NewGetReverseChronologicalHomeTimelineHandler(s.db, &s.mu, &s.userChannels, s.connected)
+func TestGetReverseChronologicalHomeTimeline(t *testing.T) {
+	targetUserID := uuid.NewString()
+	tests := map[string]struct {
+		setup         func(userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase, updateNotificationUsecase usecase.UpdateNotificationUsecase)
+		eventType     string
+		timelineItem  *entity.TimelineItem
+		expectedCount int
+	}{
+		"get only a target user posts": {
+			setup: func(userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase, updateNotificationUsecase usecase.UpdateNotificationUsecase) {
+				userAndFolloweePostsUsecase.SetTimelineItems([]*entity.TimelineItem{
+					{
+						Type:      entity.PostTypePost,
+						ID:        uuid.NewString(),
+						AuthorID:  targetUserID,
+						Text:      "test",
+						CreatedAt: time.Now(),
+					},
+				})
+			},
+			expectedCount: 1,
+		},
+		"get a target user and following users posts": {
+			setup: func(userAndFolloweePostsUsecase usecase.UserAndFolloweePostsUsecase, updateNotificationUsecase usecase.UpdateNotificationUsecase) {
+				userAndFolloweePostsUsecase.SetTimelineItems([]*entity.TimelineItem{
+					{
+						Type:      entity.PostTypePost,
+						ID:        uuid.NewString(),
+						AuthorID:  targetUserID,
+						Text:      "test 1",
+						CreatedAt: time.Now(),
+					},
+					{
+						Type:      entity.PostTypePost,
+						ID:        uuid.NewString(),
+						AuthorID:  uuid.NewString(),
+						Text:      "test 2",
+						CreatedAt: time.Now(),
+					},
+				})
+			},
+			expectedCount: 2,
+		},
+		"get no posts": {
+			expectedCount: 0,
+		},
+		"get posts posted during timeline access": {
+			expectedCount: 1,
+			eventType:     entity.PostCreated,
+			timelineItem: &entity.TimelineItem{
+				Type:      entity.PostTypePost,
+				ID:        uuid.NewString(),
+				AuthorID:  targetUserID,
+				Text:      "test 1",
+				CreatedAt: time.Now(),
+			},
+		},
+		"get posts deleted during timeline access": {
+			expectedCount: 1,
+			eventType:     entity.PostDeleted,
+			timelineItem: &entity.TimelineItem{
+				Type:      entity.PostTypePost,
+				ID:        uuid.NewString(),
+				AuthorID:  targetUserID,
+				Text:      "test 1",
+				CreatedAt: time.Now(),
+			},
+		},
+		"get a repost posted during timeline access": {
+			expectedCount: 1,
+			eventType:     entity.RepostCreated,
+			timelineItem: &entity.TimelineItem{
+				Type:         entity.PostTypeRepost,
+				ID:           uuid.NewString(),
+				AuthorID:     targetUserID,
+				ParentPostID: value.NullUUID{UUID: uuid.NewString(), Valid: true},
+				Text:         "",
+				CreatedAt:    time.Now(),
+			},
+		},
+		"get reposts deleted during timeline access": {
+			expectedCount: 1,
+			eventType:     entity.RepostDeleted,
+			timelineItem: &entity.TimelineItem{
+				Type:         entity.PostTypeRepost,
+				ID:           uuid.NewString(),
+				AuthorID:     targetUserID,
+				ParentPostID: value.NullUUID{UUID: uuid.NewString(), Valid: true},
+				Text:         "",
+				CreatedAt:    time.Now(),
+			},
+		},
+		"get a quote repost posted during timeline access": {
+			expectedCount: 1,
+			eventType:     entity.QuoteRepostCreated,
+			timelineItem: &entity.TimelineItem{
+				Type:         entity.PostTypeQuoteRepost,
+				ID:           uuid.NewString(),
+				AuthorID:     targetUserID,
+				ParentPostID: value.NullUUID{UUID: uuid.NewString(), Valid: true},
+				Text:         "quote repost",
+				CreatedAt:    time.Now(),
+			},
+		},
+		"get a quote repost deleted during timeline access": {
+			expectedCount: 1,
+			// quoteRepost and repost deletion are performed on the same endpoint, event type is repostDeleted
+			eventType: entity.RepostDeleted,
+			timelineItem: &entity.TimelineItem{
+				Type:         entity.PostTypeQuoteRepost,
+				ID:           uuid.NewString(),
+				AuthorID:     targetUserID,
+				ParentPostID: value.NullUUID{UUID: uuid.NewString(), Valid: true},
+				Text:         "quote repost",
+				CreatedAt:    time.Now(),
+			},
+		},
+	}
 
-// 		var wg sync.WaitGroup
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			connected := make(chan struct{})
+			userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(nil)
+			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(nil)
+			getReverseChronologicalHomeTimelineHandler := NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, connected)
 
-// 		wg.Add(1)
-// 		go func() {
-// 			defer wg.Done()
-// 			getReverseChronologicalHomeTimelineHandler.GetReverseChronologicalHomeTimeline(rr, req, test.userID)
-// 		}()
-// 		var timelineitems []entity.TimelineItem
+			if tt.setup != nil {
+				tt.setup(userAndFolloweePostsUsecase, updateNotificationUsecase)
+			}
 
-// 		// This channel indicates that the httptest client has successfully connected to the handler.
-// 		// Wait here to ensure that the connection is established before triggering timeline updates.
-// 		<-s.connected
+			ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+			defer cancel()
+			rr := httptest.NewRecorder()
+			req := httptest.NewRequest(
+				"GET",
+				"/api/users/{id}/timelines/reverse_chronological",
+				nil,
+			).WithContext(ctx)
+			req.SetPathValue("id", targetUserID)
 
-// 		if test.name == "get posts already posted and posts posted during timeline access" {
-// 			_ = s.newTestPost(fmt.Sprintf(`{ "user_id": "%s", "text": "test5" }`, test.userID))
-// 		}
-// 		if test.name == "get posts and posts deleted during timeline access" {
-// 			s.newTestDeletePost(post1ID)
-// 		}
-// 		if test.name == "get posts and reposts deleted during timeline access" {
-// 			s.newTestDeleteRepost(user5ID, post2ID, repostID)
-// 		}
-// 		if test.name == "get a target user post and a repost notification during timeline access" {
-// 			_ = s.newTestRepost(user5ID, post2ID)
-// 		}
-// 		if test.name == "get posts and quote reposts deleted during timeline access" {
-// 			s.newTestDeleteRepost(user6ID, post3ID, quoteRepostID)
-// 		}
-// 		if test.name == "get a target user post and a quote repost notification during timeline access" {
-// 			_ = s.newTestQuoteRepost(user6ID, post3ID)
-// 		}
+			var wg sync.WaitGroup
 
-// 		wg.Wait()
-// 		scanner := bufio.NewScanner(rr.Body)
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				getReverseChronologicalHomeTimelineHandler.GetReverseChronologicalHomeTimeline(rr, req, targetUserID)
+			}()
+			var timelineitems []entity.TimelineItem
 
-// 		for scanner.Scan() {
-// 			line := scanner.Text()
-// 			if strings.HasPrefix(line, "data:") {
-// 				jsonData := strings.TrimPrefix(line, "data: ")
-// 				var timelineEvent entity.TimelineEvent
+			// This channel indicates that the httptest client has successfully connected to the handler.
+			// Wait here to ensure that the connection is established before triggering timeline updates.
+			<-connected
 
-// 				err := json.Unmarshal([]byte(jsonData), &timelineEvent)
-// 				if err != nil {
-// 					s.T().Errorf("Failed to decode JSON: %v", err)
-// 				}
-// 				for _, timelineitem := range timelineEvent.TimelineItems {
-// 					timelineitems = append(timelineitems, *timelineitem)
-// 				}
-// 			}
-// 		}
+			// updateNotificationUsecase sends notifications
+			// to replace creation and deletion of posts, reposts, and quotereposts during timeline connections.
+			if tt.timelineItem != nil {
+				updateNotificationUsecase.SendNotification(uuid.NewString(), tt.eventType, tt.timelineItem)
+			}
 
-// 		if len(timelineitems) != test.expectedCount {
-// 			s.T().Errorf("%s: wrong number of posts returned; expected %d, but got timelineitems: %d", test.name, test.expectedCount, len(timelineitems))
-// 		}
-// 	}
-// }
+			wg.Wait()
+			scanner := bufio.NewScanner(rr.Body)
+
+			for scanner.Scan() {
+				line := scanner.Text()
+				if strings.HasPrefix(line, "data:") {
+					jsonData := strings.TrimPrefix(line, "data: ")
+					var timelineEvent entity.TimelineEvent
+
+					err := json.Unmarshal([]byte(jsonData), &timelineEvent)
+					if err != nil {
+						t.Errorf("Failed to decode JSON: %v", err)
+					}
+					for _, timelineitem := range timelineEvent.TimelineItems {
+						timelineitems = append(timelineitems, *timelineitem)
+					}
+				}
+			}
+
+			if len(timelineitems) != tt.expectedCount {
+				t.Errorf("%s: wrong number of posts returned; expected %d, but got timelineitems: %d", name, tt.expectedCount, len(timelineitems))
+			}
+		})
+	}
+}

@@ -26,6 +26,8 @@ var (
 	ErrInvalidToken           = errors.New("Invalid or expired token.")
 	ErrInternalError          = errors.New("Unexpected error occurred.")
 	ErrGetTimeLineItemsFailed = errors.New("Could not get timeline items.")
+	ErrSetChannel             = errors.New("Failed to set notification channel")
+	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
 )
 
 func NewInvalidUserIDError(id string) error {
