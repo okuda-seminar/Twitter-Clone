@@ -30,6 +30,8 @@ var (
 	ErrSetChannel             = errors.New("Failed to set notification channel")
 	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
 	ErrCreateMuting           = errors.New("Could not create muting")
+	ErrLikeNotFound           = errors.New("No row found to delete")
+	ErrDeleteLike             = errors.New("Could not delete a like.")
 )
 
 func NewInvalidUserIDError(id string) error {
