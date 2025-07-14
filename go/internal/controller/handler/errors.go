@@ -26,6 +26,7 @@ var (
 	ErrInvalidToken           = errors.New("Invalid or expired token.")
 	ErrInternalError          = errors.New("Unexpected error occurred.")
 	ErrGetTimeLineItemsFailed = errors.New("Could not get timeline items.")
+	ErrCreateBlock            = errors.New("Could not create a block.")
 )
 
 func NewInvalidUserIDError(id string) error {

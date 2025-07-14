@@ -16,4 +16,5 @@ var (
 	ErrRepostViolation      = errors.New("parent post type must not be repost")
 	ErrUserOrPostNotFound   = errors.New("user or post not found")
 	ErrAlreadyLiked         = errors.New("post is already liked")
+	ErrAlreadyBlocked       = errors.New("user is already blocked")
 )

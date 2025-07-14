@@ -39,3 +39,6 @@ func (u *blockUserUsecase) BlockUser(sourceUserID, targetUserID string) error {
 		return nil
 	})
 }
+
+func (u *blockUserUsecase) SetError(err error) {}
+func (u *blockUserUsecase) ClearError()        {}
