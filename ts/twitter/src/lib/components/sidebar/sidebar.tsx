@@ -1,7 +1,13 @@
 "use client";
 
-import { Flex, IconButton, Spacer, VStack } from "@chakra-ui/react";
-import Link from "next/link";
+import {
+  Link as ChakraLink,
+  Flex,
+  IconButton,
+  Spacer,
+  VStack,
+} from "@chakra-ui/react";
+import NextLink from "next/link";
 import type React from "react";
 import { useAuth } from "../auth-context";
 
@@ -79,21 +85,24 @@ export const SideBar: React.FC = () => {
   return (
     <Flex>
       <VStack marginBottom="24px" align="flex-start" gap="1">
-        <Link href="/home">
-          <Tooltip content="twitter" positioning={{ placement: "bottom" }}>
-            <Flex alignItems="center">
-              <IconButton
-                aria-label="Twitter"
-                borderRadius="full"
-                mx={3}
-                color={useColorModeValue("black", "white")}
-                bg={useColorModeValue("white", "black")}
-              >
-                <XIcon />
-              </IconButton>
-            </Flex>
-          </Tooltip>
-        </Link>
+        <ChakraLink asChild borderRadius="full" focusRing="none">
+          <NextLink href="/home">
+            <Tooltip content="twitter" positioning={{ placement: "bottom" }}>
+              <Flex alignItems="center">
+                <IconButton
+                  aria-label="Twitter"
+                  borderRadius="full"
+                  mx="3"
+                  color={useColorModeValue("black", "white")}
+                  bg={useColorModeValue("white", "black")}
+                  _hover={{ bg: useColorModeValue("gray.200", "gray.900") }}
+                >
+                  <XIcon />
+                </IconButton>
+              </Flex>
+            </Tooltip>
+          </NextLink>
+        </ChakraLink>
 
         {sidebarItems.map((item) => (
           <IconButtonWithLink

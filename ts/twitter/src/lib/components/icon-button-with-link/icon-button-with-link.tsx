@@ -25,7 +25,20 @@ export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
 }) => {
   const isTooltipDisabled = useBreakpointValue({ base: false, xl: true });
   return (
-    <ChakraLink asChild>
+    <ChakraLink
+      asChild
+      focusRing="none"
+      focusVisibleRing="outside"
+      _hover={{
+        bg: useColorModeValue("gray.200", "gray.900"),
+        textDecoration: "none",
+        "& button": {
+          bg: useColorModeValue("gray.200", "gray.900"),
+          transition: "none",
+        },
+      }}
+      borderRadius="full"
+    >
       <NextLink href={url}>
         <Flex alignItems="center" p="12px" w="100%">
           <Tooltip
@@ -37,6 +50,8 @@ export const IconButtonWithLink: React.FC<IconButtonWithLinkProps> = ({
               aria-label={ariaLabel}
               color={useColorModeValue("black", "white")}
               bg={useColorModeValue("white", "black")}
+              transition="none"
+              inert
             >
               {icon}
             </IconButton>
