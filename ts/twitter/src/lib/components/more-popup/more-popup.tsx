@@ -44,12 +44,29 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
     <Box position="relative">
       <Menu.Root {...props}>
         <Menu.Trigger asChild>
-          <Flex alignItems="center" p="12px" width="auto">
+          <Flex
+            as="button"
+            alignItems="center"
+            p="12px"
+            width="auto"
+            _hover={{
+              bg: useColorModeValue("gray.200", "gray.900"),
+              "& button": {
+                bg: useColorModeValue("gray.200", "gray.900"),
+                transition: "none",
+              },
+            }}
+            focusRing="none"
+            focusVisibleRing="outside"
+            borderRadius="full"
+          >
             <Tooltip content="More" disabled={isTooltipDisabled}>
               <IconButton
                 aria-label="More"
                 color={useColorModeValue("black", "white")}
                 bg={useColorModeValue("white", "black")}
+                transition="none"
+                inert
               >
                 <MoreIcon />
               </IconButton>
