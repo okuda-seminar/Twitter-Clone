@@ -14,6 +14,7 @@ export * from "./google-icon";
 export * from "./grok-icon";
 export * from "./home-icon";
 export * from "./mail-icon";
+export * from "./create-mail-icon";
 export * from "./media-icon";
 export * from "./monetization-icon";
 export * from "./moon-icon";
