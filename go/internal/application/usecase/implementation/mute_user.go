@@ -17,3 +17,6 @@ func (u *muteUserUsecase) MuteUser(sourceUserID, targetUserID string) error {
 	err := u.usersRepository.MuteUser(nil, sourceUserID, targetUserID)
 	return err
 }
+
+func (u *muteUserUsecase) SetError(err error) {}
+func (u *muteUserUsecase) ClearError()        {}

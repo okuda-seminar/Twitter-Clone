@@ -29,6 +29,7 @@ var (
 	ErrCreateBlock            = errors.New("Could not create a block.")
 	ErrSetChannel             = errors.New("Failed to set notification channel")
 	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
+	ErrCreateMuting           = errors.New("Could not create muting")
 )
 
 func NewInvalidUserIDError(id string) error {
