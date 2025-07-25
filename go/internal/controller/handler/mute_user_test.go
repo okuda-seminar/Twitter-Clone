@@ -1,57 +1,65 @@
 package handler
 
-// func (s *handlerTestSuite) TestCreateMuting() {
-// 	// CreateMuting must use existing user IDs from the user table
-// 	// for both the source user ID and target user ID.
-// 	// Therefore, users are created for testing purposes to obtain these IDs.
-// 	sourceUserID := s.newTestUser(`{ "username": "test", "display_name": "test", "password": "securepassword" }`)
-// 	targetUserID := s.newTestUser(`{ "username": "test2", "display_name": "test2", "password": "securepassword" }`)
+import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
 
-// 	tests := []struct {
-// 		name         string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "create muting",
-// 			body:         `{ "target_user_id": "` + targetUserID + `" }`,
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "invalid JSON body",
-// 			body:         `{ "target_user_id": "` + targetUserID,
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "invalid body",
-// 			body:         `{ "invalid": "test" }`,
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "duplicated muting",
-// 			body:         `{ "target_user_id": "` + targetUserID + `" }`,
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 	}
+	"github.com/google/uuid"
 
-// 	for _, test := range tests {
-// 		req := httptest.NewRequest(
-// 			"POST",
-// 			"/api/users/{id}/muting",
-// 			strings.NewReader(test.body),
-// 		)
-// 		req.SetPathValue("id", sourceUserID)
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+)
 
-// 		rr := httptest.NewRecorder()
-// 		CreateMuting(rr, req, s.muteUserUsecase)
+func TestMuteUser(t *testing.T) {
+	existingUserID := uuid.NewString()
+	targetUserID := uuid.NewString()
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf(
-// 				"%s: wrong code returned; expected %d, but got %d",
-// 				test.name,
-// 				test.expectedCode,
-// 				rr.Code,
-// 			)
-// 		}
-// 	}
-// }
+	tests := map[string]struct {
+		userID       string
+		requestBody  string
+		setup        func(usecase.MuteUserUsecase)
+		expectedCode int
+	}{
+		"returns 201 when muting succeeds": {
+			userID:       existingUserID,
+			requestBody:  fmt.Sprintf(`{"target_user_id": "%s"}`, targetUserID),
+			expectedCode: http.StatusCreated,
+		},
+		"returns 500 when user does not exist": {
+			userID:      uuid.NewString(),
+			requestBody: fmt.Sprintf(`{"target_user_id": "%s"}`, targetUserID),
+			setup: func(muteUserUsecase usecase.MuteUserUsecase) {
+				muteUserUsecase.SetError(usecase.ErrUserNotFound)
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
+
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			muteUserUsecase := usecaseInjector.InjectMuteUserUsecase(nil)
+			muteUserHandler := NewMuteUserHandler(muteUserUsecase)
+
+			if tt.setup != nil {
+				tt.setup(muteUserUsecase)
+			}
+
+			req := httptest.NewRequest(
+				"POST",
+				fmt.Sprintf("/api/users/%s/muting", tt.userID),
+				strings.NewReader(tt.requestBody),
+			)
+			req.Header.Set("Content-Type", "application/json")
+			rr := httptest.NewRecorder()
+
+			muteUserHandler.MuteUser(rr, req, tt.userID)
+
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
