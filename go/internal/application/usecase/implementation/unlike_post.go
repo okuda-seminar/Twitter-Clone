@@ -23,3 +23,6 @@ func (u *unlikePostUsecase) UnlikePost(userID string, postID string) error {
 
 	return err
 }
+
+func (u *unlikePostUsecase) SetError(err error) {}
+func (u *unlikePostUsecase) ClearError()        {}
