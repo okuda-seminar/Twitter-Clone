@@ -23,3 +23,6 @@ func (u *unmuteUserUsecase) UnmuteUser(sourceUserID, targetUserID string) error 
 
 	return err
 }
+
+func (u *unmuteUserUsecase) SetError(err error) {}
+func (u *unmuteUserUsecase) ClearError()        {}

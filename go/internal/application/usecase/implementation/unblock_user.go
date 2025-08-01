@@ -23,3 +23,6 @@ func (u *unblockUserUsecase) UnblockUser(sourceUserID, targetUserID string) erro
 
 	return err
 }
+
+func (u *unblockUserUsecase) SetError(err error) {}
+func (u *unblockUserUsecase) ClearError()        {}
