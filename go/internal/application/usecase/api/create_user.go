@@ -6,4 +6,9 @@ import (
 
 type CreateUserUsecase interface {
 	CreateUser(username, displayName, password string) (entity.User, error)
+
+	SetError(err error)
+	ClearError()
+	SetUser(user entity.User)
+	ClearUser()
 }

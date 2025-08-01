@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"x-clone-backend/internal/application/service"
@@ -32,19 +31,19 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Request body was invalid."), http.StatusBadRequest)
+		http.Error(w, ErrDecodeRequestBody.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = h.authService.ValidatePassword(body.Password)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid Password: %v", err), http.StatusBadRequest)
+		http.Error(w, NewInvalidPasswordError(err).Error(), http.StatusBadRequest)
 		return
 	}
 
 	hashedPassword, err := h.authService.HashPassword(body.Password)
 	if err != nil {
-		http.Error(w, "Could not hash password.", http.StatusInternalServerError)
+		http.Error(w, ErrHashPassword.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -57,13 +56,13 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		} else {
 			code = http.StatusInternalServerError
 		}
-		http.Error(w, fmt.Sprintln("Could not create a user."), code)
+		http.Error(w, ErrCreateUser.Error(), code)
 		return
 	}
 
 	token, err := h.authService.GenerateJWT(user.ID, user.Username)
 	if err != nil {
-		http.Error(w, "Could not generate token.", http.StatusInternalServerError)
+		http.Error(w, ErrGenerateToken.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -75,7 +74,7 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 	err = encoder.Encode(res)
 	if err != nil {
-		http.Error(w, fmt.Sprintln("Could not encode response."), http.StatusInternalServerError)
+		http.Error(w, ErrEncodeResponse.Error(), http.StatusInternalServerError)
 		return
 	}
 }

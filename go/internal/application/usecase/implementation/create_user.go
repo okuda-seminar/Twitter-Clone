@@ -28,3 +28,8 @@ func (u *createUserUsecase) CreateUser(username, displayName, hashedPassword str
 
 	return user, nil
 }
+
+func (u *createUserUsecase) SetError(err error)       {}
+func (u *createUserUsecase) ClearError()              {}
+func (u *createUserUsecase) SetUser(user entity.User) {}
+func (u *createUserUsecase) ClearUser()               {}

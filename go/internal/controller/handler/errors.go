@@ -30,6 +30,9 @@ var (
 	ErrSetChannel             = errors.New("Failed to set notification channel")
 	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
 	ErrCreateMuting           = errors.New("Could not create muting")
+	ErrCreateUser             = errors.New("Could not create a user.")
+	ErrGenerateToken          = errors.New("Could not generate token.")
+	ErrHashPassword           = errors.New("Could not hash password.")
 )
 
 func NewInvalidUserIDError(id string) error {
@@ -38,4 +41,8 @@ func NewInvalidUserIDError(id string) error {
 
 func NewUserNotFoundError(userID string) error {
 	return fmt.Errorf("Could not find a user (ID: %s).", userID)
+}
+
+func NewInvalidPasswordError(err error) error {
+	return fmt.Errorf("Invalid Password: %v", err)
 }
