@@ -1,70 +1,83 @@
 package handler
 
-// func (s *handlerTestSuite) TestCreateUser() {
-// 	tests := []struct {
-// 		name         string
-// 		body         string
-// 		expectedCode int
-// 	}{
-// 		{
-// 			name:         "create user",
-// 			body:         `{ "username": "test", "display_name": "test", "password": "securepassword" }`,
-// 			expectedCode: http.StatusCreated,
-// 		},
-// 		{
-// 			name:         "invalid JSON body",
-// 			body:         `{ "username": "` + "test",
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "invalid body",
-// 			body:         `{ "invalid": "test", "password": "securepassword" }`,
-// 			expectedCode: http.StatusInternalServerError,
-// 		},
-// 		{
-// 			name:         "duplicated username",
-// 			body:         `{ "username": "test", "display_name": "duplicated", "password": "securepassword" }`,
-// 			expectedCode: http.StatusConflict,
-// 		},
-// 		{
-// 			name:         "password too short",
-// 			body:         `{ "username": "test2", "display_name": "duplicated", "password": "shortpw" }`,
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 		{
-// 			name:         "password too long",
-// 			body:         `{ "username": "test3", "display_name": "duplicated", "password": "longsecurepassword" }`,
-// 			expectedCode: http.StatusBadRequest,
-// 		},
-// 	}
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	for _, test := range tests {
-// 		createUserHandler := NewCreateUserHandler(s.db, s.authService)
+	"x-clone-backend/internal/application/service"
+	usecase "x-clone-backend/internal/application/usecase/api"
+	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	infraInjector "x-clone-backend/internal/infrastructure/injector"
+	"x-clone-backend/internal/openapi"
+)
 
-// 		req := httptest.NewRequest("POST", "/api/users", strings.NewReader(test.body))
-// 		rr := httptest.NewRecorder()
+func TestCreateUser(t *testing.T) {
+	tests := map[string]struct {
+		requestBody  openapi.CreateUserRequest
+		setup        func(createUserUsecase usecase.CreateUserUsecase)
+		expectedCode int
+	}{
+		"returns 201 when user is created successfully": {
+			requestBody: openapi.CreateUserRequest{
+				Username:    "testuser",
+				DisplayName: "Test User",
+				Password:    "securepassword",
+			},
+			expectedCode: http.StatusCreated,
+		},
+		"returns 409 when username already exists": {
+			requestBody: openapi.CreateUserRequest{
+				Username:    "existinguser",
+				DisplayName: "Existing User",
+				Password:    "securepassword",
+			},
+			setup: func(createUserUsecase usecase.CreateUserUsecase) {
+				createUserUsecase.SetError(usecase.ErrUserAlreadyExists)
+			},
+			expectedCode: http.StatusConflict,
+		},
+		"returns 500 when unexpected error occurs": {
+			requestBody: openapi.CreateUserRequest{
+				Username:    "testuser",
+				DisplayName: "Test User",
+				Password:    "securepassword",
+			},
+			setup: func(createUserUsecase usecase.CreateUserUsecase) {
+				createUserUsecase.SetError(fmt.Errorf("unexpected error"))
+			},
+			expectedCode: http.StatusInternalServerError,
+		},
+	}
 
-// 		createUserHandler.CreateUser(rr, req)
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			// Setup
+			usersRepository := infraInjector.InjectUsersRepository(nil)
+			createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
+			authService := service.NewAuthService("test_secret_key")
+			createUserHandler := NewCreateUserHandler(authService, createUserUsecase)
 
-// 		if rr.Code != test.expectedCode {
-// 			s.T().Errorf("%s: wrong code returned; expected %d, but got %d", test.name, test.expectedCode, rr.Code)
-// 		}
+			if tt.setup != nil {
+				tt.setup(createUserUsecase)
+			}
 
-// 		if test.expectedCode == http.StatusCreated {
-// 			var res map[string]interface{}
-// 			err := json.Unmarshal(rr.Body.Bytes(), &res)
-// 			if err != nil {
-// 				s.T().Errorf("%s: failed to parse response body: %v", test.name, err)
-// 				continue
-// 			}
+			// Create request
+			reqBody, _ := json.Marshal(tt.requestBody)
+			req := httptest.NewRequest(http.MethodPost, "/api/users", bytes.NewBuffer(reqBody))
+			req.Header.Set("Content-Type", "application/json")
+			rr := httptest.NewRecorder()
 
-// 			if _, ok := res["token"]; !ok {
-// 				s.T().Errorf("%s: token not found in response", test.name)
-// 			}
+			// Execute
+			createUserHandler.CreateUser(rr, req)
 
-// 			if _, ok := res["user"]; !ok {
-// 				s.T().Errorf("%s: user not found in response", test.name)
-// 			}
-// 		}
-// 	}
-// }
+			// Assert status code
+			if rr.Code != tt.expectedCode {
+				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)
+			}
+		})
+	}
+}
