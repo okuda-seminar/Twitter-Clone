@@ -59,7 +59,13 @@ func TestLoginHandler(t *testing.T) {
 			// Fixture
 			hashedPassword, _ := authService.HashPassword(password)
 			createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
-			createUserUsecase.CreateUser(username, "Test User", hashedPassword)
+			user, err := createUserUsecase.CreateUser(username, "Test User", hashedPassword)
+
+			// Create a user directly through the fake repository if no error occurs,
+			// since the fake create user use case does not add a user to the database.
+			if err == nil {
+				usersRepository.CreateUser(nil, user.Username, user.DisplayName, user.Password)
+			}
 
 			reqBody, _ := json.Marshal(tt.requestBody)
 			req := httptest.NewRequest(http.MethodPost, "/api/login", bytes.NewBuffer(reqBody))
