@@ -7,8 +7,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/google/uuid"
+
 	"x-clone-backend/internal/application/service"
 	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/domain/entity"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
 	"x-clone-backend/internal/openapi"
 )
@@ -58,7 +61,14 @@ func TestLoginHandler(t *testing.T) {
 
 			// Fixture
 			hashedPassword, _ := authService.HashPassword(password)
+			user := entity.User{
+				ID:          uuid.NewString(),
+				Username:    username,
+				Password:    hashedPassword,
+				DisplayName: "testuser",
+			}
 			createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
+			createUserUsecase.SetUser(user)
 			createUserUsecase.CreateUser(username, "Test User", hashedPassword)
 
 			reqBody, _ := json.Marshal(tt.requestBody)
