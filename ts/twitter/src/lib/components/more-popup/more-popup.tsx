@@ -45,7 +45,7 @@ export const MorePopup: React.FC<Omit<Menu.RootProps, "children">> = (
       <Menu.Root {...props}>
         <Menu.Trigger asChild>
           <Flex
-            as="button"
+            tabIndex={0}
             alignItems="center"
             p="12px"
             width="auto"
