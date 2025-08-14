@@ -15,6 +15,10 @@ export const system = createSystem(defaultConfig, {
         error: {
           primary: { value: "#3D0105" },
         },
+        backdrop: {
+          light: { value: "rgba(0, 0, 0, 0.4)" },
+          dark: { value: "rgba(91, 112, 131, 0.4)" },
+        },
       },
     },
   },
