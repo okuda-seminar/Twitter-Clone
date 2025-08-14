@@ -14,9 +14,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 import type React from "react";
 
 export const Messages: React.FC = () => {
+  const router = useRouter();
   return (
     <VStack align="stretch">
       <Box divideY="1px">
@@ -61,6 +63,7 @@ export const Messages: React.FC = () => {
                   borderRadius="full"
                   color={useColorModeValue("black", "white")}
                   _hover={{ bg: useColorModeValue("gray.200", "gray.900") }}
+                  onClick={() => router.push("/message/compose")}
                 >
                   <CreateMailIcon />
                 </IconButton>
@@ -97,7 +100,7 @@ export const Messages: React.FC = () => {
 
             <Box alignSelf="flex-start">
               <ChakraLink asChild _hover={{ textDecoration: "none" }}>
-                <NextLink href="/message" scroll={false}>
+                <NextLink href="/message/compose" scroll={false}>
                   <Button
                     bg="blue.primary"
                     color="white"
