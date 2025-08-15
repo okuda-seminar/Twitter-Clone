@@ -19,8 +19,6 @@ import (
 	"x-clone-backend/internal/openapi"
 )
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/743
-// - Add a test case for a repost violation
 func TestCreateQuoteRepost(t *testing.T) {
 	nonExistentUserID := uuid.NewString()
 	existentUserID := uuid.NewString()
@@ -48,6 +46,14 @@ func TestCreateQuoteRepost(t *testing.T) {
 			errKey:         repository.ErrKeyCreateQuoteRepost,
 			err:            nil,
 			expectedCode:   http.StatusCreated,
+		},
+		"invalid parent post type": {
+			userID:         existentUserID,
+			text:           "test",
+			parentPostType: entity.PostTypeRepost,
+			errKey:         repository.ErrKeyCreateQuoteRepost,
+			err:            nil,
+			expectedCode:   http.StatusBadRequest,
 		},
 		"non-existent userID": {
 			userID:         nonExistentUserID,
@@ -87,30 +93,43 @@ func TestCreateQuoteRepost(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
-			createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
 			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
 			CreateQuoteRepostHandler := NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase)
 
+			var parentPost entity.TimelineItem
 			var parentPostID string
 			var err error
 
+			postUserID := uuid.NewString()
+			postText := "test"
+
 			switch tt.parentPostType {
 			case entity.PostTypePost:
-				parentPostID, err = newCreatePost(updateNotificationUsecase, createPostUsecase)
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
 			case entity.PostTypeQuoteRepost:
-				parentPostID, err = newCreatePost(updateNotificationUsecase, createPostUsecase)
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
-				parentPostID, err = newCreateQuoteRepost(updateNotificationUsecase, createQuoteRepostUsecase, parentPostID)
+				parentPost, err = timelineItemsRepository.CreateQuoteRepost(postUserID, parentPost.ID, postText)
 				if err != nil {
 					t.Errorf("Failed to create a quote repost")
 				}
+			case entity.PostTypeRepost:
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
+				if err != nil {
+					t.Errorf("Failed to create a post")
+				}
+				parentPost, err = timelineItemsRepository.CreateRepost(postUserID, parentPost.ID)
+				if err != nil {
+					t.Errorf("Failed to create ae repost")
+				}
 			}
+			parentPostID = parentPost.ID
 
 			if tt.err != nil {
 				timelineItemsRepository.SetError(tt.errKey, tt.err)
