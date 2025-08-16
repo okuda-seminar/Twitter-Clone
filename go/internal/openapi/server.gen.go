@@ -21,6 +21,9 @@ type ServerInterface interface {
 	// Delete specified post by ID.
 	// (DELETE /posts/{postId})
 	DeletePost(w http.ResponseWriter, r *http.Request, postId string)
+	// Get specified post by ID.
+	// (GET /posts/{postId})
+	GetPostByPostID(w http.ResponseWriter, r *http.Request, postId string)
 	// Verify user session in token.
 	// (GET /session/verify)
 	VerifySession(w http.ResponseWriter, r *http.Request)
@@ -116,6 +119,31 @@ func (siw *ServerInterfaceWrapper) DeletePost(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.DeletePost(w, r, postId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetPostByPostID operation middleware
+func (siw *ServerInterfaceWrapper) GetPostByPostID(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "postId" -------------
+	var postId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "postId", r.PathValue("postId"), &postId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "postId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetPostByPostID(w, r, postId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -726,6 +754,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 
 	m.HandleFunc("POST "+options.BaseURL+"/login", wrapper.Login)
 	m.HandleFunc("DELETE "+options.BaseURL+"/posts/{postId}", wrapper.DeletePost)
+	m.HandleFunc("GET "+options.BaseURL+"/posts/{postId}", wrapper.GetPostByPostID)
 	m.HandleFunc("GET "+options.BaseURL+"/session/verify", wrapper.VerifySession)
 	m.HandleFunc("POST "+options.BaseURL+"/users", wrapper.CreateUser)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{id}/following", wrapper.CreateFollowship)

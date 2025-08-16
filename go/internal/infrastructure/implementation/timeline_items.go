@@ -251,17 +251,18 @@ func (r *timelineItemsRepository) CreateQuoteRepost(userID, postID, text string)
 }
 
 func (r *timelineItemsRepository) TimelineItemByID(postID string) (*entity.TimelineItem, error) {
-	query := `SELECT type, author_id, parent_post_id ,text, created_at FROM timelineitems WHERE id = $1`
+	query := `SELECT * FROM timelineitems WHERE id = $1`
 
 	var (
+		id           string
 		postType     string
 		authorID     string
-		parentPostID sql.NullString
+		parentPostID value.NullUUID
 		text         string
 		createdAt    time.Time
 	)
 
-	err := r.db.QueryRow(query, postID).Scan(&postType, &authorID, &parentPostID, &text, &createdAt)
+	err := r.db.QueryRow(query, postID).Scan(&id, &postType, &authorID, &parentPostID, &text, &createdAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, repository.ErrRecordNotFound
@@ -271,8 +272,9 @@ func (r *timelineItemsRepository) TimelineItemByID(postID string) (*entity.Timel
 
 	item := &entity.TimelineItem{
 		Type:         postType,
+		ID:           id,
 		AuthorID:     authorID,
-		ParentPostID: value.NullUUID{UUID: parentPostID.String, Valid: parentPostID.Valid},
+		ParentPostID: parentPostID,
 		Text:         text,
 		CreatedAt:    createdAt,
 	}

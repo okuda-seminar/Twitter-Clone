@@ -1,0 +1,8 @@
+title: Repost with parent
+allOf:
+  - $ref: './repost.yml'
+  - type: object
+    properties:
+      parentPost:
+        description: Parent post
+        $ref: './parent_post.yml'

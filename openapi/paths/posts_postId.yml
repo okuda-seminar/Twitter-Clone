@@ -16,3 +16,26 @@ delete:
       description: The specified post does not exist.
     "500":
       description: Unexpected error occurred.
+
+get:
+  tags:
+    - X-Clone
+  summary: Get specified post by ID.
+  parameters:
+    - in: path
+      name: postId
+      schema:
+        type: string
+      required: true
+  operationId: getPostByPostID
+  responses:
+    "200":
+      description: The specified post
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/get_post_by_post_id_response.yml
+    "404":
+      description: The specified post does not exist.
+    "500":
+      description: Unexpected error occurred.
