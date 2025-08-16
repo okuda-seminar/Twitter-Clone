@@ -1,0 +1,3 @@
+oneOf:
+  - $ref: './post.yml'
+  - $ref: './quote_repost.yml'

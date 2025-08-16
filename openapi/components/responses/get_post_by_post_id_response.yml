@@ -1,0 +1,4 @@
+oneOf:
+  - $ref: ../schemas/post.yml
+  - $ref: ../schemas/quote_repost_with_parent.yml
+  - $ref: ../schemas/repost_with_parent.yml

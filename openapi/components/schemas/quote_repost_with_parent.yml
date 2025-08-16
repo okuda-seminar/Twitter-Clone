@@ -1,0 +1,8 @@
+title: Quote repost with parent
+allOf:
+  - $ref: './quote_repost.yml'
+  - type: object
+    properties:
+      parentPost:
+        description: Parent post
+        $ref: './parent_post.yml'

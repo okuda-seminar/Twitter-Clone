@@ -35,6 +35,7 @@ type Server struct {
 	handler.UnmuteUserHandler
 	handler.BlockUserHandler
 	handler.UnblockUserHandler
+	handler.GetPostByPostIDHandler
 }
 
 func NewServer(db *sql.DB) Server {
@@ -64,6 +65,7 @@ func NewServer(db *sql.DB) Server {
 	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
+	getPostByPostIDUsecase := usecaseInjector.InjectGetPostByPostIDUsecase(&timelineItemsRepository)
 
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
@@ -86,5 +88,6 @@ func NewServer(db *sql.DB) Server {
 		UnmuteUserHandler:                          handler.NewUnmuteUserHandler(unmuteUserUsecase),
 		BlockUserHandler:                           handler.NewBlockUserHandler(blockUserUsecase),
 		UnblockUserHandler:                         handler.NewUnblockUserHandler(unblockUserUsecase),
+		GetPostByPostIDHandler:                     handler.NewGetPostByPostIDHandler(getPostByPostIDUsecase),
 	}
 }

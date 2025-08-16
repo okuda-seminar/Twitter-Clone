@@ -1,0 +1,20 @@
+type: object
+title: Post
+required:
+  - type
+  - id
+  - authorId
+  - text
+  - createdAt
+properties:
+  type:
+    type: string
+  id:
+    type: string
+  authorId:
+    type: string
+  text:
+    type: string
+  createdAt:
+    type: string
+    format: date-time

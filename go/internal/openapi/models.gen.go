@@ -4,7 +4,10 @@
 package openapi
 
 import (
+	"encoding/json"
 	"time"
+
+	"github.com/oapi-codegen/runtime"
 )
 
 const (
@@ -105,6 +108,11 @@ type FindUserByIdResponse struct {
 	Username    string    `json:"username"`
 }
 
+// GetPostByPostIdResponse defines model for get_post_by_post_id_response.
+type GetPostByPostIdResponse struct {
+	union json.RawMessage
+}
+
 // GetReverseChronologicalHomeTimelineResponse defines model for get_reverse_chronological_home_timeline_response.
 type GetReverseChronologicalHomeTimelineResponse struct {
 	Data *struct {
@@ -161,6 +169,20 @@ type MuteUserRequest struct {
 	TargetUserId string `json:"target_user_id"`
 }
 
+// ParentPost defines model for parent_post.
+type ParentPost struct {
+	union json.RawMessage
+}
+
+// Post defines model for post.
+type Post struct {
+	AuthorId  string    `json:"authorId"`
+	CreatedAt time.Time `json:"createdAt"`
+	Id        string    `json:"id"`
+	Text      string    `json:"text"`
+	Type      string    `json:"type"`
+}
+
 // QuoteRepost defines model for quote_repost.
 type QuoteRepost struct {
 	AuthorId     string    `json:"authorId"`
@@ -174,11 +196,38 @@ type QuoteRepost struct {
 	Type string `json:"type"`
 }
 
+// QuoteRepostWithParent defines model for quote_repost_with_parent.
+type QuoteRepostWithParent struct {
+	AuthorId     string      `json:"authorId"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	Id           string      `json:"id"`
+	ParentPost   *ParentPost `json:"parentPost,omitempty"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
+	Text string `json:"text"`
+	Type string `json:"type"`
+}
+
 // Repost defines model for repost.
 type Repost struct {
 	AuthorId     string    `json:"authorId"`
 	CreatedAt    time.Time `json:"createdAt"`
 	Id           string    `json:"id"`
+	ParentPostId struct {
+		UUID  string `json:"UUID"`
+		Valid bool   `json:"Valid"`
+	} `json:"parentPostId"`
+	Type string `json:"type"`
+}
+
+// RepostWithParent defines model for repost_with_parent.
+type RepostWithParent struct {
+	AuthorId     string      `json:"authorId"`
+	CreatedAt    time.Time   `json:"createdAt"`
+	Id           string      `json:"id"`
+	ParentPost   *ParentPost `json:"parentPost,omitempty"`
 	ParentPostId struct {
 		UUID  string `json:"UUID"`
 		Valid bool   `json:"Valid"`
@@ -231,3 +280,153 @@ type CreateRepostJSONRequestBody = CreateRepostRequest
 
 // DeleteRepostJSONRequestBody defines body for DeleteRepost for application/json ContentType.
 type DeleteRepostJSONRequestBody = DeleteRepostRequest
+
+// AsPost returns the union data inside the GetPostByPostIdResponse as a Post
+func (t GetPostByPostIdResponse) AsPost() (Post, error) {
+	var body Post
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPost overwrites any union data inside the GetPostByPostIdResponse as the provided Post
+func (t *GetPostByPostIdResponse) FromPost(v Post) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePost performs a merge with any union data inside the GetPostByPostIdResponse, using the provided Post
+func (t *GetPostByPostIdResponse) MergePost(v Post) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsQuoteRepostWithParent returns the union data inside the GetPostByPostIdResponse as a QuoteRepostWithParent
+func (t GetPostByPostIdResponse) AsQuoteRepostWithParent() (QuoteRepostWithParent, error) {
+	var body QuoteRepostWithParent
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromQuoteRepostWithParent overwrites any union data inside the GetPostByPostIdResponse as the provided QuoteRepostWithParent
+func (t *GetPostByPostIdResponse) FromQuoteRepostWithParent(v QuoteRepostWithParent) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeQuoteRepostWithParent performs a merge with any union data inside the GetPostByPostIdResponse, using the provided QuoteRepostWithParent
+func (t *GetPostByPostIdResponse) MergeQuoteRepostWithParent(v QuoteRepostWithParent) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRepostWithParent returns the union data inside the GetPostByPostIdResponse as a RepostWithParent
+func (t GetPostByPostIdResponse) AsRepostWithParent() (RepostWithParent, error) {
+	var body RepostWithParent
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRepostWithParent overwrites any union data inside the GetPostByPostIdResponse as the provided RepostWithParent
+func (t *GetPostByPostIdResponse) FromRepostWithParent(v RepostWithParent) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRepostWithParent performs a merge with any union data inside the GetPostByPostIdResponse, using the provided RepostWithParent
+func (t *GetPostByPostIdResponse) MergeRepostWithParent(v RepostWithParent) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetPostByPostIdResponse) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetPostByPostIdResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPost returns the union data inside the ParentPost as a Post
+func (t ParentPost) AsPost() (Post, error) {
+	var body Post
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPost overwrites any union data inside the ParentPost as the provided Post
+func (t *ParentPost) FromPost(v Post) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePost performs a merge with any union data inside the ParentPost, using the provided Post
+func (t *ParentPost) MergePost(v Post) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsQuoteRepost returns the union data inside the ParentPost as a QuoteRepost
+func (t ParentPost) AsQuoteRepost() (QuoteRepost, error) {
+	var body QuoteRepost
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromQuoteRepost overwrites any union data inside the ParentPost as the provided QuoteRepost
+func (t *ParentPost) FromQuoteRepost(v QuoteRepost) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeQuoteRepost performs a merge with any union data inside the ParentPost, using the provided QuoteRepost
+func (t *ParentPost) MergeQuoteRepost(v QuoteRepost) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ParentPost) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *ParentPost) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}

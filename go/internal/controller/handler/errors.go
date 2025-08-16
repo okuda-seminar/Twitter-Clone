@@ -32,6 +32,7 @@ var (
 	ErrCreateMuting           = errors.New("Could not create muting")
 	ErrLikeNotFound           = errors.New("No row found to delete")
 	ErrDeleteLike             = errors.New("Could not delete a like.")
+	ErrGetPostByPostID        = errors.New("Could not get the specified post")
 )
 
 func NewInvalidUserIDError(id string) error {
