@@ -35,6 +35,7 @@ var (
 	ErrCreateUser             = errors.New("Could not create a user.")
 	ErrGenerateToken          = errors.New("Could not generate token.")
 	ErrHashPassword           = errors.New("Could not hash password.")
+	ErrGetPostByPostID        = errors.New("Could not get the specified post")
 )
 
 func NewInvalidUserIDError(id string) error {
