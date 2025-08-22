@@ -1,6 +1,7 @@
 "use client";
 
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
+import { Tooltip } from "@/lib/components/ui/tooltip";
 import type { TimelineItem } from "@/lib/models/post";
 import {
   Avatar,
@@ -8,21 +9,26 @@ import {
   Flex,
   HStack,
   IconButton,
-  Spacer,
+  Menu,
+  Portal,
   Text,
 } from "@chakra-ui/react";
 import {
   AnalyticsIcon,
   BookmarksIcon,
+  DeleteIcon,
+  EmbeddingIcon,
   GrokIcon,
+  HighlightIcon,
   LikeIcon,
+  ListIcon,
+  PinIcon,
   ReplyIcon,
   RepostIcon,
+  RequestIcon,
   ShareIcon,
   ThreeDotsIcon,
 } from "../../../../../lib/components/icons";
-
-import { Tooltip } from "@/lib/components/ui/tooltip";
 
 interface TimelinePostCardProps {
   timelineItem: TimelineItem;
@@ -36,7 +42,6 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
       key={timelineItem.id}
       p="1"
       borderBottomWidth="1px"
-      maxW="840px"
       borderColor="gray.700"
     >
       {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/808
@@ -58,7 +63,7 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
               - Add time ago calculation. */}
               <Text color="gray.500">0h</Text>
             </HStack>
-            <Spacer />
+            <Box flex="1" />
 
             <HStack mt="-6" gap="-2" mr="-1">
               <Tooltip
@@ -78,17 +83,116 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
               </Tooltip>
 
               <Tooltip content="More" positioning={{ placement: "bottom" }}>
-                <IconButton
-                  mt="5px"
-                  ml="-2"
-                  bg="transparent"
-                  borderRadius="full"
-                  aria-label="More options"
-                  color={useColorModeValue("black", "gray.500")}
-                  _hover={{ bg: "blue.500_10", color: "blue.400" }}
-                >
-                  <ThreeDotsIcon />
-                </IconButton>
+                <Menu.Root positioning={{ placement: "left-start" }}>
+                  <Menu.Trigger asChild>
+                    <IconButton
+                      mt="5px"
+                      ml="-2"
+                      bg="transparent"
+                      borderRadius="full"
+                      aria-label="More options"
+                      color={useColorModeValue("black", "gray.500")}
+                      _hover={{ bg: "blue.500_10", color: "blue.400" }}
+                    >
+                      <ThreeDotsIcon />
+                    </IconButton>
+                  </Menu.Trigger>
+
+                  <Portal>
+                    <Menu.Positioner
+                      backgroundColor={useColorModeValue("white", "black")}
+                    >
+                      <Menu.Content
+                        transform="translate(18%, 2%)"
+                        backgroundColor={useColorModeValue("white", "black")}
+                        widows="100%"
+                        borderRadius="md"
+                      >
+                        <Menu.Item value="delete" color="red.400">
+                          <Flex align="center" p="8px" w="100%">
+                            <DeleteIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Delete</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="pin">
+                          <Flex align="center" p="8px" w="100%">
+                            <PinIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Pin to your profile</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="highlight">
+                          <Flex align="center" p="8px" w="100%">
+                            <HighlightIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Highlight on your profile</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="list">
+                          <Flex align="center" p="8px" w="100%">
+                            <ListIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Add/remove from Lists</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="reply">
+                          <Flex align="center" p="8px" w="100%">
+                            <ReplyIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Change who can reply</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="engagements">
+                          <Flex align="center" p="8px" w="100%">
+                            <AnalyticsIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>View post engagements</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="embedding">
+                          <Flex align="center" p="8px" w="100%">
+                            <EmbeddingIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Embeded post</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="analytics">
+                          <Flex align="center" p="8px" w="100%">
+                            <AnalyticsIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>View post analytics</Text>
+                          </Flex>
+                        </Menu.Item>
+                        <Menu.Item value="request">
+                          <Flex align="center" p="8px" w="100%">
+                            <RequestIcon
+                              boxSize="20px"
+                              style={{ marginRight: "8px" }}
+                            />
+                            <Text>Request community note</Text>
+                          </Flex>
+                        </Menu.Item>
+                      </Menu.Content>
+                    </Menu.Positioner>
+                  </Portal>
+                </Menu.Root>
               </Tooltip>
             </HStack>
           </Flex>
@@ -109,82 +213,79 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
             }
           })()}
 
-          <Flex
-            mt="3"
-            px="20"
-            width="100%"
-            justifyContent="space-between"
-            alignItems="center"
-            color="gray.500"
-          >
-            <HStack gap="120px" ml="-12" mr="120">
-              <Tooltip content="Reply" positioning={{ placement: "bottom" }}>
-                <IconButton
-                  mt="5px"
-                  bg="transparent"
-                  borderRadius="full"
-                  aria-label="Reply"
-                  color={useColorModeValue("black", "gray.500")}
-                  _hover={{ bg: "blue.500_10", color: "blue.400" }}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <ReplyIcon boxSize="20px" />
-                </IconButton>
-              </Tooltip>
+          <Flex mt="3" width="100%" alignItems="center" color="gray.500">
+            <Flex flex="1" justifyContent="flex-start">
+              <Box flex="1 1 25%">
+                <Tooltip content="Reply" positioning={{ placement: "bottom" }}>
+                  <IconButton
+                    bg="transparent"
+                    borderRadius="full"
+                    aria-label="Reply"
+                    color={useColorModeValue("black", "gray.500")}
+                    _hover={{ bg: "blue.500_10", color: "blue.400" }}
+                    size="sm"
+                    variant="ghost"
+                  >
+                    <ReplyIcon boxSize="20px" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
 
-              <Tooltip content="Repost" positioning={{ placement: "bottom" }}>
-                <IconButton
-                  mt="5px"
-                  bg="transparent"
-                  borderRadius="full"
-                  aria-label="Repost"
-                  color={useColorModeValue("black", "gray.500")}
-                  _hover={{ bg: "blue.500_10", color: "green.400" }}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <RepostIcon boxSize="20px" />
-                </IconButton>
-              </Tooltip>
+              <Box flex="1 1 25%">
+                <Tooltip content="Repost" positioning={{ placement: "bottom" }}>
+                  <IconButton
+                    bg="transparent"
+                    borderRadius="full"
+                    aria-label="Repost"
+                    color={useColorModeValue("black", "gray.500")}
+                    _hover={{ bg: "blue.500_10", color: "green.400" }}
+                    size="sm"
+                    variant="ghost"
+                  >
+                    <RepostIcon boxSize="20px" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
 
-              <Tooltip content="Like" positioning={{ placement: "bottom" }}>
-                <IconButton
-                  mt="5px"
-                  bg="transparent"
-                  borderRadius="full"
-                  aria-label="Like"
-                  color={useColorModeValue("black", "gray.500")}
-                  _hover={{ bg: "blue.500_10", color: "pink.400" }}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <LikeIcon boxSize="20px" />
-                </IconButton>
-              </Tooltip>
+              <Box flex="1 1 25%">
+                <Tooltip content="Like" positioning={{ placement: "bottom" }}>
+                  <IconButton
+                    bg="transparent"
+                    borderRadius="full"
+                    aria-label="Like"
+                    color={useColorModeValue("black", "gray.500")}
+                    _hover={{ bg: "blue.500_10", color: "pink.400" }}
+                    size="sm"
+                    variant="ghost"
+                  >
+                    <LikeIcon boxSize="20px" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
 
-              <Tooltip content="View" positioning={{ placement: "bottom" }}>
-                <IconButton
-                  mt="5px"
-                  bg="transparent"
-                  borderRadius="full"
-                  aria-label="Analytics"
-                  color={useColorModeValue("black", "gray.500")}
-                  _hover={{ bg: "blue.500_10", color: "blue.400" }}
-                  size="sm"
-                  variant="ghost"
-                >
-                  <AnalyticsIcon boxSize="20px" />
-                </IconButton>
-              </Tooltip>
-            </HStack>
+              <Box flex="1 1 25%">
+                <Tooltip content="View" positioning={{ placement: "bottom" }}>
+                  <IconButton
+                    bg="transparent"
+                    borderRadius="full"
+                    aria-label="Analytics"
+                    color={useColorModeValue("black", "gray.500")}
+                    _hover={{ bg: "blue.500_10", color: "blue.400" }}
+                    size="sm"
+                    variant="ghost"
+                  >
+                    <AnalyticsIcon boxSize="20px" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Flex>
 
-            <HStack gap="-1" mr="-20">
+            <Flex flex="0 0 auto" justifyContent="flex-end" gap="-20" mr="-2">
               <Tooltip content="Bookmark" positioning={{ placement: "bottom" }}>
                 <IconButton
-                  mt="5px"
                   bg="transparent"
                   borderRadius="full"
+                  aria-label="Bookmark"
                   color={useColorModeValue("black", "gray.500")}
                   _hover={{ bg: "blue.500_10", color: "blue.400" }}
                 >
@@ -194,17 +295,16 @@ export const TimelinePostCard: React.FC<TimelinePostCardProps> = ({
 
               <Tooltip content="Share" positioning={{ placement: "bottom" }}>
                 <IconButton
-                  mt="5px"
-                  ml="-2"
                   bg="transparent"
                   borderRadius="full"
+                  aria-label="Share"
                   color={useColorModeValue("black", "gray.500")}
                   _hover={{ bg: "blue.500_10", color: "blue.400" }}
                 >
                   <ShareIcon />
                 </IconButton>
               </Tooltip>
-            </HStack>
+            </Flex>
           </Flex>
         </Box>
       </Flex>
