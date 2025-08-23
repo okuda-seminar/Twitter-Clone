@@ -1,0 +1,2 @@
+oneOf:
+  - $ref: ../schemas/user.yml

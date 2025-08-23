@@ -41,6 +41,8 @@ paths:
     $ref: ./paths/followship.yml
   /users/{sourceUserID}/following/{targetUserID}:
     $ref: ./paths/delete_followship.yml
+  /users/{userId}/followers:
+    $ref: ./paths/users_userId_followers.yml
 
 components:
   securitySchemes:
