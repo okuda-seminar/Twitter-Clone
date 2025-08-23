@@ -36,6 +36,7 @@ type Server struct {
 	handler.BlockUserHandler
 	handler.UnblockUserHandler
 	handler.GetPostByPostIDHandler
+	handler.GetFollowersByIDHandler
 }
 
 func NewServer(db *sql.DB) Server {
@@ -89,5 +90,6 @@ func NewServer(db *sql.DB) Server {
 		BlockUserHandler:                           handler.NewBlockUserHandler(blockUserUsecase),
 		UnblockUserHandler:                         handler.NewUnblockUserHandler(unblockUserUsecase),
 		GetPostByPostIDHandler:                     handler.NewGetPostByPostIDHandler(getPostByPostIDUsecase),
+		GetFollowersByIDHandler:                    handler.NewGetFollowersByIDHandler(),
 	}
 }

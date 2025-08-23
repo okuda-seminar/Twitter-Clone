@@ -1,0 +1,24 @@
+get:
+  tags:
+    - X-Clone
+  summary: Get followers by ID.
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: GetFollowersByID
+  responses:
+    "200":
+      description: A list of users who follow the specified user.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../components/schemas/user.yml"
+    "404":
+      description: The specified user was not found.
+    "500":
+      description: Unexpected error occurred.
