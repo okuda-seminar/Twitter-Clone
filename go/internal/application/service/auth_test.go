@@ -70,12 +70,17 @@ func TestInvalidSignatureJWT(t *testing.T) {
 	userID := uuid.NewString()
 	username := "test_user"
 
-	signedToken, err := authService.GenerateJWT(userID, username)
+	_, err := authService.GenerateJWT(userID, username)
 	if err != nil {
 		t.Fatalf("Expected no error, but got: %v", err)
 	}
 
-	invalidToken := signedToken[:len(signedToken)-1] + "x"
+	otherKey := "another_secret_key"
+	otherAuthService := NewAuthService(otherKey)
+	invalidToken, err := otherAuthService.GenerateJWT(userID, username)
+	if err != nil {
+		t.Fatalf("Expected no error, but got: %v", err)
+	}
 
 	_, err = authService.ValidateJWT(invalidToken)
 	if err == nil {
