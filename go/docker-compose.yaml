@@ -26,6 +26,7 @@ services:
       /bin/bash -c
       "bash ./scripts/wait_for_postgres.sh && 
       migrate -database ${PGURL} -path ./db/migrations up &&
+      air &&
       /bin/bash"
     tty: true
     ports:

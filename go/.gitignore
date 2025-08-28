@@ -3,3 +3,6 @@
 
 # Postgres data
 db/data
+
+# Build output
+tmp
