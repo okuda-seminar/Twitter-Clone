@@ -11,3 +11,4 @@ COPY . .
 RUN go mod download && go mod verify
 RUN go install -tags postgres github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+RUN go install github.com/air-verse/air@latest
