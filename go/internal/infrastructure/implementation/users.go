@@ -223,8 +223,13 @@ func (r *usersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID st
 	return nil
 }
 
-func (r *usersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, error) {
-	query := `SELECT source_user_id FROM followships WHERE target_user_id=$1`
+func (r *usersRepository) GetFolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error) {
+	query := `
+		SELECT u.id, u.username, u.display_name, u.bio, u.is_private, u.created_at, u.updated_at 
+		FROM users u 
+		INNER JOIN followships f ON u.id = f.source_user_id 
+		WHERE f.target_user_id = $1
+	`
 	var rows *sql.Rows
 	var err error
 	if tx != nil {
@@ -235,18 +240,26 @@ func (r *usersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, 
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
-	var ids []string
+	var users []entity.User
 	for rows.Next() {
-		var id string
-		if err := rows.Scan(&id); err != nil {
+		var user entity.User
+		if err := rows.Scan(
+			&user.ID,
+			&user.Username,
+			&user.DisplayName,
+			&user.Bio,
+			&user.IsPrivate,
+			&user.CreatedAt,
+			&user.UpdatedAt,
+		); err != nil {
 			return nil, err
 		}
-
-		ids = append(ids, id)
+		users = append(users, user)
 	}
 
-	return ids, err
+	return users, rows.Err()
 }
 
 func (r *usersRepository) MuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error {

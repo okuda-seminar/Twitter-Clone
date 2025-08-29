@@ -179,7 +179,7 @@ func (r *fakeUsersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserI
 	return repository.ErrRecordNotFound
 }
 
-func (r *fakeUsersRepository) Followees(tx *sql.Tx, targetUserID string) ([]string, error) {
+func (r *fakeUsersRepository) GetFolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -187,14 +187,16 @@ func (r *fakeUsersRepository) Followees(tx *sql.Tx, targetUserID string) ([]stri
 		return nil, err
 	}
 
-	var ids []string
+	var users []entity.User
 	for sourceUserID, followers := range r.followships {
 		if slices.Contains(followers, targetUserID) {
-			ids = append(ids, sourceUserID)
+			if user, exists := r.users[sourceUserID]; exists {
+				users = append(users, user)
+			}
 		}
 	}
 
-	return ids, nil
+	return users, nil
 }
 
 func (r *fakeUsersRepository) MuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error {
