@@ -43,6 +43,8 @@ paths:
     $ref: ./paths/delete_followship.yml
   /users/{userId}/followers:
     $ref: ./paths/users_userId_followers.yml
+  /users/{userId}/followees:
+    $ref: ./paths/users_userId_followees.yml
 
 components:
   securitySchemes:
@@ -71,3 +73,5 @@ components:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
     FindUserByIDResponse:
       $ref: ./components/responses/find_user_by_id_response.yml
+    GetFolloweesByIDResponse:
+      $ref: ./components/responses/get_followees_by_id_response.yml

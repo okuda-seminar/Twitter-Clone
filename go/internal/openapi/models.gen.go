@@ -108,6 +108,9 @@ type FindUserByIdResponse struct {
 	Username    string    `json:"username"`
 }
 
+// GetFolloweesByIdResponse Array of users who are followees of the specified user
+type GetFolloweesByIdResponse = []User
+
 // GetPostByPostIdResponse defines model for get_post_by_post_id_response.
 type GetPostByPostIdResponse struct {
 	union json.RawMessage

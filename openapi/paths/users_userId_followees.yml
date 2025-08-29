@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Followees
+  summary: "Get Followees by userId"
+  parameters:
+    - in: path
+      name: userId
+      schema:
+        type: string
+      required: true
+  operationId: GetFolloweesByID
+  responses:
+    "200":
+      description: Followees fetched successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../components/responses/get_followees_by_id_response.yml
+    "404":
+      description: User not found
+    "500":
+      description: Unexpected error occurred.
