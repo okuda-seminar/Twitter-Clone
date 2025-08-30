@@ -70,12 +70,27 @@ func TestInvalidSignatureJWT(t *testing.T) {
 	userID := uuid.NewString()
 	username := "test_user"
 
-	signedToken, err := authService.GenerateJWT(userID, username)
+	_, err := authService.GenerateJWT(userID, username)
 	if err != nil {
 		t.Fatalf("Expected no error, but got: %v", err)
 	}
 
-	invalidToken := signedToken[:len(signedToken)-1] + "x"
+	otherKey := []byte("another_secret_key")
+
+	claims := UserClaims{
+		Username: username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Subject:   userID,
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+	}
+
+	unsignedToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	invalidToken, err := unsignedToken.SignedString(otherKey)
+	if err != nil {
+		t.Fatalf("Failed to sign invalid token: %v", err)
+	}
 
 	_, err = authService.ValidateJWT(invalidToken)
 	if err == nil {
