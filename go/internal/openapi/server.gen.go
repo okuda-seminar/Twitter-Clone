@@ -63,6 +63,9 @@ type ServerInterface interface {
 	// Block the specified user.
 	// (POST /users/{userId}/blocking)
 	BlockUser(w http.ResponseWriter, r *http.Request, userId string)
+	// Get Followees by userId
+	// (GET /users/{userId}/followees)
+	GetFolloweesByID(w http.ResponseWriter, r *http.Request, userId string)
 	// Get followers by ID.
 	// (GET /users/{userId}/followers)
 	GetFollowersByID(w http.ResponseWriter, r *http.Request, userId string)
@@ -492,6 +495,31 @@ func (siw *ServerInterfaceWrapper) BlockUser(w http.ResponseWriter, r *http.Requ
 	handler.ServeHTTP(w, r)
 }
 
+// GetFolloweesByID operation middleware
+func (siw *ServerInterfaceWrapper) GetFolloweesByID(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", r.PathValue("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "userId", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetFolloweesByID(w, r, userId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // GetFollowersByID operation middleware
 func (siw *ServerInterfaceWrapper) GetFollowersByID(w http.ResponseWriter, r *http.Request) {
 
@@ -796,6 +824,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}", wrapper.DeleteUserByID)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}", wrapper.FindUserByID)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/blocking", wrapper.BlockUser)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}/followees", wrapper.GetFolloweesByID)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}/followers", wrapper.GetFollowersByID)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/likes", wrapper.LikePost)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}/likes/{postId}", wrapper.UnlikePost)

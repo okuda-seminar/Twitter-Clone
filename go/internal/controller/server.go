@@ -36,6 +36,7 @@ type Server struct {
 	handler.BlockUserHandler
 	handler.UnblockUserHandler
 	handler.GetPostByPostIDHandler
+	handler.GetFolloweesByIDHandler
 	handler.GetFollowersByIDHandler
 }
 
@@ -67,6 +68,7 @@ func NewServer(db *sql.DB) Server {
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 	getPostByPostIDUsecase := usecaseInjector.InjectGetPostByPostIDUsecase(&timelineItemsRepository)
+	getFolloweesByIDUsecase := usecaseInjector.InjectGetFolloweesByIDUsecase(usersRepository)
 
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
@@ -91,5 +93,6 @@ func NewServer(db *sql.DB) Server {
 		UnblockUserHandler:                         handler.NewUnblockUserHandler(unblockUserUsecase),
 		GetPostByPostIDHandler:                     handler.NewGetPostByPostIDHandler(getPostByPostIDUsecase),
 		GetFollowersByIDHandler:                    handler.NewGetFollowersByIDHandler(),
+		GetFolloweesByIDHandler:                    handler.NewGetFolloweesByIDHandler(getFolloweesByIDUsecase),
 	}
 }
