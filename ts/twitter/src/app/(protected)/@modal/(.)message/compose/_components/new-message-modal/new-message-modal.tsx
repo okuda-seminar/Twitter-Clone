@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type NewMessageModalProps = {
   open: boolean;
@@ -31,21 +31,54 @@ export const NewMessageModal: React.FC<NewMessageModalProps> = ({
   const text = useColorModeValue("black", "white");
   const backdropBg = useColorModeValue("backdrop.light", "backdrop.dark");
   const [isFocused, setIsFocused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 702);
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   return (
     <Dialog.Root open={open} onInteractOutside={() => onClose()}>
-      <Dialog.Backdrop bg={backdropBg} />
+      <Dialog.Backdrop bg={isMobile ? "transparent" : backdropBg} />
       <Dialog.Positioner>
         <Dialog.Content
           bg={bg}
           color={text}
-          w="600px"
-          maxW="600px"
-          h="650px"
-          maxH="650px"
-          borderRadius="xl"
+          w={isMobile ? "100vw" : "600px"}
+          maxW={isMobile ? "100vw" : "600px"}
+          h={isMobile ? "100vh" : "650px"}
+          maxH={isMobile ? "100vh" : "650px"}
+          borderRadius={isMobile ? "0" : "xl"}
+          m={isMobile ? "0" : "auto"}
+          position={isMobile ? "fixed" : "relative"}
+          top={isMobile ? "0" : "auto"}
+          left={isMobile ? "0" : "auto"}
+          right={isMobile ? "0" : "auto"}
+          bottom={isMobile ? "0" : "auto"}
+          zIndex={isMobile ? "modal" : "auto"}
+          overflow="auto"
         >
-          <Flex align="center" px="4" py="3" borderColor={border}>
+          <Flex
+            align="center"
+            px="4"
+            py="3"
+            borderBottomWidth="1px"
+            borderColor={border}
+            position={isMobile ? "sticky" : "static"}
+            top={isMobile ? "0" : "auto"}
+            bg={bg}
+            zIndex={isMobile ? "1" : "auto"}
+          >
             <Tooltip content="Close">
               <Dialog.CloseTrigger
                 asChild
@@ -53,6 +86,9 @@ export const NewMessageModal: React.FC<NewMessageModalProps> = ({
                 position="static"
                 borderRadius="full"
                 mr="2"
+                _hover={{
+                  bg: useColorModeValue("gray.100", "gray.800"),
+                }}
               >
                 <CloseButton />
               </Dialog.CloseTrigger>
@@ -89,14 +125,20 @@ export const NewMessageModal: React.FC<NewMessageModalProps> = ({
             >
               <Input
                 placeholder="Search people"
-                bg={useColorModeValue("transparent", "transparent")}
+                bg="transparent"
                 border="none"
                 color={text}
                 fontSize="md"
-                _placeholder={{ color: useColorModeValue("black", "white") }}
+                _placeholder={{
+                  color: useColorModeValue("gray.500", "gray.400"),
+                }}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                _focus={{ boxShadow: "none", outline: "none", border: "none" }}
+                _focus={{
+                  boxShadow: "none",
+                  outline: "none",
+                  border: "none",
+                }}
                 _focusVisible={{
                   boxShadow: "none",
                   outline: "none",

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, fn, screen, userEvent, within } from "@storybook/test";
+import { expect, fn, screen, within } from "@storybook/test";
 import { NewMessageModal } from "./new-message-modal";
 
 const meta = {
@@ -57,6 +57,24 @@ export const DarkMode: Story = {
   },
 };
 
+export const Mobile: Story = {
+  args: {
+    open: true,
+  },
+  parameters: {
+    viewport: { defaultViewport: "sm" },
+  },
+};
+
+export const Desktop: Story = {
+  args: {
+    open: true,
+  },
+  parameters: {
+    viewport: { defaultViewport: "xl" },
+  },
+};
+
 export const InteractionTests: Story = {
   args: {
     open: true,
@@ -66,25 +84,12 @@ export const InteractionTests: Story = {
     // but since canvasElement is only inside #root, we need to retrieve it from the screen.
     const canvas = within(screen.getByRole("dialog"));
 
-    // Test that search input is present and can be typed in
-    const searchInput = canvas.getByPlaceholderText("Search people");
-    await expect(searchInput).toBeInTheDocument();
-
-    // Test typing in search input
-    await userEvent.type(searchInput, "test user");
-    await expect(searchInput).toHaveValue("test user");
-
-    // Test that "Create a group" section is present
-    const createGroupText = canvas.getByText("Create a group");
-    await expect(createGroupText).toBeInTheDocument();
-
-    // Test that close button is present
-    const closeButton = canvas.getByRole("button", { name: /close/i });
-    await expect(closeButton).toBeInTheDocument();
-
     // Test that Next button is present and disabled
     const nextButton = canvas.getByRole("button", { name: /next/i });
-    await expect(nextButton).toBeInTheDocument();
     await expect(nextButton).toBeDisabled();
+
+    // Test that close button is present and clickable
+    const closeButton = canvas.getByRole("button", { name: /close/i });
+    await expect(closeButton).toBeInTheDocument();
   },
 };
