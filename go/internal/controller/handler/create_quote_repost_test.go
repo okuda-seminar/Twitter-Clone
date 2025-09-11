@@ -91,7 +91,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
 			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
