@@ -22,7 +22,10 @@ func main() {
 	}
 	defer db.Close()
 
-	server := controller.NewServer(db)
+	redisClient := config.RedisClient()
+	defer redisClient.Close()
+
+	server := controller.NewServer(db, redisClient)
 	handler := openapi.HandlerWithOptions(
 		&server,
 		openapi.StdHTTPServerOptions{
