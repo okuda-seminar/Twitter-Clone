@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"os"
 
+	"github.com/redis/go-redis/v9"
+
 	"x-clone-backend/internal/application/service"
 	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/controller/handler"
@@ -40,8 +42,8 @@ type Server struct {
 	handler.GetFollowersByIDHandler
 }
 
-func NewServer(db *sql.DB) Server {
-	timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(db)
+func NewServer(db *sql.DB, client *redis.Client) Server {
+	timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(db, client)
 	usersRepository := infraInjector.InjectUsersRepository(db)
 
 	secretKey := os.Getenv("SECRET_KEY")
