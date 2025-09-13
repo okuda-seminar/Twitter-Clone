@@ -1,4 +1,4 @@
-package implementation
+package rdb
 
 import (
 	"errors"

@@ -39,7 +39,25 @@ services:
     networks:
       - x_clone
 
+  x_redis:
+    image: ${REDIS_IMAGE_NAME}
+    build:
+      context: .
+      dockerfile: ./docker/redis.Dockerfile
+    container_name: ${REDIS_CONTAINER_NAME}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    env_file:
+      - .env
+    volumes:
+      - redis-data:/data # Persist Redis data
+    networks:
+      - x_clone
+
 networks:
   x_clone:
     name: x_clone
     driver: bridge
+
+volumes:
+  redis-data:

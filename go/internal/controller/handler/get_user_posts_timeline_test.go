@@ -48,7 +48,7 @@ func TestGetUserPostsTimeline(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			timeLineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil)
+			timeLineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 			specificUserPostsUsecase := usecaseInjector.InjectSpecificUserPostsUsecase(timeLineItemsRepository)
 			getUserPostsTimelineHandler := NewGetUserPostsTimelineHandler(specificUserPostsUsecase)
 
