@@ -1,7 +1,5 @@
 "use client";
 
-import { useColorModeValue } from "@/lib/components/ui/color-mode";
-import { Flex, IconButton, Menu, Portal, Text } from "@chakra-ui/react";
 import {
   AnalyticsIcon,
   DeleteIcon,
@@ -12,7 +10,9 @@ import {
   ReplyIcon,
   RequestIcon,
   ThreeDotsIcon,
-} from "../../../../../lib/components/icons";
+} from "@/lib/components/icons";
+import { useColorModeValue } from "@/lib/components/ui/color-mode";
+import { Flex, IconButton, Menu, Portal, Text } from "@chakra-ui/react";
 
 const menuItems = [
   { value: "delete", icon: DeleteIcon, text: "Delete", color: "red.400" },
@@ -34,13 +34,12 @@ export const TimelinePostCardPopupMenu: React.FC<
   Omit<Menu.RootProps, "children">
 > = (props) => {
   return (
-    <Menu.Root {...props}>
+    <Menu.Root positioning={{ placement: "left-start" }} {...props}>
       <Menu.Trigger asChild>
         {/* TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/829
         - Implement the UI that display more character while hovering. */}
         <IconButton
-          mt="5px"
-          ml="-2"
+          minW={0}
           bg="transparent"
           borderRadius="full"
           aria-label="More options"
@@ -54,9 +53,7 @@ export const TimelinePostCardPopupMenu: React.FC<
       <Portal>
         <Menu.Positioner>
           <Menu.Content
-            transform="translate(-85%, -10%)"
             backgroundColor={useColorModeValue("white", "black")}
-            transformOrigin={"top right"}
             width="100%"
             borderRadius="md"
           >

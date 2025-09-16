@@ -1,7 +1,5 @@
-"use client";
-
 import { Box, VStack } from "@chakra-ui/react";
-import { TimelinePostCard } from "./timeline-post-card";
+import { TimelineItemCard } from "./timeline-item-card";
 import type { useTimelineFeedReturn } from "./use-timeline-feed";
 
 export const TimelineFeed = ({
@@ -17,9 +15,9 @@ export const TimelineFeed = ({
   }
 
   return (
-    <VStack gap={4} align="stretch">
+    <VStack align="stretch">
       {timelineItems.map((timelineItem) => (
-        <TimelinePostCard key={timelineItem.id} timelineItem={timelineItem} />
+        <TimelineItemCard key={timelineItem.id} timelineItem={timelineItem} />
       ))}
     </VStack>
   );
