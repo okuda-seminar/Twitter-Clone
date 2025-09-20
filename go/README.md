@@ -16,12 +16,8 @@ Start the Docker containers using docker-compose:
 make up
 ```
 
-3. Access the Application Container  
 
-Enter the application container:
-```
-make exec-app
-```
+If the container launches successfully, the server will be built in `/tmp/server` and the backend server will start automatically. If the build fails, refer to `/tmp/build-errors.log` to identify the cause.
 
 ## Checking PostgreSQL State
 To check the state of the PostgreSQL database:
@@ -33,14 +29,14 @@ Enter the PostgreSQL container:
 make exec-pg
 ```
 
-2. Connect to the PostgreSQL Database  
+2. Connect to the PostgreSQL Database
 
 Once inside the PostgreSQL container, connect to the database:
 ```
 psql
 ```
 
-3. Check the Database State  
+3. Check the Database State
 
 You can now run SQL commands to check the state of the database. For example, to list all tables:
 ```
