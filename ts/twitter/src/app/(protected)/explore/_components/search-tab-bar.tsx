@@ -2,6 +2,7 @@
 import { useColorModeValue } from "@/lib/components/ui/color-mode";
 import { Tabs } from "@chakra-ui/react";
 import type React from "react";
+import ForYou from "./for-you";
 
 export const SearchTabBar: React.FC = () => {
   const tabItems = ["For you", "Trending", "News", "Sports", "Entertainment"];
@@ -34,7 +35,7 @@ export const SearchTabBar: React.FC = () => {
         />
       </Tabs.List>
       <Tabs.Content value="For you">
-        <p>posts for you</p>
+        <ForYou />
       </Tabs.Content>
       <Tabs.Content value="Trending">
         <p>trending</p>
