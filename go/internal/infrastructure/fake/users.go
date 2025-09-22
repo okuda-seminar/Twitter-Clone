@@ -43,7 +43,7 @@ func (r *fakeUsersRepository) CreateUser(tx *sql.Tx, username, displayName, pass
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["CreateUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyCreateUser]; ok {
 		return entity.User{}, err
 	}
 
@@ -72,7 +72,7 @@ func (r *fakeUsersRepository) DeleteUserByID(tx *sql.Tx, userID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["DeleteUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyDeleteUserByID]; ok {
 		return err
 	}
 
@@ -88,7 +88,7 @@ func (r *fakeUsersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.Us
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	if err, ok := r.errors["UserByUserID"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUserByUserID]; ok {
 		return entity.User{}, err
 	}
 
@@ -104,7 +104,7 @@ func (r *fakeUsersRepository) UserByUsername(tx *sql.Tx, username string) (entit
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	if err, ok := r.errors["UserByUsername"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUserByUsername]; ok {
 		return entity.User{}, err
 	}
 
@@ -121,7 +121,7 @@ func (r *fakeUsersRepository) LikePost(tx *sql.Tx, userID, postID string) error 
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["LikePost"]; ok {
+	if err, ok := r.errors[repository.ErrKeyLikePost]; ok {
 		return err
 	}
 	r.likes[userID] = append(r.likes[userID], postID)
@@ -133,7 +133,7 @@ func (r *fakeUsersRepository) UnlikePost(tx *sql.Tx, userID, postID string) erro
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["UnlikePost"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUnlikePost]; ok {
 		return err
 	}
 
@@ -152,7 +152,7 @@ func (r *fakeUsersRepository) FollowUser(tx *sql.Tx, sourceUserID, targetUserID 
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["FollowUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyFollowUser]; ok {
 		return err
 	}
 	r.followships[sourceUserID] = append(r.followships[sourceUserID], targetUserID)
@@ -164,7 +164,7 @@ func (r *fakeUsersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserI
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["UnfollowUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUnfollowUser]; ok {
 		return err
 	}
 
@@ -179,20 +179,38 @@ func (r *fakeUsersRepository) UnfollowUser(tx *sql.Tx, sourceUserID, targetUserI
 	return repository.ErrRecordNotFound
 }
 
-func (r *fakeUsersRepository) GetFolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error) {
+func (r *fakeUsersRepository) FollowersByID(tx *sql.Tx, targetUserID string) ([]entity.User, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	if err, ok := r.errors["Followees"]; ok {
+	if err, ok := r.errors[repository.ErrKeyFollowersByID]; ok {
 		return nil, err
 	}
 
 	var users []entity.User
-	for sourceUserID, followers := range r.followships {
-		if slices.Contains(followers, targetUserID) {
+	for sourceUserID, followships := range r.followships {
+		if slices.Contains(followships, targetUserID) {
 			if user, exists := r.users[sourceUserID]; exists {
 				users = append(users, user)
 			}
+		}
+	}
+
+	return users, nil
+}
+
+func (r *fakeUsersRepository) FolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if err, ok := r.errors[repository.ErrKeyFolloweesByID]; ok {
+		return nil, err
+	}
+
+	var users []entity.User
+	for _, followeeID := range r.followships[targetUserID] {
+		if user, exists := r.users[followeeID]; exists {
+			users = append(users, user)
 		}
 	}
 
@@ -203,7 +221,7 @@ func (r *fakeUsersRepository) MuteUser(tx *sql.Tx, sourceUserID, targetUserID st
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["MuteUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyMuteUser]; ok {
 		return err
 	}
 	r.mutes[sourceUserID] = append(r.mutes[sourceUserID], targetUserID)
@@ -215,7 +233,7 @@ func (r *fakeUsersRepository) UnmuteUser(tx *sql.Tx, sourceUserID, targetUserID 
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["UnmuteUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUnmuteUser]; ok {
 		return err
 	}
 
@@ -234,7 +252,7 @@ func (r *fakeUsersRepository) BlockUser(tx *sql.Tx, sourceUserID, targetUserID s
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["BlockUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyBlockUser]; ok {
 		return err
 	}
 	r.blocks[sourceUserID] = append(r.blocks[sourceUserID], targetUserID)
@@ -246,7 +264,7 @@ func (r *fakeUsersRepository) UnblockUser(tx *sql.Tx, sourceUserID, targetUserID
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if err, ok := r.errors["UnblockUser"]; ok {
+	if err, ok := r.errors[repository.ErrKeyUnblockUser]; ok {
 		return err
 	}
 

@@ -71,6 +71,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 	getPostByPostIDUsecase := usecaseInjector.InjectGetPostByPostIDUsecase(&timelineItemsRepository)
 	getFolloweesByIDUsecase := usecaseInjector.InjectGetFolloweesByIDUsecase(usersRepository)
+	getFollowersByIDUsecase := usecaseInjector.InjectGetFollowersByIDUsecase(usersRepository)
 
 	return Server{
 		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
@@ -94,7 +95,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 		BlockUserHandler:                           handler.NewBlockUserHandler(blockUserUsecase),
 		UnblockUserHandler:                         handler.NewUnblockUserHandler(unblockUserUsecase),
 		GetPostByPostIDHandler:                     handler.NewGetPostByPostIDHandler(getPostByPostIDUsecase),
-		GetFollowersByIDHandler:                    handler.NewGetFollowersByIDHandler(),
 		GetFolloweesByIDHandler:                    handler.NewGetFolloweesByIDHandler(getFolloweesByIDUsecase),
+		GetFollowersByIDHandler:                    handler.NewGetFollowersByIDHandler(getFollowersByIDUsecase),
 	}
 }

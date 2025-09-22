@@ -73,5 +73,7 @@ components:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
     FindUserByIDResponse:
       $ref: ./components/responses/find_user_by_id_response.yml
+    GetFollowersByIDResponse:
+      $ref: ./components/responses/get_followers_by_id_response.yml
     GetFolloweesByIDResponse:
       $ref: ./components/responses/get_followees_by_id_response.yml

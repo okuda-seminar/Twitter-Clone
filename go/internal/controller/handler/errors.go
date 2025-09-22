@@ -37,6 +37,7 @@ var (
 	ErrHashPassword           = errors.New("Could not hash password.")
 	ErrGetPostByPostID        = errors.New("Could not get the specified post")
 	ErrGetFolloweesByIDFailed = errors.New("Could not get followees.")
+	ErrGetFollowersByIDFailed = errors.New("Could not get followers.")
 )
 
 func NewInvalidUserIDError(id string) error {

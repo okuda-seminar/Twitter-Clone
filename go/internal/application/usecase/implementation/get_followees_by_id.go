@@ -25,7 +25,7 @@ func (u *getFolloweesByIDUsecase) GetFolloweesByID(userID string) ([]entity.User
 		return nil, err
 	}
 
-	followees, err := u.usersRepository.GetFolloweesByID(nil, userID)
+	followees, err := u.usersRepository.FolloweesByID(nil, userID)
 	if err != nil {
 		return nil, err
 	}

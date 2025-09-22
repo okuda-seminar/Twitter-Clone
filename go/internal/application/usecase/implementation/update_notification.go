@@ -26,7 +26,7 @@ func NewUpdateNotificationUsecase(usersRepository repository.UsersRepository) us
 func (u *updateNotificationUsecase) SendNotification(userID, eventType string, timelineItem *entity.TimelineItem) error {
 	var items []*entity.TimelineItem
 	items = append(items, timelineItem)
-	followees, err := u.usersRepository.GetFolloweesByID(nil, userID)
+	followees, err := u.usersRepository.FolloweesByID(nil, userID)
 	if err != nil {
 		log.Fatalln(err)
 		return err

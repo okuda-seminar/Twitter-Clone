@@ -5,6 +5,7 @@ import "errors"
 // These constants are used as keys in the `errors` map
 // of the fake repository to simulate operation-specific errors during testing.
 const (
+	// Timeline Items
 	ErrKeySpecificUserPosts    = "SpecificUserPosts"
 	ErrKeyUserAndFolloweePosts = "UserAndFolloweePosts"
 	ErrKeyCreatePost           = "CreatePost"
@@ -13,6 +14,22 @@ const (
 	ErrKeyDeleteRepost         = "DeleteRepost"
 	ErrKeyCreateQuoteRepost    = "CreateQuoteRepost"
 	ErrKeyRetrieveTimelineItem = "RetrieveTimelineItem"
+
+	// Users Items
+	ErrKeyCreateUser     = "CreateUser"
+	ErrKeyDeleteUserByID = "DeleteUserByID"
+	ErrKeyUserByUserID   = "UserByUserID"
+	ErrKeyUserByUsername = "UserByUsername"
+	ErrKeyLikePost       = "LikePost"
+	ErrKeyUnlikePost     = "UnlikePost"
+	ErrKeyFollowUser     = "FollowUser"
+	ErrKeyUnfollowUser   = "UnfollowUser"
+	ErrKeyMuteUser       = "MuteUser"
+	ErrKeyUnmuteUser     = "UnmuteUser"
+	ErrKeyBlockUser      = "BlockUser"
+	ErrKeyUnblockUser    = "UnblockUser"
+	ErrKeyFollowersByID  = "FollowersByID"
+	ErrKeyFolloweesByID  = "FolloweesByID"
 )
 
 var (
