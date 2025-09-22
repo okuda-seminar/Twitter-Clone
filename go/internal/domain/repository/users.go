@@ -17,7 +17,8 @@ type UsersRepository interface {
 	UnlikePost(tx *sql.Tx, userID, postID string) error
 	FollowUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	UnfollowUser(tx *sql.Tx, sourceUserID, targetUserID string) error
-	GetFolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error)
+	FolloweesByID(tx *sql.Tx, targetUserID string) ([]entity.User, error)
+	FollowersByID(tx *sql.Tx, targetUserID string) ([]entity.User, error)
 	MuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	UnmuteUser(tx *sql.Tx, sourceUserID, targetUserID string) error
 	BlockUser(tx *sql.Tx, sourceUserID, targetUserID string) error

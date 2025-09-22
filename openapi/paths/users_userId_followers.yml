@@ -15,9 +15,7 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: "../components/schemas/user.yml"
+            $ref: "../components/responses/get_followers_by_id_response.yml"
     "404":
       description: The specified user was not found.
     "500":

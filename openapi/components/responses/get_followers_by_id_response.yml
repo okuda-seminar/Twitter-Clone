@@ -1,0 +1,5 @@
+type: array
+title: GetFollowersByIdResponse
+description: Array of users who are followers of the specified user
+items:
+  $ref: ../schemas/user.yml

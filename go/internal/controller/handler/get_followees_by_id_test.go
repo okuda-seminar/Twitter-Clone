@@ -39,7 +39,7 @@ func TestGetFolloweesByID(t *testing.T) {
 			expectedCode: http.StatusOK,
 		},
 		"returns 404 when user does not exist": {
-			userID: "non-existent-user-id",
+			userID: uuid.NewString(),
 			setup: func(getFolloweesByIDUsecase usecase.GetFolloweesByIDUsecase) {
 				getFolloweesByIDUsecase.SetError(usecase.ErrUserNotFound)
 			},
