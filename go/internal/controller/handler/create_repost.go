@@ -6,19 +6,16 @@ import (
 
 	usecase "x-clone-backend/internal/application/usecase/api"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"
 )
 
 type CreateRepostHandler struct {
-	createRepostUsecase       usecase.CreateRepostUsecase
-	updateNotificationUsecase usecase.UpdateNotificationUsecase
+	createRepostUsecase usecase.CreateRepostUsecase
 }
 
-func NewCreateRepostHandler(createRepostUsecase usecase.CreateRepostUsecase, updateNotificationUsecase usecase.UpdateNotificationUsecase) CreateRepostHandler {
+func NewCreateRepostHandler(createRepostUsecase usecase.CreateRepostUsecase) CreateRepostHandler {
 	return CreateRepostHandler{
 		createRepostUsecase,
-		updateNotificationUsecase,
 	}
 }
 
@@ -38,8 +35,6 @@ func (h *CreateRepostHandler) CreateRepost(w http.ResponseWriter, r *http.Reques
 		http.Error(w, ErrCreateRepost.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	go h.updateNotificationUsecase.SendNotification(userID, entity.RepostCreated, &repost)
 
 	res := transfer.ToCreateRepostResponse(&repost)
 

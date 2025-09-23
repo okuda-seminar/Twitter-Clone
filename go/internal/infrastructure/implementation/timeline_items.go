@@ -52,9 +52,9 @@ func (r timelineItemsRepository) CreatePost(userID, text string, userIDs []strin
 	return post, nil
 }
 
-func (r timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
-	post, err := r.rdbRepo.DeletePost(postID)
-	return post, err
+func (r timelineItemsRepository) DeletePost(postID string) error {
+	err := r.rdbRepo.DeletePost(postID)
+	return err
 }
 
 // CreateRepost creates a repost and updates the timeline cache for the given user IDs.
@@ -82,9 +82,9 @@ func (r timelineItemsRepository) CreateRepost(userID, postID string, userIDs []s
 	return repost, nil
 }
 
-func (r timelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
-	repost, err := r.rdbRepo.DeleteRepost(postID)
-	return repost, err
+func (r timelineItemsRepository) DeleteRepost(postID string) error {
+	err := r.rdbRepo.DeleteRepost(postID)
+	return err
 }
 
 // CreateQuoteRepost creates a quote repost and updates the timeline cache for the given user IDs.
