@@ -2,7 +2,6 @@ package implementation
 
 import (
 	usecase "x-clone-backend/internal/application/usecase/api"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 )
 
@@ -16,7 +15,7 @@ func NewDeletePostUsecase(timelineItemsRepository repository.TimelineItemsReposi
 	}
 }
 
-func (u *deletePostUsecase) DeletePost(postID string) (entity.TimelineItem, error) {
+func (u *deletePostUsecase) DeletePost(postID string) error {
 	return u.timelineItemsRepository.DeletePost(postID)
 }
 

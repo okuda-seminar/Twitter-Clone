@@ -2,7 +2,6 @@ package fake
 
 import (
 	usecase "x-clone-backend/internal/application/usecase/api"
-	"x-clone-backend/internal/domain/entity"
 )
 
 type fakeDeletePostUsecase struct {
@@ -15,8 +14,8 @@ func NewFakeDeletePostUsecase() usecase.DeletePostUsecase {
 	}
 }
 
-func (u *fakeDeletePostUsecase) DeletePost(postID string) (entity.TimelineItem, error) {
-	return entity.TimelineItem{}, u.err
+func (u *fakeDeletePostUsecase) DeletePost(postID string) error {
+	return u.err
 }
 
 func (u *fakeDeletePostUsecase) SetError(err error) {

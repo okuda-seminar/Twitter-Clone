@@ -66,7 +66,6 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 	unblockUserUsecase := usecaseInjector.InjectUnblockUserUsecase(usersRepository)
 	unlikePostUsecase := usecaseInjector.InjectUnlikePostUsecase(usersRepository)
 	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
-	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
 	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
 	getPostByPostIDUsecase := usecaseInjector.InjectGetPostByPostIDUsecase(&timelineItemsRepository)
@@ -79,13 +78,13 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
 		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(userByUserIDUsecase),
 		DeleteUserByIDHandler:                      handler.NewDeleteUserByIDHandler(deleteUserByIDUsecase),
-		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
-		DeletePostHandler:                          handler.NewDeletePostHandler(deletePostUsecase, updateNotificationUsecase),
-		CreateRepostHandler:                        handler.NewCreateRepostHandler(createRepostUsecase, updateNotificationUsecase),
-		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase),
-		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(deleteRepostUsecase, updateNotificationUsecase),
+		CreatePostHandler:                          handler.NewCreatePostHandler(createPostUsecase),
+		DeletePostHandler:                          handler.NewDeletePostHandler(deletePostUsecase),
+		CreateRepostHandler:                        handler.NewCreateRepostHandler(createRepostUsecase),
+		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(createQuoteRepostUsecase),
+		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(deleteRepostUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(specificUserPostsUsecase),
-		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, make(chan struct{}, 1)),
+		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(followUserUsecase),
 		DeleteFollowshipHandler:                    handler.NewDeleteFollowshipHandler(unfollowUserUsecase),
 		LikePostHandler:                            handler.NewLikePostHandler(likePostUsecase),

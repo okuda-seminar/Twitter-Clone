@@ -7,18 +7,15 @@ import (
 
 	usecase "x-clone-backend/internal/application/usecase/api"
 	"x-clone-backend/internal/controller/transfer"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"
 )
 
 type CreatePostHandler struct {
-	updateNotificationUsecase usecase.UpdateNotificationUsecase
-	createPostUsecase         usecase.CreatePostUsecase
+	createPostUsecase usecase.CreatePostUsecase
 }
 
-func NewCreatePostHandler(updateNotificationUsecase usecase.UpdateNotificationUsecase, createPostUsecase usecase.CreatePostUsecase) CreatePostHandler {
+func NewCreatePostHandler(createPostUsecase usecase.CreatePostUsecase) CreatePostHandler {
 	return CreatePostHandler{
-		updateNotificationUsecase,
 		createPostUsecase,
 	}
 }
@@ -48,8 +45,6 @@ func (h *CreatePostHandler) CreatePost(w http.ResponseWriter, r *http.Request, u
 		http.Error(w, ErrCreatePost.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	go h.updateNotificationUsecase.SendNotification(userID, entity.PostCreated, &post)
 
 	res := transfer.ToCreatePostResponse(&post)
 

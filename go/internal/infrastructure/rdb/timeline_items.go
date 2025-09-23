@@ -130,32 +130,24 @@ func (r *RDBTimelineItemsRepository) CreatePost(userID, text string) (entity.Tim
 	return post, nil
 }
 
-func (r *RDBTimelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
-	query := `DELETE FROM timelineitems WHERE id = $1 RETURNING author_id, text, created_at`
+func (r *RDBTimelineItemsRepository) DeletePost(postID string) error {
+	query := `DELETE FROM timelineitems WHERE id = $1`
 
-	var (
-		authorID  string
-		text      string
-		createdAt time.Time
-	)
-
-	err := r.db.QueryRow(query, postID).Scan(&authorID, &text, &createdAt)
+	result, err := r.db.Exec(query, postID)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return entity.TimelineItem{}, repository.ErrRecordNotFound
-		}
-		return entity.TimelineItem{}, err
+		return err
 	}
 
-	post := entity.TimelineItem{
-		Type:      entity.PostTypePost,
-		ID:        postID,
-		AuthorID:  authorID,
-		Text:      text,
-		CreatedAt: createdAt,
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
 	}
 
-	return post, nil
+	if rowsAffected == 0 {
+		return repository.ErrRecordNotFound
+	}
+
+	return nil
 }
 
 func (r *RDBTimelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
@@ -189,33 +181,24 @@ func (r *RDBTimelineItemsRepository) CreateRepost(userID, postID string) (entity
 	return repost, nil
 }
 
-func (r *RDBTimelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
-	query := `DELETE FROM timelineitems WHERE id = $1 RETURNING author_id, parent_post_id, created_at`
+func (r *RDBTimelineItemsRepository) DeleteRepost(postID string) error {
+	query := `DELETE FROM timelineitems WHERE id = $1`
 
-	var (
-		authorID     string
-		parentPostID sql.NullString
-		createdAt    time.Time
-	)
-
-	err := r.db.QueryRow(query, postID).Scan(&authorID, &parentPostID, &createdAt)
+	result, err := r.db.Exec(query, postID)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return entity.TimelineItem{}, repository.ErrRecordNotFound
-		}
-		return entity.TimelineItem{}, err
+		return err
 	}
 
-	repost := entity.TimelineItem{
-		Type:         entity.PostTypeRepost,
-		ID:           postID,
-		AuthorID:     authorID,
-		ParentPostID: value.NullUUID{UUID: parentPostID.String, Valid: parentPostID.Valid},
-		Text:         "",
-		CreatedAt:    createdAt,
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
 	}
 
-	return repost, nil
+	if rowsAffected == 0 {
+		return repository.ErrRecordNotFound
+	}
+
+	return nil
 }
 
 // CreateQuoteRepost creates and returns a new quote repost by the given userID with the provided text.
