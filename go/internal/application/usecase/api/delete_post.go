@@ -1,9 +1,7 @@
 package api
 
-import "x-clone-backend/internal/domain/entity"
-
 type DeletePostUsecase interface {
-	DeletePost(postID string) (entity.TimelineItem, error)
+	DeletePost(postID string) error
 
 	SetError(err error)
 	ClearError()

@@ -93,9 +93,8 @@ func TestCreateQuoteRepost(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
-			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
-			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
-			CreateQuoteRepostHandler := NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase)
+			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository, usersRepository)
+			createQuoteRepostHandler := NewCreateQuoteRepostHandler(createQuoteRepostUsecase)
 
 			var parentPost entity.TimelineItem
 			var parentPostID string
@@ -115,7 +114,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
-				parentPost, err = timelineItemsRepository.CreateQuoteRepost(postUserID, parentPost.ID, postText)
+				parentPost, err = timelineItemsRepository.CreateQuoteRepost(postUserID, parentPost.ID, postText, []string{})
 				if err != nil {
 					t.Errorf("Failed to create a quote repost")
 				}
@@ -149,7 +148,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 				bytes.NewReader(body),
 			)
 			rr := httptest.NewRecorder()
-			CreateQuoteRepostHandler.CreateQuoteRepost(rr, req, tt.userID)
+			createQuoteRepostHandler.CreateQuoteRepost(rr, req, tt.userID)
 			if rr.Code != tt.expectedCode {
 				t.Errorf("%s: wrong code returned; expected %d, but got %d, %s", name, tt.expectedCode, rr.Code, rr.Body.String())
 			}

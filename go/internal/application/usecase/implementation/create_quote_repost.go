@@ -10,11 +10,13 @@ import (
 
 type createQuoteRepostUsecase struct {
 	timelineItemsRepository repository.TimelineItemsRepository
+	usersRepository         repository.UsersRepository
 }
 
-func NewCreateQuoteRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreateQuoteRepostUsecase {
+func NewCreateQuoteRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) usecase.CreateQuoteRepostUsecase {
 	return &createQuoteRepostUsecase{
 		timelineItemsRepository: timelineItemsRepository,
+		usersRepository:         usersRepository,
 	}
 }
 
@@ -34,7 +36,19 @@ func (u createQuoteRepostUsecase) CreateQuoteRepost(userID, postID, text string)
 		return entity.TimelineItem{}, usecase.ErrRepostViolation
 	}
 
-	quoteRepost, err := u.timelineItemsRepository.CreateQuoteRepost(userID, postID, text)
+	// Get followers for timeline cache
+	users, err := u.usersRepository.FollowersByID(nil, userID)
+	if err != nil {
+		return entity.TimelineItem{}, err
+	}
+
+	userIDs := make([]string, 0, len(users)+1)
+	for _, user := range users {
+		userIDs = append(userIDs, user.ID)
+	}
+	userIDs = append(userIDs, userID)
+
+	quoteRepost, err := u.timelineItemsRepository.CreateQuoteRepost(userID, postID, text, userIDs)
 	if err != nil {
 		if errors.Is(err, repository.ErrForeignViolation) {
 			return quoteRepost, usecase.ErrUserNotFound

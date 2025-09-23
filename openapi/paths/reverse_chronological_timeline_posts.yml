@@ -13,10 +13,11 @@ get:
     "200":
       description: A collection of posts by the specified user and users they follow.
       content:
-        text/event-stream:
+        application/json:
           schema:
             $ref: ../openapi.yml#/components/schemas/GetReverseChronologicalHomeTimelineResponse
           examples:
-            $ref: ../openapi.yml#/components/schemas/GetReverseChronologicalHomeTimelineExample
+            default:
+              $ref: ../openapi.yml#/components/schemas/GetReverseChronologicalHomeTimelineExample
     "500":
       description: Unexpected error occurred.

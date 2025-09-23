@@ -52,9 +52,9 @@ func (r timelineItemsRepository) CreatePost(userID, text string, userIDs []strin
 	return post, nil
 }
 
-func (r timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
-	post, err := r.rdbRepo.DeletePost(postID)
-	return post, err
+func (r timelineItemsRepository) DeletePost(postID string) error {
+	err := r.rdbRepo.DeletePost(postID)
+	return err
 }
 
 func (r timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
@@ -62,14 +62,32 @@ func (r timelineItemsRepository) CreateRepost(userID, postID string) (entity.Tim
 	return repost, err
 }
 
-func (r timelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
-	repost, err := r.rdbRepo.DeleteRepost(postID)
-	return repost, err
+func (r timelineItemsRepository) DeleteRepost(postID string) error {
+	err := r.rdbRepo.DeleteRepost(postID)
+	return err
 }
 
-func (r timelineItemsRepository) CreateQuoteRepost(userID, postID, text string) (entity.TimelineItem, error) {
-	quoteRepost, err := r.rdbRepo.CreateQuoteRepost(userID, postID, text)
-	return quoteRepost, err
+// CreateQuoteRepost creates a quote repost and updates the timeline cache for the given user IDs.
+// userIDs is the list of users who should see this quote repost in their timeline (the author and their followers).
+func (r timelineItemsRepository) CreateQuoteRepost(userID, postID, text string, userIDs []string) (entity.TimelineItem, error) {
+	var quoteRepost entity.TimelineItem
+	txErr := r.rdbRepo.WithTransaction(func(tx *sql.Tx) error {
+		var err error
+		quoteRepost, err = r.rdbRepo.CreateQuoteRepost(tx, userID, postID, text)
+		if err != nil {
+			return err
+		}
+
+		err = r.cacheRepo.CreateQuoteRepost(quoteRepost.ID, userIDs, float64(quoteRepost.CreatedAt.UnixMilli()))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if txErr != nil {
+		return entity.TimelineItem{}, txErr
+	}
+	return quoteRepost, nil
 }
 
 func (r timelineItemsRepository) TimelineItemByID(postID string) (*entity.TimelineItem, error) {
