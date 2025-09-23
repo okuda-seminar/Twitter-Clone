@@ -1,38 +1,8 @@
-type: object
 title: GetReverseChronologicalHomeTimelineResponse
-properties:
-  data:
-    type: object
-    required:
-      - event_type
-      - timeline_items
-    properties:
-      event_type:
-        type: string
-      timeline_items:
-        type: object
-        required:
-          - type
-          - id
-          - authorId
-          - createdAt
-        properties:
-          type:
-            type: string
-          id:
-            type: string
-          authorId:
-            type: string
-          parentPostId:
-            type: object
-            required: [UUID, Valid]
-            properties:
-              UUID:
-                type: string
-              Valid:
-                type: boolean
-          text:
-            type: string
-          createdAt:
-            type: string
-            format: date-time
+type: array
+description: Response when fetching timeline items for reverse chronological home timeline.
+items:
+  oneOf:
+    - $ref: '../schemas/post.yml'
+    - $ref: '../schemas/repost.yml'
+    - $ref: '../schemas/quote_repost.yml'

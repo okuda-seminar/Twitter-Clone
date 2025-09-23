@@ -28,3 +28,16 @@ func toOpenAPIQuoteRepost(item *entity.TimelineItem) openapi.QuoteRepost {
 		Type: item.Type,
 	}
 }
+
+func toOpenAPIRepost(item *entity.TimelineItem) openapi.Repost {
+	return openapi.Repost{
+		AuthorId:  item.AuthorID,
+		CreatedAt: item.CreatedAt,
+		Id:        item.ID,
+		ParentPostId: struct {
+			UUID  string `json:"UUID"`
+			Valid bool   `json:"Valid"`
+		}(item.ParentPostID),
+		Type: item.Type,
+	}
+}
