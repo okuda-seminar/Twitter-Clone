@@ -117,22 +117,12 @@ type GetPostByPostIdResponse struct {
 	union json.RawMessage
 }
 
-// GetReverseChronologicalHomeTimelineResponse defines model for get_reverse_chronological_home_timeline_response.
-type GetReverseChronologicalHomeTimelineResponse struct {
-	Data *struct {
-		EventType     string `json:"event_type"`
-		TimelineItems struct {
-			AuthorId     string    `json:"authorId"`
-			CreatedAt    time.Time `json:"createdAt"`
-			Id           string    `json:"id"`
-			ParentPostId *struct {
-				UUID  string `json:"UUID"`
-				Valid bool   `json:"Valid"`
-			} `json:"parentPostId,omitempty"`
-			Text *string `json:"text,omitempty"`
-			Type string  `json:"type"`
-		} `json:"timeline_items"`
-	} `json:"data,omitempty"`
+// GetReverseChronologicalHomeTimelineResponse Response when fetching timeline items for reverse chronological home timeline.
+type GetReverseChronologicalHomeTimelineResponse = []GetReverseChronologicalHomeTimelineResponse_Item
+
+// GetReverseChronologicalHomeTimelineResponse_Item defines model for get_reverse_chronological_home_timeline_response.Item.
+type GetReverseChronologicalHomeTimelineResponse_Item struct {
+	union json.RawMessage
 }
 
 // GetUserPostsTimelineResponse Response when fetching timeline items.
@@ -369,6 +359,94 @@ func (t GetPostByPostIdResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (t *GetPostByPostIdResponse) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsPost returns the union data inside the GetReverseChronologicalHomeTimelineResponse_Item as a Post
+func (t GetReverseChronologicalHomeTimelineResponse_Item) AsPost() (Post, error) {
+	var body Post
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromPost overwrites any union data inside the GetReverseChronologicalHomeTimelineResponse_Item as the provided Post
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) FromPost(v Post) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergePost performs a merge with any union data inside the GetReverseChronologicalHomeTimelineResponse_Item, using the provided Post
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) MergePost(v Post) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsRepost returns the union data inside the GetReverseChronologicalHomeTimelineResponse_Item as a Repost
+func (t GetReverseChronologicalHomeTimelineResponse_Item) AsRepost() (Repost, error) {
+	var body Repost
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromRepost overwrites any union data inside the GetReverseChronologicalHomeTimelineResponse_Item as the provided Repost
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) FromRepost(v Repost) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeRepost performs a merge with any union data inside the GetReverseChronologicalHomeTimelineResponse_Item, using the provided Repost
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) MergeRepost(v Repost) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsQuoteRepost returns the union data inside the GetReverseChronologicalHomeTimelineResponse_Item as a QuoteRepost
+func (t GetReverseChronologicalHomeTimelineResponse_Item) AsQuoteRepost() (QuoteRepost, error) {
+	var body QuoteRepost
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromQuoteRepost overwrites any union data inside the GetReverseChronologicalHomeTimelineResponse_Item as the provided QuoteRepost
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) FromQuoteRepost(v QuoteRepost) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeQuoteRepost performs a merge with any union data inside the GetReverseChronologicalHomeTimelineResponse_Item, using the provided QuoteRepost
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) MergeQuoteRepost(v QuoteRepost) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t GetReverseChronologicalHomeTimelineResponse_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *GetReverseChronologicalHomeTimelineResponse_Item) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }

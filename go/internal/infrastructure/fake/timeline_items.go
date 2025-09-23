@@ -91,22 +91,22 @@ func (r *fakeTimelineitemsRepository) CreatePost(userID string, text string, use
 	return timelineItem, nil
 }
 
-func (r *fakeTimelineitemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
+func (r *fakeTimelineitemsRepository) DeletePost(postID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	if err, ok := r.errors[repository.ErrKeyDeletePost]; ok {
-		return entity.TimelineItem{}, err
+		return err
 	}
 
-	post, ok := r.timelineItems[postID]
+	_, ok := r.timelineItems[postID]
 	if !ok {
-		return entity.TimelineItem{}, repository.ErrRecordNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	delete(r.timelineItems, postID)
 
-	return *post, nil
+	return nil
 }
 
 func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string, userIDs []string) (entity.TimelineItem, error) {
@@ -142,22 +142,22 @@ func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string, userID
 	return timelineItem, nil
 }
 
-func (r *fakeTimelineitemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
+func (r *fakeTimelineitemsRepository) DeleteRepost(postID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	if err, ok := r.errors[repository.ErrKeyDeleteRepost]; ok {
-		return entity.TimelineItem{}, err
+		return err
 	}
 
-	repost, ok := r.timelineItems[postID]
+	_, ok := r.timelineItems[postID]
 	if !ok {
-		return entity.TimelineItem{}, repository.ErrRecordNotFound
+		return repository.ErrRecordNotFound
 	}
 
 	delete(r.timelineItems, postID)
 
-	return *repost, nil
+	return nil
 }
 
 func (r *fakeTimelineitemsRepository) CreateQuoteRepost(userID, postID, text string, userIDs []string) (entity.TimelineItem, error) {

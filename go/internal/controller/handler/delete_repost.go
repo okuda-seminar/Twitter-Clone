@@ -5,19 +5,16 @@ import (
 	"net/http"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
-	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/openapi"
 )
 
 type DeleteRepostHandler struct {
-	deleteRepostUsecase       usecase.DeleteRepostUsecase
-	updateNotificationUsecase usecase.UpdateNotificationUsecase
+	deleteRepostUsecase usecase.DeleteRepostUsecase
 }
 
-func NewDeleteRepostHandler(deleteRepostUsecase usecase.DeleteRepostUsecase, updateNotificationUsecase usecase.UpdateNotificationUsecase) DeleteRepostHandler {
+func NewDeleteRepostHandler(deleteRepostUsecase usecase.DeleteRepostUsecase) DeleteRepostHandler {
 	return DeleteRepostHandler{
 		deleteRepostUsecase,
-		updateNotificationUsecase,
 	}
 }
 
@@ -33,13 +30,11 @@ func (h *DeleteRepostHandler) DeleteRepost(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	repost, err := h.deleteRepostUsecase.DeleteRepost(body.RepostId)
+	err = h.deleteRepostUsecase.DeleteRepost(body.RepostId)
 	if err != nil {
 		http.Error(w, ErrDeleteRepostFailed.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	go h.updateNotificationUsecase.SendNotification(userID, entity.RepostDeleted, &repost)
 
 	w.WriteHeader(http.StatusNoContent)
 }
