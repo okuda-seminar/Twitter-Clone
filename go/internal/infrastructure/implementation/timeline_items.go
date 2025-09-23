@@ -34,9 +34,9 @@ func (r timelineItemsRepository) CreatePost(userID, text string) (entity.Timelin
 	return post, err
 }
 
-func (r timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {
-	post, err := r.rdbRepo.DeletePost(postID)
-	return post, err
+func (r timelineItemsRepository) DeletePost(postID string) error {
+	err := r.rdbRepo.DeletePost(postID)
+	return err
 }
 
 func (r timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
@@ -44,9 +44,9 @@ func (r timelineItemsRepository) CreateRepost(userID, postID string) (entity.Tim
 	return repost, err
 }
 
-func (r timelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {
-	repost, err := r.rdbRepo.DeleteRepost(postID)
-	return repost, err
+func (r timelineItemsRepository) DeleteRepost(postID string) error {
+	err := r.rdbRepo.DeleteRepost(postID)
+	return err
 }
 
 func (r timelineItemsRepository) CreateQuoteRepost(userID, postID, text string) (entity.TimelineItem, error) {

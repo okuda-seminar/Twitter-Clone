@@ -50,10 +50,8 @@ func TestCreatePost(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
-			usersRepository := infraInjector.InjectUsersRepository(nil)
 			createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
-			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
-			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, createPostUsecase)
+			createPostHandler := NewCreatePostHandler(createPostUsecase)
 
 			if tt.err != nil {
 				timelineItemsRepository.SetError(repository.ErrKeyCreatePost, tt.err)
