@@ -39,10 +39,8 @@ func TestDeleteRepost(t *testing.T) {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
-			usersRepository := infraInjector.InjectUsersRepository(nil)
 			deleteRepostUsecase := usecaseInjector.InjectDeleteRepostUsecase(timelineItemsRepository)
-			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
-			deleteRepostHandler := NewDeleteRepostHandler(deleteRepostUsecase, updateNotificationUsecase)
+			deleteRepostHandler := NewDeleteRepostHandler(deleteRepostUsecase)
 
 			if tt.setup != nil {
 				tt.setup(deleteRepostUsecase)

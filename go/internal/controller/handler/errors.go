@@ -27,7 +27,6 @@ var (
 	ErrInternalError          = errors.New("Unexpected error occurred.")
 	ErrGetTimeLineItemsFailed = errors.New("Could not get timeline items.")
 	ErrCreateBlock            = errors.New("Could not create a block.")
-	ErrSetChannel             = errors.New("Failed to set notification channel")
 	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
 	ErrCreateMuting           = errors.New("Could not create muting")
 	ErrUserOrPostNotFound     = errors.New("User or post not found.")
