@@ -84,7 +84,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 		CreateQuoteRepostHandler:                   handler.NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase),
 		DeleteRepostHandler:                        handler.NewDeleteRepostHandler(deleteRepostUsecase, updateNotificationUsecase),
 		GetUserPostsTimelineHandler:                handler.NewGetUserPostsTimelineHandler(specificUserPostsUsecase),
-		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase, updateNotificationUsecase, make(chan struct{}, 1)),
+		GetReverseChronologicalHomeTimelineHandler: handler.NewGetReverseChronologicalHomeTimelineHandler(userAndFolloweePostsUsecase),
 		CreateFollowshipHandler:                    handler.NewCreateFollowshipHandler(followUserUsecase),
 		DeleteFollowshipHandler:                    handler.NewDeleteFollowshipHandler(unfollowUserUsecase),
 		LikePostHandler:                            handler.NewLikePostHandler(likePostUsecase),
