@@ -51,7 +51,7 @@ func TestCreatePost(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
-			createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
+			createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository, usersRepository)
 			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 			createPostHandler := NewCreatePostHandler(updateNotificationUsecase, createPostUsecase)
 

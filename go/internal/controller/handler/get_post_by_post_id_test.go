@@ -20,14 +20,14 @@ func TestGetPostByPostID(t *testing.T) {
 	}{
 		"successfully get the specified post": {
 			setupPost: func(timelineItemsRepository repository.TimelineItemsRepository) string {
-				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test")
+				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test", []string{})
 				return post.ID
 			},
 			expectedCode: http.StatusOK,
 		},
 		"successfully get the specified repost": {
 			setupPost: func(timelineItemsRepository repository.TimelineItemsRepository) string {
-				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test")
+				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test", []string{})
 				repost, _ := timelineItemsRepository.CreateRepost(uuid.NewString(), post.ID)
 				return repost.ID
 			},
@@ -35,7 +35,7 @@ func TestGetPostByPostID(t *testing.T) {
 		},
 		"successfully get the specified quote repost": {
 			setupPost: func(timelineItemsRepository repository.TimelineItemsRepository) string {
-				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test")
+				post, _ := timelineItemsRepository.CreatePost(uuid.NewString(), "test", []string{})
 				quoteRepost, _ := timelineItemsRepository.CreateQuoteRepost(uuid.NewString(), post.ID, "quote repost")
 				return quoteRepost.ID
 			},

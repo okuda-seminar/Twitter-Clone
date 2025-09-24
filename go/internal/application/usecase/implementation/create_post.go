@@ -10,11 +10,13 @@ import (
 
 type createPostUsecase struct {
 	timelineItemsRepository repository.TimelineItemsRepository
+	usersRepository         repository.UsersRepository
 }
 
-func NewCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreatePostUsecase {
+func NewCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) usecase.CreatePostUsecase {
 	return &createPostUsecase{
 		timelineItemsRepository: timelineItemsRepository,
+		usersRepository:         usersRepository,
 	}
 }
 
@@ -25,7 +27,18 @@ func (u *createPostUsecase) CreatePost(userID, text string) (entity.TimelineItem
 		return post, usecase.ErrTooLongText
 	}
 
-	post, err := u.timelineItemsRepository.CreatePost(userID, text)
+	users, err := u.usersRepository.FollowersByID(nil, userID)
+	if err != nil {
+		return post, err
+	}
+
+	userIDs := make([]string, 0, len(users)+1)
+	for _, user := range users {
+		userIDs = append(userIDs, user.ID)
+	}
+	userIDs = append(userIDs, userID)
+
+	post, err = u.timelineItemsRepository.CreatePost(userID, text, userIDs)
 	if err != nil {
 		if errors.Is(err, repository.ErrForeignViolation) {
 			return post, usecase.ErrUserNotFound

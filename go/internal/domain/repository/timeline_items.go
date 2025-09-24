@@ -5,7 +5,7 @@ import "x-clone-backend/internal/domain/entity"
 type TimelineItemsRepository interface {
 	SpecificUserPosts(userID string) ([]*entity.TimelineItem, error)
 	UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error)
-	CreatePost(userID, text string) (entity.TimelineItem, error)
+	CreatePost(userID, text string, userIDs []string) (entity.TimelineItem, error)
 	DeletePost(postID string) (entity.TimelineItem, error)
 	CreateRepost(userID, postID string) (entity.TimelineItem, error)
 	DeleteRepost(postID string) (entity.TimelineItem, error)

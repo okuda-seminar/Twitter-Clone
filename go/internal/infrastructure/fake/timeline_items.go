@@ -70,7 +70,7 @@ func (r *fakeTimelineitemsRepository) UserAndFolloweePosts(userID string) ([]*en
 // CreatePost creates and stores a new post by the given userID with the provided text in the in-memory database.
 // If a preconfigured error for CreatePost exists, it returns the error without creating a post.
 // Otherwise, it returns the created TimelineItem.
-func (r *fakeTimelineitemsRepository) CreatePost(userID string, text string) (entity.TimelineItem, error) {
+func (r *fakeTimelineitemsRepository) CreatePost(userID string, text string, userIDs []string) (entity.TimelineItem, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

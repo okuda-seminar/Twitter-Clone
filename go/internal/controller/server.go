@@ -50,7 +50,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 	authService := service.NewAuthService(secretKey)
 
 	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
-	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository)
+	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository, usersRepository)
 	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
