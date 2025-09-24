@@ -2,6 +2,7 @@ package implementation
 
 import (
 	"errors"
+	"log"
 
 	usecase "x-clone-backend/internal/application/usecase/api"
 	"x-clone-backend/internal/domain/entity"
@@ -10,11 +11,13 @@ import (
 
 type createPostUsecase struct {
 	timelineItemsRepository repository.TimelineItemsRepository
+	usersRepository         repository.UsersRepository
 }
 
-func NewCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreatePostUsecase {
+func NewCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) usecase.CreatePostUsecase {
 	return &createPostUsecase{
 		timelineItemsRepository: timelineItemsRepository,
+		usersRepository:         usersRepository,
 	}
 }
 
@@ -25,7 +28,18 @@ func (u *createPostUsecase) CreatePost(userID, text string) (entity.TimelineItem
 		return post, usecase.ErrTooLongText
 	}
 
-	post, err := u.timelineItemsRepository.CreatePost(userID, text)
+	users, err := u.usersRepository.FolloweesByID(nil, userID)
+	var usersID []string
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		for _, user := range users {
+			usersID = append(usersID, user.ID)
+		}
+	}
+	usersID = append(usersID, userID)
+
+	post, err = u.timelineItemsRepository.CreatePost(userID, text, usersID)
 	if err != nil {
 		if errors.Is(err, repository.ErrForeignViolation) {
 			return post, usecase.ErrUserNotFound

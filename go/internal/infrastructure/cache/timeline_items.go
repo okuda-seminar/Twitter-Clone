@@ -1,6 +1,8 @@
 package cache
 
 import (
+	"context"
+
 	"github.com/redis/go-redis/v9"
 )
 
@@ -12,4 +14,16 @@ func NewcacheTimelineItemsRepository(client *redis.Client) CacheTimelineItemsRep
 	return CacheTimelineItemsRepository{
 		client: client,
 	}
+}
+
+func (c *CacheTimelineItemsRepository) CreatePost(postID string, usersID []string) error {
+	ctx := context.Background()
+	_, err := c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
+		for _, userID := range usersID {
+			p.RPush(ctx, userID, postID)
+		}
+		return nil
+	})
+
+	return err
 }

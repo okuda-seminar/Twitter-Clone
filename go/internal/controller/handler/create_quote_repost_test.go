@@ -106,12 +106,12 @@ func TestCreateQuoteRepost(t *testing.T) {
 
 			switch tt.parentPostType {
 			case entity.PostTypePost:
-				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText, []string{})
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
 			case entity.PostTypeQuoteRepost:
-				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText, []string{})
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
@@ -120,7 +120,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 					t.Errorf("Failed to create a quote repost")
 				}
 			case entity.PostTypeRepost:
-				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText)
+				parentPost, err = timelineItemsRepository.CreatePost(postUserID, postText, []string{})
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
