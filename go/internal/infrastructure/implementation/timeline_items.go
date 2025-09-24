@@ -1,6 +1,8 @@
 package implementation
 
 import (
+	"database/sql"
+
 	"x-clone-backend/internal/domain/entity"
 	"x-clone-backend/internal/domain/repository"
 	"x-clone-backend/internal/infrastructure/cache"
@@ -29,9 +31,25 @@ func (r timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity.
 	return items, err
 }
 
-func (r timelineItemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
-	post, err := r.rdbRepo.CreatePost(userID, text)
-	return post, err
+func (r timelineItemsRepository) CreatePost(userID, text string, userIDs []string) (entity.TimelineItem, error) {
+	var post entity.TimelineItem
+	txErr := r.rdbRepo.WithTransaction(func(tx *sql.Tx) error {
+		var err error
+		post, err = r.rdbRepo.CreatePost(tx, userID, text)
+		if err != nil {
+			return err
+		}
+
+		err = r.cacheRepo.CreatePost(post.ID, userIDs, float64(post.CreatedAt.UnixMilli()))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if txErr != nil {
+		return entity.TimelineItem{}, txErr
+	}
+	return post, nil
 }
 
 func (r timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem, error) {

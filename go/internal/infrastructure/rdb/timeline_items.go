@@ -18,6 +18,26 @@ func NewRDBTimelineItemsRepository(db *sql.DB) RDBTimelineItemsRepository {
 	return RDBTimelineItemsRepository{db}
 }
 
+func (r *RDBTimelineItemsRepository) WithTransaction(fn func(tx *sql.Tx) error) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		} else if err != nil {
+			tx.Rollback()
+		} else {
+			err = tx.Commit()
+		}
+	}()
+
+	err = fn(tx)
+	return err
+}
+
 func (r *RDBTimelineItemsRepository) SpecificUserPosts(userID string) ([]*entity.TimelineItem, error) {
 	query := `SELECT * FROM timelineitems WHERE author_id = $1`
 
@@ -101,7 +121,7 @@ func (r *RDBTimelineItemsRepository) UserAndFolloweePosts(userID string) ([]*ent
 }
 
 // CreatePost creates and returns a new post by the given userID with the provided text.
-func (r *RDBTimelineItemsRepository) CreatePost(userID, text string) (entity.TimelineItem, error) {
+func (r *RDBTimelineItemsRepository) CreatePost(tx *sql.Tx, userID, text string) (entity.TimelineItem, error) {
 	query := `INSERT INTO timelineitems (type, author_id, text) VALUES ($1, $2, $3) RETURNING id, created_at`
 
 	var (
@@ -111,7 +131,12 @@ func (r *RDBTimelineItemsRepository) CreatePost(userID, text string) (entity.Tim
 
 	postType := entity.PostTypePost
 
-	err := r.db.QueryRow(query, postType, userID, text).Scan(&id, &createdAt)
+	var err error
+	if tx == nil {
+		err = r.db.QueryRow(query, postType, userID, text).Scan(&id, &createdAt)
+	} else {
+		err = tx.QueryRow(query, postType, userID, text).Scan(&id, &createdAt)
+	}
 	if err != nil {
 		if isForeignKeyError(err) {
 			return entity.TimelineItem{}, repository.ErrForeignViolation

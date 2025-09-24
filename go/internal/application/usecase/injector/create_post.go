@@ -6,6 +6,6 @@ import (
 	"x-clone-backend/internal/domain/repository"
 )
 
-func InjectCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreatePostUsecase {
-	return implementation.NewCreatePostUsecase(timelineItemsRepository)
+func InjectCreatePostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) usecase.CreatePostUsecase {
+	return implementation.NewCreatePostUsecase(timelineItemsRepository, usersRepository)
 }
