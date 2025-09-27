@@ -1,13 +1,12 @@
 import type { TimelineItem } from "@/lib/models/post";
 import { TimelinePostCard } from "./timeline-post-card";
+import { TimelineQuoteRepostCard } from "./timeline-quote-repost-card";
 import { TimelineRepostCard } from "./timeline-repost-card";
 
 interface TimelineItemCardProps {
   timelineItem: TimelineItem;
 }
 
-// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/808
-// - Implementing the UI to display reposts and quote reposts.
 export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
   timelineItem,
 }) => {
@@ -16,6 +15,8 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
       return <TimelinePostCard post={timelineItem} />;
     case "repost":
       return <TimelineRepostCard repost={timelineItem} />;
+    case "quoteRepost":
+      return <TimelineQuoteRepostCard quoteRepost={timelineItem} />;
     default:
       return null;
   }
