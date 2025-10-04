@@ -94,7 +94,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 			timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 			usersRepository := infraInjector.InjectUsersRepository(nil)
 			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
-			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
+			createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository, usersRepository)
 			CreateQuoteRepostHandler := NewCreateQuoteRepostHandler(createQuoteRepostUsecase, updateNotificationUsecase)
 
 			var parentPost entity.TimelineItem
@@ -115,7 +115,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
-				parentPost, err = timelineItemsRepository.CreateQuoteRepost(postUserID, parentPost.ID, postText)
+				parentPost, err = timelineItemsRepository.CreateQuoteRepost(postUserID, parentPost.ID, postText, []string{})
 				if err != nil {
 					t.Errorf("Failed to create a quote repost")
 				}

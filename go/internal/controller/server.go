@@ -51,7 +51,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 
 	blockUserUsecase := usecaseInjector.InjectBlockUserUsecase(usersRepository)
 	createPostUsecase := usecaseInjector.InjectCreatePostUsecase(timelineItemsRepository, usersRepository)
-	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository)
+	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository, usersRepository)
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 	deletePostUsecase := usecaseInjector.InjectDeletePostUsecase(timelineItemsRepository)
