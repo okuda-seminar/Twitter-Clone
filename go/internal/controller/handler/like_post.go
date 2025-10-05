@@ -23,8 +23,6 @@ func (h *LikePostHandler) LikePost(w http.ResponseWriter, r *http.Request, userI
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&body)
-	// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/776
-	// - Update OpenAPI Schema to Support More Conditions for LikePost.
 	if err != nil {
 		http.Error(w, ErrDecodeRequestBody.Error(), http.StatusBadRequest)
 		return
@@ -32,7 +30,14 @@ func (h *LikePostHandler) LikePost(w http.ResponseWriter, r *http.Request, userI
 
 	err = h.likePostUsecase.LikePost(userID, body.PostId)
 	if err != nil {
-		http.Error(w, ErrCreateLike.Error(), http.StatusInternalServerError)
+		switch err {
+		case usecase.ErrUserOrPostNotFound:
+			http.Error(w, ErrUserOrPostNotFound.Error(), http.StatusNotFound)
+		case usecase.ErrAlreadyLiked:
+			http.Error(w, ErrAlreadyLiked.Error(), http.StatusConflict)
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 

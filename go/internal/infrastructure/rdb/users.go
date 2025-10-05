@@ -162,7 +162,15 @@ func (r *usersRepository) LikePost(tx *sql.Tx, userID string, postID string) err
 	} else {
 		_, err = r.db.Exec(query, userID, postID)
 	}
-	return err
+
+	switch {
+	case isForeignKeyError(err):
+		return repository.ErrForeignViolation
+	case isUniqueViolationError(err):
+		return repository.ErrUniqueViolation
+	default:
+		return err
+	}
 }
 
 func (r *usersRepository) UnlikePost(tx *sql.Tx, userID string, postID string) error {

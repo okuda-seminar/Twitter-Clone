@@ -14,12 +14,14 @@ post:
       application/json:
         schema:
           $ref: ../components/requestBodies/like_post_request.yml
-  # TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/776
-  # - Update OpenAPI Schema to Support More Conditions for LikePost.
   responses:
     "204":
       description: The post was liked.
     "400":
       description: The request body is invalid.
+    "404":
+      description: The specified user or post does not exist.
+    "409":
+      description: The post has already been liked by the user.
     "500":
       description: Unexpected error occurred.

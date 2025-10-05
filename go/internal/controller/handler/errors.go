@@ -30,6 +30,8 @@ var (
 	ErrSetChannel             = errors.New("Failed to set notification channel")
 	ErrUserAndFolloweePosts   = errors.New("Could not get timelineitems")
 	ErrCreateMuting           = errors.New("Could not create muting")
+	ErrUserOrPostNotFound     = errors.New("User or post not found.")
+	ErrAlreadyLiked           = errors.New("Post is already liked.")
 	ErrLikeNotFound           = errors.New("No row found to delete")
 	ErrDeleteLike             = errors.New("Could not delete a like.")
 	ErrCreateUser             = errors.New("Could not create a user.")
