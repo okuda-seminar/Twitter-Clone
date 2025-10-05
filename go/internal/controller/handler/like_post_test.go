@@ -36,21 +36,21 @@ func TestLikePost(t *testing.T) {
 			requestBody:  openapi.LikePostRequest{PostId: postID},
 			expectedCode: http.StatusNoContent,
 		},
-		"returns 500 when user or post does not exist": {
+		"returns 404 when user or post does not exist": {
 			userID:      uuid.NewString(),
 			requestBody: openapi.LikePostRequest{PostId: postID},
 			setup: func(likePostUsecase usecase.LikePostUsecase) {
 				likePostUsecase.SetError(usecase.ErrUserOrPostNotFound)
 			},
-			expectedCode: http.StatusInternalServerError,
+			expectedCode: http.StatusNotFound,
 		},
-		"returns 500 when post is already liked": {
+		"returns 409 when post is already liked": {
 			userID:      likerUserID,
 			requestBody: openapi.LikePostRequest{PostId: postID},
 			setup: func(likePostUsecase usecase.LikePostUsecase) {
 				likePostUsecase.SetError(usecase.ErrAlreadyLiked)
 			},
-			expectedCode: http.StatusInternalServerError,
+			expectedCode: http.StatusConflict,
 		},
 		"returns 500 when unexpected error occurs": {
 			userID:      likerUserID,
