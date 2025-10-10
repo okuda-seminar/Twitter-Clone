@@ -1,16 +1,13 @@
-import type {
-  TimelineEventResponse,
-  TimelineFeedService,
-} from "../timeline-feed-service";
+import type { TimelineItem } from "@/lib/models/post";
+import type { TimelineFeedService } from "../timeline-feed-service";
 
 export class FakeTimelineFeedService implements TimelineFeedService {
-  private handleResponse: ((response: TimelineEventResponse) => void) | null =
-    null;
+  private handleResponse: ((items: TimelineItem[]) => void) | null = null;
   private handleError: ((message: string) => void) | null = null;
 
   connect(
     url: string,
-    handleResponse: (response: TimelineEventResponse) => void,
+    handleResponse: (items: TimelineItem[]) => void,
     handleError: (message: string) => void,
   ): void {
     this.handleResponse = handleResponse;
@@ -22,11 +19,11 @@ export class FakeTimelineFeedService implements TimelineFeedService {
     this.handleError = null;
   }
 
-  simulateMessage(response: TimelineEventResponse): void {
+  simulateMessage(items: TimelineItem[]): void {
     if (!this.handleResponse) {
       throw new Error("Not connected");
     }
-    this.handleResponse(response);
+    this.handleResponse(items);
   }
 
   simulateError(message: string): void {
