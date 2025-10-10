@@ -2,79 +2,63 @@ import { ERROR_MESSAGES } from "@/lib/constants/error-messages";
 import type { TimelineItem } from "@/lib/models/post";
 import { FakeTimelineFeedService } from "./__fake__/fake-timeline-feed-service";
 
-export type TimelineEventResponse =
-  | TimelineAccessedResponse
-  | PostCreatedResponse
-  | PostDeletedResponse;
-
-interface TimelineAccessedResponse {
-  event_type: "TimelineAccessed";
-  timeline_items: TimelineItem[];
-}
-
-interface PostCreatedResponse {
-  event_type: "PostCreated";
-  timeline_items: TimelineItem[];
-}
-
-interface PostDeletedResponse {
-  event_type: "PostDeleted";
-  timeline_items: TimelineItem[];
-}
-
 export interface TimelineFeedService {
   connect(
     url: string,
-    handleResponse: (response: TimelineEventResponse) => void,
+    handleResponse: (items: TimelineItem[]) => void,
     handleError: (message: string) => void,
-  ): void;
+  ): void | Promise<void>;
   disconnect(): void;
 }
 
 /**
- * Implementation of timeline feed service using Server-Sent Events (SSE).
- * Manages real-time connection with the server using EventSource.
+ * Implementation of timeline feed service using REST API.
+ * Fetches timeline items once on connection.
  *
  * @implements {TimelineFeedService}
  *
  * Methods:
- * - connect(): Establishes SSE connection with the timeline stream.
- *   Automatically handles reconnection on connection loss.
- *   The response handler will be called with timeline updates as they occur.
- * - disconnect(): Closes the SSE connection and cleans up resources.
- *   Should be called when the timeline feed is no longer needed.
+ * - connect(): Fetches timeline items from REST API.
+ *   Calls the response handler with timeline items wrapped in TimelineAccessed event.
+ * - disconnect(): Cancels ongoing requests if any.
  */
-export class SseTimelineFeedService implements TimelineFeedService {
-  private eventSource: EventSource | null = null;
+export class RestTimelineFeedService implements TimelineFeedService {
+  private abortController: AbortController | null = null;
 
-  connect(
+  async connect(
     url: string,
-    handleResponse: (response: TimelineEventResponse) => void,
+    handleResponse: (items: TimelineItem[]) => void,
     handleError: (message: string) => void,
-  ): void {
-    if (this.eventSource) return;
+  ): Promise<void> {
+    if (this.abortController) return;
 
-    const eventSource = new EventSource(url);
-    this.eventSource = eventSource;
+    this.abortController = new AbortController();
 
-    eventSource.onmessage = (event) => {
-      try {
-        const response: TimelineEventResponse = JSON.parse(event.data);
-        handleResponse(response);
-      } catch (err) {
-        handleError(ERROR_MESSAGES.INVALID_DATA);
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        signal: this.abortController.signal,
+      });
+
+      if (!response.ok) {
+        handleError(ERROR_MESSAGES.SERVER_ERROR);
+        return;
       }
-    };
 
-    eventSource.onerror = () => {
-      handleError(ERROR_MESSAGES.SERVER_ERROR);
-      this.disconnect();
-    };
+      const timelineItems: TimelineItem[] = await response.json();
+
+      handleResponse(timelineItems);
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        return;
+      }
+      handleError(ERROR_MESSAGES.INVALID_DATA);
+    }
   }
 
   disconnect(): void {
-    this.eventSource?.close();
-    this.eventSource = null;
+    this.abortController?.abort();
+    this.abortController = null;
   }
 }
 
@@ -87,5 +71,5 @@ export const createTimelineFeedService = (): TimelineFeedService => {
     }
     return testInstance;
   }
-  return new SseTimelineFeedService();
+  return new RestTimelineFeedService();
 };
