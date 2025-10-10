@@ -35,32 +35,18 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
     timelineFeedServiceRef.current.connect(
       url,
       (newTimelineItems) => {
-        switch (newTimelineItems.event_type) {
-          case "TimelineAccessed":
-          case "PostCreated":
-            if (
-              !newTimelineItems.timeline_items ||
-              newTimelineItems.timeline_items.length === 0
-            ) {
-              return;
-            }
-
-            setTimelineItems((prevTimelineItems) => {
-              const existingIds = new Set(
-                prevTimelineItems.map((item) => item.id),
-              );
-              const newItems = newTimelineItems.timeline_items.filter(
-                (item) => !existingIds.has(item.id),
-              );
-
-              return [...newItems, ...prevTimelineItems];
-            });
-            break;
-          case "PostDeleted":
-            // TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/540
-            // - Implement timeline post deletion with SSE event handling.
-            return;
+        if (!newTimelineItems || newTimelineItems.length === 0) {
+          return;
         }
+
+        setTimelineItems((prevTimelineItems) => {
+          const existingIds = new Set(prevTimelineItems.map((item) => item.id));
+          const newItems = newTimelineItems.filter(
+            (item) => !existingIds.has(item.id),
+          );
+
+          return [...newItems, ...prevTimelineItems];
+        });
       },
       (error) => {
         setErrorMessage(error);
