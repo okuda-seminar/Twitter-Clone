@@ -183,7 +183,7 @@ func (r *RDBTimelineItemsRepository) DeletePost(postID string) (entity.TimelineI
 	return post, nil
 }
 
-func (r *RDBTimelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
+func (r *RDBTimelineItemsRepository) CreateRepost(tx *sql.Tx, userID, postID string) (entity.TimelineItem, error) {
 	query := `INSERT INTO timelineitems (type, author_id, parent_post_id, text) VALUES ($1, $2, $3, $4) RETURNING id, created_at`
 
 	var (
@@ -194,7 +194,12 @@ func (r *RDBTimelineItemsRepository) CreateRepost(userID, postID string) (entity
 	postType := entity.PostTypeRepost
 	text := ""
 
-	err := r.db.QueryRow(query, postType, userID, postID, text).Scan(&id, &createdAt)
+	var err error
+	if tx == nil {
+		err = r.db.QueryRow(query, postType, userID, postID, text).Scan(&id, &createdAt)
+	} else {
+		err = tx.QueryRow(query, postType, userID, postID, text).Scan(&id, &createdAt)
+	}
 	if err != nil {
 		if isForeignKeyError(err) {
 			return entity.TimelineItem{}, repository.ErrForeignViolation

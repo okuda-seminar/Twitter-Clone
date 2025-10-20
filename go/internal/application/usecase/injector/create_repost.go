@@ -9,9 +9,9 @@ import (
 	"x-clone-backend/internal/domain/repository"
 )
 
-func InjectCreateRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository) usecase.CreateRepostUsecase {
+func InjectCreateRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) usecase.CreateRepostUsecase {
 	if testing.Testing() {
 		return fake.NewFakeCreateRepostUsecase()
 	}
-	return implementation.NewCreateRepostUsecase(timelineItemsRepository)
+	return implementation.NewCreateRepostUsecase(timelineItemsRepository, usersRepository)
 }

@@ -109,7 +109,7 @@ func (r *fakeTimelineitemsRepository) DeletePost(postID string) (entity.Timeline
 	return *post, nil
 }
 
-func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
+func (r *fakeTimelineitemsRepository) CreateRepost(userID, postID string, userIDs []string) (entity.TimelineItem, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

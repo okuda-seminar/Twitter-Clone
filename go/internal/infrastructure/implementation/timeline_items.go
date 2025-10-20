@@ -57,9 +57,29 @@ func (r timelineItemsRepository) DeletePost(postID string) (entity.TimelineItem,
 	return post, err
 }
 
-func (r timelineItemsRepository) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
-	repost, err := r.rdbRepo.CreateRepost(userID, postID)
-	return repost, err
+// CreateRepost creates a repost and updates the timeline cache for the given user IDs.
+// userIDs is the list of users who should see this repost in their timeline (the author and their followers).
+func (r timelineItemsRepository) CreateRepost(userID, postID string, userIDs []string) (entity.TimelineItem, error) {
+	var repost entity.TimelineItem
+	txErr := r.rdbRepo.WithTransaction(func(tx *sql.Tx) error {
+		var err error
+		repost, err = r.rdbRepo.CreateRepost(tx, userID, postID)
+		if err != nil {
+			return err
+		}
+
+		err = r.cacheRepo.CreateRepost(repost.ID, userIDs, float64(repost.CreatedAt.UnixMilli()))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if txErr != nil {
+		return entity.TimelineItem{}, txErr
+	}
+
+	return repost, nil
 }
 
 func (r timelineItemsRepository) DeleteRepost(postID string) (entity.TimelineItem, error) {

@@ -124,7 +124,7 @@ func TestCreateQuoteRepost(t *testing.T) {
 				if err != nil {
 					t.Errorf("Failed to create a post")
 				}
-				parentPost, err = timelineItemsRepository.CreateRepost(postUserID, parentPost.ID)
+				parentPost, err = timelineItemsRepository.CreateRepost(postUserID, parentPost.ID, []string{})
 				if err != nil {
 					t.Errorf("Failed to create ae repost")
 				}

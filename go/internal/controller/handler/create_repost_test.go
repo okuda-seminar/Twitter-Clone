@@ -40,7 +40,7 @@ func TestCreateRepost(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(nil)
+			createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(nil, nil)
 			updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(nil)
 			createRepostHandler := NewCreateRepostHandler(createRepostUsecase, updateNotificationUsecase)
 
