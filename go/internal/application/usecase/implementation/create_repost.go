@@ -8,16 +8,30 @@ import (
 
 type createRepostUsecase struct {
 	timelineItemsRepository repository.TimelineItemsRepository
+	usersRepository         repository.UsersRepository
 }
 
-func NewCreateRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository) api.CreateRepostUsecase {
+func NewCreateRepostUsecase(timelineItemsRepository repository.TimelineItemsRepository, usersRepository repository.UsersRepository) api.CreateRepostUsecase {
 	return &createRepostUsecase{
-		timelineItemsRepository,
+		timelineItemsRepository: timelineItemsRepository,
+		usersRepository:         usersRepository,
 	}
 }
 
 func (u *createRepostUsecase) CreateRepost(userID, postID string) (entity.TimelineItem, error) {
-	repost, err := u.timelineItemsRepository.CreateRepost(userID, postID)
+	// Get followers for timeline cache
+	users, err := u.usersRepository.FollowersByID(nil, userID)
+	if err != nil {
+		return entity.TimelineItem{}, err
+	}
+
+	userIDs := make([]string, 0, len(users)+1)
+	for _, user := range users {
+		userIDs = append(userIDs, user.ID)
+	}
+	userIDs = append(userIDs, userID)
+
+	repost, err := u.timelineItemsRepository.CreateRepost(userID, postID, userIDs)
 	if err != nil {
 		return entity.TimelineItem{}, err
 	}
