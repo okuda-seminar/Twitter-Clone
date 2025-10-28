@@ -1,0 +1,19 @@
+type: object
+title: GetUserByUserIDResponse
+allOf:
+  - $ref: ../schemas/user.yml
+  - type: object
+    required:
+      - followersCount
+      - followeesCount
+      - postsCount
+    properties:
+      followersCount:
+        type: integer
+        format: int64
+      followeesCount:
+        type: integer
+        format: int64
+      postsCount:
+        type: integer
+        format: int64

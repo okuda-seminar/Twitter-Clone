@@ -71,8 +71,8 @@ components:
       $ref: ./components/examples/get_reverse_chronological_home_timeline_example.yml
     GetUserPostsTimelineResponse:
       $ref: ./components/responses/get_user_posts_timeline_response.yml
-    FindUserByIDResponse:
-      $ref: ./components/responses/find_user_by_id_response.yml
+    GetUserByUserIDResponse:
+      $ref: ./components/responses/get_user_by_user_id_response.yml
     GetFollowersByIDResponse:
       $ref: ./components/responses/get_followers_by_id_response.yml
     GetFolloweesByIDResponse:

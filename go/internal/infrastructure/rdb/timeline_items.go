@@ -316,3 +316,21 @@ func (r *RDBTimelineItemsRepository) TimelineItemByID(postID string) (*entity.Ti
 
 	return item, nil
 }
+
+// CountPosts returns the total number of posts made by the specified user.
+func (r *RDBTimelineItemsRepository) CountPosts(tx *sql.Tx, userID string) (int64, error) {
+	query := `SELECT COUNT(*) FROM timelineitems WHERE author_id = $1`
+
+	var count int64
+	var err error
+	if tx != nil {
+		err = tx.QueryRow(query, userID).Scan(&count)
+	} else {
+		err = r.db.QueryRow(query, userID).Scan(&count)
+	}
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}

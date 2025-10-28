@@ -11,7 +11,7 @@ type UsersRepository interface {
 
 	CreateUser(tx *sql.Tx, username, displayName, password string) (entity.User, error)
 	DeleteUserByID(tx *sql.Tx, userID string) error
-	UserByUserID(tx *sql.Tx, userID string) (entity.User, error)
+	UserByUserID(tx *sql.Tx, userID string) (entity.ProfileBaseInfo, error)
 	UserByUsername(tx *sql.Tx, userName string) (entity.User, error)
 	LikePost(tx *sql.Tx, userID, postID string) error
 	UnlikePost(tx *sql.Tx, userID, postID string) error

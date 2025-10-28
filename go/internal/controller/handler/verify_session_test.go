@@ -22,8 +22,9 @@ import (
 func TestVerifySessionHandler(t *testing.T) {
 	t.Run("Valid Token", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
+		timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository, timelineItemsRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		// Fixture
@@ -41,7 +42,15 @@ func TestVerifySessionHandler(t *testing.T) {
 			CreatedAt:   time.Now(),
 			UpdatedAt:   time.Now(),
 		}
-		userByUserIDUsecase.SetUser(user)
+		userProfile := entity.UserProfile{
+			ProfileBaseInfo: entity.ProfileBaseInfo{
+				User:           user,
+				FolloweesCount: 0,
+				FollowersCount: 0,
+			},
+			PostsCount: 0,
+		}
+		userByUserIDUsecase.SetUser(userProfile)
 
 		token, _ := authService.GenerateJWT(user.ID, username)
 
@@ -68,8 +77,9 @@ func TestVerifySessionHandler(t *testing.T) {
 
 	t.Run("Token With Non-Existent User", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
+		timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository, timelineItemsRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		userByUserIDUsecase.SetError(errors.New("User not found"))
@@ -90,8 +100,9 @@ func TestVerifySessionHandler(t *testing.T) {
 
 	t.Run("Expired Token", func(t *testing.T) {
 		usersRepository := infraInjector.InjectUsersRepository(nil)
+		timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(nil, nil)
 		authService := service.NewAuthService("test_secret_key")
-		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
+		userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository, timelineItemsRepository)
 		verifySessionHandler := NewVerifySessionHandler(authService, userByUserIDUsecase)
 
 		token, _ := createExpiredToken(uuid.NewString(), "testuser")

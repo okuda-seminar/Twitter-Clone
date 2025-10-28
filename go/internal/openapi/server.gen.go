@@ -57,9 +57,9 @@ type ServerInterface interface {
 	// Delete user by ID.
 	// (DELETE /users/{userId})
 	DeleteUserByID(w http.ResponseWriter, r *http.Request, userId string)
-	// Find user by ID.
+	// Get user by User ID.
 	// (GET /users/{userId})
-	FindUserByID(w http.ResponseWriter, r *http.Request, userId string)
+	GetUserByUserID(w http.ResponseWriter, r *http.Request, userId string)
 	// Block the specified user.
 	// (POST /users/{userId}/blocking)
 	BlockUser(w http.ResponseWriter, r *http.Request, userId string)
@@ -445,8 +445,8 @@ func (siw *ServerInterfaceWrapper) DeleteUserByID(w http.ResponseWriter, r *http
 	handler.ServeHTTP(w, r)
 }
 
-// FindUserByID operation middleware
-func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.Request) {
+// GetUserByUserID operation middleware
+func (siw *ServerInterfaceWrapper) GetUserByUserID(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 
@@ -460,7 +460,7 @@ func (siw *ServerInterfaceWrapper) FindUserByID(w http.ResponseWriter, r *http.R
 	}
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.FindUserByID(w, r, userId)
+		siw.Handler.GetUserByUserID(w, r, userId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -822,7 +822,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserId}/blocking/{targetUserId}", wrapper.UnblockUser)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{sourceUserId}/muting/{targetUserId}", wrapper.UnmuteUser)
 	m.HandleFunc("DELETE "+options.BaseURL+"/users/{userId}", wrapper.DeleteUserByID)
-	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}", wrapper.FindUserByID)
+	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}", wrapper.GetUserByUserID)
 	m.HandleFunc("POST "+options.BaseURL+"/users/{userId}/blocking", wrapper.BlockUser)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}/followees", wrapper.GetFolloweesByID)
 	m.HandleFunc("GET "+options.BaseURL+"/users/{userId}/followers", wrapper.GetFollowersByID)

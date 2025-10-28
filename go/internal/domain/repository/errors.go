@@ -14,6 +14,7 @@ const (
 	ErrKeyDeleteRepost         = "DeleteRepost"
 	ErrKeyCreateQuoteRepost    = "CreateQuoteRepost"
 	ErrKeyRetrieveTimelineItem = "RetrieveTimelineItem"
+	ErrKeyCountPosts           = "CountPosts"
 
 	// Users Items
 	ErrKeyCreateUser     = "CreateUser"

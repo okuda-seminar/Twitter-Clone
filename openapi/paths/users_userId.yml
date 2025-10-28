@@ -1,23 +1,23 @@
 get:
   tags:
     - X-Clone
-  summary: Find user by ID.
+  summary: Get user by User ID.
   parameters:
     - in: path
       name: userId
       schema:
         type: string
       required: true
-  operationId: FindUserByID
+  operationId: GetUserByUserID
   responses:
     "200":
       description: A user object.
       content:
         application/json:
           schema:
-            $ref: ../openapi.yml#/components/schemas/FindUserByIDResponse
+            $ref: ../openapi.yml#/components/schemas/GetUserByUserIDResponse
     "404":
-      description: The specified user was not find.
+      description: The specified user was not found.
     "500":
       description: Unexpected error occurred.
 

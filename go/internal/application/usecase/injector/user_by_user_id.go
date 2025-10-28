@@ -9,9 +9,9 @@ import (
 	"x-clone-backend/internal/domain/repository"
 )
 
-func InjectUserByUserIDUsecase(usersRepository repository.UsersRepository) usecase.UserByUserIDUsecase {
+func InjectUserByUserIDUsecase(usersRepository repository.UsersRepository, timelineItemsRepository repository.TimelineItemsRepository) usecase.UserByUserIDUsecase {
 	if testing.Testing() {
 		return fake.NewFakeUserByUserIDUsecase()
 	}
-	return implementation.NewUserByUserIDUsecase(usersRepository)
+	return implementation.NewUserByUserIDUsecase(usersRepository, timelineItemsRepository)
 }

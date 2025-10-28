@@ -99,8 +99,32 @@ func (r *usersRepository) DeleteUserByID(tx *sql.Tx, userID string) error {
 	return nil
 }
 
-func (r *usersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.User, error) {
-	query := `SELECT * FROM users WHERE id = $1`
+// UserByUserID retrieves a user's profile information by their user ID.
+func (r *usersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.ProfileBaseInfo, error) {
+	query := `
+	SELECT
+    u.id,
+    u.username,
+    u.display_name,
+    u.bio,
+    u.is_private,
+    u.created_at,
+    u.updated_at,
+    (
+        SELECT COUNT(*)
+        FROM followships AS f_out
+        WHERE f_out.source_user_id = u.id
+    ) AS followees_count,
+    (
+        SELECT COUNT(*)
+        FROM followships AS f_in
+        WHERE f_in.target_user_id = u.id
+    ) AS followers_count
+FROM
+    users AS u
+WHERE
+    u.id = $1
+	`
 	var row *sql.Row
 	if tx != nil {
 		row = tx.QueryRow(query, userID)
@@ -108,22 +132,23 @@ func (r *usersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.User, 
 		row = r.db.QueryRow(query, userID)
 	}
 
-	var user entity.User
+	var profileBaseInfo entity.ProfileBaseInfo
 	err := row.Scan(
-		&user.ID,
-		&user.Username,
-		&user.DisplayName,
-		&user.Bio,
-		&user.IsPrivate,
-		&user.CreatedAt,
-		&user.UpdatedAt,
-		&user.Password,
+		&profileBaseInfo.ID,
+		&profileBaseInfo.Username,
+		&profileBaseInfo.DisplayName,
+		&profileBaseInfo.Bio,
+		&profileBaseInfo.IsPrivate,
+		&profileBaseInfo.CreatedAt,
+		&profileBaseInfo.UpdatedAt,
+		&profileBaseInfo.FolloweesCount,
+		&profileBaseInfo.FollowersCount,
 	)
 	if errors.Is(err, sql.ErrNoRows) {
-		return entity.User{}, repository.ErrRecordNotFound
+		return entity.ProfileBaseInfo{}, repository.ErrRecordNotFound
 	}
 
-	return user, err
+	return profileBaseInfo, err
 }
 
 func (r *usersRepository) UserByUsername(tx *sql.Tx, username string) (entity.User, error) {

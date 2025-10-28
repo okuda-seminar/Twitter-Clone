@@ -34,13 +34,13 @@ func (h *VerifySessionHandler) VerifySession(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	user, err := h.userByUserIDUsecase.UserByUserID(userID)
+	userProfile, err := h.userByUserIDUsecase.UserByUserID(userID)
 	if err != nil {
 		http.Error(w, ErrInternalError.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	res := transfer.ToVerifySessionResponse(&user)
+	res := transfer.ToVerifySessionResponse(&userProfile.User)
 
 	w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(w)
