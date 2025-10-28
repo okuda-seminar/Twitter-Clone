@@ -1,4 +1,4 @@
-package handler
+package handler_test
 
 import (
 	"fmt"
@@ -10,9 +10,10 @@ import (
 
 	usecase "x-clone-backend/internal/application/usecase/api"
 	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
+	"x-clone-backend/internal/controller/handler"
 )
 
-func TestFindUserByID(t *testing.T) {
+func TestGetUserByUserID(t *testing.T) {
 	existingUserID := uuid.NewString()
 	nonExistentUserID := uuid.NewString()
 
@@ -36,8 +37,8 @@ func TestFindUserByID(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(nil)
-			findUserByIDHandler := NewFindUserByIDHandler(userByUserIDUsecase)
+			userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(nil, nil)
+			getUserByUserIDHandler := handler.NewGetUserByUserIDHandler(userByUserIDUsecase)
 
 			if tt.setup != nil {
 				tt.setup(userByUserIDUsecase)
@@ -50,7 +51,7 @@ func TestFindUserByID(t *testing.T) {
 			)
 			rr := httptest.NewRecorder()
 
-			findUserByIDHandler.FindUserByID(rr, req, tt.userID)
+			getUserByUserIDHandler.GetUserByUserID(rr, req, tt.userID)
 
 			if rr.Code != tt.expectedCode {
 				t.Errorf("%s: wrong code returned; expected %d, but got %d", name, tt.expectedCode, rr.Code)

@@ -202,6 +202,24 @@ func (r *fakeTimelineitemsRepository) TimelineItemByID(postID string) (*entity.T
 	return item, nil
 }
 
+// CountPosts returns the total number of posts made by the specified user.
+func (r *fakeTimelineitemsRepository) CountPosts(userID string) (int64, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if err, ok := r.errors[repository.ErrKeyCountPosts]; ok {
+		return 0, err
+	}
+
+	var count int64 = 0
+	for _, item := range r.timelineItems {
+		if item.AuthorID == userID {
+			count++
+		}
+	}
+	return count, nil
+}
+
 func (r *fakeTimelineitemsRepository) SetError(key string, err error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()

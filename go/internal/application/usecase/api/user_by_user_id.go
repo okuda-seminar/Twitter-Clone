@@ -5,9 +5,9 @@ import (
 )
 
 type UserByUserIDUsecase interface {
-	UserByUserID(userID string) (entity.User, error)
+	UserByUserID(userID string) (user entity.UserProfile, err error)
 
 	SetError(err error)
 	ClearError()
-	SetUser(entity.User)
+	SetUser(userProfile entity.UserProfile)
 }

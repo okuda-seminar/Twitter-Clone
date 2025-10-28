@@ -20,7 +20,7 @@ type Server struct {
 	handler.CreateUserHandler
 	handler.LoginHandler
 	handler.VerifySessionHandler
-	handler.FindUserByIDHandler
+	handler.GetUserByUserIDHandler
 	handler.DeleteUserByIDHandler
 	handler.CreatePostHandler
 	handler.DeletePostHandler
@@ -68,7 +68,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 	unmuteUserUsecase := usecaseInjector.InjectUnmuteUserUsecase(usersRepository)
 	updateNotificationUsecase := usecaseInjector.InjectUpdateNotificationUsecase(usersRepository)
 	userAndFolloweePostsUsecase := usecaseInjector.InjectUserAndFolloweePostsUsecase(timelineItemsRepository)
-	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository)
+	userByUserIDUsecase := usecaseInjector.InjectUserByUserIDUsecase(usersRepository, timelineItemsRepository)
 	getPostByPostIDUsecase := usecaseInjector.InjectGetPostByPostIDUsecase(&timelineItemsRepository)
 	getFolloweesByIDUsecase := usecaseInjector.InjectGetFolloweesByIDUsecase(usersRepository)
 	getFollowersByIDUsecase := usecaseInjector.InjectGetFollowersByIDUsecase(usersRepository)
@@ -77,7 +77,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 		CreateUserHandler:                          handler.NewCreateUserHandler(authService, createUserUsecase),
 		LoginHandler:                               handler.NewLoginHandler(loginUsecase),
 		VerifySessionHandler:                       handler.NewVerifySessionHandler(authService, userByUserIDUsecase),
-		FindUserByIDHandler:                        handler.NewFindUserByIDHandler(userByUserIDUsecase),
+		GetUserByUserIDHandler:                     handler.NewGetUserByUserIDHandler(userByUserIDUsecase),
 		DeleteUserByIDHandler:                      handler.NewDeleteUserByIDHandler(deleteUserByIDUsecase),
 		CreatePostHandler:                          handler.NewCreatePostHandler(updateNotificationUsecase, createPostUsecase),
 		DeletePostHandler:                          handler.NewDeletePostHandler(deletePostUsecase, updateNotificationUsecase),

@@ -38,6 +38,7 @@ var (
 	ErrGenerateToken          = errors.New("Could not generate token.")
 	ErrHashPassword           = errors.New("Could not hash password.")
 	ErrGetPostByPostID        = errors.New("Could not get the specified post")
+	ErrGetUserByUserID        = errors.New("Could not get the specified user.")
 	ErrGetFolloweesByIDFailed = errors.New("Could not get followees.")
 	ErrGetFollowersByIDFailed = errors.New("Could not get followers.")
 )

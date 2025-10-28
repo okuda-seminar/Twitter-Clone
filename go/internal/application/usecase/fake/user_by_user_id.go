@@ -6,22 +6,22 @@ import (
 )
 
 type fakeUserByUserIDUsecase struct {
-	err  error
-	user entity.User
+	err         error
+	userProfile entity.UserProfile
 }
 
 func NewFakeUserByUserIDUsecase() usecase.UserByUserIDUsecase {
 	return &fakeUserByUserIDUsecase{
-		err:  nil,
-		user: entity.User{},
+		err:         nil,
+		userProfile: entity.UserProfile{},
 	}
 }
 
-func (u *fakeUserByUserIDUsecase) UserByUserID(userID string) (entity.User, error) {
+func (u *fakeUserByUserIDUsecase) UserByUserID(userID string) (user entity.UserProfile, err error) {
 	if u.err != nil {
-		return entity.User{}, u.err
+		return entity.UserProfile{}, u.err
 	}
-	return u.user, nil
+	return u.userProfile, nil
 }
 
 func (u *fakeUserByUserIDUsecase) SetError(err error) {
@@ -32,6 +32,6 @@ func (u *fakeUserByUserIDUsecase) ClearError() {
 	u.err = nil
 }
 
-func (u *fakeUserByUserIDUsecase) SetUser(user entity.User) {
-	u.user = user
+func (u *fakeUserByUserIDUsecase) SetUser(userProfile entity.UserProfile) {
+	u.userProfile = userProfile
 }

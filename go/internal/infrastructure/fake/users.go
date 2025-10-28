@@ -84,20 +84,28 @@ func (r *fakeUsersRepository) DeleteUserByID(tx *sql.Tx, userID string) error {
 	return nil
 }
 
-func (r *fakeUsersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.User, error) {
+// UserByUserID retrieves a user's profile information by their user ID.
+func (r *fakeUsersRepository) UserByUserID(tx *sql.Tx, userID string) (entity.ProfileBaseInfo, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
 	if err, ok := r.errors[repository.ErrKeyUserByUserID]; ok {
-		return entity.User{}, err
+		return entity.ProfileBaseInfo{}, err
 	}
 
 	user, ok := r.users[userID]
 	if !ok {
-		return entity.User{}, repository.ErrRecordNotFound
+		return entity.ProfileBaseInfo{}, repository.ErrRecordNotFound
+	}
+	followeesCount := int64(len(r.followships[userID]))
+	var followersCount int64
+	for _, followships := range r.followships {
+		if slices.Contains(followships, userID) {
+			followersCount++
+		}
 	}
 
-	return user, nil
+	return entity.ProfileBaseInfo{User: user, FolloweesCount: followeesCount, FollowersCount: followersCount}, nil
 }
 
 func (r *fakeUsersRepository) UserByUsername(tx *sql.Tx, username string) (entity.User, error) {

@@ -115,6 +115,12 @@ func (r timelineItemsRepository) TimelineItemByID(postID string) (*entity.Timeli
 	return timelineItem, err
 }
 
+// CountPosts returns the total number of posts made by the specified user.
+func (r timelineItemsRepository) CountPosts(userID string) (int64, error) {
+	count, err := r.rdbRepo.CountPosts(nil, userID)
+	return count, err
+}
+
 // These methods are only used in the fake implementation for testing and are unused here.
 func (r timelineItemsRepository) SetError(key string, err error) {}
 func (r timelineItemsRepository) ClearError(key string)          {}
