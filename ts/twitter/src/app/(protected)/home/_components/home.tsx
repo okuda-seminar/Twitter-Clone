@@ -5,7 +5,8 @@ import { TimelineFeed } from "./timeline/timeline-feed";
 import { useTimelineFeed } from "./timeline/use-timeline-feed";
 
 export const Home: React.FC = () => {
-  const { timelineItems, errorMessage } = useTimelineFeed();
+  const { timelineItems, errorMessage, newPostsCount, loadNewPosts } =
+    useTimelineFeed();
   const tabItems = ["For you", "Following"];
   return (
     <Tabs.Root position="relative" width="100%" defaultValue="For you">
@@ -36,10 +37,12 @@ export const Home: React.FC = () => {
       <Tabs.Content value="For you">
         <Box>Posts for you.</Box>
       </Tabs.Content>
-      <Tabs.Content value="Following">
+      <Tabs.Content value="Following" p="0">
         <TimelineFeed
           timelineItems={timelineItems}
           errorMessage={errorMessage}
+          newPostsCount={newPostsCount}
+          onLoadNewPosts={loadNewPosts}
         />
       </Tabs.Content>
     </Tabs.Root>
