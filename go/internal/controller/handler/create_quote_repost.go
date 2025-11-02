@@ -54,7 +54,7 @@ func (h *CreateQuoteRepostHandler) CreateQuoteRepost(w http.ResponseWriter, r *h
 
 	go h.updateNotificationUsecase.SendNotification(userID, entity.QuoteRepostCreated, &quoteRepost)
 
-	res := transfer.ToCreatePostResponse(&quoteRepost)
+	res := transfer.ToCreateQuoteRepostResponse(&quoteRepost)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

@@ -2,8 +2,10 @@ import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { firstValueFrom } from "rxjs";
 import { CreatePostInput } from "./inputs/create-post.input";
+import { CreateQuoteRepostInput } from "./inputs/create-quote-repost.input";
 import { CreateRepostInput } from "./inputs/create-repost.input";
 import { Post } from "./models/post.model";
+import { QuoteRepost } from "./models/quote-repost.model";
 import { TimelineItem } from "./models/timeline-item.model";
 
 @Injectable()
@@ -54,6 +56,26 @@ export class TimelineService {
       this.httpService.post<Post>(
         `/api/users/${userId}/reposts`,
         createRepostInput,
+      ),
+    );
+
+    return data;
+  }
+
+  /**
+   * Creates a new quote repost by sending the data to the backend API.
+   *
+   * @param createQuoteRepostInput - An object containing the necessary data for creating a quote repost (e.g., postId).
+   * @returns A promise that resolves to the newly created QuoteRepost object as returned by the backend.
+   */
+  async createQuoteRepost(
+    userId: string,
+    createQuoteRepostInput: CreateQuoteRepostInput,
+  ): Promise<QuoteRepost> {
+    const { data } = await firstValueFrom(
+      this.httpService.post<QuoteRepost>(
+        `/api/users/${userId}/quote_reposts`,
+        createQuoteRepostInput,
       ),
     );
 

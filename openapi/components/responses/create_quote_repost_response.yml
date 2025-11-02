@@ -1,8 +1,5 @@
 type: object
 title: CreateQuoteRepostResponse
 description: Response when creating a quote repost.
-required:
-  - quoteRepost
-properties:
-  quoteRepost:
-    $ref: ../schemas/quote_repost.yml
+allOf:
+  -  $ref: ../schemas/quote_repost.yml
