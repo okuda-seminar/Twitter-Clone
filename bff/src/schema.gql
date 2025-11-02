@@ -15,6 +15,15 @@ type NullableUuid {
   Valid: Boolean!
 }
 
+type QuoteRepost {
+  type: String!
+  id: ID!
+  authorId: ID!
+  parentPostId: NullableUuid!
+  text: String!
+  createdAt: String!
+}
+
 type Repost {
   type: String!
   id: ID!
@@ -29,18 +38,13 @@ type Query {
 
 union TimelineItem = Post | Repost | QuoteRepost
 
-type QuoteRepost {
-  type: String!
-  id: ID!
-  authorId: ID!
-  parentPostId: NullableUuid!
-  text: String!
-  createdAt: String!
-}
-
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
   createRepost(userId: ID!, createRepostInput: CreateRepostInput!): Repost!
+  createQuoteRepost(
+    userId: ID!
+    createQuoteRepostInput: CreateQuoteRepostInput!
+  ): QuoteRepost!
 }
 
 input CreatePostInput {
@@ -50,4 +54,10 @@ input CreatePostInput {
 
 input CreateRepostInput {
   post_id: String!
+}
+
+input CreateQuoteRepostInput {
+  user_id: ID!
+  post_id: String!
+  text: String!
 }
