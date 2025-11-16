@@ -25,6 +25,7 @@ type Repost {
 
 type Query {
   getUserPosts(userId: ID!): [TimelineItem!]!
+  getReverseChronologicalHomeTimeline(userId: ID!): [TimelineItem!]!
 }
 
 union TimelineItem = Post | Repost | QuoteRepost

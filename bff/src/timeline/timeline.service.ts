@@ -27,6 +27,24 @@ export class TimelineService {
   }
 
   /**
+   * Fetches the reverse chronological home timeline for a specific user from the backend API.
+   *
+   * @param userId The unique identifier of the user whose home timeline is to be fetched.
+   * @returns A promise that resolves to an array of TimelineItem objects (Post, Repost, or QuoteRepost).
+   */
+  async getReverseChronologicalHomeTimeline(
+    userId: string,
+  ): Promise<Array<typeof TimelineItem>> {
+    const { data } = await firstValueFrom(
+      this.httpService.get<Array<typeof TimelineItem>>(
+        `/api/users/${userId}/timelines/reverse_chronological`,
+      ),
+    );
+
+    return data;
+  }
+
+  /**
    * Creates a new post by sending the data to the backend API.
    *
    * @param createPostInput - An object containing the necessary data for creating a post (e.g., userId, text).
