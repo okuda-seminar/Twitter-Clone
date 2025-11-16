@@ -19,6 +19,13 @@ export class TimelineResolver {
     return this.timelineService.getUserPosts(userId);
   }
 
+  @Query(() => [TimelineItem])
+  async getReverseChronologicalHomeTimeline(
+    @Args("userId", { type: () => ID }) userId: string,
+  ): Promise<Array<typeof TimelineItem>> {
+    return this.timelineService.getReverseChronologicalHomeTimeline(userId);
+  }
+
   @Mutation(() => Post)
   async createPost(
     @Args("createPostInput") createPostInput: CreatePostInput,
