@@ -9,9 +9,9 @@ export interface Post {
 export interface Repost {
   type: "repost";
   id: string;
-  author_id: string;
-  parent_post_id: string;
-  created_at: string;
+  authorId: string;
+  parentPostId: { UUID: string; Valid: boolean };
+  createdAt: string;
 }
 
 export interface QuoteRepost {

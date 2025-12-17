@@ -1,3 +1,5 @@
+import { createRepost } from "@/lib/actions/create-repost";
+import { useAuth } from "@/lib/components/auth-context";
 import {
   AnalyticsIcon,
   BookmarksIcon,
@@ -10,6 +12,8 @@ import {
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import type { Post, QuoteRepost } from "@/lib/models/post";
 import { Avatar, Box, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { RepostQuoteMenu } from "./repost-quote-menu";
 import { TimelinePostCardPopupMenu } from "./timeline-post-card-popup-menu";
 
 interface TimelineItemFrameProps extends React.PropsWithChildren {
@@ -20,6 +24,24 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
   timelineItem,
   children,
 }) => {
+  const { user } = useAuth();
+
+  const handleRepostClick = async () => {
+    if (!user?.id) return;
+    const result = await createRepost(user.id, {
+      post_id: timelineItem.id,
+    });
+    if (result.ok) {
+      console.log("Repost successful");
+    } else {
+      console.error("Repost failed:", result.error);
+    }
+  };
+
+  const handleQuoteClick = () => {
+    console.log("Quote clicked");
+  };
+
   return (
     <Flex gap="2">
       <Avatar.Root size="lg">
@@ -28,7 +50,10 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
       <Box flex="1">
         <TimelineItemHeader />
         {children}
-        <TimelineItemFooter />
+        <TimelineItemFooter
+          handleRepostClick={handleRepostClick}
+          handleQuoteClick={handleQuoteClick}
+        />
       </Box>
     </Flex>
   );
@@ -70,7 +95,12 @@ const TimelineItemHeader = () => {
   );
 };
 
-const TimelineItemFooter = () => {
+const TimelineItemFooter = ({
+  handleRepostClick,
+  handleQuoteClick,
+}: { handleRepostClick: () => void; handleQuoteClick: () => void }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <Flex justifyContent="space-between" alignItems="center" color="gray.500">
       <Tooltip content="Reply" positioning={{ placement: "bottom" }}>
@@ -88,19 +118,32 @@ const TimelineItemFooter = () => {
         </IconButton>
       </Tooltip>
 
-      <Tooltip content="Repost" positioning={{ placement: "bottom" }}>
-        <IconButton
-          minW={0}
-          bg="transparent"
-          borderRadius="full"
-          aria-label="Repost"
-          color="gray.500"
-          _hover={{ color: "green.400" }}
-          size="sm"
-          variant="ghost"
-        >
-          <RepostIcon boxSize="20px" />
-        </IconButton>
+      <Tooltip
+        content="Repost"
+        positioning={{ placement: "bottom" }}
+        disabled={isMenuOpen}
+      >
+        <Box display="inline-block">
+          <RepostQuoteMenu
+            onRepostClick={handleRepostClick}
+            onQuoteClick={handleQuoteClick}
+            open={isMenuOpen}
+            onOpenChange={(details) => setIsMenuOpen(details.open)}
+          >
+            <IconButton
+              minW={0}
+              bg="transparent"
+              borderRadius="full"
+              aria-label="Repost"
+              color="gray.500"
+              _hover={{ color: "green.400" }}
+              size="sm"
+              variant="ghost"
+            >
+              <RepostIcon boxSize="20px" />
+            </IconButton>
+          </RepostQuoteMenu>
+        </Box>
       </Tooltip>
 
       <Tooltip content="Like" positioning={{ placement: "bottom" }}>
