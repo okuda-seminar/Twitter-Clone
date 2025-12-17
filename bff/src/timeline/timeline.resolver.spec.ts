@@ -18,6 +18,7 @@ describe("TimelineResolver", () => {
             getReverseChronologicalHomeTimeline: vi.fn(),
             createPost: vi.fn(),
             createRepost: vi.fn(),
+            deletePost: vi.fn(),
           },
         },
       ],
@@ -116,6 +117,19 @@ describe("TimelineResolver", () => {
       expect(
         timelineService.getReverseChronologicalHomeTimeline,
       ).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("deletePost", () => {
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should call TimelineService.deletePost and return postId", async () => {
+      vi.spyOn(timelineService, "deletePost").mockResolvedValue(postId);
+
+      const result = await resolver.deletePost(postId);
+
+      expect(timelineService.deletePost).toHaveBeenCalledWith(postId);
+      expect(result).toBe(postId);
     });
   });
 });

@@ -52,4 +52,11 @@ export class TimelineResolver {
       createQuoteRepostInput,
     );
   }
+
+  @Mutation(() => ID)
+  async deletePost(
+    @Args("postId", { type: () => ID }) postId: string,
+  ): Promise<string> {
+    return this.timelineService.deletePost(postId);
+  }
 }

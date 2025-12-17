@@ -224,4 +224,73 @@ describe("Timeline GraphQL (e2e)", () => {
         });
     });
   });
+
+  describe("deletePost Mutation", () => {
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should delete a post successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const mutation = `
+        mutation {
+          deletePost(postId: "${postId}")
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.data.deletePost).toBe(postId);
+      expect(httpService.delete).toHaveBeenCalledWith(`/api/posts/${postId}`);
+    });
+
+    it("should return an error when backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      const mutation = `
+        mutation {
+          deletePost(postId: "${postId}")
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toContain(
+        "Internal Server Error",
+      );
+    });
+
+    it("should return error when postId is not provided", async () => {
+      const mutation = `
+        mutation DeletePost($postId: ID!) {
+          deletePost(postId: $postId)
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({
+          query: mutation,
+          variables: {},
+        })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors.length).toBeGreaterThan(0);
+      expect(response.body.errors[0].message).toContain(
+        'Variable "$postId" of required type "ID!" was not provided',
+      );
+    });
+  });
 });
