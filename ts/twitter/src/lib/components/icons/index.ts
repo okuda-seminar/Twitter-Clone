@@ -28,6 +28,7 @@ export * from "./more-icon";
 export * from "./notification-icon";
 export * from "./pin-icon";
 export * from "./profile-icon";
+export * from "./quote-repost-icon";
 export * from "./reply-icon";
 export * from "./repost-icon";
 export * from "./request-icon";
