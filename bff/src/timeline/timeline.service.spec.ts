@@ -16,6 +16,7 @@ describe("TimelineService", () => {
           provide: HttpService,
           useValue: {
             get: vi.fn(),
+            delete: vi.fn(),
           },
         },
       ],
@@ -101,6 +102,41 @@ describe("TimelineService", () => {
 
       expect(result).toEqual([]);
       expect(result.length).toBe(0);
+    });
+  });
+
+  describe("deletePost", () => {
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should delete a post successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const result = await service.deletePost(postId);
+
+      expect(httpService.delete).toHaveBeenCalledWith(`/api/posts/${postId}`);
+      expect(result).toBe(postId);
+    });
+
+    it("should throw an error when the backend API returns an HTTP error", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      await expect(service.deletePost(postId)).rejects.toThrow(
+        "Internal Server Error",
+      );
+    });
+
+    it("should throw an error when the post does not exist", async () => {
+      const notFoundError = new Error("Not Found");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => notFoundError),
+      );
+
+      await expect(service.deletePost(postId)).rejects.toThrow("Not Found");
     });
   });
 });

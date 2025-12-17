@@ -46,6 +46,7 @@ type Mutation {
     userId: ID!
     createQuoteRepostInput: CreateQuoteRepostInput!
   ): QuoteRepost!
+  deletePost(postId: ID!): ID!
 }
 
 input CreatePostInput {
@@ -58,7 +59,6 @@ input CreateRepostInput {
 }
 
 input CreateQuoteRepostInput {
-  user_id: ID!
   post_id: String!
   text: String!
 }

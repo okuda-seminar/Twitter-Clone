@@ -99,4 +99,16 @@ export class TimelineService {
 
     return data;
   }
+
+  /**
+   * Deletes a post by sending the data to the backend API.
+   *
+   * @param postId - The ID of the post to be deleted.
+   * @returns A promise that resolves to the deleted post ID.
+   */
+  async deletePost(postId: string): Promise<string> {
+    await firstValueFrom(this.httpService.delete(`/api/posts/${postId}`));
+
+    return postId;
+  }
 }
