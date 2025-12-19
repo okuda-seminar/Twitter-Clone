@@ -93,3 +93,14 @@ func (c *CacheTimelineItemsRepository) CreateQuoteRepost(postID string, userIDs 
 	}
 	return err
 }
+
+// UserAndFolloweePosts retrieves the post IDs from the timeline cache for the given user ID.
+func (c *CacheTimelineItemsRepository) UserAndFolloweePosts(userID string) ([]string, error) {
+	ctx := context.Background()
+	key := fmt.Sprintf("timeline:%s", userID)
+	postIDs, err := c.client.ZRevRange(ctx, key, 0, -1).Result()
+	if err != nil {
+		return nil, err
+	}
+	return postIDs, nil
+}

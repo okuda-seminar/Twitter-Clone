@@ -3,6 +3,8 @@ package rdb
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"x-clone-backend/internal/domain/entity"
@@ -77,7 +79,7 @@ func (r *RDBTimelineItemsRepository) SpecificUserPosts(userID string) ([]*entity
 
 // This method does not use the userID argument and gets all the timelineitems in the fake repository.
 // This is to avoid timelineItems having information in the follow table.
-func (r *RDBTimelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error) {
+func (r *RDBTimelineItemsRepository) UserAndFolloweePosts(tx *sql.Tx, userID string) ([]*entity.TimelineItem, error) {
 	query := `
 		SELECT timelineitems.* 
 		FROM timelineitems
@@ -86,7 +88,71 @@ func (r *RDBTimelineItemsRepository) UserAndFolloweePosts(userID string) ([]*ent
 		OR timelineitems.author_id = $1
 		ORDER BY timelineitems.created_at DESC
 	`
-	rows, err := r.db.Query(query, userID)
+	var rows *sql.Rows
+	var err error
+	if tx != nil {
+		rows, err = tx.Query(query, userID)
+	} else {
+		rows, err = r.db.Query(query, userID)
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var timelineitems []*entity.TimelineItem
+	for rows.Next() {
+		var (
+			id             string
+			postType       string
+			author_id      string
+			parent_post_id value.NullUUID
+			text           string
+			created_at     time.Time
+		)
+		if err := rows.Scan(&id, &postType, &author_id, &parent_post_id, &text, &created_at); err != nil {
+			return nil, err
+		}
+
+		timelineitem := entity.TimelineItem{
+			Type:         postType,
+			ID:           id,
+			AuthorID:     author_id,
+			ParentPostID: parent_post_id,
+			Text:         text,
+			CreatedAt:    created_at,
+		}
+		timelineitems = append(timelineitems, &timelineitem)
+	}
+
+	return timelineitems, nil
+}
+
+// PostsByIDs retrieves timeline items by their IDs.
+func (r *RDBTimelineItemsRepository) PostsByIDs(tx *sql.Tx, postIDs []string) ([]*entity.TimelineItem, error) {
+	// Prepare query with IN clause
+	// database/sql does not support slice directly, so we need to create placeholders
+	// Though sqlx supports it, if we introduce sqlx, we have to change many places, so we avoid it for now.
+	placeholders := make([]string, len(postIDs))
+	args := make([]any, len(postIDs))
+	for i, id := range postIDs {
+		placeholders[i] = fmt.Sprintf("$%d", i+1)
+		args[i] = id
+	}
+	query := fmt.Sprintf(`
+		SELECT *
+		FROM timelineitems
+		WHERE id IN (%s)
+		ORDER BY created_at DESC
+	`, strings.Join(placeholders, ", "))
+
+	var err error
+	var rows *sql.Rows
+	if tx != nil {
+		rows, err = tx.Query(query, args...)
+	} else {
+		rows, err = r.db.Query(query, args...)
+	}
 	if err != nil {
 		return nil, err
 	}

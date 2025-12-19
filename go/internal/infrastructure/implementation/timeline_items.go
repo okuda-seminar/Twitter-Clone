@@ -26,8 +26,24 @@ func (r timelineItemsRepository) SpecificUserPosts(userID string) ([]*entity.Tim
 	return item, err
 }
 
+// UserAndFolloweePosts retrieves timeline items for a user and their followees.
+// It first fetches post IDs from the cache repository and then retrieves the corresponding timeline items from the RDB repository.
+// TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/875
+// Implement cache server down handling
 func (r timelineItemsRepository) UserAndFolloweePosts(userID string) ([]*entity.TimelineItem, error) {
-	items, err := r.rdbRepo.UserAndFolloweePosts(userID)
+	postIDs, err := r.cacheRepo.UserAndFolloweePosts(userID)
+	if err != nil {
+		return r.rdbRepo.UserAndFolloweePosts(nil, userID)
+	}
+
+	if len(postIDs) == 0 {
+		return []*entity.TimelineItem{}, nil
+	}
+
+	// Fetch timeline items from RDB using the retrieved post IDs
+	// Retrieveving postIDs from cache accerates the process of query execution in RDB,
+	// because RDB only needs to handle specific postIDs instead of joining with follow table.
+	items, err := r.rdbRepo.PostsByIDs(nil, postIDs)
 	return items, err
 }
 
