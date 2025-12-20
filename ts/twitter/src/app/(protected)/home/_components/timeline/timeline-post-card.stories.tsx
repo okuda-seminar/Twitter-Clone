@@ -22,9 +22,9 @@ export const Primary: Story = {
     post: {
       type: "post",
       id: "123",
-      author_id: "test",
+      authorId: "test",
       text: "test post",
-      created_at: "2024-01-01T00:00:00Z",
+      createdAt: "2024-01-01T00:00:00Z",
     },
   },
 };

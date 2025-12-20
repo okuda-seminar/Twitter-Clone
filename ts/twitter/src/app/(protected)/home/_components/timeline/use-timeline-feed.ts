@@ -1,7 +1,8 @@
 import { useAuth } from "@/lib/components/auth-context";
+import { useTimeline } from "@/lib/components/timeline-context";
 import type { TimelineItem } from "@/lib/models/post";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   RestPollingTimelineFeedService,
   type TimelineFeedService,
@@ -20,6 +21,7 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
   const [newPosts, setNewPosts] = useState<TimelineItem[]>([]);
   const { user } = useAuth();
+  const { optimisticItems, removeOptimisticQuoteRepost } = useTimeline();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const initialFetchServiceRef = useRef<TimelineFeedService | null>(null);
   const pollingServiceRef = useRef<RestPollingTimelineFeedService | null>(null);
@@ -39,13 +41,22 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
         const uniqueNewPosts = currentNewPosts.filter(
           (post) => !existingIds.has(post.id),
         );
+
+        // Cleanup optimistic items that are now in new posts
+        const newPostIds = new Set(currentNewPosts.map((item) => item.id));
+        for (const item of optimisticItems) {
+          if (!item.isOptimistic && newPostIds.has(item.id) && item.tempId) {
+            removeOptimisticQuoteRepost(item.tempId);
+          }
+        }
+
         return [...uniqueNewPosts, ...prevItems];
       });
 
       // Clear new posts
       return [];
     });
-  }, []);
+  }, [optimisticItems, removeOptimisticQuoteRepost]);
 
   // Sync refs with state changes to avoid race conditions
   useEffect(() => {
@@ -113,10 +124,18 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
         const currentTimelineItems = latestTimelineItemsRef.current;
         const currentNewPosts = latestNewPostsRef.current;
 
-        // Get all existing IDs (timeline + new posts buffer)
+        // Get optimistic item IDs (real IDs from server responses)
+        const optimisticRealIds = new Set(
+          optimisticItems
+            .filter((item) => !item.isOptimistic) // Already replaced with real data
+            .map((item) => item.id),
+        );
+
+        // Get all existing IDs (timeline + new posts buffer + optimistic real IDs)
         const existingIds = new Set([
           ...currentTimelineItems.map((item) => item.id),
           ...currentNewPosts.map((item) => item.id),
+          ...optimisticRealIds, // Prevent duplicate from just-created quote repost
         ]);
 
         // Filter out items that already exist
@@ -128,6 +147,11 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
         if (freshPosts.length > 0) {
           setNewPosts((prevNewPosts) => [...freshPosts, ...prevNewPosts]);
         }
+
+        // Note: Cleanup is NOT done here
+        // Polled items go into newPosts buffer, not timelineItems yet.
+        // If we cleanup here, the optimistic item will disappear from the timeline.
+        // Cleanup happens in loadNewPosts() when user clicks the banner.
       },
       (error, isFatal) => {
         if (isFatal) {
@@ -140,11 +164,27 @@ export const useTimelineFeed = (): useTimelineFeedReturn => {
     return () => {
       pollingServiceRef.current?.stopPolling();
     };
-  }, [user?.id, errorMessage]);
+  }, [user?.id, errorMessage, optimisticItems]);
+
+  // Merge optimistic items with timeline items
+  const mergedTimelineItems = useMemo(() => {
+    // Filter out any items from timeline that match optimistic tempIds
+    // (shouldn't happen, but safety check)
+    const optimisticTempIds = new Set(
+      optimisticItems.map((item) => item.tempId).filter(Boolean),
+    );
+
+    const filteredTimeline = timelineItems.filter(
+      (item) => !optimisticTempIds.has(item.id),
+    );
+
+    // Add optimistic items at the beginning
+    return [...optimisticItems, ...filteredTimeline];
+  }, [optimisticItems, timelineItems]);
 
   return {
     errorMessage,
-    timelineItems,
+    timelineItems: mergedTimelineItems,
     newPostsCount: newPosts.length,
     loadNewPosts,
   };

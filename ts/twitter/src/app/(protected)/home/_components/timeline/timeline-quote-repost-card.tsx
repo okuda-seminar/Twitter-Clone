@@ -1,58 +1,78 @@
 import type { Post, QuoteRepost } from "@/lib/models/post";
-import { Avatar, Box, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { QuotedTimelineItemCard } from "./quoted-timeline-item-card";
 import { TimelineItemFrame } from "./timeline-item-frame";
 
 interface TimelineQuoteRepostCardProps {
   quoteRepost: QuoteRepost;
+  parentPost?: Post;
 }
 
 export const TimelineQuoteRepostCard: React.FC<
   TimelineQuoteRepostCardProps
-> = ({ quoteRepost }) => {
-  // Dummy data
-  const post: Post = {
-    type: "post",
-    id: "123",
-    author_id: "test",
-    text: "quoted post",
-    created_at: "2024-01-01T00:00:00Z",
-  };
+> = ({ quoteRepost, parentPost: parentPostProp }) => {
+  const [parentPost, setParentPost] = useState<Post | null>(
+    parentPostProp || null,
+  );
+  const [loading, setLoading] = useState(!parentPostProp);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Skip fetch if parentPost prop is provided
+    if (parentPostProp) {
+      return;
+    }
+
+    const fetchParentPost = async () => {
+      try {
+        const parentPostId = quoteRepost.parentPostId.UUID;
+        if (!parentPostId) {
+          throw new Error("Parent post ID not found");
+        }
+
+        const url = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/posts/${parentPostId}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error("Failed to fetch parent post");
+        }
+
+        const data = await res.json();
+        setParentPost(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParentPost();
+  }, [quoteRepost, parentPostProp]);
+
+  if (loading) {
+    return (
+      <Box p="4" borderBottomWidth="1px">
+        <Flex justify="center" align="center" minH="100px">
+          <Spinner />
+        </Flex>
+      </Box>
+    );
+  }
+
+  if (error || !parentPost) {
+    return (
+      <Box p="4" borderBottomWidth="1px">
+        <Text color="red.500">Failed to load quote repost</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box p="4" borderBottomWidth="1px">
       <TimelineItemFrame timelineItem={quoteRepost}>
         <Text whiteSpace="pre-wrap">{quoteRepost.text}</Text>
-        <QuotedTimelineItemCard quotedTimelineItem={post} />
+        <QuotedTimelineItemCard quotedTimelineItem={parentPost} />
       </TimelineItemFrame>
-    </Box>
-  );
-};
-
-interface QuotedTimelineItemCard {
-  quotedTimelineItem: Post | QuoteRepost;
-}
-
-const QuotedTimelineItemCard: React.FC<QuotedTimelineItemCard> = ({
-  quotedTimelineItem,
-}) => {
-  return (
-    <Box
-      borderWidth="1px"
-      borderColor="gray.300"
-      borderRadius="2xl"
-      mt="3"
-      p="3"
-    >
-      <HStack gap="2">
-        <Avatar.Root size="2xs">
-          <Avatar.Fallback name={quotedTimelineItem.author_id} />
-        </Avatar.Root>
-        <Text fontWeight="bold">name</Text>
-        <Text color="gray.500">@username</Text>
-        <Text color="gray.500">·</Text>
-        <Text color="gray.500">0h</Text>
-      </HStack>
-      <Text whiteSpace="pre-wrap">{quotedTimelineItem.text}</Text>
     </Box>
   );
 };

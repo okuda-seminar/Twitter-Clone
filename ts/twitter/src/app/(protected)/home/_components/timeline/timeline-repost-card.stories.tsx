@@ -22,9 +22,9 @@ type Story = StoryObj<typeof TimelineRepostCard>;
 const mockParentPost: Post = {
   type: "post",
   id: "1",
-  author_id: "test",
+  authorId: "test",
   text: "This is the original post that was reposted",
-  created_at: "2024-01-01T00:00:00Z",
+  createdAt: "2024-01-01T00:00:00Z",
 };
 
 export const Primary: Story = {

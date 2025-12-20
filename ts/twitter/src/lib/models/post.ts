@@ -1,9 +1,9 @@
 export interface Post {
   type: "post";
   id: string;
-  author_id: string;
+  authorId: string;
   text: string;
-  created_at: string;
+  createdAt: string;
 }
 
 export interface Repost {
@@ -17,10 +17,15 @@ export interface Repost {
 export interface QuoteRepost {
   type: "quoteRepost";
   id: string;
-  author_id: string;
-  parent_post_id: string;
+  authorId: string;
+  parentPostId: { UUID: string; Valid: boolean };
   text: string;
-  created_at: string;
+  createdAt: string;
 }
 
-export type TimelineItem = Post | Repost | QuoteRepost;
+export interface OptimisticQuoteRepost extends QuoteRepost {
+  isOptimistic?: boolean;
+  tempId?: string;
+}
+
+export type TimelineItem = Post | Repost | QuoteRepost | OptimisticQuoteRepost;

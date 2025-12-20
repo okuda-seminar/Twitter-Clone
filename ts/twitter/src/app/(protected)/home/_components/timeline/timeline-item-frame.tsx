@@ -1,5 +1,6 @@
 import { createRepost } from "@/lib/actions/create-repost";
 import { useAuth } from "@/lib/components/auth-context";
+import { useComposeModal } from "@/lib/components/compose-modal-context";
 import {
   AnalyticsIcon,
   BookmarksIcon,
@@ -12,6 +13,7 @@ import {
 import { Tooltip } from "@/lib/components/ui/tooltip";
 import type { Post, QuoteRepost } from "@/lib/models/post";
 import { Avatar, Box, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RepostQuoteMenu } from "./repost-quote-menu";
 import { TimelinePostCardPopupMenu } from "./timeline-post-card-popup-menu";
@@ -24,7 +26,9 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
   timelineItem,
   children,
 }) => {
+  const router = useRouter();
   const { user } = useAuth();
+  const { setQuotedPost } = useComposeModal();
 
   const handleRepostClick = async () => {
     if (!user?.id) return;
@@ -39,13 +43,14 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
   };
 
   const handleQuoteClick = () => {
-    console.log("Quote clicked");
+    setQuotedPost(timelineItem);
+    router.push("/compose/post");
   };
 
   return (
     <Flex gap="2">
       <Avatar.Root size="lg">
-        <Avatar.Fallback name={timelineItem.author_id} />
+        <Avatar.Fallback name={timelineItem.authorId} />
       </Avatar.Root>
       <Box flex="1">
         <TimelineItemHeader />
