@@ -39,3 +39,6 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 iOSInjectionProject/
+
+// GraphQL
+apollo-ios-cli

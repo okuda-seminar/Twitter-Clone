@@ -132,7 +132,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     didAppear = false
-    timelineService.stopListeningToTimelineEvents()
   }
 
   // MARK: - Private API
@@ -180,25 +179,7 @@ class HomeViewController: ViewControllerWithUserIconButton {
   // MARK: - Timeline
 
   @objc private func refreshTimeline() {
-    timelineService.stopListeningToTimelineEvents()
 
-    timelineService.startListeningToTimelineEvents(
-      id: injectAuthService().currentUser.id.uuidString
-    ) { [weak self] result in
-      Task { @MainActor in
-        guard let strongSelf = self else { return }
-        switch result {
-        case .success((let eventType, let posts)):
-          strongSelf.handleTimelineSSEEvent(eventType: eventType, posts: posts)
-        case .failure(let error):
-          guard let timelineServiceError = error as? TimelineServiceError else {
-            strongSelf.handleUnknownError(error: error)
-            return
-          }
-          strongSelf.handleTimelineServiceError(error: timelineServiceError)
-        }
-      }
-    }
   }
 
   /// Handles timeline events received from the SSE connection.
@@ -218,26 +199,6 @@ class HomeViewController: ViewControllerWithUserIconButton {
       postsDataSource.followingTabPostModels.removeAll { deletedPostIDs.contains($0.id) }
     default:
       return
-    }
-  }
-
-  /// Handles errors from timeline SSE events.
-  ///
-  /// - Parameter error: The error from the timeline SSE events.
-  private func handleTimelineServiceError(error: TimelineServiceError) {
-    switch error {
-    case .invalidURLError:
-      logger.error("URL for Timeline SSE was invalid: \(error)")
-      presentErrorAlert(
-        title: LocalizedString.invalidURLErrorTitle,
-        message: LocalizedString.invalidURLErrorMessage,
-        closeButtonTitle: LocalizedString.invalidURLErrorCloseButtonTitle)
-    case .dataProcessingError:
-      logger.error("Couldn't process the data from Timeline SSE: \(error)")
-      presentErrorAlert(
-        title: LocalizedString.dataProcessingErrorTitle,
-        message: LocalizedString.dataProcessingErrorMessage,
-        closeButtonTitle: LocalizedString.dataProcessingErrorCloseButtonTitle)
     }
   }
 

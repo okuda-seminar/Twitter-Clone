@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1105,6 +1105,7 @@
 				6540F87A2BB44D430029BA46 /* Frameworks */,
 				6540F87B2BB44D430029BA46 /* Resources */,
 				1B09370E3E0E4FA0A8DC9279 /* [CP] Embed Pods Frameworks */,
+				657A9B7E2EF6748200F0BA3E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1188,6 +1189,7 @@
 			mainGroup = 6540F8742BB44D430029BA46;
 			packageReferences = (
 				65E70D1B2DAA23A400A6052E /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				657A9B8B2EF686A000F0BA3E /* XCLocalSwiftPackageReference "graphql/TwitterGraphql" */,
 			);
 			productRefGroup = 6540F87E2BB44D430029BA46 /* Products */;
 			projectDirPath = "";
@@ -1282,6 +1284,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Twitter-iOS-Twitter-iOSUITests/Pods-Twitter-iOS-Twitter-iOSUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		657A9B7E2EF6748200F0BA3E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
 		75C8FC5A68CC0B367A5A0653 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1817,6 +1836,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		657A9B8B2EF686A000F0BA3E /* XCLocalSwiftPackageReference "graphql/TwitterGraphql" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = graphql/TwitterGraphql;
+		};
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		65E70D1B2DAA23A400A6052E /* XCRemoteSwiftPackageReference "apollo-ios" */ = {

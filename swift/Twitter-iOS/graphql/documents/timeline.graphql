@@ -1,0 +1,11 @@
+query TimelineQuery($userId: ID!) {
+  getReverseChronologicalHomeTimeline(userId: $userId) {
+    ... on Post {
+      type
+      id
+      authorId
+      text
+      createdAt
+    }
+  }
+}

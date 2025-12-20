@@ -1,0 +1,29 @@
+{
+  "schemaNamespace" : "TwitterGraphql",
+  "input" : {
+    "operationSearchPaths" : [
+      "./documents/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "./schema.gql"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./TwitterGraphql",
+      "moduleType" : {
+        "swiftPackageManager" : {
+          "name" : "GraphqlClient"
+        }
+      }
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}
