@@ -1,23 +1,26 @@
 import { RepostIcon } from "@/lib/components/icons";
-import type { Post, Repost } from "@/lib/models/post";
+import type { Post, QuoteRepost, Repost } from "@/lib/models/post";
 import { Box, Flex, IconButton, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { QuotedTimelineItemCard } from "./quoted-timeline-item-card";
 import { TimelineItemFrame } from "./timeline-item-frame";
 
 interface TimelineRepostCardProps {
   repost: Repost;
-  parentPost?: Post;
+  parentPost?: Post | QuoteRepost;
 }
 
 export const TimelineRepostCard: React.FC<TimelineRepostCardProps> = ({
   repost,
   parentPost: parentPostProp,
 }) => {
-  const [parentPost, setParentPost] = useState<Post | null>(
+  const [parentPost, setParentPost] = useState<Post | QuoteRepost | null>(
     parentPostProp || null,
   );
+  const [quoteRepostParent, setQuoteRepostParent] = useState<Post | null>(null);
   const [loading, setLoading] = useState(!parentPostProp);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     // Skip fetch if parentPost prop is provided
     if (parentPostProp) {
@@ -49,6 +52,36 @@ export const TimelineRepostCard: React.FC<TimelineRepostCardProps> = ({
 
     fetchParentPost();
   }, [repost, parentPostProp]);
+
+  // Fetch QuoteRepost's parent if parentPost is a QuoteRepost
+  useEffect(() => {
+    if (!parentPost || parentPost.type !== "quoteRepost") {
+      return;
+    }
+
+    const fetchQuoteRepostParent = async () => {
+      try {
+        const quoteParentId = parentPost.parentPostId.UUID;
+        if (!quoteParentId) {
+          return;
+        }
+
+        const url = `${process.env.NEXT_PUBLIC_LOCAL_API_BASE_URL}/api/posts/${quoteParentId}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          console.error("Failed to fetch quote repost parent");
+          return;
+        }
+
+        const data = await res.json();
+        setQuoteRepostParent(data);
+      } catch (err) {
+        console.error("Error fetching quote repost parent:", err);
+      }
+    };
+
+    fetchQuoteRepostParent();
+  }, [parentPost]);
 
   if (loading) {
     return (
@@ -96,6 +129,9 @@ export const TimelineRepostCard: React.FC<TimelineRepostCardProps> = ({
       </Flex>
       <TimelineItemFrame timelineItem={parentPost}>
         <Text whiteSpace="pre-wrap">{parentPost.text}</Text>
+        {parentPost.type === "quoteRepost" && quoteRepostParent && (
+          <QuotedTimelineItemCard quotedTimelineItem={quoteRepostParent} />
+        )}
       </TimelineItemFrame>
     </Box>
   );

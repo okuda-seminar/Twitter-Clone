@@ -1,4 +1,6 @@
 import { AuthProvider } from "@/lib/components/auth-context";
+import { ComposeModalProvider } from "@/lib/components/compose-modal-context";
+import { TimelineProvider } from "@/lib/components/timeline-context";
 import { Provider } from "@/lib/components/ui/provider";
 import type { Preview } from "@storybook/react";
 
@@ -38,6 +40,10 @@ const preview: Preview = {
     },
     nextjs: {
       appDirectory: true,
+      navigation: {
+        pathname: "/",
+        query: {},
+      },
     },
   },
   tags: ["autodocs"],
@@ -45,7 +51,11 @@ const preview: Preview = {
     (Story) => (
       <Provider>
         <AuthProvider user={undefined}>
-          <Story />
+          <ComposeModalProvider>
+            <TimelineProvider>
+              <Story />
+            </TimelineProvider>
+          </ComposeModalProvider>
         </AuthProvider>
       </Provider>
     ),

@@ -17,6 +17,10 @@ const config: StorybookConfig = {
     experimentalRSC: true,
   },
   staticDirs: ["../public"],
+  env: (config) => ({
+    ...config,
+    NEXT_PUBLIC_LOCAL_API_BASE_URL: "http://localhost:6006",
+  }),
 };
 
 export default config;

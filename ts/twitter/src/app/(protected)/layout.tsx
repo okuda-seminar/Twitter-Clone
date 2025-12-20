@@ -1,6 +1,8 @@
 import { verifySession } from "@/lib/actions/verify-session";
 import { AuthProvider } from "@/lib/components/auth-context";
+import { ComposeModalProvider } from "@/lib/components/compose-modal-context";
 import { PageLayout } from "@/lib/components/page-layout";
+import { TimelineProvider } from "@/lib/components/timeline-context";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedLayout({
@@ -17,7 +19,11 @@ export default async function ProtectedLayout({
 
   return (
     <AuthProvider user={result.value.user}>
-      <PageLayout modal={modal}>{children}</PageLayout>
+      <ComposeModalProvider>
+        <TimelineProvider>
+          <PageLayout modal={modal}>{children}</PageLayout>
+        </TimelineProvider>
+      </ComposeModalProvider>
     </AuthProvider>
   );
 }

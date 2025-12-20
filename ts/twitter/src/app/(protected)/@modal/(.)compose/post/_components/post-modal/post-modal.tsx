@@ -8,6 +8,7 @@ import {
   CloseButton,
   Dialog,
   Flex,
+  HStack,
   IconButton,
   Text,
   Textarea,
@@ -29,6 +30,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
     handleTextAreaChange,
     handlePostButtonClick,
     isPostButtonDisabled,
+    quotedPost,
   } = usePostModal({
     isIntercepted,
     user,
@@ -46,7 +48,7 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
       initialFocusEl={() => textAreaRef.current}
       open={true}
       size="md"
-      onInteractOutside={(event) => {
+      onInteractOutside={() => {
         handleCloseButtonClick();
       }}
     >
@@ -81,12 +83,14 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
             <form action={formAction}>
               {message !== undefined && (
                 <Text
+                  mt="40px"
                   fontSize="14px"
                   lineHeight="16px"
                   px="16px"
                   py="12px"
                   bg="error.primary"
                   borderRadius="8px"
+                  color="white"
                 >
                   {message}
                 </Text>
@@ -95,19 +99,46 @@ export const PostModal: React.FC<PostModalProps> = ({ isIntercepted }) => {
                 <Avatar.Root size="md" mr={3}>
                   <Avatar.Fallback name={user ? user?.displayName : ""} />
                 </Avatar.Root>
-                <Textarea
-                  data-testid="text"
-                  name="text"
-                  ref={textAreaRef}
-                  value={postText}
-                  onChange={handleTextAreaChange}
-                  placeholder="What is happening?!"
-                  border="none"
-                  resize="none"
-                  minH="100px"
-                  _focus={{ boxShadow: "none" }}
-                  fontSize="xl"
-                />
+                <Box flex="1">
+                  <Textarea
+                    data-testid="text"
+                    name="text"
+                    ref={textAreaRef}
+                    value={postText}
+                    onChange={handleTextAreaChange}
+                    placeholder="What is happening?!"
+                    border="none"
+                    resize="none"
+                    minH="100px"
+                    _focus={{ boxShadow: "none" }}
+                    fontSize="xl"
+                  />
+
+                  {quotedPost && (
+                    <Box
+                      mt={4}
+                      p={3}
+                      borderWidth="1px"
+                      borderColor="gray.600"
+                      borderRadius="xl"
+                    >
+                      <HStack gap={2} mb={2}>
+                        <Avatar.Root size="2xs">
+                          <Avatar.Fallback name={quotedPost.authorId} />
+                        </Avatar.Root>
+                        <Text fontWeight="bold" fontSize="sm">
+                          name
+                        </Text>
+                        <Text color="gray.500" fontSize="sm">
+                          @username
+                        </Text>
+                      </HStack>
+                      <Text fontSize="sm" whiteSpace="pre-wrap">
+                        {quotedPost.text}
+                      </Text>
+                    </Box>
+                  )}
+                </Box>
               </Flex>
               <Box borderTop="1px solid" borderColor="gray.600" mt={4} pt={4}>
                 <Flex justifyContent="space-between">
