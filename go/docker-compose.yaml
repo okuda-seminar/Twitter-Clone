@@ -17,6 +17,7 @@ services:
   x_app:
     depends_on:
       - x_postgres
+      - x_broker
     build:
       context: .
       dockerfile: ./docker/app.Dockerfile
@@ -26,7 +27,7 @@ services:
       /bin/bash -c
       "bash ./scripts/wait_for_postgres.sh && 
       migrate -database ${PGURL} -path ./db/migrations up &&
-      air &&
+      air -c app.air.toml &&
       /bin/bash"
     tty: true
     ports:
@@ -53,6 +54,66 @@ services:
       - redis-data:/data # Persist Redis data
     networks:
       - x_clone
+
+  x_worker:
+    depends_on:
+      - x_postgres
+      - x_broker
+      - x_redis
+    build:
+      context: .
+      dockerfile: ./docker/worker.Dockerfile
+    image: ${WORKER_IMAGE_NAME}
+    container_name: ${WORKER_CONTAINER_NAME}
+    command: >
+      /bin/bash -c
+      "bash ./scripts/wait_for_postgres.sh &&
+      air -c worker.air.toml &&
+      /bin/bash"
+    tty: true
+    ports:
+      - ${WORKER_PORT}:${WORKER_PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./:/go/src/app
+      - ../openapi/bundle:/go/src/app/internal/openapi/bundle
+    networks:
+      - x_clone
+  x_broker:
+    image: apache/kafka:latest
+    container_name: ${KAFKA_CONTAINER_NAME}
+    ports:
+      - ${KAFKA_PORT}:${KAFKA_PORT}
+    networks:
+      - x_clone
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://x_broker:29092,EXTERNAL://localhost:${KAFKA_PORT}
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/kafka/bin/kafka-topics.sh",
+          "--bootstrap-server",
+          "localhost:9092",
+          "--list",
+        ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
 
 networks:
   x_clone:
