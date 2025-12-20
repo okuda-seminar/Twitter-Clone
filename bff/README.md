@@ -23,7 +23,8 @@ $ cp .env.local.sample .env
 $ yarn build
 $ yarn start
 ```
-
+Now you can open `http://localhost:3000/graphql` to see GraphQL dev UI.
+ 
  TODO: https://github.com/okuda-seminar/Twitter-Clone/issues/725
  - [BFF] Apply hot-reloading to yarn start:dev
 
