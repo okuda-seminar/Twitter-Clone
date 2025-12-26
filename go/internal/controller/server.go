@@ -5,11 +5,13 @@ import (
 	"os"
 
 	"github.com/redis/go-redis/v9"
+	"github.com/segmentio/kafka-go"
 
 	"x-clone-backend/internal/application/service"
 	usecaseInjector "x-clone-backend/internal/application/usecase/injector"
 	"x-clone-backend/internal/controller/handler"
 	infraInjector "x-clone-backend/internal/infrastructure/injector"
+	"x-clone-backend/internal/infrastructure/messaging"
 	"x-clone-backend/internal/openapi"
 )
 
@@ -42,9 +44,10 @@ type Server struct {
 	handler.GetFollowersByIDHandler
 }
 
-func NewServer(db *sql.DB, client *redis.Client) Server {
+func NewServer(db *sql.DB, client *redis.Client, timelineKafkaWriter *kafka.Writer) Server {
 	timelineItemsRepository := infraInjector.InjectTimelineItemsRepository(db, client)
 	usersRepository := infraInjector.InjectUsersRepository(db)
+	timelineProducer := messaging.NewKafkaTimelineItemEventProducer(timelineKafkaWriter)
 
 	secretKey := os.Getenv("SECRET_KEY")
 	authService := service.NewAuthService(secretKey)
@@ -54,7 +57,7 @@ func NewServer(db *sql.DB, client *redis.Client) Server {
 	createQuoteRepostUsecase := usecaseInjector.InjectCreateQuoteRepostUsecase(timelineItemsRepository, usersRepository)
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository, usersRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
-	deletePostUsecase := usecaseInjector.InjectDeletePostUsecase(timelineItemsRepository)
+	deletePostUsecase := usecaseInjector.InjectDeletePostUsecase(timelineItemsRepository, timelineProducer)
 	deleteRepostUsecase := usecaseInjector.InjectDeleteRepostUsecase(timelineItemsRepository)
 	deleteUserByIDUsecase := usecaseInjector.InjectDeleteUserByIDUsecase(usersRepository)
 	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)

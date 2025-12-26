@@ -25,7 +25,10 @@ func main() {
 	redisClient := config.RedisClient()
 	defer redisClient.Close()
 
-	server := controller.NewServer(db, redisClient)
+	timelineKafkaWriter := config.OpenKafkaWriter("timelineItem")
+	defer timelineKafkaWriter.Close()
+
+	server := controller.NewServer(db, redisClient, timelineKafkaWriter)
 	handler := openapi.HandlerWithOptions(
 		&server,
 		openapi.StdHTTPServerOptions{
