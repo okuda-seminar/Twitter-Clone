@@ -18,6 +18,7 @@ func NewcacheTimelineItemsRepository(client *redis.Client) CacheTimelineItemsRep
 	}
 }
 
+// CreatePost inserts a new post to the given userIDs' timeline.
 func (c *CacheTimelineItemsRepository) CreatePost(postID string, userIDs []string, timestamp float64) error {
 	ctx := context.Background()
 	_, err := c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
@@ -38,6 +39,17 @@ func (c *CacheTimelineItemsRepository) CreatePost(postID string, userIDs []strin
 			log.Println("The following users' timelines are inconsistent", userIDs)
 			return err
 		}
+	}
+
+	// create reversed index
+	_, err = c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
+		for _, userID := range userIDs {
+			p.SAdd(ctx, fmt.Sprintf("timelineitem:%s", postID), userID)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Failed to create reversed index. PostID: %s, UserIDs: %v, Error: %v", postID, userIDs, err)
 	}
 
 	return err
@@ -66,6 +78,17 @@ func (c *CacheTimelineItemsRepository) CreateRepost(postID string, userIDs []str
 		}
 	}
 
+	// create reversed index
+	_, err = c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
+		for _, userID := range userIDs {
+			p.SAdd(ctx, fmt.Sprintf("timelineitem:%s", postID), userID)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Failed to create reversed index. PostID: %s, UserIDs: %v, Error: %v", postID, userIDs, err)
+	}
+
 	return err
 }
 
@@ -91,6 +114,18 @@ func (c *CacheTimelineItemsRepository) CreateQuoteRepost(postID string, userIDs 
 			return err
 		}
 	}
+
+	// create reversed index
+	_, err = c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
+		for _, userID := range userIDs {
+			p.SAdd(ctx, fmt.Sprintf("timelineitem:%s", postID), userID)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Failed to create reversed index. PostID: %s, UserIDs: %v, Error: %v", postID, userIDs, err)
+	}
+
 	return err
 }
 
