@@ -38,9 +38,13 @@ func (p *KafkaTimelineItemEventProducer) PublishDeleteRepostEvent(ctx context.Co
 }
 
 func (p *KafkaTimelineItemEventProducer) send(ctx context.Context, eventType string, payload any) error {
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("failed to marshal payload: %w", err)
+	}
 	evt := messaging.TimelineEvent{
 		Type:    eventType,
-		Payload: payload,
+		Payload: payloadBytes,
 	}
 
 	val, err := json.Marshal(evt)

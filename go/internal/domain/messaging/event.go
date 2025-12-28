@@ -1,8 +1,10 @@
 package messaging
 
+import "encoding/json"
+
 type TimelineEvent struct {
-	Type    string `json:"type"`
-	Payload any    `json:"payload"`
+	Type    string          `json:"type"`
+	Payload json.RawMessage `json:"payload"`
 }
 
 const (
