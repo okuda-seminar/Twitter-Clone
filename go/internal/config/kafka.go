@@ -15,3 +15,11 @@ func OpenKafkaWriter(topic string) *kafka.Writer {
 		AllowAutoTopicCreation: true,
 	}
 }
+
+func OpenKafkaReader(topic, groupID string) *kafka.Reader {
+	return kafka.NewReader(kafka.ReaderConfig{
+		Brokers: []string{os.Getenv("KAFKA_BROKER_ADDR")},
+		Topic:   topic,
+		GroupID: groupID,
+	})
+}
