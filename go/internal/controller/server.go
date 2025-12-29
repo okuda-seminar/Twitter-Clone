@@ -58,7 +58,7 @@ func NewServer(db *sql.DB, client *redis.Client, timelineKafkaWriter *kafka.Writ
 	createRepostUsecase := usecaseInjector.InjectCreateRepostUsecase(timelineItemsRepository, usersRepository)
 	createUserUsecase := usecaseInjector.InjectCreateUserUsecase(usersRepository)
 	deletePostUsecase := usecaseInjector.InjectDeletePostUsecase(timelineItemsRepository, timelineProducer)
-	deleteRepostUsecase := usecaseInjector.InjectDeleteRepostUsecase(timelineItemsRepository)
+	deleteRepostUsecase := usecaseInjector.InjectDeleteRepostUsecase(timelineItemsRepository, timelineProducer)
 	deleteUserByIDUsecase := usecaseInjector.InjectDeleteUserByIDUsecase(usersRepository)
 	followUserUsecase := usecaseInjector.InjectFollowUserUsecase(usersRepository)
 	unfollowUserUsecase := usecaseInjector.InjectUnfollowUserUsecase(usersRepository)
