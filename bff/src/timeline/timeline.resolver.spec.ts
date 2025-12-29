@@ -19,6 +19,7 @@ describe("TimelineResolver", () => {
             createPost: vi.fn(),
             createRepost: vi.fn(),
             deletePost: vi.fn(),
+            deleteRepost: vi.fn(),
           },
         },
       ],
@@ -130,6 +131,30 @@ describe("TimelineResolver", () => {
 
       expect(timelineService.deletePost).toHaveBeenCalledWith(postId);
       expect(result).toBe(postId);
+    });
+  });
+
+  describe("deleteRepost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+    const repostId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+    const deleteRepostInput = { repost_id: repostId };
+
+    it("should call TimelineService.deleteRepost and return repostId", async () => {
+      vi.spyOn(timelineService, "deleteRepost").mockResolvedValue(repostId);
+
+      const result = await resolver.deleteRepost(
+        userId,
+        postId,
+        deleteRepostInput,
+      );
+
+      expect(timelineService.deleteRepost).toHaveBeenCalledWith(
+        userId,
+        postId,
+        deleteRepostInput,
+      );
+      expect(result).toBe(repostId);
     });
   });
 });

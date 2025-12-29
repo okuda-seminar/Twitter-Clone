@@ -139,4 +139,51 @@ describe("TimelineService", () => {
       await expect(service.deletePost(postId)).rejects.toThrow("Not Found");
     });
   });
+
+  describe("deleteRepost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+    const repostId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+    const deleteRepostInput = { repost_id: repostId };
+
+    it("should delete a repost successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const result = await service.deleteRepost(
+        userId,
+        postId,
+        deleteRepostInput,
+      );
+
+      expect(httpService.delete).toHaveBeenCalledWith(
+        `/api/users/${userId}/reposts/${postId}`,
+        { data: deleteRepostInput },
+      );
+      expect(result).toBe(repostId);
+    });
+
+    it("should throw an error when the backend API returns an HTTP error", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      await expect(
+        service.deleteRepost(userId, postId, deleteRepostInput),
+      ).rejects.toThrow("Internal Server Error");
+    });
+
+    it("should throw an error when the repost does not exist", async () => {
+      const notFoundError = new Error("Not Found");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => notFoundError),
+      );
+
+      await expect(
+        service.deleteRepost(userId, postId, deleteRepostInput),
+      ).rejects.toThrow("Not Found");
+    });
+  });
 });

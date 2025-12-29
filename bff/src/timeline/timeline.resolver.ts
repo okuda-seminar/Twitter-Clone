@@ -2,6 +2,7 @@ import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CreatePostInput } from "./inputs/create-post.input";
 import { CreateQuoteRepostInput } from "./inputs/create-quote-repost.input";
 import { CreateRepostInput } from "./inputs/create-repost.input";
+import { DeleteRepostInput } from "./inputs/delete-repost.input";
 import { Post } from "./models/post.model";
 import { QuoteRepost } from "./models/quote-repost.model";
 import { Repost } from "./models/repost.model";
@@ -58,5 +59,14 @@ export class TimelineResolver {
     @Args("postId", { type: () => ID }) postId: string,
   ): Promise<string> {
     return this.timelineService.deletePost(postId);
+  }
+
+  @Mutation(() => ID)
+  async deleteRepost(
+    @Args("userId", { type: () => ID }) userId: string,
+    @Args("postId", { type: () => ID }) postId: string,
+    @Args("deleteRepostInput") deleteRepostInput: DeleteRepostInput,
+  ): Promise<string> {
+    return this.timelineService.deleteRepost(userId, postId, deleteRepostInput);
   }
 }

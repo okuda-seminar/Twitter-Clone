@@ -293,4 +293,108 @@ describe("Timeline GraphQL (e2e)", () => {
       );
     });
   });
+
+  describe("deleteRepost Mutation", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+    const repostId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
+
+    it("should delete a repost successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const mutation = `
+        mutation {
+          deleteRepost(
+            userId: "${userId}",
+            postId: "${postId}",
+            deleteRepostInput: { repost_id: "${repostId}" }
+          )
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.data.deleteRepost).toBe(repostId);
+      expect(httpService.delete).toHaveBeenCalledWith(
+        `/api/users/${userId}/reposts/${postId}`,
+        { data: { repost_id: repostId } },
+      );
+    });
+
+    it("should return an error when backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      const mutation = `
+        mutation {
+          deleteRepost(
+            userId: "${userId}",
+            postId: "${postId}",
+            deleteRepostInput: { repost_id: "${repostId}" }
+          )
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toContain(
+        "Internal Server Error",
+      );
+    });
+
+    it("should return error when required parameters are not provided", async () => {
+      const mutation = `
+        mutation DeleteRepost($userId: ID!, $postId: ID!, $deleteRepostInput: DeleteRepostInput!) {
+          deleteRepost(userId: $userId, postId: $postId, deleteRepostInput: $deleteRepostInput)
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({
+          query: mutation,
+          variables: {},
+        })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors.length).toBeGreaterThan(0);
+    });
+
+    it("should return error when repost does not exist", async () => {
+      const notFoundError = new Error("Not Found");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => notFoundError),
+      );
+
+      const mutation = `
+        mutation {
+          deleteRepost(
+            userId: "${userId}",
+            postId: "${postId}",
+            deleteRepostInput: { repost_id: "${repostId}" }
+          )
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toContain("Not Found");
+    });
+  });
 });
