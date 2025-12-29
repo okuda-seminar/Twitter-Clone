@@ -4,6 +4,7 @@ import { firstValueFrom } from "rxjs";
 import { CreatePostInput } from "./inputs/create-post.input";
 import { CreateQuoteRepostInput } from "./inputs/create-quote-repost.input";
 import { CreateRepostInput } from "./inputs/create-repost.input";
+import { DeleteRepostInput } from "./inputs/delete-repost.input";
 import { Post } from "./models/post.model";
 import { QuoteRepost } from "./models/quote-repost.model";
 import { TimelineItem } from "./models/timeline-item.model";
@@ -110,5 +111,27 @@ export class TimelineService {
     await firstValueFrom(this.httpService.delete(`/api/posts/${postId}`));
 
     return postId;
+  }
+
+  /**
+   * Deletes a repost by sending the data to the backend API.
+   *
+   * @param userId - The ID of the user who is deleting the repost.
+   * @param postId - The ID of the parent post of the repost to be deleted.
+   * @param deleteRepostInput - An object containing the necessary data for deleting a repost (e.g., repostId).
+   * @returns A promise that resolves to the deleted repost ID.
+   */
+  async deleteRepost(
+    userId: string,
+    postId: string,
+    deleteRepostInput: DeleteRepostInput,
+  ): Promise<string> {
+    await firstValueFrom(
+      this.httpService.delete(`/api/users/${userId}/reposts/${postId}`, {
+        data: deleteRepostInput,
+      }),
+    );
+
+    return deleteRepostInput.repost_id;
   }
 }

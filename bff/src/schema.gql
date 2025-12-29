@@ -47,6 +47,11 @@ type Mutation {
     createQuoteRepostInput: CreateQuoteRepostInput!
   ): QuoteRepost!
   deletePost(postId: ID!): ID!
+  deleteRepost(
+    userId: ID!
+    postId: ID!
+    deleteRepostInput: DeleteRepostInput!
+  ): ID!
 }
 
 input CreatePostInput {
@@ -61,4 +66,8 @@ input CreateRepostInput {
 input CreateQuoteRepostInput {
   post_id: String!
   text: String!
+}
+
+input DeleteRepostInput {
+  repost_id: String!
 }
