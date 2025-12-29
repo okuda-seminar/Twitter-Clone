@@ -27,3 +27,12 @@ func (u *timelineUsecase) DeletePost(ctx context.Context, input messaging.Delete
 
 	return nil
 }
+
+// DeleteRepost removes a repost from the timeline cache
+func (u *timelineUsecase) DeleteRepost(ctx context.Context, input messaging.DeleteRepostMessage) error {
+	if err := u.cacheRepo.DeleteRepost(input.PostID); err != nil {
+		return err
+	}
+
+	return nil
+}

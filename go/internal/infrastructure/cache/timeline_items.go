@@ -169,3 +169,33 @@ func (c *CacheTimelineItemsRepository) DeletePost(postID string) error {
 
 	return nil
 }
+
+// DeleteRepost removes a repost from the timeline cache
+func (c *CacheTimelineItemsRepository) DeleteRepost(postID string) error {
+	ctx := context.Background()
+	// since current user following could be different from when the repost was created,
+	// retrieve userIDs containing the postID to be deleted from the "timelineitem:postID" set
+	userIDs, err := c.client.SMembers(ctx, fmt.Sprintf("timelineitem:%s", postID)).Result()
+	if err != nil {
+		return fmt.Errorf("Failed to fetch userIDs from reversed index: %s", postID)
+	}
+
+	_, err = c.client.Pipelined(ctx, func(p redis.Pipeliner) error {
+		for _, userID := range userIDs {
+			p.ZRem(ctx, fmt.Sprintf("timeline:%s", userID), postID)
+		}
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("Failed to delete repostID from some user timelines: %s", postID)
+	}
+
+	// In case of failure to delete the repost ID from the user timeline,
+	// delete the reversed index after all processing is complete.
+	if err := c.client.Del(ctx, fmt.Sprintf("timelineitem:%s", postID)).Err(); err != nil {
+		return fmt.Errorf("Failed to delete reversed index: %s", postID)
+	}
+
+	return nil
+}

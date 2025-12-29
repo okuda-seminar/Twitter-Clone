@@ -66,6 +66,16 @@ func dispatch(ctx context.Context, u api.TimelineUsecase, e messaging.TimelineEv
 		}
 
 		return u.DeletePost(ctx, input)
+	case messaging.TypeDeleteRepost:
+		var input messaging.DeleteRepostMessage
+		if err := json.Unmarshal(e.Payload, &input); err != nil {
+			return fmt.Errorf("failed to unmarshal payload to DeleteRepostMessage: %w", err)
+		}
+
+		if err := input.Validate(); err != nil {
+			return fmt.Errorf("validation failed: %w", err)
+		}
+		return u.DeleteRepost(ctx, input)
 	default:
 		return fmt.Errorf("unknown event type: %s", e.Type)
 	}

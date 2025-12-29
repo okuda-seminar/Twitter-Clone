@@ -8,4 +8,5 @@ import (
 
 type TimelineUsecase interface {
 	DeletePost(ctx context.Context, input messaging.DeletePostMessage) error
+	DeleteRepost(ctx context.Context, input messaging.DeleteRepostMessage) error
 }
