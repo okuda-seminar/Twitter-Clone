@@ -7,6 +7,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TimelineModule } from "./timeline/timeline.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TimelineModule } from "./timeline/timeline.module";
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     TimelineModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -32,6 +32,21 @@ type Repost {
   createdAt: String!
 }
 
+type User {
+  id: ID!
+  username: String!
+  displayName: String!
+  bio: String!
+  isPrivate: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type AuthenticatedUser {
+  token: String!
+  user: User!
+}
+
 type Query {
   getUserPosts(userId: ID!): [TimelineItem!]!
   getReverseChronologicalHomeTimeline(userId: ID!): [TimelineItem!]!
@@ -52,6 +67,8 @@ type Mutation {
     postId: ID!
     deleteRepostInput: DeleteRepostInput!
   ): ID!
+  createUser(createUserInput: CreateUserInput!): AuthenticatedUser!
+  deleteUserById(userId: ID!): ID!
 }
 
 input CreatePostInput {
@@ -70,4 +87,10 @@ input CreateQuoteRepostInput {
 
 input DeleteRepostInput {
   repost_id: String!
+}
+
+input CreateUserInput {
+  username: String!
+  display_name: String!
+  password: String!
 }
