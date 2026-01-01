@@ -24,9 +24,10 @@ public final class PostService {
   // MARK: - Public API
 
   public func post(_ post: PostModel) async {
-    guard let url = URL(string: "\(Self.baseURLString)/api/posts") else { return }
+    let userId = injectAuthService().currentUser.id.uuidString
+    guard let url = URL(string: "\(Self.baseURLString)/api/users/\(userId)/posts") else { return }
     let request = CreatePostRequest(
-      userId: injectAuthService().currentUser.id.uuidString, text: post.bodyText)
+      userId: userId, text: post.bodyText)
     guard let jsonData = try? JSONEncoder().encode(request) else { return }
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "POST"
