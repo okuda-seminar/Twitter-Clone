@@ -89,6 +89,7 @@
 		656C1BFB2C089C1200EEE575 /* HomeTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFA2C089C1200EEE575 /* HomeTabModel.swift */; };
 		656C1BFD2C08A16C00EEE575 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFC2C08A16C00EEE575 /* HomeTabView.swift */; };
 		656C1BFF2C0AE68500EEE575 /* PostShareBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */; };
+		658C8B952EF68DAB00933714 /* TwitterGraphql in Frameworks */ = {isa = PBXBuildFile; productRef = 658C8B942EF68DAB00933714 /* TwitterGraphql */; };
 		658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */; };
 		658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */; };
 		658D086E2BE7B682006C6A9E /* TapOnlySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */; };
@@ -349,6 +350,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				658C8B952EF68DAB00933714 /* TwitterGraphql in Frameworks */,
 				7EC2A799F69643D23A86C7A3 /* Pods_Twitter_iOS.framework in Frameworks */,
 				65E70D1D2DAA2D0400A6052E /* Apollo in Frameworks */,
 			);
@@ -1856,6 +1858,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		658C8B942EF68DAB00933714 /* TwitterGraphql */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 657A9B8B2EF686A000F0BA3E /* XCLocalSwiftPackageReference "graphql/TwitterGraphql" */;
+			productName = TwitterGraphql;
+		};
 		65E70D1C2DAA2D0400A6052E /* Apollo */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Apollo;

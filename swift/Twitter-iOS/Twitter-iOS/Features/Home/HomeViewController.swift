@@ -3,6 +3,8 @@ import SwiftUI
 import UIKit
 import os
 
+import TwitterGraphql
+
 /// The view controller responsible for displaying the home view of the app.
 class HomeViewController: ViewControllerWithUserIconButton {
 
@@ -179,7 +181,9 @@ class HomeViewController: ViewControllerWithUserIconButton {
   // MARK: - Timeline
 
   @objc private func refreshTimeline() {
-
+    timelineService.fetchTimelineData() { [weak self] timelineItems in
+      self?.handleTimelineItems(timelineItems)
+    }
   }
 
   /// Handles timeline events received from the SSE connection.
@@ -187,30 +191,16 @@ class HomeViewController: ViewControllerWithUserIconButton {
   /// - Parameters:
   ///   - eventType: The type of timeline SSE event.
   ///   - posts: The posts received from the event.
-  private func handleTimelineSSEEvent(eventType: TimelineEventType, posts: [PostModel]) {
-    switch eventType {
-    case .timelineAccessed:
-      postsDataSource.followingTabPostModels = posts
-    case .postCreated:
-      postsDataSource.followingTabPostModels.insert(
-        contentsOf: posts, at: 0)
-    case .postDeleted:
-      let deletedPostIDs = Set(posts.map { $0.id })
-      postsDataSource.followingTabPostModels.removeAll { deletedPostIDs.contains($0.id) }
-    default:
-      return
+  private func handleTimelineItems(_ items: [TimelineQuery.Data.GetReverseChronologicalHomeTimeline]) {
+    var posts: [PostModel] = []
+    items.forEach { item in
+      if let post = item.asPost,
+         let postId = UUID(uuidString: post.id),
+         let userIcon = UIImage(systemName: "person") {
+        posts.append(PostModel(id: postId, bodyText: post.text, userIcon: userIcon, userName: "mock user name", isRepostedByCurrentUser: false))
+      }
     }
-  }
-
-  /// Handles unknown errors occurring when connecting to the SSE connection.
-  ///
-  /// - Parameter error: The unknown error that occurred.
-  private func handleUnknownError(error: Error) {
-    logger.error("An unknown error occurred while connecting to the Timeline SSE: \(error)")
-    logger.error("Error details: \(error.localizedDescription)")
-    presentErrorAlert(
-      title: LocalizedString.unknownErrorTitle, message: LocalizedString.unknownErrorMessage,
-      closeButtonTitle: LocalizedString.unknownErrorCloseButtonTitle)
+    postsDataSource.followingTabPostModels = posts
   }
 
   /// Presents the alert pop up message with description.

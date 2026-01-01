@@ -38,7 +38,9 @@ public final class PostService {
       if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
         logger.debug("Post created: \(httpResponse)")
       }
-    } catch {}
+    } catch {
+      logger.debug("Post creation failed: \(error)")
+    }
   }
 
   /// Reposts the post with the given post model id.
