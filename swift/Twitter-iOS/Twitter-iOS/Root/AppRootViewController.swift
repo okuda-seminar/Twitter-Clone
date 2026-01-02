@@ -99,6 +99,40 @@ extension AppRootViewController: SideMenuViewDelegate {
     selectedViewController.pushViewController(userProfileViewController, animated: true)
   }
 
+  func addAcountsButtonDidReceiveTap() {
+    let accountVC = AccountSelectionViewController()
+
+    // 1. Set the modal presentation style to allow UISheetPresentationController
+    accountVC.modalPresentationStyle = .pageSheet
+
+    // 2. Configure the sheet presentation controller
+    if let sheet = accountVC.sheetPresentationController {
+      // Use custom detents for a specific small height, or medium for a standard one.
+      // Based on your image, a custom detent or `.medium()` might be appropriate.
+
+      let customDetent = UISheetPresentationController.Detent.custom(identifier: .init("small")) {
+        context in
+        // Return a specific height value for the sheet,
+        // for example, 300 points, or calculate it based on content.
+        // You'll need to fine-tune this value.
+        return 300
+      }
+
+      sheet.detents = [customDetent, .medium()]  // Allows for a custom size and potentially medium size
+
+      // To remove the default grabber line:
+      sheet.prefersGrabberVisible = false
+
+      // To only show the content without the dimmed background (if desired, though usually dimming is preferred)
+      // sheet.largestUndimmedDetentIdentifier = customDetent.identifier
+
+      // Optional: Set a corner radius
+      sheet.preferredCornerRadius = 15.0
+    }
+
+    sideMenuViewController.present(accountVC, animated: true, completion: nil)
+  }
+
   /// Pushes the user bookmarks view controller into the navigation controller when the bookmarks button is tapped in the side menu.
   func bookmarksDidReceiveTap() {
     hideSideMenu()

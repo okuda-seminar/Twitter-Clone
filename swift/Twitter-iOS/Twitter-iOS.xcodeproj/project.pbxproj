@@ -89,6 +89,7 @@
 		656C1BFB2C089C1200EEE575 /* HomeTabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFA2C089C1200EEE575 /* HomeTabModel.swift */; };
 		656C1BFD2C08A16C00EEE575 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFC2C08A16C00EEE575 /* HomeTabView.swift */; };
 		656C1BFF2C0AE68500EEE575 /* PostShareBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */; };
+		6587746C2F07708700B85A55 /* AccountSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6587746B2F07707600B85A55 /* AccountSelectionViewController.swift */; };
 		658C8B952EF68DAB00933714 /* TwitterGraphql in Frameworks */ = {isa = PBXBuildFile; productRef = 658C8B942EF68DAB00933714 /* TwitterGraphql */; };
 		658D08652BE63DBB006C6A9E /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */; };
 		658D086B2BE6579E006C6A9E /* CommunitiesSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */; };
@@ -270,6 +271,7 @@
 		656C1BFA2C089C1200EEE575 /* HomeTabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabModel.swift; sourceTree = "<group>"; };
 		656C1BFC2C08A16C00EEE575 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
 		656C1BFE2C0AE68500EEE575 /* PostShareBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostShareBottomSheet.swift; sourceTree = "<group>"; };
+		6587746B2F07707600B85A55 /* AccountSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionViewController.swift; sourceTree = "<group>"; };
 		658D08642BE63DBB006C6A9E /* TopicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetailViewController.swift; sourceTree = "<group>"; };
 		658D086A2BE6579E006C6A9E /* CommunitiesSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitiesSearchViewController.swift; sourceTree = "<group>"; };
 		658D086D2BE7B682006C6A9E /* TapOnlySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapOnlySearchBar.swift; sourceTree = "<group>"; };
@@ -449,6 +451,7 @@
 		3B9AC0162CF2A9700052784A /* SideMenu */ = {
 			isa = PBXGroup;
 			children = (
+				6587746B2F07707600B85A55 /* AccountSelectionViewController.swift */,
 				3B9AC01F2CF2F26D0052784A /* SideMenuTransitionAnimator.swift */,
 				3B9AC0192CF2C4BB0052784A /* SideMenuTransitionController.swift */,
 				658D087C2BEBA068006C6A9E /* SideMenuView.swift */,
@@ -1444,6 +1447,7 @@
 				656C1BA52C00C41500EEE575 /* UserFollowRelationsViewController.swift in Sources */,
 				65FD4F412C1557450020A02E /* UserConnectTabModel.swift in Sources */,
 				656C1BB42C05EEE600EEE575 /* SearchTabModel.swift in Sources */,
+				6587746C2F07708700B85A55 /* AccountSelectionViewController.swift in Sources */,
 				65C71B9A2C32D80D0025839C /* JobsViewController.swift in Sources */,
 				6517C92F2DA267E7001EC9B6 /* DraftsView.swift in Sources */,
 				65C6CC292BFB78FE00B0A052 /* NotificationsTabView.swift in Sources */,

@@ -12,6 +12,9 @@ struct SideMenuView: View {
   }
 
   private enum LocalizedString {
+    static let addAccountsButtonAccessibilityLabel = String(
+      localized: "Add Accounts"
+    )
     static let following = String(localized: "Following")
     static let followers = String(localized: "Followers")
     static let profile = String(localized: "Profile")
@@ -51,16 +54,34 @@ struct SideMenuView: View {
 
   @ViewBuilder
   private func Header() -> some View {
-    Button(
-      action: {
-        delegate?.userProfileDidReceiveTap()
-      },
-      label: {
-        Image(systemName: "person.circle.fill")
-          .resizable()
-          .frame(width: LayoutConstant.imageSize, height: LayoutConstant.imageSize)
-          .foregroundStyle(.black)
-      })
+    HStack {
+      Button(
+        action: {
+          delegate?.userProfileDidReceiveTap()
+        },
+        label: {
+          Image(systemName: "bird.circle")
+            .resizable()
+            .frame(width: 52, height: 52)
+            .foregroundStyle(.gray)
+        })
+
+      Spacer()
+
+      Button(
+        action: {
+          delegate?.addAcountsButtonDidReceiveTap()
+        },
+        label: {
+          Image(systemName: "person.fill.badge.plus")
+            .resizable()
+            .frame(width: 32, height: 32)
+            .foregroundStyle(.black)
+        }
+      )
+      .frame(width: 44, height: 44)
+      .accessibilityLabel(LocalizedString.addAccountsButtonAccessibilityLabel)
+    }
 
     Button(
       action: {
@@ -230,6 +251,7 @@ struct SideMenuView: View {
 
 protocol SideMenuViewDelegate: AnyObject {
   func userProfileDidReceiveTap()
+  func addAcountsButtonDidReceiveTap()
   func bookmarksDidReceiveTap()
   func jobsDidReceiveTap()
   func listsDidReceiveTap()
