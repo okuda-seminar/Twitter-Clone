@@ -397,4 +397,149 @@ describe("Timeline GraphQL (e2e)", () => {
       expect(response.body.errors[0].message).toContain("Not Found");
     });
   });
+
+  describe("likePost Mutation", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should like a post successfully", async () => {
+      vi.spyOn(httpService, "post").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const mutation = `
+        mutation {
+          likePost(
+            userId: "${userId}"
+            likePostInput: { post_id: "${postId}" }
+          )
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.data.likePost).toBe(postId);
+      expect(httpService.post).toHaveBeenCalledWith(
+        `/api/users/${userId}/likes`,
+        { post_id: postId },
+      );
+    });
+
+    it("should return an error when backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "post").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      const mutation = `
+        mutation {
+          likePost(
+            userId: "${userId}"
+            likePostInput: { post_id: "${postId}" }
+          )
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toContain(
+        "Internal Server Error",
+      );
+    });
+
+    it("should return error when required parameters are not provided", async () => {
+      const mutation = `
+        mutation LikePost($userId: ID!, $likePostInput: LikePostInput!) {
+          likePost(userId: $userId, likePostInput: $likePostInput)
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({
+          query: mutation,
+          variables: {},
+        })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("unlikePost Mutation", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should unlike a post successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const mutation = `
+        mutation {
+          unlikePost(userId: "${userId}", postId: "${postId}")
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.data.unlikePost).toBe(postId);
+      expect(httpService.delete).toHaveBeenCalledWith(
+        `/api/users/${userId}/likes/${postId}`,
+      );
+    });
+
+    it("should return an error when backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      const mutation = `
+        mutation {
+          unlikePost(userId: "${userId}", postId: "${postId}")
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({ query: mutation })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors[0].message).toContain(
+        "Internal Server Error",
+      );
+    });
+
+    it("should return error when required parameters are not provided", async () => {
+      const mutation = `
+        mutation UnlikePost($userId: ID!, $postId: ID!) {
+          unlikePost(userId: $userId, postId: $postId)
+        }
+      `;
+
+      const response = await request(app.getHttpServer())
+        .post("/graphql")
+        .send({
+          query: mutation,
+          variables: {},
+        })
+        .expect(200);
+
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors.length).toBeGreaterThan(0);
+    });
+  });
 });

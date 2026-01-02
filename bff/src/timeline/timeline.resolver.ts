@@ -3,6 +3,7 @@ import { CreatePostInput } from "./inputs/create-post.input";
 import { CreateQuoteRepostInput } from "./inputs/create-quote-repost.input";
 import { CreateRepostInput } from "./inputs/create-repost.input";
 import { DeleteRepostInput } from "./inputs/delete-repost.input";
+import { LikePostInput } from "./inputs/like-post.input";
 import { Post } from "./models/post.model";
 import { QuoteRepost } from "./models/quote-repost.model";
 import { Repost } from "./models/repost.model";
@@ -68,5 +69,21 @@ export class TimelineResolver {
     @Args("deleteRepostInput") deleteRepostInput: DeleteRepostInput,
   ): Promise<string> {
     return this.timelineService.deleteRepost(userId, postId, deleteRepostInput);
+  }
+
+  @Mutation(() => ID)
+  async likePost(
+    @Args("userId", { type: () => ID }) userId: string,
+    @Args("likePostInput") likePostInput: LikePostInput,
+  ): Promise<string> {
+    return this.timelineService.likePost(userId, likePostInput);
+  }
+
+  @Mutation(() => ID)
+  async unlikePost(
+    @Args("userId", { type: () => ID }) userId: string,
+    @Args("postId", { type: () => ID }) postId: string,
+  ): Promise<string> {
+    return this.timelineService.unlikePost(userId, postId);
   }
 }
