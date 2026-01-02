@@ -20,6 +20,8 @@ describe("TimelineResolver", () => {
             createRepost: vi.fn(),
             deletePost: vi.fn(),
             deleteRepost: vi.fn(),
+            likePost: vi.fn(),
+            unlikePost: vi.fn(),
           },
         },
       ],
@@ -155,6 +157,40 @@ describe("TimelineResolver", () => {
         deleteRepostInput,
       );
       expect(result).toBe(repostId);
+    });
+  });
+
+  describe("likePost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+    const likePostInput = {
+      post_id: postId,
+    };
+
+    it("should call TimelineService.likePost and return postId", async () => {
+      vi.spyOn(timelineService, "likePost").mockResolvedValue(postId);
+
+      const result = await resolver.likePost(userId, likePostInput);
+
+      expect(timelineService.likePost).toHaveBeenCalledWith(
+        userId,
+        likePostInput,
+      );
+      expect(result).toBe(postId);
+    });
+  });
+
+  describe("unlikePost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should call TimelineService.unlikePost and return postId", async () => {
+      vi.spyOn(timelineService, "unlikePost").mockResolvedValue(postId);
+
+      const result = await resolver.unlikePost(userId, postId);
+
+      expect(timelineService.unlikePost).toHaveBeenCalledWith(userId, postId);
+      expect(result).toBe(postId);
     });
   });
 });

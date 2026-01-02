@@ -5,6 +5,7 @@ import { CreatePostInput } from "./inputs/create-post.input";
 import { CreateQuoteRepostInput } from "./inputs/create-quote-repost.input";
 import { CreateRepostInput } from "./inputs/create-repost.input";
 import { DeleteRepostInput } from "./inputs/delete-repost.input";
+import { LikePostInput } from "./inputs/like-post.input";
 import { Post } from "./models/post.model";
 import { QuoteRepost } from "./models/quote-repost.model";
 import { TimelineItem } from "./models/timeline-item.model";
@@ -133,5 +134,38 @@ export class TimelineService {
     );
 
     return deleteRepostInput.repost_id;
+  }
+
+  /**
+   * Likes a post by sending the data to the backend API.
+   *
+   * @param userId - The ID of the user who is liking the post.
+   * @param likePostInput - An object containing the post ID to be liked.
+   * @returns A promise that resolves to the liked post ID.
+   */
+  async likePost(
+    userId: string,
+    likePostInput: LikePostInput,
+  ): Promise<string> {
+    await firstValueFrom(
+      this.httpService.post(`/api/users/${userId}/likes`, likePostInput),
+    );
+
+    return likePostInput.post_id;
+  }
+
+  /**
+   * Unlikes a post by sending the data to the backend API.
+   *
+   * @param userId - The ID of the user who is unliking the post.
+   * @param postId - The ID of the post to be unliked.
+   * @returns A promise that resolves to the unliked post ID.
+   */
+  async unlikePost(userId: string, postId: string): Promise<string> {
+    await firstValueFrom(
+      this.httpService.delete(`/api/users/${userId}/likes/${postId}`),
+    );
+
+    return postId;
   }
 }

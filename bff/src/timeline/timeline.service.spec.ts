@@ -16,6 +16,7 @@ describe("TimelineService", () => {
           provide: HttpService,
           useValue: {
             get: vi.fn(),
+            post: vi.fn(),
             delete: vi.fn(),
           },
         },
@@ -184,6 +185,67 @@ describe("TimelineService", () => {
       await expect(
         service.deleteRepost(userId, postId, deleteRepostInput),
       ).rejects.toThrow("Not Found");
+    });
+  });
+
+  describe("likePost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const likePostInput = {
+      post_id: "91c76cd1-29c9-475a-abe3-247234bd9fd4",
+    };
+
+    it("should like a post successfully", async () => {
+      vi.spyOn(httpService, "post").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const result = await service.likePost(userId, likePostInput);
+
+      expect(httpService.post).toHaveBeenCalledWith(
+        `/api/users/${userId}/likes`,
+        likePostInput,
+      );
+      expect(result).toBe(likePostInput.post_id);
+    });
+
+    it("should throw an error when the backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "post").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      await expect(service.likePost(userId, likePostInput)).rejects.toThrow(
+        "Internal Server Error",
+      );
+    });
+  });
+
+  describe("unlikePost", () => {
+    const userId = "623f9799-e816-418b-9e5e-09ad043653fb";
+    const postId = "91c76cd1-29c9-475a-abe3-247234bd9fd4";
+
+    it("should unlike a post successfully", async () => {
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        of({ status: 204 } as AxiosResponse),
+      );
+
+      const result = await service.unlikePost(userId, postId);
+
+      expect(httpService.delete).toHaveBeenCalledWith(
+        `/api/users/${userId}/likes/${postId}`,
+      );
+      expect(result).toBe(postId);
+    });
+
+    it("should throw an error when the backend API fails", async () => {
+      const httpError = new Error("Internal Server Error");
+      vi.spyOn(httpService, "delete").mockReturnValue(
+        throwError(() => httpError),
+      );
+
+      await expect(service.unlikePost(userId, postId)).rejects.toThrow(
+        "Internal Server Error",
+      );
     });
   });
 });
