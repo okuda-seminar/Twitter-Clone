@@ -29,6 +29,7 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
   const router = useRouter();
   const { user } = useAuth();
   const { setQuotedPost } = useComposeModal();
+  const isMyPost = user?.id === timelineItem.authorId;
 
   const handleRepostClick = async () => {
     if (!user?.id) return;
@@ -53,7 +54,7 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
         <Avatar.Fallback name={timelineItem.authorId} />
       </Avatar.Root>
       <Box flex="1">
-        <TimelineItemHeader />
+        <TimelineItemHeader isMyPost={isMyPost} />
         {children}
         <TimelineItemFooter
           handleRepostClick={handleRepostClick}
@@ -64,7 +65,7 @@ export const TimelineItemFrame: React.FC<TimelineItemFrameProps> = ({
   );
 };
 
-const TimelineItemHeader = () => {
+const TimelineItemHeader = ({ isMyPost }: { isMyPost: boolean }) => {
   return (
     <Flex justifyContent="space-between" height="5">
       <HStack gap="2">
@@ -94,7 +95,7 @@ const TimelineItemHeader = () => {
           </IconButton>
         </Tooltip>
 
-        <TimelinePostCardPopupMenu />
+        <TimelinePostCardPopupMenu isMyPost={isMyPost} />
       </HStack>
     </Flex>
   );
@@ -103,7 +104,10 @@ const TimelineItemHeader = () => {
 const TimelineItemFooter = ({
   handleRepostClick,
   handleQuoteClick,
-}: { handleRepostClick: () => void; handleQuoteClick: () => void }) => {
+}: {
+  handleRepostClick: () => void;
+  handleQuoteClick: () => void;
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
