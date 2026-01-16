@@ -12,10 +12,28 @@ const meta: Meta<typeof TimelinePostCardPopupMenu> = {
 export default meta;
 type Story = StoryObj<typeof TimelinePostCardPopupMenu>;
 
-export const Primary: Story = {};
-
-export const Open: Story = {
+export const MyPost: Story = {
   args: {
+    isMyPost: true,
+  },
+};
+
+export const MyPostOpen: Story = {
+  args: {
+    isMyPost: true,
+    defaultOpen: true,
+  },
+};
+
+export const OtherPost: Story = {
+  args: {
+    isMyPost: false,
+  },
+};
+
+export const OtherPostOpen: Story = {
+  args: {
+    isMyPost: false,
     defaultOpen: true,
   },
 };
